@@ -1,6 +1,6 @@
-// Middara Combat Helper V2.2D mobile flow polish service worker
+// Middara Combat Helper V2.2E mobile/tablet flow polish service worker
 // Network-first for the app shell so GitHub Pages updates are picked up, with cache fallback for table use.
-const CACHE_VERSION = "v2-2d-mobile-flow-polish-2026-06-07";
+const CACHE_VERSION = "v2-2e-mobile-flow-target-apply-polish-2026-06-07";
 const CACHE_NAME = `middara-helper-${CACHE_VERSION}`;
 const CORE_ASSETS = [
   "./",

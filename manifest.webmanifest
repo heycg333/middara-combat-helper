@@ -1,7 +1,7 @@
 {
   "name": "Middara Combat Helper",
   "short_name": "Middara",
-  "description": "Middara Combat Helper V2.2D mobile flow polish, hosted PWA package.",
+  "description": "Middara Combat Helper V2.2E mobile/tablet target/action/apply flow polish, hosted PWA package.",
   "id": "./?app=middara-combat-helper",
   "start_url": "./?source=pwa",
   "scope": "./",
