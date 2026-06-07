@@ -1,6 +1,6 @@
-// Middara Combat Helper V2.2C Remi icon service worker
+// Middara Combat Helper V2.2D mobile flow polish service worker
 // Network-first for the app shell so GitHub Pages updates are picked up, with cache fallback for table use.
-const CACHE_VERSION = "v2-2c-remi-icon-2026-06-07";
+const CACHE_VERSION = "v2-2d-mobile-flow-polish-2026-06-07";
 const CACHE_NAME = `middara-helper-${CACHE_VERSION}`;
 const CORE_ASSETS = [
   "./",

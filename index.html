@@ -3,7 +3,7 @@
 <head>
   <meta charset="utf-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1" />
-  <title>Middara Combat Helper - V2.2C Hosted PWA</title>
+  <title>Middara Combat Helper - V2.2D Mobile Flow Polish</title>
   <style>
     :root {
       --bg: #101827;
@@ -567,6 +567,58 @@
       .v17-sticky-footer { left:max(6px, env(safe-area-inset-left)); right:max(6px, env(safe-area-inset-right)); bottom:max(6px, env(safe-area-inset-bottom)); border-radius:15px; padding:9px; }
     }
 
+
+    /* V2.2D Mobile flow polish / phone usability */
+    html { -webkit-text-size-adjust: 100%; text-size-adjust: 100%; }
+    body { overflow-x: hidden; }
+    button, input, select, textarea { font-size: 16px; min-height: 44px; }
+    button { touch-action: manipulation; }
+    .v22b-flow-panel { scroll-margin-top: 82px; }
+    .v22b-step-card { scroll-margin-top: 86px; }
+    #attackDicePanel, #spellPanel { scroll-margin-top: 90px; }
+    .v22b-action-card, .v22b-entity-card { touch-action: manipulation; }
+    .v22b-action-card:focus, .v22b-entity-actions button:focus, .v22b-primary-actions button:focus, .v17-footer-actions button:focus { outline: 3px solid rgba(56,189,248,.75); outline-offset: 2px; }
+    .v22b-pending-summary strong { font-size: 1rem; }
+    .v22b-primary-actions button, .v17-footer-actions button { font-weight: 900; }
+    .v22d-mobile-note { border:1px solid rgba(56,189,248,.35); background:rgba(56,189,248,.08); border-radius:14px; padding:10px; margin-top:10px; color:var(--muted); font-size:.88rem; }
+    body.v22b-phone-focus[data-v17-current-mode="play"] #attackSetupPanel { display:none !important; }
+    body.v22b-phone-focus[data-v17-current-mode="play"].v22b-show-attack #attackSetupPanel { display:none !important; }
+    body.v22b-phone-focus[data-v17-current-mode="play"].v22b-show-attack #attackDicePanel { display:grid !important; }
+    body.v22b-phone-focus[data-v17-current-mode="play"].v22b-show-spell #spellPanel { display:grid !important; }
+    body.v22b-phone-focus[data-v17-current-mode="play"] #attackDicePanel .panel.soft,
+    body.v22b-phone-focus[data-v17-current-mode="play"] #spellPanel .panel { border-color:rgba(56,189,248,.36); }
+    body.v22b-phone-focus[data-v17-current-mode="play"] #probabilityPanel { display:none !important; }
+    @media (max-width: 620px) {
+      header { padding: 10px 10px 4px; }
+      h1 { font-size: 1.32rem; line-height:1.1; letter-spacing:-.025em; }
+      h2 { font-size: 1.03rem; }
+      h3 { font-size: .98rem; }
+      .subtitle { font-size: .82rem; line-height:1.25; }
+      main { padding-left: 8px; padding-right: 8px; gap: 10px; }
+      .panel { padding: 11px; border-radius: 12px; }
+      .v22b-toolbar { gap:6px; }
+      .v22b-toolbar button { flex: 1 1 auto; min-width: 44%; padding: 9px 8px; }
+      .v22b-action-card { min-height: 58px; padding: 10px; }
+      .v22b-action-card strong { font-size: .96rem; }
+      .v22b-action-card span { font-size: .78rem; }
+      .v22b-chip { padding: 8px 9px; }
+      .v22b-chip .value { font-size: .95rem; }
+      .v22b-state-strip { grid-template-columns: repeat(2, minmax(0,1fr)); position: sticky; top: 54px; z-index: 55; background: linear-gradient(180deg, rgba(16,24,39,.98), rgba(16,24,39,.90)); border: 1px solid rgba(148,163,184,.18); border-radius: 12px; padding: 6px; box-shadow: 0 8px 24px rgba(0,0,0,.28); }
+      .v22b-target-cards { max-height: none; }
+      .v22b-entity-actions { display:grid; grid-template-columns:1fr 1fr; }
+      .v22b-entity-actions button { width:100%; min-height:40px; }
+      .v17-sticky-footer { font-size: .92rem; }
+      .v17-footer-title { font-size: .95rem; }
+      .v17-footer-detail { font-size: .78rem; }
+      .v17-footer-actions { display:grid; grid-template-columns:1fr 1fr; }
+      .v17-footer-actions button { width:100%; min-height:40px; }
+      body.v17-footer-padding main { padding-bottom: 220px; }
+      #attackDicePanel, #spellPanel { gap: 10px; }
+      #attackDicePanel .panel, #spellPanel .panel { padding: 11px; }
+      .result-hero { grid-template-columns: 1fr 1fr !important; }
+      .metric .big { font-size: 1.5rem; }
+    }
+
   </style>
 
   <!-- V2.2C hosted/PWA metadata -->
@@ -586,7 +638,7 @@
 <body>
   <header>
     <h1>Middara Combat Helper</h1>
-    <div class="subtitle">V2.2C hosted/PWA package. Keeps the V2.2B mobile combat flow and adds GitHub Pages deployment support, installable web-app metadata, offline caching, update controls, and hosted-save reminders.</div>
+    <div class="subtitle">V2.2D mobile flow polish. Keeps the hosted/PWA package, but tightens the phone workflow with clearer actor/action/target visibility, better Apply labels, less scrolling, and support-target guidance.</div>
   </header>
 
   <main>
@@ -673,10 +725,10 @@
     <section class="panel v22b-flow-panel" id="mobileCombatFlowPanel" data-v17-mode="play">
       <div class="cockpit-header">
         <div>
-          <h2>V2.2B Mobile combat flow</h2>
-          <div class="note">Phone-first live table mode: choose actor, choose action, choose target, resolve the math, then use the sticky result bar to apply bookkeeping without hunting through long panels.</div>
+          <h2>V2.2D Mobile combat flow</h2>
+          <div class="note">Phone-first live table mode: choose actor, choose action, choose an encounter target card, enter dice in the nearby roll tray, then use the sticky result bar to apply bookkeeping without hunting through long panels.</div>
         </div>
-        <div class="cockpit-badge">V2.2B Flow</div>
+        <div class="cockpit-badge">V2.2D Flow</div>
       </div>
       <div class="v22b-toolbar">
         <button type="button" id="v22bFocusToggle" class="v22b-focus-toggle">Focused phone mode: on</button>
@@ -726,7 +778,8 @@
         </div>
         <div class="v22b-step-card v22b-resolve-card">
           <h3><span><span class="v22b-step-number">4</span>Resolve / apply</span></h3>
-          <div id="v22bPendingSummary" class="v22b-pending-summary">No pending result yet. Pick an action, enter dice, then calculate.</div>
+          <div id="v22bPendingSummary" class="v22b-pending-summary">No pending result yet. Pick an action and target, enter dice in the roll tray below, then calculate.</div>
+          <div class="v22d-mobile-note">Tip: targets should usually be selected from the encounter target cards, not the enemy preset dropdown. Attack and spell roll trays stay directly below this flow in focused phone mode.</div>
           <div class="v22b-primary-actions">
             <button type="button" class="primary-action" data-v22b-action="calculateCurrent">Calculate current</button>
             <button type="button" class="primary-action" data-v22b-action="applyPending">Apply pending result</button>
@@ -2143,7 +2196,7 @@
         <div class="note" style="margin-top:8px">This package is meant for GitHub Pages or another static host. It registers an offline cache when opened from HTTPS, but your saved game state still lives in this browser for this exact URL. Export a full snapshot before replacing <code>index.html</code> or changing URLs.</div>
         <div id="pwaStatus" class="ok-box note" style="margin-top:10px">PWA status will appear after the page finishes loading.</div>
         <div class="v22c-pwa-grid">
-          <div class="v22c-pwa-card"><div class="label">Version</div><div class="value" id="pwaVersionText">V2.2C</div></div>
+          <div class="v22c-pwa-card"><div class="label">Version</div><div class="value" id="pwaVersionText">V2.2D</div></div>
           <div class="v22c-pwa-card"><div class="label">Install mode</div><div class="value" id="pwaDisplayText">Checking...</div></div>
           <div class="v22c-pwa-card"><div class="label">Offline cache</div><div class="value" id="pwaCacheText">Checking...</div></div>
         </div>
@@ -3660,7 +3713,7 @@ function renderTrackerTable() {
             "<td>" + states + "</td>" +
             "<td><input class=\"tracker-manual\" data-id=\"" + enemy.id + "\" type=\"number\" min=\"1\" step=\"1\" value=\"1\" /></td>" +
             "<td><div class=\"tracker-actions\">" +
-            "<button class=\"mini-btn\" type=\"button\" data-action=\"target\" data-id=\"" + enemy.id + "\">Target</button>" +
+            "<button class=\"mini-btn\" type=\"button\" data-action=\"target\" data-id=\"" + enemy.id + "\">Use as target</button>" +
             "<button class=\"mini-btn\" type=\"button\" data-action=\"damage\" data-id=\"" + enemy.id + "\">Damage</button>" +
             "<button class=\"mini-btn\" type=\"button\" data-action=\"heal\" data-id=\"" + enemy.id + "\">Heal</button>" +
             "<button class=\"mini-btn\" type=\"button\" data-action=\"remove\" data-id=\"" + enemy.id + "\">Remove</button>" +
@@ -11268,7 +11321,7 @@ else {
   }
 
   function routeTo(route) {
-    if (route === 'attack') { setMode('play'); scrollToPanel('attackSetupPanel'); }
+    if (route === 'attack') { setMode('play'); scrollToPanel('attackDicePanel'); }
     else if (route === 'spell') { setMode('play'); scrollToPanel('spellPanel'); }
     else if (route === 'enemyTurn') { setMode('enemies'); scrollToPanel('enemyAiAssistantPanel'); }
     else if (route === 'enemyAttack') { setMode('enemies'); scrollToPanel('enemyAttackPanel'); }
@@ -11345,7 +11398,7 @@ else {
       var e = list[i];
       var hp = Number(e.hp || 0), damage = Number(e.damage || 0), remain = Math.max(0, hp - damage);
       var selected = window.trackerState && e.id === trackerState.selectedId;
-      html.push('<div class="v17-mini-card' + (selected ? ' selected' : '') + '"><div class="v17-mini-head"><strong>' + esc(e.label || e.name || 'Enemy') + '</strong><span class="v17-mini-stat">HP ' + remain + ' / ' + hp + '</span></div>' + hpBar(remain, hp) + '<div class="v17-mini-stat">Def ' + esc(e.defense) + ' | Armor ' + esc(e.armor) + (e.effects && e.effects.length ? ' | ' + esc(e.effects.join(', ')) : '') + '</div><div class="v17-mini-actions"><button type="button" data-v17-target-enemy="' + esc(e.id) + '">Target</button><button type="button" data-v17-enemy-delta="1" data-v17-enemy-id="' + esc(e.id) + '">+1 dmg</button><button type="button" data-v17-enemy-delta="-1" data-v17-enemy-id="' + esc(e.id) + '">Heal 1</button></div></div>');
+      html.push('<div class="v17-mini-card' + (selected ? ' selected' : '') + '"><div class="v17-mini-head"><strong>' + esc(e.label || e.name || 'Enemy') + '</strong><span class="v17-mini-stat">HP ' + remain + ' / ' + hp + '</span></div>' + hpBar(remain, hp) + '<div class="v17-mini-stat">Def ' + esc(e.defense) + ' | Armor ' + esc(e.armor) + (e.effects && e.effects.length ? ' | ' + esc(e.effects.join(', ')) : '') + '</div><div class="v17-mini-actions"><button type="button" data-v17-target-enemy="' + esc(e.id) + '">Use as target</button><button type="button" data-v17-enemy-delta="1" data-v17-enemy-id="' + esc(e.id) + '">+1 dmg</button><button type="button" data-v17-enemy-delta="-1" data-v17-enemy-id="' + esc(e.id) + '">Heal 1</button></div></div>');
     }
     box.innerHTML = html.join('');
   }
@@ -15261,7 +15314,7 @@ else {
   function updateChrome() {
     try {
       var sub = document.querySelector("header .subtitle");
-      if (sub) sub.textContent = "V2.2C hosted/PWA package. Keeps the V2.2B mobile combat flow and adds GitHub Pages deployment support, installable web-app metadata, offline caching, update controls, and hosted-save reminders.";
+      if (sub) sub.textContent = "V2.2D mobile flow polish. Keeps the hosted/PWA package, but tightens the phone workflow with clearer actor/action/target visibility, better Apply labels, less scrolling, and support-target guidance.";
     } catch (err) { }
   }
 
@@ -15471,9 +15524,9 @@ else {
       } else if (name.indexOf("eliphie") >= 0) {
         cards.push(actionCard("Scalpel", "Load Eliphie melee attack with optional aura/cost tools.", "commandLoadAttack", "primary", { "v22b-command-attack":"eliphie_scalpel" }));
         cards.push(actionCard("Gore Shot", "Load Eliphie Spell 6 and optional self-damage bonus.", "commandLoadSpell", "primary", { "v22b-command-spell":"eliphie_gore_shot" }));
-        cards.push(actionCard("Blood Barrier", "Add Barrier to selected support target.", "commandUseAbility", "", { "v22b-command-ability":"eliphie_blood_barrier" }));
-        cards.push(actionCard("Invigorate", "Add Dodge token to selected support target.", "commandUseAbility", "", { "v22b-command-ability":"eliphie_invigorate" }));
-        cards.push(actionCard("Gore Cleanse", "Remove selected Effect from support target.", "commandUseAbility", "", { "v22b-command-ability":"eliphie_gore_cleanse" }));
+        cards.push(actionCard("Blood Barrier", "Choose a party/Command support target below first, then add Barrier.", "commandUseAbility", "", { "v22b-command-ability":"eliphie_blood_barrier" }));
+        cards.push(actionCard("Invigorate", "Choose a party/Command support target below first, then add Dodge token.", "commandUseAbility", "", { "v22b-command-ability":"eliphie_invigorate" }));
+        cards.push(actionCard("Gore Cleanse", "Choose a party/Command support target below first, then remove an Effect.", "commandUseAbility", "", { "v22b-command-ability":"eliphie_gore_cleanse" }));
         cards.push(actionCard("Command panel", "SP, support target, cost reduction, effects/tokens.", "openCommand", ""));
       } else {
         cards.push(actionCard("Command attack", "Load selected Command Combatant as actor.", "commandAsActor", "primary"));
@@ -15516,7 +15569,7 @@ else {
     var filter = state.targetFilter || "enemy";
     var current = targetObj();
     var list = targetCardsForFilter(filter);
-    if (!list.length) { box.innerHTML = '<div class="v17-empty">No ' + esc(filter) + ' targets currently loaded.</div>'; return; }
+    if (!list.length) { box.innerHTML = '<div class="v17-empty">No ' + esc(filter) + ' targets currently loaded. ' + (filter === "enemy" ? 'Add encounter enemies first, or open the Enemies tab.' : 'Try another target filter.') + '<div class="v22b-toolbar"><button type="button" data-v22b-action="openEnemies">Open Enemies</button><button type="button" data-v22b-action="openParty">Open Party</button></div></div>'; return; }
     box.innerHTML = list.map(function (t) {
       var hp = t.kind === "command" ? (t.obj.maxHp || t.obj.hp || 0) : (t.obj.hp || 0);
       var rem = remaining(t.obj);
@@ -15527,18 +15580,18 @@ else {
       if (t.obj.tokens && t.obj.tokens.length) meta += " | " + t.obj.tokens.join(", ");
       var buttons = [];
       if (t.kind === "enemy") {
-        buttons.push('<button type="button" data-v22b-target="enemy:' + esc(t.id) + '" data-v22b-target-role="attack">Target</button>');
-        buttons.push('<button type="button" data-v22b-action="applyPending" data-v22b-target="enemy:' + esc(t.id) + '">Apply pending</button>');
+        buttons.push('<button type="button" data-v22b-target="enemy:' + esc(t.id) + '" data-v22b-target-role="attack">Use as target</button>');
+        buttons.push('<button type="button" data-v22b-action="applyPending" data-v22b-target="enemy:' + esc(t.id) + '">Apply here</button>');
         buttons.push('<button type="button" data-v22b-damage="1" data-v22b-target="enemy:' + esc(t.id) + '">+1 dmg</button>');
         buttons.push('<button type="button" data-v22b-damage="-1" data-v22b-target="enemy:' + esc(t.id) + '">Heal 1</button>');
       } else if (t.kind === "party") {
-        buttons.push('<button type="button" data-v22b-target="party:' + esc(t.id) + '" data-v22b-target-role="support">Support target</button>');
-        buttons.push('<button type="button" data-v22b-target="party:' + esc(t.id) + '" data-v22b-target-role="enemyAttack">Enemy target</button>');
+        buttons.push('<button type="button" data-v22b-target="party:' + esc(t.id) + '" data-v22b-target-role="support">Use as support target</button>');
+        buttons.push('<button type="button" data-v22b-target="party:' + esc(t.id) + '" data-v22b-target-role="enemyAttack">Use as enemy target</button>');
         buttons.push('<button type="button" data-v22b-damage="1" data-v22b-target="party:' + esc(t.id) + '">+1 dmg</button>');
         buttons.push('<button type="button" data-v22b-damage="-1" data-v22b-target="party:' + esc(t.id) + '">Heal 1</button>');
       } else {
-        buttons.push('<button type="button" data-v22b-target="command:' + esc(t.id) + '" data-v22b-target-role="support">Support target</button>');
-        buttons.push('<button type="button" data-v22b-target="command:' + esc(t.id) + '" data-v22b-target-role="enemyAttack">Enemy target</button>');
+        buttons.push('<button type="button" data-v22b-target="command:' + esc(t.id) + '" data-v22b-target-role="support">Use as support target</button>');
+        buttons.push('<button type="button" data-v22b-target="command:' + esc(t.id) + '" data-v22b-target-role="enemyAttack">Use as enemy target</button>');
         buttons.push('<button type="button" data-v21b-command-load="' + esc(t.id) + '">Load actor</button>');
         buttons.push('<button type="button" data-v22b-damage="1" data-v22b-target="command:' + esc(t.id) + '">+1 dmg</button>');
       }
@@ -15554,33 +15607,32 @@ else {
       try { if (window.trackerState) trackerState.selectedId = id; } catch (err) {}
       if (typeof window.useTrackerEnemyAsTarget === "function") window.useTrackerEnemyAsTarget(id, true);
       setSelect("rewardPendingSelect", id);
-      setStatus("Loaded " + targetLabel() + " as the current enemy target.", "ok");
+      if (role === "attack" || !role) state.pendingType = "attack";
+      setStatus("Loaded " + targetLabel() + " as the encounter attack target. Enter dice in the roll tray, then Calculate.", "ok");
     } else if (kind === "party") {
       try { if (window.partyState) partyState.selectedId = id; if (typeof window.renderParty === "function") window.renderParty(); } catch (err2) {}
       setSelect("enemyAttackTarget", id);
       setSelect("enemySpellTarget", id);
       setSelect("v21bSupportTargetSelect", "party:" + id);
       setSelect("v22aRookTarget", "party:" + id);
-      setStatus("Loaded " + targetLabel() + " as a party/support target.", "ok");
+      if (role === "enemyAttack") state.pendingType = "enemyAttack";
+      setStatus("Loaded " + targetLabel() + " as " + (role === "enemyAttack" ? "the enemy-attack target" : "the support target") + ".", "ok");
     } else if (kind === "command") {
       setSelect("v21bSelectedCommand", id);
       setSelect("enemyAttackTarget", "command:" + id);
       setSelect("v21bSupportTargetSelect", "command:" + id);
       setSelect("v22aRookTarget", "command:" + id);
-      setStatus("Loaded " + targetLabel() + " as a Command/support target.", "ok");
+      if (role === "enemyAttack") state.pendingType = "enemyAttack";
+      setStatus("Loaded " + targetLabel() + " as " + (role === "enemyAttack" ? "the enemy-attack target" : "the Command/support target") + ".", "ok");
     }
     save(); scheduleRender();
-    if (role === "enemyAttack") state.pendingType = "enemyAttack";
   }
-
   function pendingInfo() {
-    var type = state.pendingType || guessPendingType();
-    var info = summaryForType(type);
-    if (!info.ready) {
-      var guessed = guessPendingType();
-      if (guessed !== type) info = summaryForType(guessed);
-    }
-    return info;
+    // V2.2D: respect the user's selected action. Older behavior guessed from any stale
+    // resolver result, which could switch an Attack flow back to an old Spell result
+    // after choosing a target.
+    var explicit = state.pendingType || "attack";
+    return summaryForType(explicit);
   }
   function guessPendingType() {
     if (isEnemyAttackReady()) return "enemyAttack";
@@ -15594,10 +15646,15 @@ else {
   function isEnemyAttackReady() { return text("enemyAttackResultText") && text("enemyAttackResultText") !== "-"; }
   function isEnemySpellReady() { var s = text("enemySpellStatus"); return !!(s && s.indexOf("No enemy spell result") < 0 && s.indexOf("ready") < 0); }
   function summaryForType(type) {
-    if (type === "spell") return { type:type, ready:isSpellReady(), shortLabel:"Spell " + (text("spellResultText") || "-"), title:"Spell result", detail:"Result " + (text("spellResultText") || "-") + " | Force " + (text("spellForceText") || "0") + " | Damage/effect " + (text("spellDamageText") || "0"), applyLabel:"Apply spell to selected enemy" };
-    if (type === "enemyAttack") return { type:type, ready:isEnemyAttackReady(), shortLabel:"Enemy " + (text("enemyAttackFinalDamageText") || "0") + " dmg", title:"Enemy attack result", detail:"Result " + (text("enemyAttackResultText") || "-") + " | Final damage " + (text("enemyAttackFinalDamageText") || "0") + " | Target " + (selectedText("enemyAttackTarget") || targetLabel()), applyLabel:"Apply enemy damage" };
+    var tgt = targetLabel();
+    var attackDmg = text("finalDamage") || "0";
+    var spellDmg = text("spellDamageText") || "0";
+    var enemyDmg = text("enemyAttackFinalDamageText") || "0";
+    if (type === "spell") return { type:type, ready:isSpellReady(), shortLabel:"Spell " + spellDmg + " dmg/effect", title:"Spell result", detail:"Result " + (text("spellResultText") || "-") + " | Force " + (text("spellForceText") || "0") + " | Damage/effect " + spellDmg + " | Target " + tgt, applyLabel:"Apply spell to " + tgt };
+    if (type === "enemyAttack") return { type:type, ready:isEnemyAttackReady(), shortLabel:"Enemy " + enemyDmg + " dmg", title:"Enemy attack result", detail:"Result " + (text("enemyAttackResultText") || "-") + " | Final damage " + enemyDmg + " | Target " + (selectedText("enemyAttackTarget") || tgt), applyLabel:"Apply " + enemyDmg + " damage" };
     if (type === "enemySpell") return { type:type, ready:isEnemySpellReady(), shortLabel:"Enemy spell", title:"Enemy spell result", detail:text("enemySpellStatus") || "Enemy spell ready.", applyLabel:"Apply enemy spell" };
-    return { type:"attack", ready:isAttackReady(), shortLabel:"Attack " + (text("finalDamage") || "0") + " dmg", title:"Attack result", detail:"Result " + (text("hitText") || "-") + " | Attack " + (text("attackTotal") || "0") + " | Final damage " + (text("finalDamage") || "0") + " | Target " + targetLabel(), applyLabel:"Apply attack damage" };
+    if (type === "support") return { type:type, ready:false, shortLabel:"Support target", title:"Support action", detail:"Choose a party or Command support target, then tap the support action again.", applyLabel:"Choose support target" };
+    return { type:"attack", ready:isAttackReady(), shortLabel:"Attack " + attackDmg + " dmg", title:"Attack result", detail:"Result " + (text("hitText") || "-") + " | Attack " + (text("attackTotal") || "0") + " | Final damage " + attackDmg + " | Target " + tgt, applyLabel:"Apply " + attackDmg + " damage to " + tgt };
   }
   function renderPending() {
     var info = pendingInfo();
@@ -15635,39 +15692,62 @@ else {
   }
   function applyPending() {
     var info = pendingInfo();
-    if (!info.ready) { setStatus("No ready result to apply yet. Calculate first.", "warn"); return; }
+    if (!info.ready) { setStatus("No ready " + info.type + " result yet. Enter dice and tap Calculate first.", "warn"); return; }
+    var before = targetObj();
     if (info.type === "spell") click("applySpellToTracker");
     else if (info.type === "enemyAttack") click("applyEnemyAttackToParty");
     else if (info.type === "enemySpell") click("enemySpellApply");
     else click("applyToTracker");
-    setStatus("Applied pending " + info.type + " result using the existing tracker workflow.", "ok");
-    scheduleRender();
+    setTimeout(function () {
+      var after = targetObj();
+      var msg = "Applied: " + info.applyLabel + ".";
+      if (after && after.obj && (after.kind === "enemy" || after.kind === "party" || after.kind === "command")) {
+        msg += " Current damage: " + num(after.obj.damage, 0) + " / " + (after.obj.maxHp || after.obj.hp || 0) + ".";
+      } else if (before && before.obj) {
+        msg += " Check the target card for updated HP.";
+      }
+      setStatus(msg, "ok");
+      scheduleRender();
+    }, 120);
   }
-
   function route(mode, panelId) {
     var btn = document.querySelector('[data-v17-mode-button="' + mode + '"]');
     if (btn) btn.click();
     setTimeout(function () { var el = byId(panelId); if (el && el.scrollIntoView) { try { el.scrollIntoView({ behavior:"smooth", block:"start" }); } catch (err) { el.scrollIntoView(true); } } }, 40);
   }
-  function selectSpell(id) { if (setSelect("spellSelect", id)) { state.pendingType = "spell"; setResolverView("spell"); route("play", "spellPanel"); } }
+  function selectSpell(id) { if (setSelect("spellSelect", id)) { state.pendingType = "spell"; setResolverView("spell"); route("play", "spellPanel"); setStatus("Loaded spell. Choose/confirm target, enter Force and Conviction dice in the spell tray, then Calculate.", "ok"); } }
   function selectProfileByText(txt) {
     var sel = byId("profileSelect"); if (!sel) return;
     txt = String(txt || "").toLowerCase();
     for (var i = 0; i < sel.options.length; i++) if (String(sel.options[i].textContent || "").toLowerCase().indexOf(txt) >= 0) { sel.selectedIndex = i; fire(sel, "change"); break; }
-    state.pendingType = "attack"; setResolverView("attack"); route("play", "attackSetupPanel");
+    state.pendingType = "attack"; setResolverView("attack"); route("play", "attackDicePanel");
   }
   function commandAction(attr, id) {
     var a = actorObj();
     if (a.kind === "command") { setSelect("v21bSelectedCommand", a.id); fire(byId("v21bSelectedCommand"), "change"); }
+    var isSupportAbility = attr.indexOf("use-ability") >= 0;
+    if (isSupportAbility) {
+      var t = targetObj();
+      if (!(t.kind === "party" || t.kind === "command")) {
+        state.targetFilter = "party";
+        state.pendingType = "support";
+        setStatus("Choose a party or Command card in the Target drawer as the support target first, then tap the Eliphie support action again.", "warn");
+        save(); scheduleRender(); return;
+      }
+      setSelect("v21bSupportTargetSelect", t.kind + ":" + t.id);
+    }
     setTimeout(function () {
-      var selector = '[' + attr + '="' + String(id).replace(/"/g, '\\"') + '"]';
+      var selector = '[' + attr + '="' + String(id).replace(/"/g, '\"') + '"]';
       var btn = document.querySelector(selector);
-      if (btn) { btn.click(); state.pendingType = attr.indexOf("spell") >= 0 ? "spell" : "attack"; setStatus("Loaded Command action.", "ok"); }
+      if (btn) {
+        btn.click();
+        state.pendingType = attr.indexOf("spell") >= 0 ? "spell" : (isSupportAbility ? "support" : "attack");
+        setStatus(isSupportAbility ? ("Applied Command support ability to " + targetLabel() + ".") : "Loaded Command action.", "ok");
+      }
       else { route("command", "commandCombatantPanel"); setStatus("Open Command panel and use this action there; detailed button was not rendered yet.", "warn"); }
       scheduleRender();
     }, 80);
   }
-
   function handleAction(action, source) {
     if (action === "refresh") { scheduleRender(); setStatus("Mobile flow refreshed.", "ok"); }
     else if (action === "loadCurrentTurn") { click("v17UseCurrentTurn"); setTimeout(function () { syncActorFromMain(); scheduleRender(); }, 120); }
@@ -15680,7 +15760,7 @@ else {
     else if (action === "openProbability") route("probability", "probabilityPanel");
     else if (action === "routeData") route("data", "dataManagerPanel");
     else if (action === "routeRewards") route("rewards", "rewardsLootPanel");
-    else if (action === "routeAttack") { state.pendingType = "attack"; setResolverView("attack"); route("play", "attackSetupPanel"); }
+    else if (action === "routeAttack") { state.pendingType = "attack"; setResolverView("attack"); route("play", "attackDicePanel"); }
     else if (action === "routeSpell") { state.pendingType = "spell"; setResolverView("spell"); route("play", "spellPanel"); }
     else if (action === "routeEnemyTurn") { state.pendingType = "enemyAttack"; route("enemies", "enemyAiAssistantPanel"); }
     else if (action === "routeEnemyAttack") { state.pendingType = "enemyAttack"; route("enemies", "enemyAttackPanel"); }
@@ -15791,7 +15871,7 @@ else {
   function patchSnapshots() {
     if (window.__middaraV22BSnapshotPatch) return;
     window.__middaraV22BSnapshotPatch = true;
-    function addFlow(snap) { try { snap.version = "V2.2C"; snap.pwaDeploymentVersion = "V2.2C"; snap.mobileFlowState = JSON.parse(JSON.stringify(state)); } catch (err) {} return snap; }
+    function addFlow(snap) { try { snap.version = "V2.2D"; snap.pwaDeploymentVersion = "V2.2D"; snap.mobileFlowState = JSON.parse(JSON.stringify(state)); } catch (err) {} return snap; }
     if (window.middaraDataManagerApi) {
       var api = window.middaraDataManagerApi;
       var oldFull = api.exportFullSnapshot;
@@ -15804,9 +15884,9 @@ else {
   }
 
   function updateChrome() {
-    document.title = "Middara Combat Helper - V2.2C Hosted PWA";
+    document.title = "Middara Combat Helper - V2.2D Mobile Flow Polish";
     var sub = document.querySelector("header .subtitle");
-    if (sub) sub.textContent = "V2.2C hosted/PWA package. Keeps the V2.2B mobile combat flow and adds GitHub Pages deployment support, installable web-app metadata, offline caching, update controls, and hosted-save reminders.";
+    if (sub) sub.textContent = "V2.2D mobile flow polish. Keeps the hosted/PWA package, but tightens the phone workflow with clearer actor/action/target visibility, better Apply labels, less scrolling, and support-target guidance.";
   }
 
   function init() {
@@ -15819,7 +15899,7 @@ else {
     render();
     setTimeout(function () { patchSnapshots(); updateChrome(); render(); }, 700);
     setInterval(function () { updateFooter(); }, 1200);
-    setStatus("V2.2C hosted/PWA package ready. Start at Actor -> Action -> Target -> Resolve; use Data for hosted/PWA status.", "ok");
+    setStatus("V2.2D mobile flow polish ready. Start at Actor -> Action -> Target; dice and Apply stay close to the flow.", "ok");
   }
 
   ready(init);
@@ -15831,7 +15911,7 @@ else {
 <script>
 (function () {
   "use strict";
-  var VERSION = "V2.2C";
+  var VERSION = "V2.2D";
   var CACHE_PREFIX = "middara-helper-";
   function ready(fn) { if (document.readyState === "loading") document.addEventListener("DOMContentLoaded", fn); else fn(); }
   function byId(id) { return document.getElementById(id); }
@@ -15940,7 +16020,7 @@ else {
       "Middara Combat Helper " + VERSION + " hosted/PWA note",
       "URL: " + location.href,
       "Before updating index.html: Data > Export full snapshot > Download JSON.",
-      "After updating GitHub Pages: open this URL, Data > V2.2C hosted/PWA deployment > Update app cache, then reload if needed.",
+      "After updating GitHub Pages: open this URL, Data > hosted/PWA deployment > Update app cache, then reload if needed.",
       "Do not upload save snapshots to the public repository; localStorage is tied to this exact hosted URL."
     ].join("\n");
   }
@@ -15959,6 +16039,55 @@ else {
 })();
 </script>
 
+
+
+<script>
+(function () {
+  "use strict";
+  function ready(fn) { if (document.readyState === "loading") document.addEventListener("DOMContentLoaded", fn); else setTimeout(fn, 0); }
+  function byId(id) { return document.getElementById(id); }
+  function moveRollPanelsNearFlow() {
+    var flow = byId("mobileCombatFlowPanel");
+    if (!flow || !flow.parentNode) return;
+    var anchor = flow;
+    ["attackDicePanel", "spellPanel"].forEach(function (id) {
+      var el = byId(id);
+      if (el && el.parentNode === flow.parentNode && el.previousElementSibling !== anchor) {
+        flow.parentNode.insertBefore(el, anchor.nextSibling);
+      }
+      if (el) anchor = el;
+    });
+  }
+  function updateChrome() {
+    document.title = "Middara Combat Helper - V2.2D Mobile Flow Polish";
+    var sub = document.querySelector("header .subtitle");
+    if (sub) sub.textContent = "V2.2D mobile flow polish. Hosted/PWA ready, with phone-first actor/action/target flow, clearer Apply labels, less scrolling, and support-target guidance.";
+    var pwa = byId("pwaVersionText"); if (pwa) pwa.textContent = "V2.2D";
+    var h = document.querySelector("#mobileCombatFlowPanel h2"); if (h) h.textContent = "V2.2D Mobile combat flow";
+  }
+  function bindMobileHelp() {
+    var flow = byId("mobileCombatFlowPanel");
+    if (!flow || flow.getAttribute("data-v22d-help")) return;
+    flow.setAttribute("data-v22d-help", "1");
+    flow.addEventListener("click", function (ev) {
+      var t = ev.target;
+      while (t && t !== flow && !(t.getAttribute && t.getAttribute("data-v22b-action"))) t = t.parentNode;
+      if (!t || t === flow) return;
+      var action = t.getAttribute("data-v22b-action");
+      if (action === "routeAttack" || action === "commandLoadAttack") setTimeout(function () { var tray = byId("attackDicePanel"); if (tray && tray.scrollIntoView) tray.scrollIntoView({ behavior:"smooth", block:"start" }); }, 180);
+      if (action === "routeSpell" || action === "spellPreset" || action === "commandLoadSpell" || action === "rookCourage" || action === "rookZealous") setTimeout(function () { var tray = byId("spellPanel"); if (tray && tray.scrollIntoView) tray.scrollIntoView({ behavior:"smooth", block:"start" }); }, 180);
+    }, true);
+  }
+  function init() {
+    updateChrome();
+    moveRollPanelsNearFlow();
+    bindMobileHelp();
+    setTimeout(moveRollPanelsNearFlow, 500);
+    setTimeout(moveRollPanelsNearFlow, 1200);
+  }
+  ready(init);
+})();
+</script>
 
 </body>
 </html>

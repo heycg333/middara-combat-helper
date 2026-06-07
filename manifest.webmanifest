@@ -1,7 +1,7 @@
 {
   "name": "Middara Combat Helper",
-  "short_name": "Middara Helper",
-  "description": "Local-first Middara tabletop helper for combat math, bookkeeping, enemy tracking, Command Combatants, rewards, and mobile combat flow.",
+  "short_name": "Middara",
+  "description": "Middara Combat Helper V2.2D mobile flow polish, hosted PWA package.",
   "id": "./?app=middara-combat-helper",
   "start_url": "./?source=pwa",
   "scope": "./",
