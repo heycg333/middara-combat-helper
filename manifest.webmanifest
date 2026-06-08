@@ -1,7 +1,7 @@
 {
   "name": "Middara Combat Helper",
   "short_name": "Middara Helper",
-  "description": "Middara Combat Helper V2.2J live-flow priority PWA.",
+  "description": "Middara Combat Helper V2.3A Rook defense and explicit spell Empower PWA.",
   "id": "./?app=middara-combat-helper",
   "start_url": "./?source=pwa",
   "scope": "./",

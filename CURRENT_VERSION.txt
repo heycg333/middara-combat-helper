@@ -1,3 +1,3 @@
-Middara Combat Helper V2.2J - Live Flow Priority
-Generated 2026-06-08
-Use Data > V2.2J hosted / installable web app > Update app cache after deployment.
+Middara Combat Helper V2.3A - Rook Defense + Spell Empower
+
+Adds Rook defensive/counter shortcuts and makes Spell Empower an explicit checkbox rather than a hidden assumption. Upload these extracted files to the GitHub Pages repository root.
