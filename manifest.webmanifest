@@ -1,7 +1,7 @@
 {
   "name": "Middara Combat Helper",
   "short_name": "Middara Helper",
-  "description": "Middara Combat Helper V2.3C with in-context Rook defense, Play-only live combat flow, auto-calc, and explicit spell Empower.",
+  "description": "Middara Combat Helper V2.3D with counter flow loading, enemy-roll-preserving Dodge toggles, in-context Rook defense, auto-calc, and explicit spell Empower.",
   "id": "./?app=middara-combat-helper",
   "start_url": "./?source=pwa",
   "scope": "./",

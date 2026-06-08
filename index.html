@@ -3,7 +3,7 @@
 <head>
   <meta charset="utf-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1" />
-  <title>Middara Combat Helper - V2.3C In-Context Defense Flow</title>
+  <title>Middara Combat Helper - V2.3D Counter Flow / Dodge Preserve</title>
   <style>
     :root {
       --bg: #101827;
@@ -650,7 +650,7 @@
     }
 
 
-    /* V2.3C Live-play readiness / in-app guide sync */
+    /* V2.3D Live-play readiness / in-app guide sync */
     .v22i-help-panel {
       border-color: rgba(163,230,53,.32);
       background: linear-gradient(180deg, rgba(163,230,53,.08), rgba(255,255,255,.012)), var(--panel);
@@ -684,7 +684,7 @@
     @media (max-width: 620px) { .v22i-recipe-grid, .v22i-check-grid, .v22i-status-grid { grid-template-columns:1fr; } .v22i-actions button { width:100%; } }
 
 
-    /* V2.3C in-context defense flow: prevent subtitle line-count changes from moving the page. */
+    /* V2.3D counter flow / dodge preserve: prevent subtitle line-count changes from moving the page. */
     header .subtitle { min-height: 1.35em; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
     @media (max-width: 720px) { header .subtitle { white-space: normal; min-height: 2.7em; } }
 
@@ -705,7 +705,7 @@
   <link rel="apple-touch-icon" sizes="180x180" href="./icons/apple-touch-icon.png" />
 
 <style id="v22g-table-session-style">
-  /* V2.3C live-play readiness / one-tablet live-play safety layer */
+  /* V2.3D live-play readiness / one-tablet live-play safety layer */
   .v22g-session-hub {
     margin-top: 12px;
     border: 1px solid rgba(163,230,53,.28);
@@ -791,7 +791,7 @@
 <body>
   <header>
     <h1>Middara Combat Helper</h1>
-    <div class="subtitle">V2.3C in-context defense: Rook defense lives in Enemy Attack; live combat flow is Play-only; explicit Spell Empower remains.</div>
+    <div class="subtitle">V2.3D counter flow: Dodge toggle preserves enemy rolls; Rook Plate/Nano toggles live in Enemy Attack; Counter buttons load Rook back against the attacker.</div>
   </header>
 
   <main>
@@ -878,10 +878,10 @@
     <section class="panel v22b-flow-panel" id="mobileCombatFlowPanel" data-v17-mode="play">
       <div class="cockpit-header">
         <div>
-          <h2>V2.3C Tablet / mobile live combat flow</h2>
+          <h2>V2.3D Tablet / mobile live combat flow</h2>
           <div class="note">Live table mode: choose Actor, Target, Action, then Resolve. This is now the primary tablet/phone workflow; the older Play cockpit is hidden in focused mode but still available with Show full play panels.</div>
         </div>
-        <div class="cockpit-badge">V2.3C Flow</div>
+        <div class="cockpit-badge">V2.3D Flow</div>
       </div>
       <div class="v22b-toolbar">
         <button type="button" id="v22bFocusToggle" class="v22b-focus-toggle">Focused phone mode: on</button>
@@ -963,7 +963,7 @@
 
     <section class="panel v23a-rook-defense-panel" id="rookDefensePanel" data-v17-mode="play">
       <details>
-        <summary>V2.3C Rook defensive / counter shortcuts</summary>
+        <summary>V2.3D Rook defensive / counter shortcuts</summary>
         <div class="note" style="margin-top:10px">Use these when Rook is targeted by an Attack, fails a Conviction check, or is about to Counter. The buttons route into existing enemy attack, enemy spell, card-state, workflow, and chain tools; board legality remains manual.</div>
         <div class="v23a-rook-defense-grid" style="margin-top:12px">
           <div class="soft-card">
@@ -2171,7 +2171,7 @@
     </section>
 
     <section class="panel rewards-panel" id="rewardsLootPanel" data-v17-mode="rewards encounter">
-      <!-- V2.3C: intentionally not shown in Data tab; Data is for backups, QA, and deployment. -->
+      <!-- V2.3D: intentionally not shown in Data tab; Data is for backups, QA, and deployment. -->
       <h2>8. Rewards / loot tracker</h2>
       <div class="note">Track combatant loot draws, loot-token outcomes, party gold, XP, and item notes. This does not replace the physical decks; it keeps the bookkeeping and session history clean.</div>
       <div class="rewards-metrics">
@@ -11954,7 +11954,7 @@ else {
     var h = document.querySelector("#enemyAiAssistantPanel h2");
     if (h) h.textContent = "6. Enemy AI preset library";
     var subtitle = document.querySelector("header .subtitle");
-    if (subtitle) subtitle.textContent = "V2.3C in-context defense: Rook defense lives in Enemy Attack; live combat flow is Play-only; explicit Spell Empower remains.";
+    if (subtitle) subtitle.textContent = "V2.3D counter flow: Dodge toggle preserves enemy rolls; Rook Plate/Nano toggles live in Enemy Attack; Counter buttons load Rook back against the attacker.";
   }
 
   function installPresetOptions() {
@@ -14620,9 +14620,9 @@ else {
     document.head.appendChild(style);
   }
   function updateChrome() {
-    document.title = "Middara Combat Helper - V2.3C In-Context Defense Flow";
+    document.title = "Middara Combat Helper - V2.3D Counter Flow / Dodge Preserve";
     var subtitle = document.querySelector("header .subtitle");
-    if (subtitle) subtitle.textContent = "V2.3C in-context defense: Rook defense lives in Enemy Attack; live combat flow is Play-only; explicit Spell Empower remains.";
+    if (subtitle) subtitle.textContent = "V2.3D counter flow: Dodge toggle preserves enemy rolls; Rook Plate/Nano toggles live in Enemy Attack; Counter buttons load Rook back against the attacker.";
     var h = byId("commandCombatantPanel") && byId("commandCombatantPanel").querySelector("h2");
     if (h) h.textContent = "V2.1E Command Combatant / Loyal Esper tracker";
     var badge = byId("commandCombatantPanel") && byId("commandCombatantPanel").querySelector(".cockpit-badge");
@@ -15094,7 +15094,7 @@ else {
   }
   function updateChrome() {
     var title = document.querySelector("header .subtitle");
-    if (title && title.textContent.indexOf("V2.1F") < 0) title.textContent = "V2.3C in-context defense: Rook defense lives in Enemy Attack; live combat flow is Play-only; explicit Spell Empower remains.";
+    if (title && title.textContent.indexOf("V2.1F") < 0) title.textContent = "V2.3D counter flow: Dodge toggle preserves enemy rolls; Rook Plate/Nano toggles live in Enemy Attack; Counter buttons load Rook back against the attacker.";
   }
   installRestoreWrapper();
   ready(function () {
@@ -15557,7 +15557,7 @@ else {
   function updateChrome() {
     try {
       var sub = document.querySelector("header .subtitle");
-      if (sub) sub.textContent = "V2.3C in-context defense: Rook defense lives in Enemy Attack; live combat flow is Play-only; explicit Spell Empower remains.";
+      if (sub) sub.textContent = "V2.3D counter flow: Dodge toggle preserves enemy rolls; Rook Plate/Nano toggles live in Enemy Attack; Counter buttons load Rook back against the attacker.";
     } catch (err) { }
   }
 
@@ -15592,7 +15592,7 @@ else {
 <script>
 (function () {
   "use strict";
-  var VERSION = "V2.3C";
+  var VERSION = "V2.3D";
   var STORAGE_KEY = "middaraCombatHelperV22BMobileFlow";
   var FOCUS_KEY = "middaraCombatHelperV22BPhoneFocus";
   var renderTimer = null;
@@ -15993,7 +15993,7 @@ else {
 
   function calculateCurrent() {
     var type = state.pendingType || "attack";
-    // V2.3C: if the attack tray/action is active, never let stale spell state steal the Apply button.
+    // V2.3D: if the attack tray/action is active, never let stale spell state steal the Apply button.
     if (document.body.classList.contains("v22b-show-attack")) type = "attack";
     if (document.body.classList.contains("v22b-show-spell") && type !== "attack") type = "spell";
     clearApplied();
@@ -16209,7 +16209,7 @@ else {
   function patchSnapshots() {
     if (window.__middaraV22BSnapshotPatch) return;
     window.__middaraV22BSnapshotPatch = true;
-    function addFlow(snap) { try { snap.version = "V2.3C"; snap.pwaDeploymentVersion = "V2.3C"; snap.mobileFlowState = JSON.parse(JSON.stringify(state)); } catch (err) {} return snap; }
+    function addFlow(snap) { try { snap.version = "V2.3D"; snap.pwaDeploymentVersion = "V2.3D"; snap.mobileFlowState = JSON.parse(JSON.stringify(state)); } catch (err) {} return snap; }
     if (window.middaraDataManagerApi) {
       var api = window.middaraDataManagerApi;
       var oldFull = api.exportFullSnapshot;
@@ -16222,9 +16222,9 @@ else {
   }
 
   function updateChrome() {
-    document.title = "Middara Combat Helper - V2.3C In-Context Defense Flow";
+    document.title = "Middara Combat Helper - V2.3D Counter Flow / Dodge Preserve";
     var sub = document.querySelector("header .subtitle");
-    if (sub) sub.textContent = "V2.3C in-context defense: Rook defense lives in Enemy Attack; live combat flow is Play-only; explicit Spell Empower remains.";
+    if (sub) sub.textContent = "V2.3D counter flow: Dodge toggle preserves enemy rolls; Rook Plate/Nano toggles live in Enemy Attack; Counter buttons load Rook back against the attacker.";
   }
 
   function init() {
@@ -16237,7 +16237,7 @@ else {
     render();
     setTimeout(function () { patchSnapshots(); updateChrome(); render(); }, 700);
     setInterval(function () { updateFooter(); }, 1200);
-    setStatus("V2.3C live flow ready. The live flow is now the first Play screen; choose Actor -> Target -> Action -> Resolve.", "ok");
+    setStatus("V2.3D live flow ready. Choose Actor -> Target -> Action -> Dice -> Apply; Dodge toggles preserve enemy rolls.", "ok");
   }
 
   ready(init);
@@ -16249,7 +16249,7 @@ else {
 <script>
 (function () {
   "use strict";
-  var VERSION = "V2.3C";
+  var VERSION = "V2.3D";
   function ready(fn) { if (document.readyState === "loading") document.addEventListener("DOMContentLoaded", fn); else setTimeout(fn, 0); }
   function byId(id) { return document.getElementById(id); }
   function esc(v) { return String(v == null ? "" : v).replace(/[&<>"']/g, function (c) { return {"&":"&amp;","<":"&lt;",">":"&gt;","\"":"&quot;","'":"&#39;"}[c]; }); }
@@ -16376,11 +16376,11 @@ else {
     }, true);
   }
   function updateChrome() {
-    document.title = "Middara Combat Helper - V2.3C In-Context Defense Flow";
+    document.title = "Middara Combat Helper - V2.3D Counter Flow / Dodge Preserve";
     var sub = document.querySelector("header .subtitle");
-    if (sub) sub.textContent = "V2.3C in-context defense: Rook defense lives in Enemy Attack; live combat flow is Play-only; explicit Spell Empower remains.";
-    var h = document.querySelector("#mobileCombatFlowPanel h2"); if (h) h.textContent = "V2.3C Tablet / mobile live combat flow";
-    var badge = document.querySelector("#mobileCombatFlowPanel .cockpit-badge"); if (badge) badge.textContent = "V2.3C Flow";
+    if (sub) sub.textContent = "V2.3D counter flow: Dodge toggle preserves enemy rolls; Rook Plate/Nano toggles live in Enemy Attack; Counter buttons load Rook back against the attacker.";
+    var h = document.querySelector("#mobileCombatFlowPanel h2"); if (h) h.textContent = "V2.3D Tablet / mobile live combat flow";
+    var badge = document.querySelector("#mobileCombatFlowPanel .cockpit-badge"); if (badge) badge.textContent = "V2.3D Flow";
     var pwa = byId("pwaVersionText"); if (pwa) pwa.textContent = VERSION;
   }
   function tick() {
@@ -16405,7 +16405,7 @@ else {
 <script>
 (function () {
   "use strict";
-  var VERSION = "V2.3C";
+  var VERSION = "V2.3D";
   var CACHE_PREFIX = "middara-helper-";
   function ready(fn) { if (document.readyState === "loading") document.addEventListener("DOMContentLoaded", fn); else fn(); }
   function byId(id) { return document.getElementById(id); }
@@ -16553,11 +16553,11 @@ else {
     });
   }
   function updateChrome() {
-    document.title = "Middara Combat Helper - V2.3C In-Context Defense Flow";
+    document.title = "Middara Combat Helper - V2.3D Counter Flow / Dodge Preserve";
     var sub = document.querySelector("header .subtitle");
-    if (sub) sub.textContent = "V2.3C in-context defense: Rook defense lives in Enemy Attack; live combat flow is Play-only; explicit Spell Empower remains.";
+    if (sub) sub.textContent = "V2.3D counter flow: Dodge toggle preserves enemy rolls; Rook Plate/Nano toggles live in Enemy Attack; Counter buttons load Rook back against the attacker.";
     var pwa = byId("pwaVersionText"); if (pwa) pwa.textContent = "V2.2E";
-    var h = document.querySelector("#mobileCombatFlowPanel h2"); if (h) h.textContent = "V2.3C Tablet / mobile live combat flow";
+    var h = document.querySelector("#mobileCombatFlowPanel h2"); if (h) h.textContent = "V2.3D Tablet / mobile live combat flow";
   }
   function bindMobileHelp() {
     var flow = byId("mobileCombatFlowPanel");
@@ -16587,7 +16587,7 @@ else {
 <script id="v22g-table-session-script">
 (function(){
   "use strict";
-  var VERSION = "V2.3C";
+  var VERSION = "V2.3D";
   var CHECK_KEY = "middaraCombatHelperV22GSessionChecklist";
   var RECENT_KEY = "middaraCombatHelperV22GRecentActions";
   function byId(id){ return document.getElementById(id); }
@@ -16700,7 +16700,7 @@ else {
     hub.id = "v22gSessionHub";
     hub.className = "v22g-session-hub";
     hub.innerHTML = '' +
-      '<div class="v22g-session-head"><div><h3>V2.3C live-play readiness</h3><div class="tiny">One-tablet controls for setup, backup, quick undo, and end-of-encounter cleanup. Use this as a safety rail around the main live combat flow.</div></div><div class="v22g-session-badge">Table-ready pass</div></div>' +
+      '<div class="v22g-session-head"><div><h3>V2.3D live-play readiness</h3><div class="tiny">One-tablet controls for setup, backup, quick undo, and end-of-encounter cleanup. Use this as a safety rail around the main live combat flow.</div></div><div class="v22g-session-badge">Table-ready pass</div></div>' +
       '<div id="v22gStatusStrip" class="v22g-status-strip"></div>' +
       '<div id="v22gChecklist" class="v22g-checklist"></div>' +
       '<div class="v22g-session-grid">' +
@@ -16754,11 +16754,11 @@ else {
     else if (action === "rewards") route("rewards", "rewardsLootPanel");
   }
   function init(){
-    document.title = "Middara Combat Helper - V2.3C In-Context Defense Flow";
+    document.title = "Middara Combat Helper - V2.3D Counter Flow / Dodge Preserve";
     var h = document.querySelector("header h1"); if (h) h.textContent = "Middara Combat Helper";
-    var sub = document.querySelector("header .subtitle"); if (sub) sub.textContent = "V2.3C in-context defense: Rook defense lives in Enemy Attack; live combat flow is Play-only; explicit Spell Empower remains.";
-    var flowH = document.querySelector("#mobileCombatFlowPanel h2"); if (flowH) flowH.textContent = "V2.3C Tablet / mobile live combat flow";
-    var badge = document.querySelector("#mobileCombatFlowPanel .cockpit-badge"); if (badge) badge.textContent = "V2.3C Flow";
+    var sub = document.querySelector("header .subtitle"); if (sub) sub.textContent = "V2.3D counter flow: Dodge toggle preserves enemy rolls; Rook Plate/Nano toggles live in Enemy Attack; Counter buttons load Rook back against the attacker.";
+    var flowH = document.querySelector("#mobileCombatFlowPanel h2"); if (flowH) flowH.textContent = "V2.3D Tablet / mobile live combat flow";
+    var badge = document.querySelector("#mobileCombatFlowPanel .cockpit-badge"); if (badge) badge.textContent = "V2.3D Flow";
     injectHub(); addFooterUndo();
     document.addEventListener("click", function(ev){
       var node = ev.target && ev.target.closest ? ev.target.closest("[data-v22g-action]") : null;
@@ -16771,7 +16771,7 @@ else {
     }, true);
     document.addEventListener("click", function(){ setTimeout(function(){ addFooterUndo(); renderStatus(); }, 240); }, true);
     setInterval(renderStatus, 4000);
-    setStatus("V2.3C session hub ready. Rewards are kept on the Rewards/Encounter views; the Data tab is reserved for backups, QA, and deployment tools.", "ok");
+    setStatus("V2.3D session hub ready. Rewards are kept on the Rewards/Encounter views; the Data tab is reserved for backups, QA, and deployment tools.", "ok");
   }
   if (document.readyState === "loading") document.addEventListener("DOMContentLoaded", init);
   else setTimeout(init, 0);
@@ -16782,7 +16782,7 @@ else {
 <script>
 (function(){
   "use strict";
-  var VERSION = "V2.3C";
+  var VERSION = "V2.3D";
   var CHECK_KEY = "middara_v22i_live_checklist";
   var EXPORT_KEY = "middara_v22i_last_snapshot_export";
   var TEST_KEY = "middara_v22i_last_self_test";
@@ -16930,7 +16930,7 @@ else {
     panel.className = "panel v22i-help-panel";
     panel.setAttribute("data-v17-mode", "play");
     panel.innerHTML = '' +
-      '<div class="v22i-help-head"><div><h3>V2.3C live-play guide</h3><div class="note">Use this as the tablet workflow reference during a session. It summarizes the intended route without opening the external guide.</div></div><div class="v22i-badge">Table workflow</div></div>' +
+      '<div class="v22i-help-head"><div><h3>V2.3D live-play guide</h3><div class="note">Use this as the tablet workflow reference during a session. It summarizes the intended route without opening the external guide.</div></div><div class="v22i-badge">Table workflow</div></div>' +
       '<div class="v22i-recipe-grid">' +
         '<div class="v22i-recipe"><strong>Adventurer attack</strong><div><code>Actor -> Target + Attack -> Dice auto-calc -> Apply -> Chain/Next</code></div></div>' +
         '<div class="v22i-recipe"><strong>Adventurer / Esper spell</strong><div><code>Actor -> target -> spell action -> Force/Conviction auto-calc -> Apply</code></div></div>' +
@@ -16968,7 +16968,7 @@ else {
         '<button type="button" data-v22i-action="openData">Open backup / update tools</button>' +
       '</div>' +
       '<div id="v22iSelfTestOutput" class="tiny" style="margin-top:10px">Run the table workflow test to verify the main live-use hooks loaded.</div>' +
-      '<div id="v22iStatus" class="ok-box note" style="margin-top:10px">V2.3C guide ready.</div>';
+      '<div id="v22iStatus" class="ok-box note" style="margin-top:10px">V2.3D guide ready.</div>';
     anchor.insertAdjacentElement("afterend", panel);
     renderChecklist();
   }
@@ -16983,7 +16983,7 @@ else {
     wrap.style.borderRadius = "14px";
     wrap.style.padding = "12px";
     wrap.innerHTML = '' +
-      '<h3 style="margin-top:0">V2.3C save / update status</h3>' +
+      '<h3 style="margin-top:0">V2.3D save / update status</h3>' +
       '<div class="note">Save state is local to this browser and this hosted URL. Use full snapshot export before changing devices, hosts, or GitHub builds.</div>' +
       '<div class="v22i-status-grid">' +
         '<div class="v22i-status-card"><div class="label">Version</div><div class="value" id="v22iVersionValue">-</div></div>' +
@@ -17021,14 +17021,14 @@ else {
     });
   }
   function patchTitles(){
-    document.title = "Middara Combat Helper - V2.3C In-Context Defense Flow";
+    document.title = "Middara Combat Helper - V2.3D Counter Flow / Dodge Preserve";
     var sub = document.querySelector("header .subtitle");
-    if (sub) sub.textContent = "V2.3C in-context defense: Rook defense lives in Enemy Attack; live combat flow is Play-only; explicit Spell Empower remains.";
-    var flowH = document.querySelector("#mobileCombatFlowPanel h2"); if (flowH) flowH.textContent = "V2.3C Tablet live combat flow";
-    var badge = document.querySelector("#mobileCombatFlowPanel .cockpit-badge"); if (badge) badge.textContent = "V2.3C Flow";
-    var hubH = document.querySelector("#v22gSessionHub h3"); if (hubH) hubH.textContent = "V2.3C table session hub";
+    if (sub) sub.textContent = "V2.3D counter flow: Dodge toggle preserves enemy rolls; Rook Plate/Nano toggles live in Enemy Attack; Counter buttons load Rook back against the attacker.";
+    var flowH = document.querySelector("#mobileCombatFlowPanel h2"); if (flowH) flowH.textContent = "V2.3D Tablet live combat flow";
+    var badge = document.querySelector("#mobileCombatFlowPanel .cockpit-badge"); if (badge) badge.textContent = "V2.3D Flow";
+    var hubH = document.querySelector("#v22gSessionHub h3"); if (hubH) hubH.textContent = "V2.3D table session hub";
     var hubTiny = document.querySelector("#v22gSessionHub .v22g-session-head .tiny"); if (hubTiny) hubTiny.textContent = "One-tablet controls for setup, backup, quick undo, end-of-encounter cleanup, and live-play readiness.";
-    var pwaSummary = document.querySelector(".v22c-pwa-panel summary"); if (pwaSummary) pwaSummary.textContent = "V2.3C hosted / installable web app";
+    var pwaSummary = document.querySelector(".v22c-pwa-panel summary"); if (pwaSummary) pwaSummary.textContent = "V2.3D hosted / installable web app";
     var pwa = byId("pwaVersionText"); if (pwa) pwa.textContent = VERSION;
   }
   function init(){
@@ -17052,7 +17052,7 @@ else {
 
 
 <style id="v22jLiveFlowPriorityStyles">
-  /* V2.3C Live-flow priority / collapsible session tools */
+  /* V2.3D Live-flow priority / collapsible session tools */
   #mobileCombatFlowPanel.v22j-flow-priority {
     border-color: rgba(163,230,53,.42);
     background: linear-gradient(180deg, rgba(163,230,53,.07), rgba(56,189,248,.035), rgba(255,255,255,.012)), var(--panel);
@@ -17163,7 +17163,7 @@ else {
 <script id="v22jLiveFlowPriorityScript">
 (function(){
   "use strict";
-  var VERSION = "V2.3C";
+  var VERSION = "V2.3D";
   function byId(id){ return document.getElementById(id); }
   function text(el, value){ if (el) el.textContent = value; }
   function hasClass(el, cls){ return el && (" " + el.className + " ").indexOf(" " + cls + " ") >= 0; }
@@ -17178,16 +17178,16 @@ else {
     if (flow && flow.scrollIntoView) flow.scrollIntoView({behavior:"smooth", block:"start"});
   }
   function patchTitles(){
-    document.title = "Middara Combat Helper - V2.3C In-Context Defense Flow";
+    document.title = "Middara Combat Helper - V2.3D Counter Flow / Dodge Preserve";
     var sub = document.querySelector("header .subtitle");
-    if (sub) sub.textContent = "V2.3C in-context defense: Rook defense lives in Enemy Attack; live combat flow is Play-only; explicit Spell Empower remains.";
+    if (sub) sub.textContent = "V2.3D counter flow: Dodge toggle preserves enemy rolls; Rook Plate/Nano toggles live in Enemy Attack; Counter buttons load Rook back against the attacker.";
     var flowH = document.querySelector("#mobileCombatFlowPanel h2");
-    if (flowH) flowH.textContent = "V2.3C Tablet live combat flow";
+    if (flowH) flowH.textContent = "V2.3D Tablet live combat flow";
     var badge = document.querySelector("#mobileCombatFlowPanel .cockpit-badge");
-    if (badge) badge.textContent = "V2.3C Flow";
+    if (badge) badge.textContent = "V2.3D Flow";
     var pwa = byId("pwaVersionText"); if (pwa) pwa.textContent = VERSION;
-    var pwaSummary = document.querySelector(".v22c-pwa-panel summary"); if (pwaSummary) pwaSummary.textContent = "V2.3C hosted / installable web app";
-    var dataH = document.querySelector("#v22iDataStatusPanel h3"); if (dataH) dataH.textContent = "V2.3C save / update status";
+    var pwaSummary = document.querySelector(".v22c-pwa-panel summary"); if (pwaSummary) pwaSummary.textContent = "V2.3D hosted / installable web app";
+    var dataH = document.querySelector("#v22iDataStatusPanel h3"); if (dataH) dataH.textContent = "V2.3D save / update status";
     var hubTitle = document.querySelector("#v22gSessionHub h3"); if (hubTitle) hubTitle.textContent = "Table session hub";
     var guideTitle = document.querySelector("#v22iGuidePanel h3"); if (guideTitle) guideTitle.textContent = "Live-play guide";
   }
@@ -17291,7 +17291,7 @@ else {
 
 
 <style id="v22k-auto-calc-style">
-  /* V2.3C auto-calc streamlined flow */
+  /* V2.3D auto-calc streamlined flow */
   #v22bFooterCalc,
   #mobileCombatFlowPanel .v22b-primary-actions [data-v22b-action="calculateCurrent"] {
     display: none !important;
@@ -17322,7 +17322,7 @@ else {
 <script id="v22k-auto-calc-script">
 (function(){
   "use strict";
-  var VERSION = "V2.3C";
+  var VERSION = "V2.3D";
   var appliedKey = "";
   var appliedLabel = "";
   var autoTimer = null;
@@ -17492,12 +17492,12 @@ else {
     var mo = new MutationObserver(function(){ schedulePaint(); });
     mo.observe(document.body, { childList:true, subtree:true, characterData:true });
     setInterval(paint, 1000);
-    document.title = "Middara Combat Helper - V2.3C In-Context Defense Flow";
+    document.title = "Middara Combat Helper - V2.3D Counter Flow / Dodge Preserve";
     var sub = document.querySelector("header .subtitle");
-    if (sub) sub.textContent = "V2.3C in-context defense: Rook defense lives in Enemy Attack; live combat flow is Play-only; explicit Spell Empower remains.";
-    var flowH = document.querySelector("#mobileCombatFlowPanel h2"); if (flowH) flowH.textContent = "V2.3C Tablet live combat flow";
-    var badge = document.querySelector("#mobileCombatFlowPanel .cockpit-badge"); if (badge) badge.textContent = "V2.3C Auto-calc";
-    var pwaSummary = document.querySelector(".v22c-pwa-panel summary"); if (pwaSummary) pwaSummary.textContent = "V2.3C hosted / installable web app";
+    if (sub) sub.textContent = "V2.3D counter flow: Dodge toggle preserves enemy rolls; Rook Plate/Nano toggles live in Enemy Attack; Counter buttons load Rook back against the attacker.";
+    var flowH = document.querySelector("#mobileCombatFlowPanel h2"); if (flowH) flowH.textContent = "V2.3D Tablet live combat flow";
+    var badge = document.querySelector("#mobileCombatFlowPanel .cockpit-badge"); if (badge) badge.textContent = "V2.3D Auto-calc";
+    var pwaSummary = document.querySelector(".v22c-pwa-panel summary"); if (pwaSummary) pwaSummary.textContent = "V2.3D hosted / installable web app";
     setTimeout(function(){ paint(); autoCalcAttack(); }, 350);
   }
   if (document.readyState === "loading") document.addEventListener("DOMContentLoaded", install);
@@ -17519,7 +17519,7 @@ else {
 </style>
 <script id="v23a-rook-defense-spell-empower-script">
 (function(){
-  var VERSION = "V2.3C";
+  var VERSION = "V2.3D";
   function byId(id){ return document.getElementById(id); }
   function setVal(id, value){ var el = byId(id); if (el) el.value = value; }
   function setChecked(id, value){ var el = byId(id); if (el) el.checked = !!value; }
@@ -17602,12 +17602,12 @@ else {
     box.innerHTML = html;
   }
   function updateVersionChrome(){
-    document.title = "Middara Combat Helper - V2.3C In-Context Defense Flow";
-    var sub = document.querySelector("header .subtitle"); if (sub) sub.textContent = "V2.3C in-context defense: Rook defense lives in Enemy Attack; live combat flow is Play-only; explicit Spell Empower remains.";
-    var flowH = document.querySelector("#mobileCombatFlowPanel h2"); if (flowH) flowH.textContent = "V2.3C Tablet live combat flow";
-    var badge = document.querySelector("#mobileCombatFlowPanel .cockpit-badge"); if (badge) badge.textContent = "V2.3C";
-    var pwaSummary = document.querySelector(".v22c-pwa-panel summary"); if (pwaSummary) pwaSummary.textContent = "V2.3C hosted / installable web app";
-    var dataH = document.querySelector("#v22iDataStatusPanel h3"); if (dataH) dataH.textContent = "V2.3C save / update status";
+    document.title = "Middara Combat Helper - V2.3D Counter Flow / Dodge Preserve";
+    var sub = document.querySelector("header .subtitle"); if (sub) sub.textContent = "V2.3D counter flow: Dodge toggle preserves enemy rolls; Rook Plate/Nano toggles live in Enemy Attack; Counter buttons load Rook back against the attacker.";
+    var flowH = document.querySelector("#mobileCombatFlowPanel h2"); if (flowH) flowH.textContent = "V2.3D Tablet live combat flow";
+    var badge = document.querySelector("#mobileCombatFlowPanel .cockpit-badge"); if (badge) badge.textContent = "V2.3D";
+    var pwaSummary = document.querySelector(".v22c-pwa-panel summary"); if (pwaSummary) pwaSummary.textContent = "V2.3D hosted / installable web app";
+    var dataH = document.querySelector("#v22iDataStatusPanel h3"); if (dataH) dataH.textContent = "V2.3D save / update status";
     var v = byId("v22iVersionValue"); if (v) v.textContent = VERSION;
   }
   function syncRookPanelEmpowerToSpell(){
@@ -17635,19 +17635,19 @@ else {
 <script>
 (function () {
   "use strict";
-  var TITLE = "Middara Combat Helper - V2.3C In-Context Defense Flow";
-  var SUBTITLE = "V2.3C in-context defense: Rook defense lives in Enemy Attack; live combat flow is Play-only; explicit Spell Empower remains.";
+  var TITLE = "Middara Combat Helper - V2.3D Counter Flow / Dodge Preserve";
+  var SUBTITLE = "V2.3D counter flow: Dodge toggle preserves enemy rolls; Rook Plate/Nano toggles live in Enemy Attack; Counter buttons load Rook back against the attacker.";
   function stabilizeHeader() {
     try {
       if (document.title !== TITLE) document.title = TITLE;
       var sub = document.querySelector("header .subtitle");
       if (sub && sub.textContent !== SUBTITLE) sub.textContent = SUBTITLE;
       var flowH = document.querySelector("#mobileCombatFlowPanel h2");
-      if (flowH && flowH.textContent.indexOf("V2.3C") < 0) flowH.textContent = "V2.3C Tablet live combat flow";
+      if (flowH && flowH.textContent.indexOf("V2.3D") < 0) flowH.textContent = "V2.3D Tablet live combat flow";
       var badge = document.querySelector("#mobileCombatFlowPanel .cockpit-badge");
-      if (badge && badge.textContent.indexOf("V2.3C") < 0) badge.textContent = "V2.3C";
+      if (badge && badge.textContent.indexOf("V2.3D") < 0) badge.textContent = "V2.3D";
       var pwaSummary = document.querySelector(".v22c-pwa-panel summary");
-      if (pwaSummary && pwaSummary.textContent.indexOf("V2.3C") < 0) pwaSummary.textContent = "V2.3C hosted / installable web app";
+      if (pwaSummary && pwaSummary.textContent.indexOf("V2.3D") < 0) pwaSummary.textContent = "V2.3D hosted / installable web app";
     } catch (err) {}
   }
   if (document.readyState === "loading") document.addEventListener("DOMContentLoaded", stabilizeHeader);
@@ -17661,7 +17661,7 @@ else {
 
 
 <style id="v23c-in-context-defense-style">
-  /* V2.3C in-context defense and Play-only live flow guard */
+  /* V2.3D in-context defense and Play-only live flow guard */
   body[data-v17-current-mode]:not([data-v17-current-mode="play"]):not([data-v17-current-mode="all"]) #mobileCombatFlowPanel {
     display: none !important;
   }
@@ -17773,7 +17773,7 @@ else {
 <script id="v23c-in-context-defense-script">
 (function () {
   "use strict";
-  var VERSION = "V2.3C";
+  var VERSION = "V2.3D";
   var lastMode = "";
   function ready(fn) { if (document.readyState === "loading") document.addEventListener("DOMContentLoaded", fn); else setTimeout(fn, 0); }
   function byId(id) { return document.getElementById(id); }
@@ -18033,6 +18033,237 @@ else {
   }
   ready(init);
   window.middaraV23CApi = { renderRookDefenseTray: renderTray, enforcePlayOnlyFlow: enforcePlayOnlyFlow };
+})();
+</script>
+
+
+
+<script>
+(function () {
+  "use strict";
+  var VERSION = "V2.3D";
+  var MOBILE_FLOW_STORAGE_KEY = "middaraCombatHelperV22BMobileFlow";
+  function ready(fn) { if (document.readyState === "loading") document.addEventListener("DOMContentLoaded", fn); else setTimeout(fn, 0); }
+  function byId(id) { return document.getElementById(id); }
+  function val(id) { var el = byId(id); return el ? el.value : ""; }
+  function text(id) { var el = byId(id); return el ? String(el.textContent || "").trim() : ""; }
+  function checked(id) { var el = byId(id); return !!(el && el.checked); }
+  function setCheckedSilent(id, value) { var el = byId(id); if (el) el.checked = !!value; }
+  function fire(elOrId, type) {
+    var el = typeof elOrId === "string" ? byId(elOrId) : elOrId;
+    if (!el) return;
+    try { el.dispatchEvent(new Event(type || "change", { bubbles:true })); }
+    catch (err) { try { var ev = document.createEvent("Event"); ev.initEvent(type || "change", true, true); el.dispatchEvent(ev); } catch (err2) {} }
+  }
+  function setSelect(id, value, fireChange) {
+    var el = byId(id); if (!el) return false;
+    var ok = false;
+    if (el.options) for (var i = 0; i < el.options.length; i++) if (el.options[i].value === value) { ok = true; break; }
+    if (!ok) return false;
+    el.value = value;
+    if (fireChange !== false) fire(el, "change");
+    return true;
+  }
+  function click(elOrId) { var el = typeof elOrId === "string" ? byId(elOrId) : elOrId; if (el && typeof el.click === "function") { el.click(); return true; } return false; }
+  function setStatus(msg, kind) {
+    var el = byId("v22bFlowStatus");
+    if (!el) return;
+    el.className = (kind === "warn" ? "warning-box" : kind === "danger" ? "danger-box" : "ok-box") + " note v22b-flow-status";
+    el.textContent = msg;
+  }
+  function calcEnemyAttack() { try { if (window.middaraEnemyAttackApi && middaraEnemyAttackApi.calculate) return middaraEnemyAttackApi.calculate(); } catch (err) {} click("calculateEnemyAttackButton"); try { return window.middaraEnemyAttackApi && middaraEnemyAttackApi.getLastResult ? middaraEnemyAttackApi.getLastResult() : null; } catch (err2) { return null; } }
+  function calcAttack() { try { if (typeof window.calculate === "function") return window.calculate(); } catch (err) {} return null; }
+  function renderRookTray() { try { if (window.middaraV23CApi && middaraV23CApi.renderRookDefenseTray) middaraV23CApi.renderRookDefenseTray(); } catch (err) {} updateRookDefenseButtonLabels(); }
+  function addWorkflow(title, detail) { try { if (window.middaraWorkflowApi && middaraWorkflowApi.log) { middaraWorkflowApi.log(title, detail); return; } } catch (err) {} }
+  function setTurnCard(id, state, msg) { try { if (window.middaraTurnApi && middaraTurnApi.setCardState) return middaraTurnApi.setCardState(id, state, msg, "ok"); } catch (err) {} return false; }
+  function trackerEnemies() { try { return (window.trackerState && trackerState.enemies) || []; } catch (err) { return []; } }
+  function findTrackerEnemy(id) { var list = trackerEnemies(); for (var i = 0; i < list.length; i++) if (list[i] && list[i].id === id) return list[i]; return null; }
+  function mobileFlowState() { try { return JSON.parse(localStorage.getItem(MOBILE_FLOW_STORAGE_KEY) || "{}"); } catch (err) { return {}; } }
+  function actorEnemyFromMobileFlow() {
+    var s = mobileFlowState();
+    var actor = String(s.actor || "");
+    if (actor.indexOf("enemy:") === 0) return findTrackerEnemy(actor.slice(6));
+    return null;
+  }
+  function selectedAiEnemy() {
+    var raw = val("aiActingEnemy");
+    if (raw.indexOf("tracker:") === 0) return findTrackerEnemy(raw.slice(8));
+    return null;
+  }
+  function presetMatches(enemy, presetId) {
+    if (!enemy || !presetId) return false;
+    return enemy.presetId === presetId || enemy.enemyId === presetId || enemy.id === presetId || String(enemy.name || "").toLowerCase().replace(/\s+/g,"_") === presetId;
+  }
+  function currentEnemyAttackAttacker() {
+    var fromFlow = actorEnemyFromMobileFlow();
+    if (fromFlow) return fromFlow;
+    var fromAi = selectedAiEnemy();
+    if (fromAi) return fromAi;
+    var preset = val("enemyAttackEnemy") || "";
+    try {
+      if (window.trackerState && trackerState.selectedId) {
+        var selected = findTrackerEnemy(trackerState.selectedId);
+        if (presetMatches(selected, preset)) return selected;
+      }
+    } catch (err) {}
+    var list = trackerEnemies();
+    for (var i = 0; i < list.length; i++) if (presetMatches(list[i], preset)) return list[i];
+    return null;
+  }
+  function useTrackerAsAttackTarget(enemy) {
+    if (!enemy) return false;
+    try { if (window.trackerState) trackerState.selectedId = enemy.id; } catch (err) {}
+    try { if (typeof window.useTrackerEnemyAsTarget === "function") window.useTrackerEnemyAsTarget(enemy.id, true); } catch (err2) {}
+    try { if (window.middaraMobileFlowV22BApi && middaraMobileFlowV22BApi.setTarget) middaraMobileFlowV22BApi.setTarget("enemy:" + enemy.id, "attack"); } catch (err3) {}
+    return true;
+  }
+  function setRookAsActor() {
+    setSelect("characterSelect", "rook", true);
+    setTimeout(function () { setSelect("profileSelect", "rook_loche_svalinn", true); calcAttack(); }, 30);
+    var actorSelect = byId("v22bActorSelect");
+    if (actorSelect) {
+      var has = false;
+      if (actorSelect.options) for (var i = 0; i < actorSelect.options.length; i++) if (actorSelect.options[i].value === "party:rook") { has = true; break; }
+      if (has) { actorSelect.value = "party:rook"; fire(actorSelect, "change"); }
+    }
+  }
+  function routeToPlayAttack(enemy, label) {
+    var play = document.querySelector('[data-v17-mode-button="play"]');
+    if (play) click(play);
+    setTimeout(function () {
+      setRookAsActor();
+      if (enemy) useTrackerAsAttackTarget(enemy);
+      try { if (window.middaraMobileFlowV22BApi && middaraMobileFlowV22BApi.render) middaraMobileFlowV22BApi.render(); } catch (err) {}
+      setTimeout(function () {
+        var attackBtn = document.querySelector('#mobileCombatFlowPanel [data-v22b-action="routeAttack"]');
+        if (attackBtn) click(attackBtn);
+        else {
+          var panel = byId("attackDicePanel") || byId("characterSelect");
+          if (panel && panel.scrollIntoView) panel.scrollIntoView({ behavior:"smooth", block:"start" });
+        }
+        calcAttack();
+        setStatus(label + (enemy ? " loaded: Rook is counterattacking " + (enemy.label || enemy.name || "the attacker") + "." : " loaded. Choose the attacking enemy as Rook's Counter target."), enemy ? "ok" : "warn");
+      }, 100);
+    }, 80);
+  }
+  function loadCounter(kind) {
+    var enemy = currentEnemyAttackAttacker();
+    var source = "Rook Counter";
+    if (kind === "svalinn") {
+      source = "Rook Counter - The Svalinn";
+      setTurnCard("rook_svalinn", "exhausted", "Rook The Svalinn exhausted for Counter.");
+    } else if (kind === "pontifex") {
+      source = "Rook Counter - First Piece of the Pontifex";
+      setTurnCard("rook_pontifex", "exhausted", "Rook First Piece of the Pontifex exhausted for Counter.");
+    }
+    var msg = source + ": reversed enemy attack into Rook attacking " + (enemy ? (enemy.label || enemy.name || "the attacker") : "the attacker") + ". Confirm Counter timing, SP cost, and target legality manually.";
+    if (kind === "pontifex") msg += " First Piece may also Counter with a 2 SP-or-less Discipline Spell if you choose that instead.";
+    addWorkflow(source, msg);
+    routeToPlayAttack(enemy, source);
+  }
+  function patchCounterButtons() {
+    if (window.__v23dCounterButtons) return;
+    window.__v23dCounterButtons = true;
+    document.addEventListener("click", function (ev) {
+      var b = ev.target && ev.target.closest ? ev.target.closest("[data-v23c-counter]") : null;
+      if (!b) return;
+      ev.preventDefault();
+      ev.stopPropagation();
+      if (ev.stopImmediatePropagation) ev.stopImmediatePropagation();
+      loadCounter(b.getAttribute("data-v23c-counter") || "normal");
+    }, true);
+  }
+  function patchDodgePreservesEnemyRoll() {
+    var dodge = byId("enemyAttackUseDodge");
+    if (!dodge || dodge.getAttribute("data-v23d-preserve-roll")) return;
+    dodge.setAttribute("data-v23d-preserve-roll", "1");
+    dodge.addEventListener("change", function (ev) {
+      ev.stopPropagation();
+      if (ev.stopImmediatePropagation) ev.stopImmediatePropagation();
+      var wrap = byId("enemyAttackDodgeWrap");
+      if (wrap) wrap.classList.toggle("hidden", !dodge.checked);
+      calcEnemyAttack();
+      setTimeout(renderRookTray, 40);
+      setStatus(dodge.checked ? "Dodge enabled. Enemy roll preserved; enter the Dodge die result." : "Dodge cleared. Enemy roll preserved.", "ok");
+    }, true);
+  }
+  function updateRookDefenseButtonLabels() {
+    var plate = byId("v23cUsePlate");
+    if (plate) {
+      plate.textContent = checked("enemyDefenseRookPlate") ? "Remove Plate -4 Physical" : "Use Plate: -4 Physical";
+      plate.classList.toggle("active", checked("enemyDefenseRookPlate"));
+    }
+    var nano = byId("v23cUseNano");
+    if (nano) {
+      nano.textContent = checked("enemyDefenseForceMiss") ? "Remove Nano Robes miss" : "Use Nano Robes: attack misses";
+      nano.classList.toggle("active", checked("enemyDefenseForceMiss"));
+    }
+  }
+  function replaceButton(id, handler) {
+    var old = byId(id);
+    if (!old || old.getAttribute("data-v23d-replaced")) return;
+    var btn = old.cloneNode(false);
+    btn.id = id;
+    btn.type = "button";
+    btn.className = old.className || "";
+    btn.setAttribute("data-v23d-replaced", "1");
+    old.parentNode.replaceChild(btn, old);
+    btn.addEventListener("click", handler);
+  }
+  function simplifyRookDefenseTray() {
+    var tray = byId("v23cRookDefenseTray");
+    if (!tray) return;
+    var note = tray.querySelector(".v23c-defense-head .tiny");
+    if (note) note.textContent = "Use Plate or Nano here while resolving the enemy attack. Tap the same button again to remove it; use the default Dodge controls below for Dodge.";
+    replaceButton("v23cUsePlate", function () {
+      setCheckedSilent("enemyDefenseRookPlate", !checked("enemyDefenseRookPlate"));
+      calcEnemyAttack();
+      renderRookTray();
+      setStatus(checked("enemyDefenseRookPlate") ? "Rook Plate reduction enabled for this enemy attack." : "Rook Plate reduction removed for this enemy attack.", "ok");
+    });
+    replaceButton("v23cUseNano", function () {
+      var on = !checked("enemyDefenseForceMiss");
+      window.__v23cRookNanoSelected = on;
+      setCheckedSilent("enemyDefenseForceMiss", on);
+      calcEnemyAttack();
+      renderRookTray();
+      setStatus(on ? "Rook Nano Robes force-miss enabled for this enemy attack." : "Rook Nano Robes force-miss removed for this enemy attack.", "ok");
+    });
+    ["v23cToggleDodge", "v23cClearPlate", "v23cClearNano"].forEach(function (id) { var el = byId(id); if (el && el.parentNode) el.parentNode.removeChild(el); });
+    var refresh = byId("v23cRefreshDefense");
+    if (refresh) refresh.textContent = "Refresh result";
+    var modeNote = tray.querySelector(".v23c-mode-fix-note");
+    if (modeNote) modeNote.textContent = "Counter buttons now load Rook's counterattack against the attacking enemy. Confirm Counter timing, SP, and legality manually.";
+    updateRookDefenseButtonLabels();
+  }
+  function patchChromeAndSnapshot() {
+    document.title = "Middara Combat Helper - " + VERSION + " Counter Flow / Dodge Preserve";
+    var sub = document.querySelector("header .subtitle");
+    if (sub) sub.textContent = VERSION + " counter flow: Dodge toggle preserves enemy rolls; Rook Plate/Nano toggles live in Enemy Attack; Counter buttons load Rook back against the attacker.";
+    var pwa = byId("pwaVersionText"); if (pwa) pwa.textContent = VERSION;
+    try {
+      if (window.middaraDataManagerApi && !window.__v23dSnapshotPatch) {
+        window.__v23dSnapshotPatch = true;
+        var api = window.middaraDataManagerApi;
+        var oldFull = api.exportFullSnapshot;
+        var oldApp = api.exportAppData;
+        function addVersion(snap) { try { snap.version = VERSION; snap.pwaDeploymentVersion = VERSION; snap.v23d = { dodgePreservesEnemyRoll:true, rookDefenseButtonsToggle:true, counterLoadsRookAttack:true }; } catch (err) {} return snap; }
+        if (typeof oldFull === "function") api.exportFullSnapshot = function () { return addVersion(oldFull.apply(this, arguments)); };
+        if (typeof oldApp === "function") api.exportAppData = function () { return addVersion(oldApp.apply(this, arguments)); };
+      }
+    } catch (err) {}
+  }
+  function init() {
+    patchDodgePreservesEnemyRoll();
+    patchCounterButtons();
+    simplifyRookDefenseTray();
+    patchChromeAndSnapshot();
+    renderRookTray();
+    setTimeout(function () { patchDodgePreservesEnemyRoll(); simplifyRookDefenseTray(); patchChromeAndSnapshot(); renderRookTray(); }, 500);
+    setInterval(function () { patchDodgePreservesEnemyRoll(); simplifyRookDefenseTray(); patchChromeAndSnapshot(); updateRookDefenseButtonLabels(); }, 1500);
+  }
+  ready(init);
+  window.middaraV23DApi = { loadRookCounter: loadCounter, simplifyRookDefenseTray: simplifyRookDefenseTray, patchDodgePreservesEnemyRoll: patchDodgePreservesEnemyRoll };
 })();
 </script>
 

@@ -1,3 +1,3 @@
-Middara Combat Helper V2.3C - In-Context Defense Flow
+Middara Combat Helper V2.3D - Counter Flow / Dodge Preserve
 
-Rook Plate/Nano defense controls now live inside the Enemy Attack resolver when Rook is targeted. The Play-side Rook defense shortcuts are demoted to a reference note. The tablet/mobile live combat flow is guarded as Play-only so it does not appear under Enemies after routing.
+Dodge toggling in the Enemy Attack resolver preserves the enemy roll. Rook Defense Tray now uses simple toggles for Plate and Nano, with Dodge left to the default Dodge controls. Counter buttons now load Rook attacking the enemy attacker.

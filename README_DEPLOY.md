@@ -1,6 +1,6 @@
-# Middara Combat Helper V2.3C Header Stability
+# Middara Combat Helper V2.3D Header Stability
 
-This folder is the GitHub Pages root for Middara Combat Helper V2.3C.
+This folder is the GitHub Pages root for Middara Combat Helper V2.3D.
 
 ## Upload
 
@@ -20,12 +20,12 @@ Do not upload the ZIP file itself as the app.
 
 1. Wait for GitHub Pages to finish publishing.
 2. Open the hosted app on the tablet.
-3. Go to **Data > V2.3C hosted / installable web app**.
+3. Go to **Data > V2.3D hosted / installable web app**.
 4. Tap **Update app cache**.
 5. Reload or reopen the Home Screen app.
-6. Confirm the app shows V2.3C.
+6. Confirm the app shows V2.3D.
 
-## V2.3C notes
+## V2.3D notes
 
 - Fixes the header/subtitle text loop that caused the page to jump every few seconds.
 - Keeps V2.3A Rook defensive/counter shortcuts.
@@ -37,7 +37,7 @@ Do not upload the ZIP file itself as the app.
 The app is local-first. Saves are stored in this browser for this hosted URL. Multiple devices do not sync live. Export a full snapshot before updating if you are preserving active game state.
 
 
-## V2.3C notes
+## V2.3D notes
 
 - Rook Plate/Nano controls now appear inside Enemy Attack when Rook is the target.
 - The old Play-side Rook defense shortcut panel is now only a reference.
