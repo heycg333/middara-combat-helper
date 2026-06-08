@@ -3,7 +3,7 @@
 <head>
   <meta charset="utf-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1" />
-  <title>Middara Combat Helper - V2.2J Live Play Readiness</title>
+  <title>Middara Combat Helper - V2.3A Rook Defense + Spell Empower</title>
   <style>
     :root {
       --bg: #101827;
@@ -650,7 +650,7 @@
     }
 
 
-    /* V2.2J Live-play readiness / in-app guide sync */
+    /* V2.2K Live-play readiness / in-app guide sync */
     .v22i-help-panel {
       border-color: rgba(163,230,53,.32);
       background: linear-gradient(180deg, rgba(163,230,53,.08), rgba(255,255,255,.012)), var(--panel);
@@ -700,7 +700,7 @@
   <link rel="apple-touch-icon" sizes="180x180" href="./icons/apple-touch-icon.png" />
 
 <style id="v22g-table-session-style">
-  /* V2.2J live-play readiness / one-tablet live-play safety layer */
+  /* V2.2K live-play readiness / one-tablet live-play safety layer */
   .v22g-session-hub {
     margin-top: 12px;
     border: 1px solid rgba(163,230,53,.28);
@@ -786,7 +786,7 @@
 <body>
   <header>
     <h1>Middara Combat Helper</h1>
-    <div class="subtitle">V2.2J live-flow priority. Collapsible session hub and guide keep the core Actor -> Target -> Action -> Resolve path visible.</div>
+    <div class="subtitle">V2.3A Rook defensive/counter polish with explicit spell Empower control. Live combat flow remains Actor -> Target -> Action -> Dice -> Apply.</div>
   </header>
 
   <main>
@@ -873,10 +873,10 @@
     <section class="panel v22b-flow-panel" id="mobileCombatFlowPanel" data-v17-mode="play">
       <div class="cockpit-header">
         <div>
-          <h2>V2.2J Tablet / mobile live combat flow</h2>
+          <h2>V2.3A Tablet / mobile live combat flow</h2>
           <div class="note">Live table mode: choose Actor, Target, Action, then Resolve. This is now the primary tablet/phone workflow; the older Play cockpit is hidden in focused mode but still available with Show full play panels.</div>
         </div>
-        <div class="cockpit-badge">V2.2J Flow</div>
+        <div class="cockpit-badge">V2.3A Flow</div>
       </div>
       <div class="v22b-toolbar">
         <button type="button" id="v22bFocusToggle" class="v22b-focus-toggle">Focused phone mode: on</button>
@@ -928,8 +928,8 @@
         </div>
         <div class="v22b-step-card v22b-resolve-card" id="v22bResolveStep">
           <h3><span><span class="v22b-step-number">4</span>Resolve / apply</span></h3>
-          <div id="v22bPendingSummary" class="v22b-pending-summary">No pending result yet. Pick an actor, target, and action; then enter dice in the roll tray below and calculate.</div>
-          <div class="v22d-mobile-note">Tip: use the green Target + Attack shortcut on an enemy card for the fastest attack flow. After Apply, the button changes to Applied ✓ so you know the result was already booked.</div>
+          <div id="v22bPendingSummary" class="v22b-pending-summary">No pending result yet. Pick an actor, target, and action; then enter dice in the roll tray below. Results auto-update.</div>
+          <div class="v22d-mobile-note">Tip: use Target + Attack on an enemy card for the fastest attack flow. Dice changes auto-update the result; Apply books the pending damage and then changes to Applied ✓.</div>
           <div class="v22b-primary-actions">
             <button type="button" class="primary-action" data-v22b-action="calculateCurrent">Calculate current</button>
             <button type="button" class="primary-action" data-v22b-action="applyPending">Apply pending result</button>
@@ -948,12 +948,50 @@
               <li>Pick the acting figure.</li>
               <li>Tap an already-loaded encounter target card, or switch to Party/Command for support targets.</li>
               <li>Tap the action card that matches what the figure is doing.</li>
-              <li>Enter dice, tap Calculate, then use Apply pending result from this card or the sticky footer.</li>
+              <li>Enter dice; the result auto-updates. Use Apply pending result from this card or the sticky footer.</li>
             </ol>
             <div class="tiny" style="margin-top:8px">Board legality, SOI, adjacency, movement, line of sight, and hidden text stay manual. This view is only a routing/math/bookkeeping layer.</div>
           </details>
         </div>
       </div>
+    </section>
+
+    <section class="panel v23a-rook-defense-panel" id="rookDefensePanel" data-v17-mode="play">
+      <details>
+        <summary>V2.3A Rook defensive / counter shortcuts</summary>
+        <div class="note" style="margin-top:10px">Use these when Rook is targeted by an Attack, fails a Conviction check, or is about to Counter. The buttons route into existing enemy attack, enemy spell, card-state, workflow, and chain tools; board legality remains manual.</div>
+        <div class="v23a-rook-defense-grid" style="margin-top:12px">
+          <div class="soft-card">
+            <h3 style="margin-top:0">Enemy attack against Rook</h3>
+            <div class="v23a-rook-actions">
+              <button type="button" data-v23a-rook-action="selectEnemyTarget">Load Rook as target</button>
+              <button type="button" data-v23a-rook-action="plateReduction">Plate: -4 Physical</button>
+              <button type="button" data-v23a-rook-action="nanoMiss">Nano Robes: attack misses</button>
+              <button type="button" data-v23a-rook-action="plateHulking">Plate: Hulking reminder</button>
+            </div>
+          </div>
+          <div class="soft-card">
+            <h3 style="margin-top:0">Counter options</h3>
+            <div class="v23a-rook-actions">
+              <button type="button" data-v23a-rook-action="svalinnCounter">The Svalinn Counter</button>
+              <button type="button" data-v23a-rook-action="pontifexCounter">First Piece Counter / 2 SP spell</button>
+              <button type="button" data-v23a-rook-action="loadRookAttack">Load Rook attack</button>
+              <button type="button" data-v23a-rook-action="loadRookSpell">Load Rook spell tray</button>
+            </div>
+          </div>
+          <div class="soft-card">
+            <h3 style="margin-top:0">Conviction reactions</h3>
+            <div class="v23a-rook-actions">
+              <button type="button" data-v23a-rook-action="radiantPass">Radiant Flip: pass check</button>
+              <button type="button" data-v23a-rook-action="nanoConviction">Nano Robes: reroll reminder</button>
+              <button type="button" data-v23a-rook-action="radiantBlast">Radiant Exhaust: failed-difference blast</button>
+              <button type="button" data-v23a-rook-action="refresh">Refresh Rook defense status</button>
+            </div>
+          </div>
+        </div>
+        <div id="v23aRookDefenseStatus" class="ok-box note" style="margin-top:12px">Rook defensive shortcuts ready.</div>
+        <div id="v23aRookDefenseSummary" class="pillbox" style="margin-top:10px"></div>
+      </details>
     </section>
 
 
@@ -1976,9 +2014,14 @@
             <label for="spellCastingFace">Casting die / Force roll</label>
             <select id="spellCastingFace"></select>
           </div>
-          <div id="spellEmpowerWrap">
+          <label id="spellEmpowerToggleWrap" class="check-row" style="margin:0">
+            <input id="spellUseEmpower" type="checkbox" />
+            <span><strong>Empower this Spell</strong><br><span class="tiny">Add the black die. Check this for standard Empower or a forced/default source such as Nightstalker's Trophy.</span></span>
+          </label>
+          <div id="spellEmpowerWrap" class="hidden">
             <label for="spellBlackFace">Black die from Empower</label>
             <select id="spellBlackFace"></select>
+            <div id="spellEmpowerNote" class="tiny" style="margin-top:5px"></div>
           </div>
           <div>
             <label for="spellManualForceMod">Manual Force modifier</label>
@@ -2123,7 +2166,7 @@
     </section>
 
     <section class="panel rewards-panel" id="rewardsLootPanel" data-v17-mode="rewards encounter">
-      <!-- V2.2J: intentionally not shown in Data tab; Data is for backups, QA, and deployment. -->
+      <!-- V2.2K: intentionally not shown in Data tab; Data is for backups, QA, and deployment. -->
       <h2>8. Rewards / loot tracker</h2>
       <div class="note">Track combatant loot draws, loot-token outcomes, party gold, XP, and item notes. This does not replace the physical decks; it keeps the bookkeeping and session history clean.</div>
       <div class="rewards-metrics">
@@ -3463,7 +3506,7 @@ function addSpellListeners() {
     populateSpellSelect();
     populateManualConvictionColorSelects();
     fillSpellBlackSelect();
-    var spellIds = ["spellSelect", "spellCastingFace", "spellBlackFace", "spellManualForceMod", "spellLikeDifference", "spellUseForcePicker", "spellPickerConviction1", "spellPickerConviction2", "spellConviction1", "spellConviction2", "manualConvictionColor1", "manualConvictionColor2", "spellUseGoreBonus", "spellUseLifeForceBonus", "spellUseOtherworldlyForce", "abbadonPreviousDamage", "manualSpellBaseForce", "manualSpellFlatMagic", "manualSpellEffect", "manualSpellDamageEqualsDifference"];
+    var spellIds = ["spellSelect", "spellUseEmpower", "spellCastingFace", "spellBlackFace", "spellManualForceMod", "spellLikeDifference", "spellUseForcePicker", "spellPickerConviction1", "spellPickerConviction2", "spellConviction1", "spellConviction2", "manualConvictionColor1", "manualConvictionColor2", "spellUseGoreBonus", "spellUseLifeForceBonus", "spellUseOtherworldlyForce", "abbadonPreviousDamage", "manualSpellBaseForce", "manualSpellFlatMagic", "manualSpellEffect", "manualSpellDamageEqualsDifference"];
     spellIds.forEach(function (id) {
         var node = document.getElementById(id);
         if (!node)
@@ -3474,6 +3517,10 @@ function addSpellListeners() {
                 syncSpellControls();
             else if (id === "manualConvictionColor1" || id === "manualConvictionColor2")
                 syncSpellTarget();
+            else if (id === "spellUseEmpower") {
+                syncSpellEmpowerControls(getSpell());
+                calculateSpell();
+            }
             else
                 calculateSpell();
         });
@@ -4504,11 +4551,42 @@ function getSpell() {
     var id = document.getElementById("spellSelect").value;
     return SPELLS.find(function (s) { return s.id === id; }) || SPELLS[0];
 }
+function spellIsEmpowered() {
+    var spell = getSpell();
+    var box = document.getElementById("spellUseEmpower");
+    return !!(box && box.checked && spell && spell.kind !== "spellLike");
+}
+function syncSpellEmpowerControls(spell) {
+    spell = spell || getSpell();
+    var spellLike = spell && spell.kind === "spellLike";
+    var toggle = document.getElementById("spellEmpowerToggleWrap");
+    var blackWrap = document.getElementById("spellEmpowerWrap");
+    var box = document.getElementById("spellUseEmpower");
+    var note = document.getElementById("spellEmpowerNote");
+    if (toggle) toggle.classList.toggle("hidden", !!spellLike);
+    var empowered = !!(box && box.checked && !spellLike);
+    if (blackWrap) blackWrap.classList.toggle("hidden", !empowered);
+    if (note) {
+        if (spellLike) note.textContent = "Spell-like Force checks cannot be Empowered by the standard Spell Empower control.";
+        else if (empowered && spell && spell.forcedEmpower) note.textContent = "Empower is on. This preset has a default/forced Empower source; uncheck only when that source does not apply.";
+        else if (empowered) note.textContent = "Empower is on. Spend/add the black die and resolve Skull backlash if rolled.";
+        else if (spell && spell.forcedEmpower) note.textContent = "Empower is off even though this preset normally has a forced/default Empower source.";
+        else note.textContent = "Empower is off. The black die is ignored for this spell.";
+    }
+}
 function syncSpellControls() {
     var spell = getSpell();
     var manual = spell.kind === "manualSpell";
     var spellLike = spell.kind === "spellLike";
-    document.getElementById("spellEmpowerWrap").classList.toggle("hidden", spellLike);
+    var empowerBox = document.getElementById("spellUseEmpower");
+    if (empowerBox) {
+        var previousSpellId = empowerBox.getAttribute("data-v23a-spell-id");
+        if (previousSpellId !== spell.id) {
+            empowerBox.checked = !!spell.forcedEmpower;
+            empowerBox.setAttribute("data-v23a-spell-id", spell.id);
+        }
+    }
+    syncSpellEmpowerControls(spell);
     document.getElementById("spellForcePickerWrap").classList.toggle("hidden", spellLike || manual);
     document.getElementById("spellLikeDifferenceWrap").classList.toggle("hidden", !spellLike);
     document.getElementById("goreShotOption").classList.toggle("hidden", !spell.optionalGoreBonus);
@@ -4633,9 +4711,11 @@ function calculateSpell() {
     var otherworldlyShieldsFromBlack = 0;
     var unusedForceSymbols = { book: coloredForceSymbols.book, shield: coloredForceSymbols.shield, burst: coloredForceSymbols.burst, blackBook: 0, blackShield: 0, blackBurst: 0 };
     var spellFailedBySkull = false;
+    var spellEmpowered = spellIsEmpowered();
+    syncSpellEmpowerControls(spell);
     if (spell.kind !== "spellLike") {
         blackFace = DICE.black[Number(document.getElementById("spellBlackFace").value)] || DICE.black[0];
-        if (spell.forcedEmpower || spell.kind === "manualSpell") {
+        if (spellEmpowered) {
             if (blackFace.skull) {
                 spellFailedBySkull = true;
                 warnings.push("Black Skull: the spell automatically fails to affect the target, the caster is dealt 3 Irreducible Damage, and the Spell Action ends.");
@@ -4703,8 +4783,14 @@ function calculateSpell() {
     }
     var notes = [];
     notes.push(spell.notes || "");
-    if (spell.kind !== "spellLike" && spell.kind !== "manualSpell")
-        notes.push("Nightstalker's Trophy Empower is modeled by the black die. Black Book symbols can add to Force, but each symbol is spent only once. Skull causes spell failure and 3 Irreducible Damage to the caster.");
+    if (spell.kind !== "spellLike") {
+        if (spellEmpowered)
+            notes.push("Empower is ON: the black die is included. Black Book symbols can add to Force, but each symbol is spent only once. Skull causes spell failure and 3 Irreducible Damage to the caster.");
+        else if (spell.forcedEmpower)
+            notes.push("Empower is OFF even though this spell preset normally has a forced/default Empower source. Turn it back on if Nightstalker's Trophy or another forced Empower source applies.");
+        else
+            notes.push("Empower is OFF: no black die is included for this spell. Check Empower this Spell if you spend 1 SP or use a source that adds the black die.");
+    }
     if (blackBooksSpentForForce > 0)
         notes.push("Empower force spent " + blackBooksSpentForForce + " black Book symbol(s) for +" + blackForce + " Force.");
     if (otherworldlyForce > 0)
@@ -4715,7 +4801,7 @@ function calculateSpell() {
         notes.push("Gore Shot self-damage option adds +8 Magic Damage. Use the Party tracker button to apply 2 Irreducible Damage to Nightingale after a successful spell effect.");
     if (spell.effect === "Command 2 reminder" && affected)
         notes.push("Target failed: resolve Command 2 manually on the board. No damage/effect token is added by the app for this result.");
-    renderSpellResult({ spell: spell, forceBase: forceBase, forceRollFace: forceRollFace, blackFace: blackFace, blackForce: blackForce, blackBooksSpentForForce: blackBooksSpentForForce, otherworldlyForce: otherworldlyForce, otherworldlyBooksFromColored: otherworldlyBooksFromColored, otherworldlyBooksFromBlack: otherworldlyBooksFromBlack, otherworldlyShieldsFromColored: otherworldlyShieldsFromColored, otherworldlyShieldsFromBlack: otherworldlyShieldsFromBlack, unusedForceSymbols: unusedForceSymbols, lifeForceBonus: lifeForceBonus, manualForce: manualForce, force: force, conviction: conviction, conv1: conv1, conv2: conv2, failedDifference: failedDifference, affected: affected, skull: spellFailedBySkull, damage: damage, effects: effects, warnings: warnings, notes: notes });
+    renderSpellResult({ spell: spell, spellEmpowered: spellEmpowered, forceBase: forceBase, forceRollFace: forceRollFace, blackFace: blackFace, blackForce: blackForce, blackBooksSpentForForce: blackBooksSpentForForce, otherworldlyForce: otherworldlyForce, otherworldlyBooksFromColored: otherworldlyBooksFromColored, otherworldlyBooksFromBlack: otherworldlyBooksFromBlack, otherworldlyShieldsFromColored: otherworldlyShieldsFromColored, otherworldlyShieldsFromBlack: otherworldlyShieldsFromBlack, unusedForceSymbols: unusedForceSymbols, lifeForceBonus: lifeForceBonus, manualForce: manualForce, force: force, conviction: conviction, conv1: conv1, conv2: conv2, failedDifference: failedDifference, affected: affected, skull: spellFailedBySkull, damage: damage, effects: effects, warnings: warnings, notes: notes });
 }
 function renderSpellResult(r) {
     var resultText = document.getElementById("spellResultText");
@@ -4736,8 +4822,9 @@ function renderSpellResult(r) {
         ["Spell", r.spell.name],
         ["Base Force", r.forceBase],
         ["Force die used", (r.forceRollFace.color ? capitalize(r.forceRollFace.color) + " " + r.forceRollFace.value + " (" + symbolText(r.forceRollFace) + ")" : "None")],
-        ["Black die", r.blackFace.skull ? "Skull" : symbolText(r.blackFace)],
-        ["Black Books spent for Empower Force", r.blackFace.skull ? "Skull" : r.blackBooksSpentForForce + " -> +" + r.blackForce],
+        ["Empowered?", r.spellEmpowered ? "Yes" : "No"],
+        ["Black die", r.spellEmpowered ? (r.blackFace.skull ? "Skull" : symbolText(r.blackFace)) : "Not rolled"],
+        ["Black Books spent for Empower Force", r.spellEmpowered ? (r.blackFace.skull ? "Skull" : r.blackBooksSpentForForce + " -> +" + r.blackForce) : "0 -> +0"],
         ["Otherworldly Force", otherworldlyDetail],
         ["Unused Force symbols", unusedDetail],
         ["Life Grasp Force", "+" + r.lifeForceBonus],
@@ -4752,7 +4839,7 @@ function renderSpellResult(r) {
     document.getElementById("spellNotes").innerHTML = r.notes.filter(Boolean).map(escapeHtml).join("<br>");
     var selfDamage = 0;
     var partyNotes = [];
-    if (r.skull && r.spell.kind !== "spellLike") {
+    if (r.skull && r.spell.kind !== "spellLike" && r.spellEmpowered) {
         selfDamage += 3;
         partyNotes.push("Empower Skull: caster takes 3 Irreducible Damage.");
     }
@@ -7784,7 +7871,7 @@ else {
         else {
             var castingColor = getSpellCastingColor();
             var usePicker = spell.kind !== "manualSpell" && isCheckedLocal("spellUseForcePicker");
-            var includeBlack = !!(spell.forcedEmpower || spell.kind === "manualSpell");
+            var includeBlack = !!(spell.kind !== "spellLike" && isCheckedLocal("spellUseEmpower"));
             var castingDefs = [{ color: castingColor, label: "Casting" }];
             if (usePicker) {
                 castingDefs.push({ color: getSelectDataColor("spellPickerConviction1", "purple"), label: "Picker 1" });
@@ -15465,7 +15552,7 @@ else {
   function updateChrome() {
     try {
       var sub = document.querySelector("header .subtitle");
-      if (sub) sub.textContent = "V2.2J live-flow priority. Collapsible session hub and guide keep the core Actor -> Target -> Action -> Resolve path visible.";
+      if (sub) sub.textContent = "V2.3A Rook defensive/counter polish with explicit spell Empower control. Live combat flow remains Actor -> Target -> Action -> Dice -> Apply.";
     } catch (err) { }
   }
 
@@ -15500,7 +15587,7 @@ else {
 <script>
 (function () {
   "use strict";
-  var VERSION = "V2.2J";
+  var VERSION = "V2.2K";
   var STORAGE_KEY = "middaraCombatHelperV22BMobileFlow";
   var FOCUS_KEY = "middaraCombatHelperV22BPhoneFocus";
   var renderTimer = null;
@@ -15901,7 +15988,7 @@ else {
 
   function calculateCurrent() {
     var type = state.pendingType || "attack";
-    // V2.2J: if the attack tray/action is active, never let stale spell state steal the Apply button.
+    // V2.2K: if the attack tray/action is active, never let stale spell state steal the Apply button.
     if (document.body.classList.contains("v22b-show-attack")) type = "attack";
     if (document.body.classList.contains("v22b-show-spell") && type !== "attack") type = "spell";
     clearApplied();
@@ -15929,7 +16016,7 @@ else {
   }
   function applyPending() {
     var info = pendingInfo();
-    if (!info.ready) { setStatus("No ready " + info.type + " result yet. Enter dice and tap Calculate first.", "warn"); return; }
+    if (!info.ready) { setStatus("No ready " + info.type + " result yet. Enter dice and let the app auto-calculate first.", "warn"); return; }
     var before = targetObj();
     if (info.type === "spell") click("applySpellToTracker");
     else if (info.type === "enemyAttack") click("applyEnemyAttackToParty");
@@ -15955,7 +16042,7 @@ else {
     if (btn) btn.click();
     setTimeout(function () { var el = byId(panelId); if (el && el.scrollIntoView) { try { el.scrollIntoView({ behavior:"smooth", block:"start" }); } catch (err) { el.scrollIntoView(true); } } }, 40);
   }
-  function selectSpell(id) { if (setSelect("spellSelect", id)) { clearApplied(); state.pendingType = "spell"; setResolverView("spell"); if (!actionTargetReady("spell")) { state.targetFilter = "enemy"; state.awaitingTargetFor = "spell"; setStatus("Loaded spell. Choose an encounter enemy from the Target drawer first, then the spell tray will open.", "warn"); scrollFlowStep("v22bTargetStep"); } else { route("play", "spellPanel"); setStatus("Loaded spell. Enter Force and Conviction dice in the spell tray, then Calculate.", "ok"); } } }
+  function selectSpell(id) { if (setSelect("spellSelect", id)) { clearApplied(); state.pendingType = "spell"; setResolverView("spell"); if (!actionTargetReady("spell")) { state.targetFilter = "enemy"; state.awaitingTargetFor = "spell"; setStatus("Loaded spell. Choose an encounter enemy from the Target drawer first, then the spell tray will open.", "warn"); scrollFlowStep("v22bTargetStep"); } else { route("play", "spellPanel"); setStatus("Loaded spell. Enter Force and Conviction dice in the spell tray; the result auto-calculates.", "ok"); } } }
   function selectProfileByText(txt) {
     var sel = byId("profileSelect"); if (!sel) return;
     txt = String(txt || "").toLowerCase();
@@ -16117,7 +16204,7 @@ else {
   function patchSnapshots() {
     if (window.__middaraV22BSnapshotPatch) return;
     window.__middaraV22BSnapshotPatch = true;
-    function addFlow(snap) { try { snap.version = "V2.2J"; snap.pwaDeploymentVersion = "V2.2J"; snap.mobileFlowState = JSON.parse(JSON.stringify(state)); } catch (err) {} return snap; }
+    function addFlow(snap) { try { snap.version = "V2.2K"; snap.pwaDeploymentVersion = "V2.2K"; snap.mobileFlowState = JSON.parse(JSON.stringify(state)); } catch (err) {} return snap; }
     if (window.middaraDataManagerApi) {
       var api = window.middaraDataManagerApi;
       var oldFull = api.exportFullSnapshot;
@@ -16130,9 +16217,9 @@ else {
   }
 
   function updateChrome() {
-    document.title = "Middara Combat Helper - V2.2J Live Play Readiness";
+    document.title = "Middara Combat Helper - V2.2K Auto-Calc Live Flow";
     var sub = document.querySelector("header .subtitle");
-    if (sub) sub.textContent = "V2.2J live-flow priority. Collapsible session hub and guide keep the core Actor -> Target -> Action -> Resolve path visible.";
+    if (sub) sub.textContent = "V2.3A Rook defensive/counter polish with explicit spell Empower control. Live combat flow remains Actor -> Target -> Action -> Dice -> Apply.";
   }
 
   function init() {
@@ -16145,7 +16232,7 @@ else {
     render();
     setTimeout(function () { patchSnapshots(); updateChrome(); render(); }, 700);
     setInterval(function () { updateFooter(); }, 1200);
-    setStatus("V2.2J live flow ready. The live flow is now the first Play screen; choose Actor -> Target -> Action -> Resolve.", "ok");
+    setStatus("V2.2K live flow ready. The live flow is now the first Play screen; choose Actor -> Target -> Action -> Resolve.", "ok");
   }
 
   ready(init);
@@ -16157,7 +16244,7 @@ else {
 <script>
 (function () {
   "use strict";
-  var VERSION = "V2.2J";
+  var VERSION = "V2.2K";
   function ready(fn) { if (document.readyState === "loading") document.addEventListener("DOMContentLoaded", fn); else setTimeout(fn, 0); }
   function byId(id) { return document.getElementById(id); }
   function esc(v) { return String(v == null ? "" : v).replace(/[&<>"']/g, function (c) { return {"&":"&amp;","<":"&lt;",">":"&gt;","\"":"&quot;","'":"&#39;"}[c]; }); }
@@ -16245,7 +16332,7 @@ else {
         setTimeout(function () {
           var attack = document.querySelector('#v22bActionCards [data-v22b-action="routeAttack"]') || document.querySelector('#mobileCombatFlowPanel [data-v22b-action="routeAttack"]');
           if (attack) attack.click();
-          setStatus("Enemy targeted and Attack loaded. Enter dice in the roll tray, then Calculate.", "ok");
+          setStatus("Enemy targeted and Attack loaded. Enter dice in the roll tray; the result auto-calculates.", "ok");
         }, 90);
       });
       actions.insertBefore(combo, actions.firstChild);
@@ -16284,11 +16371,11 @@ else {
     }, true);
   }
   function updateChrome() {
-    document.title = "Middara Combat Helper - V2.2J Live Play Readiness";
+    document.title = "Middara Combat Helper - V2.2K Auto-Calc Live Flow";
     var sub = document.querySelector("header .subtitle");
-    if (sub) sub.textContent = "V2.2J live-flow priority. Mobile/tablet combat flow remains primary, with help and session tools collapsed below it.";
-    var h = document.querySelector("#mobileCombatFlowPanel h2"); if (h) h.textContent = "V2.2J Tablet / mobile live combat flow";
-    var badge = document.querySelector("#mobileCombatFlowPanel .cockpit-badge"); if (badge) badge.textContent = "V2.2J Flow";
+    if (sub) sub.textContent = "V2.2K auto-calc live flow. Mobile/tablet combat flow remains primary, with help and session tools collapsed below it.";
+    var h = document.querySelector("#mobileCombatFlowPanel h2"); if (h) h.textContent = "V2.3A Tablet / mobile live combat flow";
+    var badge = document.querySelector("#mobileCombatFlowPanel .cockpit-badge"); if (badge) badge.textContent = "V2.3A Flow";
     var pwa = byId("pwaVersionText"); if (pwa) pwa.textContent = VERSION;
   }
   function tick() {
@@ -16313,7 +16400,7 @@ else {
 <script>
 (function () {
   "use strict";
-  var VERSION = "V2.2J";
+  var VERSION = "V2.2K";
   var CACHE_PREFIX = "middara-helper-";
   function ready(fn) { if (document.readyState === "loading") document.addEventListener("DOMContentLoaded", fn); else fn(); }
   function byId(id) { return document.getElementById(id); }
@@ -16461,11 +16548,11 @@ else {
     });
   }
   function updateChrome() {
-    document.title = "Middara Combat Helper - V2.2J Live Play Readiness";
+    document.title = "Middara Combat Helper - V2.2K Auto-Calc Live Flow";
     var sub = document.querySelector("header .subtitle");
-    if (sub) sub.textContent = "V2.2J live-flow priority. Collapsible session hub and guide keep the core Actor -> Target -> Action -> Resolve path visible.";
+    if (sub) sub.textContent = "V2.3A Rook defensive/counter polish with explicit spell Empower control. Live combat flow remains Actor -> Target -> Action -> Dice -> Apply.";
     var pwa = byId("pwaVersionText"); if (pwa) pwa.textContent = "V2.2E";
-    var h = document.querySelector("#mobileCombatFlowPanel h2"); if (h) h.textContent = "V2.2J Tablet / mobile live combat flow";
+    var h = document.querySelector("#mobileCombatFlowPanel h2"); if (h) h.textContent = "V2.3A Tablet / mobile live combat flow";
   }
   function bindMobileHelp() {
     var flow = byId("mobileCombatFlowPanel");
@@ -16495,7 +16582,7 @@ else {
 <script id="v22g-table-session-script">
 (function(){
   "use strict";
-  var VERSION = "V2.2J";
+  var VERSION = "V2.2K";
   var CHECK_KEY = "middaraCombatHelperV22GSessionChecklist";
   var RECENT_KEY = "middaraCombatHelperV22GRecentActions";
   function byId(id){ return document.getElementById(id); }
@@ -16608,7 +16695,7 @@ else {
     hub.id = "v22gSessionHub";
     hub.className = "v22g-session-hub";
     hub.innerHTML = '' +
-      '<div class="v22g-session-head"><div><h3>V2.2J live-play readiness</h3><div class="tiny">One-tablet controls for setup, backup, quick undo, and end-of-encounter cleanup. Use this as a safety rail around the main live combat flow.</div></div><div class="v22g-session-badge">Table-ready pass</div></div>' +
+      '<div class="v22g-session-head"><div><h3>V2.2K live-play readiness</h3><div class="tiny">One-tablet controls for setup, backup, quick undo, and end-of-encounter cleanup. Use this as a safety rail around the main live combat flow.</div></div><div class="v22g-session-badge">Table-ready pass</div></div>' +
       '<div id="v22gStatusStrip" class="v22g-status-strip"></div>' +
       '<div id="v22gChecklist" class="v22g-checklist"></div>' +
       '<div class="v22g-session-grid">' +
@@ -16662,11 +16749,11 @@ else {
     else if (action === "rewards") route("rewards", "rewardsLootPanel");
   }
   function init(){
-    document.title = "Middara Combat Helper - V2.2J Live Play Readiness";
+    document.title = "Middara Combat Helper - V2.2K Auto-Calc Live Flow";
     var h = document.querySelector("header h1"); if (h) h.textContent = "Middara Combat Helper";
-    var sub = document.querySelector("header .subtitle"); if (sub) sub.textContent = "V2.2J live-flow priority. The four-step combat flow stays first; session hub and guide are collapsed below it.";
-    var flowH = document.querySelector("#mobileCombatFlowPanel h2"); if (flowH) flowH.textContent = "V2.2J Tablet / mobile live combat flow";
-    var badge = document.querySelector("#mobileCombatFlowPanel .cockpit-badge"); if (badge) badge.textContent = "V2.2J Flow";
+    var sub = document.querySelector("header .subtitle"); if (sub) sub.textContent = "V2.2K auto-calc live flow. The four-step combat flow stays first; session hub and guide are collapsed below it.";
+    var flowH = document.querySelector("#mobileCombatFlowPanel h2"); if (flowH) flowH.textContent = "V2.3A Tablet / mobile live combat flow";
+    var badge = document.querySelector("#mobileCombatFlowPanel .cockpit-badge"); if (badge) badge.textContent = "V2.3A Flow";
     injectHub(); addFooterUndo();
     document.addEventListener("click", function(ev){
       var node = ev.target && ev.target.closest ? ev.target.closest("[data-v22g-action]") : null;
@@ -16679,7 +16766,7 @@ else {
     }, true);
     document.addEventListener("click", function(){ setTimeout(function(){ addFooterUndo(); renderStatus(); }, 240); }, true);
     setInterval(renderStatus, 4000);
-    setStatus("V2.2J session hub ready. Rewards are kept on the Rewards/Encounter views; the Data tab is reserved for backups, QA, and deployment tools.", "ok");
+    setStatus("V2.2K session hub ready. Rewards are kept on the Rewards/Encounter views; the Data tab is reserved for backups, QA, and deployment tools.", "ok");
   }
   if (document.readyState === "loading") document.addEventListener("DOMContentLoaded", init);
   else setTimeout(init, 0);
@@ -16690,7 +16777,7 @@ else {
 <script>
 (function(){
   "use strict";
-  var VERSION = "V2.2J";
+  var VERSION = "V2.2K";
   var CHECK_KEY = "middara_v22i_live_checklist";
   var EXPORT_KEY = "middara_v22i_last_snapshot_export";
   var TEST_KEY = "middara_v22i_last_self_test";
@@ -16799,8 +16886,8 @@ else {
   function copyQuickGuide(){
     var guide = [
       "Middara Combat Helper " + VERSION + " quick flow",
-      "Adventurer attack: Actor -> Target + Attack -> Dice -> Calculate -> Apply -> Chain/Next.",
-      "Enemy attack: Enemy actor -> Enemy Attack -> target -> dice/Dodge -> Calculate -> Apply.",
+      "Adventurer attack: Actor -> Target + Attack -> Dice auto-calc -> Apply -> Chain/Next.",
+      "Enemy attack: Enemy actor -> Enemy Attack -> target -> dice/Dodge auto-calc -> Apply.",
       "Eliphie support: Eliphie -> Party/Command support target -> Blood Barrier / Invigorate / Gore Cleanse.",
       "End encounter: Scan loot -> Rewards -> Prepare or Full Restore -> Save snapshot.",
       "Board legality, SOI, adjacency, movement, line of sight, and hidden text stay manual."
@@ -16838,11 +16925,11 @@ else {
     panel.className = "panel v22i-help-panel";
     panel.setAttribute("data-v17-mode", "play");
     panel.innerHTML = '' +
-      '<div class="v22i-help-head"><div><h3>V2.2J live-play guide</h3><div class="note">Use this as the tablet workflow reference during a session. It summarizes the intended route without opening the external guide.</div></div><div class="v22i-badge">Table workflow</div></div>' +
+      '<div class="v22i-help-head"><div><h3>V2.2K live-play guide</h3><div class="note">Use this as the tablet workflow reference during a session. It summarizes the intended route without opening the external guide.</div></div><div class="v22i-badge">Table workflow</div></div>' +
       '<div class="v22i-recipe-grid">' +
-        '<div class="v22i-recipe"><strong>Adventurer attack</strong><div><code>Actor -> Target + Attack -> Dice -> Calculate -> Apply -> Chain/Next</code></div></div>' +
-        '<div class="v22i-recipe"><strong>Adventurer / Esper spell</strong><div><code>Actor -> target -> spell action -> Force/Conviction -> Calculate -> Apply</code></div></div>' +
-        '<div class="v22i-recipe"><strong>Enemy attack</strong><div><code>Enemy actor -> Enemy Attack -> target -> dice/Dodge -> Calculate -> Apply</code></div></div>' +
+        '<div class="v22i-recipe"><strong>Adventurer attack</strong><div><code>Actor -> Target + Attack -> Dice auto-calc -> Apply -> Chain/Next</code></div></div>' +
+        '<div class="v22i-recipe"><strong>Adventurer / Esper spell</strong><div><code>Actor -> target -> spell action -> Force/Conviction auto-calc -> Apply</code></div></div>' +
+        '<div class="v22i-recipe"><strong>Enemy attack</strong><div><code>Enemy actor -> Enemy Attack -> target -> dice/Dodge auto-calc -> Apply</code></div></div>' +
         '<div class="v22i-recipe"><strong>Eliphie support</strong><div><code>Eliphie -> Party/Command support target -> Blood Barrier / Invigorate / Gore Cleanse</code></div></div>' +
         '<div class="v22i-recipe"><strong>End encounter</strong><div><code>Scan loot -> Rewards -> Prepare or Full Restore -> Save snapshot</code></div></div>' +
         '<div class="v22i-recipe"><strong>What stays manual</strong><div>SOI, adjacency, line of sight, movement legality, hidden text, and tactical target choice.</div></div>' +
@@ -16876,7 +16963,7 @@ else {
         '<button type="button" data-v22i-action="openData">Open backup / update tools</button>' +
       '</div>' +
       '<div id="v22iSelfTestOutput" class="tiny" style="margin-top:10px">Run the table workflow test to verify the main live-use hooks loaded.</div>' +
-      '<div id="v22iStatus" class="ok-box note" style="margin-top:10px">V2.2J guide ready.</div>';
+      '<div id="v22iStatus" class="ok-box note" style="margin-top:10px">V2.2K guide ready.</div>';
     anchor.insertAdjacentElement("afterend", panel);
     renderChecklist();
   }
@@ -16891,7 +16978,7 @@ else {
     wrap.style.borderRadius = "14px";
     wrap.style.padding = "12px";
     wrap.innerHTML = '' +
-      '<h3 style="margin-top:0">V2.2J save / update status</h3>' +
+      '<h3 style="margin-top:0">V2.2K save / update status</h3>' +
       '<div class="note">Save state is local to this browser and this hosted URL. Use full snapshot export before changing devices, hosts, or GitHub builds.</div>' +
       '<div class="v22i-status-grid">' +
         '<div class="v22i-status-card"><div class="label">Version</div><div class="value" id="v22iVersionValue">-</div></div>' +
@@ -16929,14 +17016,14 @@ else {
     });
   }
   function patchTitles(){
-    document.title = "Middara Combat Helper - V2.2J Live Play Readiness";
+    document.title = "Middara Combat Helper - V2.2K Auto-Calc Live Flow";
     var sub = document.querySelector("header .subtitle");
-    if (sub) sub.textContent = "V2.2J live-flow priority. Collapsible session tools, collapsible in-app guide, and live combat flow kept at the top of Play.";
-    var flowH = document.querySelector("#mobileCombatFlowPanel h2"); if (flowH) flowH.textContent = "V2.2J Tablet live combat flow";
-    var badge = document.querySelector("#mobileCombatFlowPanel .cockpit-badge"); if (badge) badge.textContent = "V2.2J Flow";
-    var hubH = document.querySelector("#v22gSessionHub h3"); if (hubH) hubH.textContent = "V2.2J table session hub";
+    if (sub) sub.textContent = "V2.2K auto-calc live flow. Collapsible session tools, collapsible in-app guide, and live combat flow kept at the top of Play.";
+    var flowH = document.querySelector("#mobileCombatFlowPanel h2"); if (flowH) flowH.textContent = "V2.2K Tablet live combat flow";
+    var badge = document.querySelector("#mobileCombatFlowPanel .cockpit-badge"); if (badge) badge.textContent = "V2.3A Flow";
+    var hubH = document.querySelector("#v22gSessionHub h3"); if (hubH) hubH.textContent = "V2.2K table session hub";
     var hubTiny = document.querySelector("#v22gSessionHub .v22g-session-head .tiny"); if (hubTiny) hubTiny.textContent = "One-tablet controls for setup, backup, quick undo, end-of-encounter cleanup, and live-play readiness.";
-    var pwaSummary = document.querySelector(".v22c-pwa-panel summary"); if (pwaSummary) pwaSummary.textContent = "V2.2J hosted / installable web app";
+    var pwaSummary = document.querySelector(".v22c-pwa-panel summary"); if (pwaSummary) pwaSummary.textContent = "V2.2K hosted / installable web app";
     var pwa = byId("pwaVersionText"); if (pwa) pwa.textContent = VERSION;
   }
   function init(){
@@ -16960,7 +17047,7 @@ else {
 
 
 <style id="v22jLiveFlowPriorityStyles">
-  /* V2.2J Live-flow priority / collapsible session tools */
+  /* V2.2K Live-flow priority / collapsible session tools */
   #mobileCombatFlowPanel.v22j-flow-priority {
     border-color: rgba(163,230,53,.42);
     background: linear-gradient(180deg, rgba(163,230,53,.07), rgba(56,189,248,.035), rgba(255,255,255,.012)), var(--panel);
@@ -17071,7 +17158,7 @@ else {
 <script id="v22jLiveFlowPriorityScript">
 (function(){
   "use strict";
-  var VERSION = "V2.2J";
+  var VERSION = "V2.2K";
   function byId(id){ return document.getElementById(id); }
   function text(el, value){ if (el) el.textContent = value; }
   function hasClass(el, cls){ return el && (" " + el.className + " ").indexOf(" " + cls + " ") >= 0; }
@@ -17086,16 +17173,16 @@ else {
     if (flow && flow.scrollIntoView) flow.scrollIntoView({behavior:"smooth", block:"start"});
   }
   function patchTitles(){
-    document.title = "Middara Combat Helper - V2.2J Live Flow Priority";
+    document.title = "Middara Combat Helper - V2.2K Auto-Calc Live Flow";
     var sub = document.querySelector("header .subtitle");
-    if (sub) sub.textContent = "V2.2J live-flow priority. The core Actor -> Target -> Action -> Resolve path stays first; session hub and guide are collapsed below it.";
+    if (sub) sub.textContent = "V2.2K auto-calc live flow. The core Actor -> Target -> Action -> Resolve path stays first; session hub and guide are collapsed below it.";
     var flowH = document.querySelector("#mobileCombatFlowPanel h2");
-    if (flowH) flowH.textContent = "V2.2J Tablet live combat flow";
+    if (flowH) flowH.textContent = "V2.2K Tablet live combat flow";
     var badge = document.querySelector("#mobileCombatFlowPanel .cockpit-badge");
-    if (badge) badge.textContent = "V2.2J Flow";
+    if (badge) badge.textContent = "V2.3A Flow";
     var pwa = byId("pwaVersionText"); if (pwa) pwa.textContent = VERSION;
-    var pwaSummary = document.querySelector(".v22c-pwa-panel summary"); if (pwaSummary) pwaSummary.textContent = "V2.2J hosted / installable web app";
-    var dataH = document.querySelector("#v22iDataStatusPanel h3"); if (dataH) dataH.textContent = "V2.2J save / update status";
+    var pwaSummary = document.querySelector(".v22c-pwa-panel summary"); if (pwaSummary) pwaSummary.textContent = "V2.2K hosted / installable web app";
+    var dataH = document.querySelector("#v22iDataStatusPanel h3"); if (dataH) dataH.textContent = "V2.2K save / update status";
     var hubTitle = document.querySelector("#v22gSessionHub h3"); if (hubTitle) hubTitle.textContent = "Table session hub";
     var guideTitle = document.querySelector("#v22iGuidePanel h3"); if (guideTitle) guideTitle.textContent = "Live-play guide";
   }
@@ -17193,6 +17280,349 @@ else {
   }
   if (document.readyState === "loading") document.addEventListener("DOMContentLoaded", init);
   else setTimeout(init, 0);
+})();
+</script>
+
+
+
+<style id="v22k-auto-calc-style">
+  /* V2.2K auto-calc streamlined flow */
+  #v22bFooterCalc,
+  #mobileCombatFlowPanel .v22b-primary-actions [data-v22b-action="calculateCurrent"] {
+    display: none !important;
+  }
+  #mobileCombatFlowPanel .v22b-primary-actions {
+    grid-template-columns: repeat(3, minmax(0, 1fr));
+  }
+  #v22kAutoCalcNote {
+    border: 1px solid rgba(56,189,248,.35);
+    background: rgba(56,189,248,.08);
+    border-radius: 12px;
+    padding: 9px 10px;
+    margin-top: 8px;
+    color: var(--muted);
+    font-size: .86rem;
+  }
+  .v22k-auto-applied {
+    background: linear-gradient(180deg, #64748b, #334155) !important;
+    border-color: rgba(148,163,184,.65) !important;
+    color: #e2e8f0 !important;
+    opacity: .92 !important;
+  }
+  @media (max-width: 760px) {
+    #mobileCombatFlowPanel .v22b-primary-actions { grid-template-columns: 1fr; }
+  }
+</style>
+
+<script id="v22k-auto-calc-script">
+(function(){
+  "use strict";
+  var VERSION = "V2.2K";
+  var appliedKey = "";
+  var appliedLabel = "";
+  var autoTimer = null;
+  var paintTimer = null;
+  function byId(id){ return document.getElementById(id); }
+  function text(id){ var el = byId(id); return el ? String(el.textContent || "").trim() : ""; }
+  function val(id){ var el = byId(id); return el ? String(el.value || "") : ""; }
+  function click(id){ var el = byId(id); if (el) { try { el.click(); return true; } catch(err){} } return false; }
+  function esc(s){ return String(s == null ? "" : s).replace(/[&<>"']/g,function(c){return {"&":"&amp;","<":"&lt;",">":"&gt;","\"":"&quot;","'":"&#39;"}[c];}); }
+  function currentMode(){ return document.body.getAttribute("data-v17-current-mode") || ""; }
+  function attackFlowActive(){ return currentMode() === "play" && document.body.classList.contains("v22b-show-attack"); }
+  function spellFlowActive(){ return currentMode() === "play" && document.body.classList.contains("v22b-show-spell") && !attackFlowActive(); }
+  function attackReady(){ var h = text("hitText"); return !!(h && h !== "-"); }
+  function spellReady(){ var h = text("spellResultText"); return !!(h && h !== "-"); }
+  function targetLabel(){
+    try {
+      if (window.middaraMobileFlowV22BApi && typeof window.middaraMobileFlowV22BApi.getState === "function") {
+        var st = window.middaraMobileFlowV22BApi.getState() || {};
+        if (st.target) {
+          var parts = String(st.target).split(":");
+          var kind = parts[0], id = parts.slice(1).join(":");
+          if (kind === "enemy" && window.trackerState && Array.isArray(window.trackerState.enemies)) {
+            var e = window.trackerState.enemies.find(function(x){ return String(x.id) === id; });
+            if (e) return e.label || e.name || id;
+          }
+          if (kind === "party" && window.partyState && Array.isArray(window.partyState.members)) {
+            var p = window.partyState.members.find(function(x){ return String(x.id) === id; });
+            if (p) return p.name || p.id;
+          }
+        }
+      }
+    } catch(err) {}
+    var targetSelect = byId("targetSelect");
+    if (targetSelect && targetSelect.selectedOptions && targetSelect.selectedOptions[0]) return targetSelect.selectedOptions[0].textContent || "target";
+    return "target";
+  }
+  function attackKey(){ return ["attack", targetLabel(), text("hitText"), text("attackTotal"), text("finalDamage")].join("|"); }
+  function spellKey(){ return ["spell", targetLabel(), text("spellResultText"), text("spellForceText"), text("spellDamageText")].join("|"); }
+  function clearApplied(){ appliedKey = ""; appliedLabel = ""; }
+  function isApplied(key){ return !!(key && appliedKey === key); }
+  function applyClass(btn, applied){ if (!btn) return; btn.classList.toggle("v22e-applied", !!applied); btn.classList.toggle("v22k-auto-applied", !!applied); btn.disabled = !!applied || btn.disabled && !applied; }
+  function ensureNote(){
+    var summary = byId("v22bPendingSummary");
+    if (!summary) return;
+    if (!byId("v22kAutoCalcNote")) {
+      var note = document.createElement("div");
+      note.id = "v22kAutoCalcNote";
+      note.textContent = "Auto-calc is on: changing dice, actor, target, or action refreshes the pending result. Use Apply when the result looks right; use Refresh only if the display seems stale.";
+      summary.insertAdjacentElement("afterend", note);
+    }
+  }
+  function paintAttackPending(){
+    if (!attackFlowActive()) return false;
+    var ready = attackReady();
+    var dmg = text("finalDamage") || "0";
+    var label = "Apply " + dmg + " damage to " + targetLabel();
+    var key = attackKey();
+    var applied = isApplied(key);
+    var box = byId("v22bPendingSummary");
+    if (box) {
+      box.innerHTML = '<strong>Attack result</strong><br>' +
+        'Result ' + esc(text("hitText") || "-") + ' | Attack ' + esc(text("attackTotal") || "0") + ' | Final damage ' + esc(dmg) + ' | Target ' + esc(targetLabel()) +
+        '<br><span class="tiny">Primary next step: ' + esc(applied ? "Already applied" : (ready ? label : "Enter dice; result auto-updates")) + '</span>' +
+        (applied ? '<br><span class="v22e-mini-success">Applied ✓ ' + esc(appliedLabel || label) + '</span>' : '');
+    }
+    var footerTitle = byId("v17FooterTitle"); if (footerTitle) footerTitle.textContent = ready ? ("Attack result -> " + targetLabel()) : ("Attack -> " + targetLabel());
+    var footerDetail = byId("v17FooterDetail"); if (footerDetail) footerDetail.textContent = ready ? ("Result " + (text("hitText") || "-") + " | Final damage " + dmg + " | Target " + targetLabel()) : "Enter dice; the attack result auto-updates.";
+    document.querySelectorAll('[data-v22b-action="applyPending"]:not([data-v22b-target])').forEach(function(btn){
+      btn.textContent = applied ? "Applied ✓" : (ready ? label : "Enter dice first");
+      btn.disabled = !ready || applied;
+      applyClass(btn, applied);
+    });
+    return true;
+  }
+  function paintSpellPending(){
+    if (!spellFlowActive()) return false;
+    var ready = spellReady();
+    var dmg = text("spellDamageText") || "0";
+    var label = "Apply spell to " + targetLabel();
+    var key = spellKey();
+    var applied = isApplied(key);
+    document.querySelectorAll('[data-v22b-action="applyPending"]:not([data-v22b-target])').forEach(function(btn){
+      btn.textContent = applied ? "Applied ✓" : (ready ? label : "Enter spell dice first");
+      btn.disabled = !ready || applied;
+      applyClass(btn, applied);
+    });
+    return true;
+  }
+  function paint(){
+    ensureNote();
+    // Hide/de-emphasize old manual-calc affordances if the old renderer re-inserts them.
+    var footerCalc = byId("v22bFooterCalc"); if (footerCalc) footerCalc.style.display = "none";
+    document.querySelectorAll('#mobileCombatFlowPanel [data-v22b-action="calculateCurrent"]').forEach(function(btn){ btn.style.display = "none"; btn.setAttribute("aria-hidden", "true"); });
+    if (!paintAttackPending()) paintSpellPending();
+  }
+  function schedulePaint(){ if (paintTimer) clearTimeout(paintTimer); paintTimer = setTimeout(paint, 50); }
+  function autoCalcAttack(){
+    if (!attackFlowActive()) return;
+    if (autoTimer) clearTimeout(autoTimer);
+    autoTimer = setTimeout(function(){
+      try { if (typeof window.calculate === "function") window.calculate(); }
+      catch(err) {}
+      schedulePaint();
+    }, 90);
+  }
+  function autoCalcSpell(){
+    if (!spellFlowActive()) return;
+    if (autoTimer) clearTimeout(autoTimer);
+    autoTimer = setTimeout(function(){
+      try { if (typeof window.calculateSpell === "function") window.calculateSpell(); else click("calculateSpellButton"); }
+      catch(err) {}
+      schedulePaint();
+    }, 120);
+  }
+  function applyAttackFromFlow(){
+    if (!attackReady()) return false;
+    var label = "Apply " + (text("finalDamage") || "0") + " damage to " + targetLabel();
+    var key = attackKey();
+    if (isApplied(key)) { paint(); return true; }
+    click("applyToTracker");
+    appliedKey = key;
+    appliedLabel = label;
+    setTimeout(function(){
+      var status = byId("v22bFlowStatus");
+      if (status) { status.className = "ok-box note v22b-flow-status"; status.textContent = "Applied ✓ " + label + ". Target card should now show the updated damage."; }
+      try { if (window.middaraMobileFlowV22BApi && typeof window.middaraMobileFlowV22BApi.render === "function") window.middaraMobileFlowV22BApi.render(); } catch(err) {}
+      paint();
+    }, 140);
+    return true;
+  }
+  function applySpellFromFlow(){
+    if (!spellReady()) return false;
+    var label = "Apply spell to " + targetLabel();
+    var key = spellKey();
+    if (isApplied(key)) { paint(); return true; }
+    click("applySpellToTracker");
+    appliedKey = key;
+    appliedLabel = label;
+    setTimeout(function(){ paint(); }, 140);
+    return true;
+  }
+  function install(){
+    document.addEventListener("click", function(ev){
+      var btn = ev.target && ev.target.closest ? ev.target.closest('[data-v22b-action="applyPending"]') : null;
+      if (!btn) return;
+      if (attackFlowActive()) { ev.preventDefault(); ev.stopImmediatePropagation(); applyAttackFromFlow(); return; }
+      if (spellFlowActive()) { ev.preventDefault(); ev.stopImmediatePropagation(); applySpellFromFlow(); return; }
+    }, true);
+    document.addEventListener("input", function(ev){
+      var el = ev.target;
+      if (!el || !el.closest) return;
+      if (el.closest("#attackDicePanel") || el.closest("#attackSetupPanel")) { clearApplied(); autoCalcAttack(); }
+      else if (el.closest("#spellPanel")) { clearApplied(); autoCalcSpell(); }
+      schedulePaint();
+    }, true);
+    document.addEventListener("change", function(ev){
+      var el = ev.target;
+      if (!el || !el.closest) return;
+      if (el.closest("#attackDicePanel") || el.closest("#attackSetupPanel") || el.closest("#v22bTargetStep") || el.closest("#v22bActionStep")) { clearApplied(); autoCalcAttack(); }
+      else if (el.closest("#spellPanel")) { clearApplied(); autoCalcSpell(); }
+      schedulePaint();
+    }, true);
+    document.addEventListener("click", function(ev){
+      var a = ev.target && ev.target.closest ? ev.target.closest('[data-v22b-action], [data-v22b-target]') : null;
+      if (a) { clearApplied(); setTimeout(function(){ if (attackFlowActive()) autoCalcAttack(); else if (spellFlowActive()) autoCalcSpell(); schedulePaint(); }, 160); }
+    }, false);
+    var mo = new MutationObserver(function(){ schedulePaint(); });
+    mo.observe(document.body, { childList:true, subtree:true, characterData:true });
+    setInterval(paint, 1000);
+    document.title = "Middara Combat Helper - V2.2K Auto-Calc Live Flow";
+    var sub = document.querySelector("header .subtitle");
+    if (sub) sub.textContent = "V2.2K auto-calc live flow. Dice changes auto-refresh results; the main table path is Actor -> Target -> Action -> Dice -> Apply.";
+    var flowH = document.querySelector("#mobileCombatFlowPanel h2"); if (flowH) flowH.textContent = "V2.2K Tablet live combat flow";
+    var badge = document.querySelector("#mobileCombatFlowPanel .cockpit-badge"); if (badge) badge.textContent = "V2.2K Auto-calc";
+    var pwaSummary = document.querySelector(".v22c-pwa-panel summary"); if (pwaSummary) pwaSummary.textContent = "V2.2K hosted / installable web app";
+    setTimeout(function(){ paint(); autoCalcAttack(); }, 350);
+  }
+  if (document.readyState === "loading") document.addEventListener("DOMContentLoaded", install);
+  else install();
+})();
+</script>
+
+
+<style id="v23a-rook-defense-spell-empower-style">
+  .v23a-rook-defense-panel { border-color: rgba(163,230,53,.30); background: linear-gradient(180deg, rgba(163,230,53,.055), rgba(255,255,255,.012)), var(--panel); }
+  .v23a-rook-defense-panel > details { border: 0; padding: 0; background: transparent; }
+  .v23a-rook-defense-panel > details > summary { font-size: 1.02rem; color: var(--accent); }
+  .v23a-rook-defense-grid { display:grid; grid-template-columns: repeat(3, minmax(0,1fr)); gap:12px; }
+  .v23a-rook-actions { display:grid; grid-template-columns: repeat(2, minmax(0,1fr)); gap:8px; margin-top:10px; }
+  .v23a-rook-actions button { min-height:44px; padding:9px; }
+  #spellEmpowerToggleWrap { min-height: 44px; align-items:center; border:1px solid rgba(148,163,184,.22); border-radius:10px; padding:8px 10px; background:rgba(2,6,23,.22); }
+  @media (max-width: 980px) { .v23a-rook-defense-grid { grid-template-columns:1fr; } }
+  @media (max-width: 560px) { .v23a-rook-actions { grid-template-columns:1fr; } }
+</style>
+<script id="v23a-rook-defense-spell-empower-script">
+(function(){
+  var VERSION = "V2.3A";
+  function byId(id){ return document.getElementById(id); }
+  function setVal(id, value){ var el = byId(id); if (el) el.value = value; }
+  function setChecked(id, value){ var el = byId(id); if (el) el.checked = !!value; }
+  function click(id){ var el = byId(id); if (el) el.click(); }
+  function fire(id, type){ var el = byId(id); if (!el) return; try { el.dispatchEvent(new Event(type || "change", { bubbles:true })); } catch (err) {} }
+  function route(mode, panelId){ try { if (typeof window.setV17Mode === "function") window.setV17Mode(mode); } catch (err) {} var panel = byId(panelId); if (panel && panel.scrollIntoView) { try { panel.scrollIntoView({ behavior:"smooth", block:"start" }); } catch (err2) { panel.scrollIntoView(true); } } }
+  function esc(s){ return String(s == null ? "" : s).replace(/[&<>"']/g, function(ch){ return ({"&":"&amp;","<":"&lt;",">":"&gt;","\"":"&quot;","'":"&#39;"})[ch]; }); }
+  function setStatus(msg, kind){ var el = byId("v23aRookDefenseStatus"); if (!el) return; el.className = (kind === "warn" ? "warning-box" : kind === "danger" ? "danger-box" : "ok-box") + " note"; el.textContent = msg; }
+  function log(title, detail){ try { if (window.middaraWorkflowApi && typeof middaraWorkflowApi.addLog === "function") middaraWorkflowApi.addLog(title, detail); } catch (err) {} }
+  function markCard(id, state, message){ try { if (window.middaraTurnApi && typeof middaraTurnApi.setCardState === "function") return middaraTurnApi.setCardState(id, state, message, "ok"); } catch (err) {} return false; }
+  function addChain(text){ var input = byId("chainManualText"); if (input) input.value = text; click("chainAddManual"); try { if (window.middaraChainApi && middaraChainApi.render) middaraChainApi.render(); } catch (err) {} }
+  function enemySpellFailedDifference(){
+    var table = byId("enemySpellBreakdown");
+    if (!table) return 0;
+    var rows = Array.prototype.slice.call(table.querySelectorAll("tr"));
+    for (var i=0;i<rows.length;i++) {
+      var cells = rows[i].querySelectorAll("td");
+      if (cells.length >= 2 && /failed difference/i.test(cells[0].textContent || "")) return Math.max(0, Math.trunc(Number(cells[1].textContent) || 0));
+    }
+    return 0;
+  }
+  function selectEnemyAttackRook(){
+    setVal("enemyAttackTarget", "rook"); fire("enemyAttackTarget");
+    try { if (window.middaraEnemyAttackApi && middaraEnemyAttackApi.calculate) middaraEnemyAttackApi.calculate(); } catch (err) { click("calculateEnemyAttackButton"); }
+  }
+  function selectEnemySpellRook(){
+    setVal("enemySpellTarget", "rook"); fire("enemySpellTarget");
+  }
+  function action(kind){
+    if (kind === "selectEnemyTarget") {
+      selectEnemyAttackRook(); route("enemies", "enemyAttackPanel"); setStatus("Rook loaded as the enemy attack target.", "ok"); return;
+    }
+    if (kind === "plateReduction") {
+      selectEnemyAttackRook(); setChecked("enemyDefenseRookPlate", true); fire("enemyDefenseRookPlate"); markCard("rook_plate", "exhausted", "Rook Plate of Superiority exhausted to reduce Physical Damage by 4."); try { if (window.middaraEnemyAttackApi && middaraEnemyAttackApi.calculate) middaraEnemyAttackApi.calculate(); } catch (err) { click("calculateEnemyAttackButton"); } route("enemies", "enemyAttackPanel"); setStatus("Plate of Superiority reduction enabled and card marked exhausted.", "ok"); return;
+    }
+    if (kind === "nanoMiss") {
+      selectEnemyAttackRook(); setChecked("enemyDefenseForceMiss", true); fire("enemyDefenseForceMiss"); markCard("rook_nano_pe", "used", "Rook Nano Robes Per Encounter marked used to force the attack to miss."); try { if (window.middaraEnemyAttackApi && middaraEnemyAttackApi.calculate) middaraEnemyAttackApi.calculate(); } catch (err) { click("calculateEnemyAttackButton"); } route("enemies", "enemyAttackPanel"); setStatus("Nano Robes attack-miss option enabled and marked used.", "ok"); return;
+    }
+    if (kind === "plateHulking") {
+      log("Rook - Plate of Superiority", "Reminder: spend 1 SP at any time to gain Hulking until end of turn. Board timing remains manual."); setStatus("Logged Plate of Superiority Hulking reminder; adjust Rook SP manually if used.", "ok"); return;
+    }
+    if (kind === "svalinnCounter") {
+      markCard("rook_svalinn", "exhausted", "Rook The Svalinn exhausted for Counter."); addChain("Rook Counter via The Svalinn. Confirm Counter is legal, then resolve Rook attack manually."); setStatus("Queued Rook Counter via The Svalinn and marked the card exhausted.", "ok"); return;
+    }
+    if (kind === "pontifexCounter") {
+      markCard("rook_pontifex", "exhausted", "Rook First Piece of the Pontifex exhausted for Counter."); addChain("Rook Counter via First Piece of the Pontifex: make an Attack or use a Discipline costing 2 SP or less that casts a Spell. Confirm legal target manually."); setStatus("Queued First Piece counter reminder and marked it exhausted.", "ok"); return;
+    }
+    if (kind === "loadRookAttack") {
+      setVal("characterSelect", "rook"); fire("characterSelect"); route("play", "attackDicePanel"); setStatus("Rook attack loaded for Counter or normal attack resolution.", "ok"); return;
+    }
+    if (kind === "loadRookSpell") {
+      if (byId("v22aLoadCourage")) click("v22aLoadCourage"); route("play", "spellPanel"); setStatus("Rook spell tray opened. Use Courage Stifle or switch to Zealous Reprisal as needed.", "ok"); return;
+    }
+    if (kind === "radiantPass") {
+      selectEnemySpellRook(); setChecked("enemySpellForcePass", true); fire("enemySpellForcePass"); markCard("rook_radiant_flip", "flipped", "Rook Radiant Septum Ring flipped to pass a Conviction check."); click("enemySpellCalculate"); route("enemies", "enemySpellPanel"); setStatus("Radiant Septum Ring set to force-pass Rook's enemy spell/Conviction result and marked flipped.", "ok"); return;
+    }
+    if (kind === "nanoConviction") {
+      selectEnemySpellRook(); markCard("rook_nano_exhaust", "exhausted", "Rook Nano Robes exhausted for Conviction reroll."); log("Rook - Nano Robes", "Rook may reroll the Conviction check. Enter the final kept dice in the enemy spell resolver."); route("enemies", "enemySpellPanel"); setStatus("Logged Nano Robes Conviction reroll reminder and marked the card exhausted.", "ok"); return;
+    }
+    if (kind === "radiantBlast") {
+      selectEnemySpellRook(); click("enemySpellCalculate"); var diff = enemySpellFailedDifference(); markCard("rook_radiant_exhaust", "exhausted", "Rook Radiant Septum Ring exhausted after failing Conviction."); log("Rook - Radiant Septum Ring", "If Rook failed this Conviction check, spend 1 SP and deal Magic Damage equal to failed difference (currently " + diff + ") to an opponent within SOI. Choose/apply the target manually."); route("enemies", "enemySpellPanel"); setStatus("Radiant Septum failed-check blast logged. Current failed difference read as " + diff + ".", diff > 0 ? "ok" : "warn"); return;
+    }
+    if (kind === "refresh") { renderSummary(); setStatus("Rook defensive summary refreshed.", "ok"); return; }
+  }
+  function cardState(id){ try { var s = window.middaraTurnApi && middaraTurnApi.getState ? middaraTurnApi.getState() : null; return s && s.cards && s.cards[id] ? s.cards[id].state : "ready"; } catch (err) { return "?"; } }
+  function rookParty(){ try { return window.partyState && Array.isArray(partyState.members) ? partyState.members.filter(function(m){ return m.id === "rook"; })[0] : null; } catch (err) { return null; } }
+  function pill(k,v){ return '<span class="pill">' + esc(k) + ' <strong>' + esc(v) + '</strong></span>'; }
+  function renderSummary(){
+    var box = byId("v23aRookDefenseSummary"); if (!box) return;
+    var r = rookParty();
+    var html = "";
+    if (r) html += pill("Rook HP", (r.hp - r.damage) + " / " + r.hp) + pill("SP", r.sp == null ? "-" : r.sp);
+    html += pill("Plate", cardState("rook_plate"));
+    html += pill("Svalinn", cardState("rook_svalinn"));
+    html += pill("Pontifex", cardState("rook_pontifex"));
+    html += pill("Radiant Flip", cardState("rook_radiant_flip"));
+    html += pill("Radiant Exhaust", cardState("rook_radiant_exhaust"));
+    html += pill("Nano Attack Miss", cardState("rook_nano_pe"));
+    html += pill("Nano Reroll", cardState("rook_nano_exhaust"));
+    box.innerHTML = html;
+  }
+  function updateVersionChrome(){
+    document.title = "Middara Combat Helper - V2.3A Rook Defense + Spell Empower";
+    var sub = document.querySelector("header .subtitle"); if (sub) sub.textContent = "V2.3A Rook defensive/counter polish with explicit spell Empower control. Live combat flow remains Actor -> Target -> Action -> Dice -> Apply.";
+    var flowH = document.querySelector("#mobileCombatFlowPanel h2"); if (flowH) flowH.textContent = "V2.3A Tablet live combat flow";
+    var badge = document.querySelector("#mobileCombatFlowPanel .cockpit-badge"); if (badge) badge.textContent = "V2.3A";
+    var pwaSummary = document.querySelector(".v22c-pwa-panel summary"); if (pwaSummary) pwaSummary.textContent = "V2.3A hosted / installable web app";
+    var dataH = document.querySelector("#v22iDataStatusPanel h3"); if (dataH) dataH.textContent = "V2.3A save / update status";
+    var v = byId("v22iVersionValue"); if (v) v.textContent = VERSION;
+  }
+  function syncRookPanelEmpowerToSpell(){
+    var spellId = byId("spellSelect") ? byId("spellSelect").value : "";
+    var rookBox = byId("v22aRookSpellEmpower");
+    var mainBox = byId("spellUseEmpower");
+    if (!rookBox || !mainBox || !/^rook_/.test(spellId)) return;
+    mainBox.checked = !!rookBox.checked;
+    mainBox.setAttribute("data-v23a-spell-id", spellId);
+    try { if (typeof window.syncSpellEmpowerControls === "function") window.syncSpellEmpowerControls(window.getSpell ? window.getSpell() : null); } catch (err) {}
+    try { if (typeof window.calculateSpell === "function") window.calculateSpell(); } catch (err2) {}
+  }
+  function bind(){
+    document.addEventListener("click", function(ev){ var node = ev.target && ev.target.closest ? ev.target.closest("[data-v23a-rook-action]") : null; if (!node) return; ev.preventDefault(); action(node.getAttribute("data-v23a-rook-action")); setTimeout(renderSummary, 120); }, true);
+    ["enemyAttackTarget","enemySpellTarget","partyTable","cardStateCompact"].forEach(function(id){ var el = byId(id); if (el) el.addEventListener("change", function(){ setTimeout(renderSummary, 80); }, true); });
+    var rookEmp = byId("v22aRookSpellEmpower"); if (rookEmp) rookEmp.addEventListener("change", syncRookPanelEmpowerToSpell);
+    var spellSel = byId("spellSelect"); if (spellSel) spellSel.addEventListener("change", function(){ setTimeout(syncRookPanelEmpowerToSpell, 20); });
+  }
+  function ready(fn){ if (document.readyState === "loading") document.addEventListener("DOMContentLoaded", fn); else setTimeout(fn,0); }
+  ready(function(){ updateVersionChrome(); bind(); renderSummary(); setTimeout(renderSummary, 600); });
 })();
 </script>
 
