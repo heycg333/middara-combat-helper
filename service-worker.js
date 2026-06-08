@@ -1,6 +1,6 @@
-// Middara Combat Helper V2.3B header stability service worker
+// Middara Combat Helper V2.3C in-context defense flow service worker
 // Network-first for the app shell so GitHub Pages updates are picked up, with cache fallback for table use.
-const CACHE_VERSION = "v2-3b-header-stability-2026-06-08";
+const CACHE_VERSION = "v2-3c-in-context-defense-flow-2026-06-08";
 const CACHE_NAME = `middara-helper-${CACHE_VERSION}`;
 const CORE_ASSETS = [
   "./",
