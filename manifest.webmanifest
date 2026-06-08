@@ -1,7 +1,7 @@
 {
   "name": "Middara Combat Helper",
   "short_name": "Middara Helper",
-  "description": "Middara Combat Helper V2.3A Rook defense and explicit spell Empower PWA.",
+  "description": "Middara Combat Helper V2.3B header stability patch with auto-calc flow, Rook defense, and explicit spell Empower.",
   "id": "./?app=middara-combat-helper",
   "start_url": "./?source=pwa",
   "scope": "./",

@@ -3,7 +3,7 @@
 <head>
   <meta charset="utf-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1" />
-  <title>Middara Combat Helper - V2.3A Rook Defense + Spell Empower</title>
+  <title>Middara Combat Helper - V2.3B Header Stability</title>
   <style>
     :root {
       --bg: #101827;
@@ -650,7 +650,7 @@
     }
 
 
-    /* V2.2K Live-play readiness / in-app guide sync */
+    /* V2.3B Live-play readiness / in-app guide sync */
     .v22i-help-panel {
       border-color: rgba(163,230,53,.32);
       background: linear-gradient(180deg, rgba(163,230,53,.08), rgba(255,255,255,.012)), var(--panel);
@@ -683,6 +683,11 @@
     @media (max-width: 980px) { .v22i-recipe-grid, .v22i-check-grid, .v22i-status-grid { grid-template-columns:1fr 1fr; } }
     @media (max-width: 620px) { .v22i-recipe-grid, .v22i-check-grid, .v22i-status-grid { grid-template-columns:1fr; } .v22i-actions button { width:100%; } }
 
+
+    /* V2.3B header stability: prevent subtitle line-count changes from moving the page. */
+    header .subtitle { min-height: 1.35em; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
+    @media (max-width: 720px) { header .subtitle { white-space: normal; min-height: 2.7em; } }
+
   </style>
 
   <!-- V2.2C hosted/PWA metadata -->
@@ -700,7 +705,7 @@
   <link rel="apple-touch-icon" sizes="180x180" href="./icons/apple-touch-icon.png" />
 
 <style id="v22g-table-session-style">
-  /* V2.2K live-play readiness / one-tablet live-play safety layer */
+  /* V2.3B live-play readiness / one-tablet live-play safety layer */
   .v22g-session-hub {
     margin-top: 12px;
     border: 1px solid rgba(163,230,53,.28);
@@ -786,7 +791,7 @@
 <body>
   <header>
     <h1>Middara Combat Helper</h1>
-    <div class="subtitle">V2.3A Rook defensive/counter polish with explicit spell Empower control. Live combat flow remains Actor -> Target -> Action -> Dice -> Apply.</div>
+    <div class="subtitle">V2.3B stability patch: auto-calc flow, Rook defense, explicit Spell Empower.</div>
   </header>
 
   <main>
@@ -873,10 +878,10 @@
     <section class="panel v22b-flow-panel" id="mobileCombatFlowPanel" data-v17-mode="play">
       <div class="cockpit-header">
         <div>
-          <h2>V2.3A Tablet / mobile live combat flow</h2>
+          <h2>V2.3B Tablet / mobile live combat flow</h2>
           <div class="note">Live table mode: choose Actor, Target, Action, then Resolve. This is now the primary tablet/phone workflow; the older Play cockpit is hidden in focused mode but still available with Show full play panels.</div>
         </div>
-        <div class="cockpit-badge">V2.3A Flow</div>
+        <div class="cockpit-badge">V2.3B Flow</div>
       </div>
       <div class="v22b-toolbar">
         <button type="button" id="v22bFocusToggle" class="v22b-focus-toggle">Focused phone mode: on</button>
@@ -958,7 +963,7 @@
 
     <section class="panel v23a-rook-defense-panel" id="rookDefensePanel" data-v17-mode="play">
       <details>
-        <summary>V2.3A Rook defensive / counter shortcuts</summary>
+        <summary>V2.3B Rook defensive / counter shortcuts</summary>
         <div class="note" style="margin-top:10px">Use these when Rook is targeted by an Attack, fails a Conviction check, or is about to Counter. The buttons route into existing enemy attack, enemy spell, card-state, workflow, and chain tools; board legality remains manual.</div>
         <div class="v23a-rook-defense-grid" style="margin-top:12px">
           <div class="soft-card">
@@ -2166,7 +2171,7 @@
     </section>
 
     <section class="panel rewards-panel" id="rewardsLootPanel" data-v17-mode="rewards encounter">
-      <!-- V2.2K: intentionally not shown in Data tab; Data is for backups, QA, and deployment. -->
+      <!-- V2.3B: intentionally not shown in Data tab; Data is for backups, QA, and deployment. -->
       <h2>8. Rewards / loot tracker</h2>
       <div class="note">Track combatant loot draws, loot-token outcomes, party gold, XP, and item notes. This does not replace the physical decks; it keeps the bookkeeping and session history clean.</div>
       <div class="rewards-metrics">
@@ -11949,7 +11954,7 @@ else {
     var h = document.querySelector("#enemyAiAssistantPanel h2");
     if (h) h.textContent = "6. Enemy AI preset library";
     var subtitle = document.querySelector("header .subtitle");
-    if (subtitle) subtitle.textContent = "V2.1D enemy expansion with V2.1C command-combat polish, expanded enemy presets, AI plans, Itlum Shard tracking, and local-first data/export support.";
+    if (subtitle) subtitle.textContent = "V2.3B stability patch: auto-calc flow, Rook defense, explicit Spell Empower.";
   }
 
   function installPresetOptions() {
@@ -14615,9 +14620,9 @@ else {
     document.head.appendChild(style);
   }
   function updateChrome() {
-    document.title = "Middara Combat Helper - V2.1E Eliphie Command Polish";
+    document.title = "Middara Combat Helper - V2.3B Header Stability";
     var subtitle = document.querySelector("header .subtitle");
-    if (subtitle) subtitle.textContent = "V2.1E Eliphie command polish with V2.1D enemy expansion, Bag Full of Organs aura, printed-cost reduction, Eliphie support shortcuts, Gore Shot self-damage routing, and command probability hooks.";
+    if (subtitle) subtitle.textContent = "V2.3B stability patch: auto-calc flow, Rook defense, explicit Spell Empower.";
     var h = byId("commandCombatantPanel") && byId("commandCombatantPanel").querySelector("h2");
     if (h) h.textContent = "V2.1E Command Combatant / Loyal Esper tracker";
     var badge = byId("commandCombatantPanel") && byId("commandCombatantPanel").querySelector(".cockpit-badge");
@@ -15089,7 +15094,7 @@ else {
   }
   function updateChrome() {
     var title = document.querySelector("header .subtitle");
-    if (title && title.textContent.indexOf("V2.1F") < 0) title.textContent = "V2.1F stability / runtime QA with V2.1E Eliphie command polish, V2.1D enemy expansion, full-snapshot diagnostics, and local-first data integrity checks.";
+    if (title && title.textContent.indexOf("V2.1F") < 0) title.textContent = "V2.3B stability patch: auto-calc flow, Rook defense, explicit Spell Empower.";
   }
   installRestoreWrapper();
   ready(function () {
@@ -15552,7 +15557,7 @@ else {
   function updateChrome() {
     try {
       var sub = document.querySelector("header .subtitle");
-      if (sub) sub.textContent = "V2.3A Rook defensive/counter polish with explicit spell Empower control. Live combat flow remains Actor -> Target -> Action -> Dice -> Apply.";
+      if (sub) sub.textContent = "V2.3B stability patch: auto-calc flow, Rook defense, explicit Spell Empower.";
     } catch (err) { }
   }
 
@@ -15587,7 +15592,7 @@ else {
 <script>
 (function () {
   "use strict";
-  var VERSION = "V2.2K";
+  var VERSION = "V2.3B";
   var STORAGE_KEY = "middaraCombatHelperV22BMobileFlow";
   var FOCUS_KEY = "middaraCombatHelperV22BPhoneFocus";
   var renderTimer = null;
@@ -15988,7 +15993,7 @@ else {
 
   function calculateCurrent() {
     var type = state.pendingType || "attack";
-    // V2.2K: if the attack tray/action is active, never let stale spell state steal the Apply button.
+    // V2.3B: if the attack tray/action is active, never let stale spell state steal the Apply button.
     if (document.body.classList.contains("v22b-show-attack")) type = "attack";
     if (document.body.classList.contains("v22b-show-spell") && type !== "attack") type = "spell";
     clearApplied();
@@ -16204,7 +16209,7 @@ else {
   function patchSnapshots() {
     if (window.__middaraV22BSnapshotPatch) return;
     window.__middaraV22BSnapshotPatch = true;
-    function addFlow(snap) { try { snap.version = "V2.2K"; snap.pwaDeploymentVersion = "V2.2K"; snap.mobileFlowState = JSON.parse(JSON.stringify(state)); } catch (err) {} return snap; }
+    function addFlow(snap) { try { snap.version = "V2.3B"; snap.pwaDeploymentVersion = "V2.3B"; snap.mobileFlowState = JSON.parse(JSON.stringify(state)); } catch (err) {} return snap; }
     if (window.middaraDataManagerApi) {
       var api = window.middaraDataManagerApi;
       var oldFull = api.exportFullSnapshot;
@@ -16217,9 +16222,9 @@ else {
   }
 
   function updateChrome() {
-    document.title = "Middara Combat Helper - V2.2K Auto-Calc Live Flow";
+    document.title = "Middara Combat Helper - V2.3B Header Stability";
     var sub = document.querySelector("header .subtitle");
-    if (sub) sub.textContent = "V2.3A Rook defensive/counter polish with explicit spell Empower control. Live combat flow remains Actor -> Target -> Action -> Dice -> Apply.";
+    if (sub) sub.textContent = "V2.3B stability patch: auto-calc flow, Rook defense, explicit Spell Empower.";
   }
 
   function init() {
@@ -16232,7 +16237,7 @@ else {
     render();
     setTimeout(function () { patchSnapshots(); updateChrome(); render(); }, 700);
     setInterval(function () { updateFooter(); }, 1200);
-    setStatus("V2.2K live flow ready. The live flow is now the first Play screen; choose Actor -> Target -> Action -> Resolve.", "ok");
+    setStatus("V2.3B live flow ready. The live flow is now the first Play screen; choose Actor -> Target -> Action -> Resolve.", "ok");
   }
 
   ready(init);
@@ -16244,7 +16249,7 @@ else {
 <script>
 (function () {
   "use strict";
-  var VERSION = "V2.2K";
+  var VERSION = "V2.3B";
   function ready(fn) { if (document.readyState === "loading") document.addEventListener("DOMContentLoaded", fn); else setTimeout(fn, 0); }
   function byId(id) { return document.getElementById(id); }
   function esc(v) { return String(v == null ? "" : v).replace(/[&<>"']/g, function (c) { return {"&":"&amp;","<":"&lt;",">":"&gt;","\"":"&quot;","'":"&#39;"}[c]; }); }
@@ -16371,11 +16376,11 @@ else {
     }, true);
   }
   function updateChrome() {
-    document.title = "Middara Combat Helper - V2.2K Auto-Calc Live Flow";
+    document.title = "Middara Combat Helper - V2.3B Header Stability";
     var sub = document.querySelector("header .subtitle");
-    if (sub) sub.textContent = "V2.2K auto-calc live flow. Mobile/tablet combat flow remains primary, with help and session tools collapsed below it.";
-    var h = document.querySelector("#mobileCombatFlowPanel h2"); if (h) h.textContent = "V2.3A Tablet / mobile live combat flow";
-    var badge = document.querySelector("#mobileCombatFlowPanel .cockpit-badge"); if (badge) badge.textContent = "V2.3A Flow";
+    if (sub) sub.textContent = "V2.3B stability patch: auto-calc flow, Rook defense, explicit Spell Empower.";
+    var h = document.querySelector("#mobileCombatFlowPanel h2"); if (h) h.textContent = "V2.3B Tablet / mobile live combat flow";
+    var badge = document.querySelector("#mobileCombatFlowPanel .cockpit-badge"); if (badge) badge.textContent = "V2.3B Flow";
     var pwa = byId("pwaVersionText"); if (pwa) pwa.textContent = VERSION;
   }
   function tick() {
@@ -16400,7 +16405,7 @@ else {
 <script>
 (function () {
   "use strict";
-  var VERSION = "V2.2K";
+  var VERSION = "V2.3B";
   var CACHE_PREFIX = "middara-helper-";
   function ready(fn) { if (document.readyState === "loading") document.addEventListener("DOMContentLoaded", fn); else fn(); }
   function byId(id) { return document.getElementById(id); }
@@ -16548,11 +16553,11 @@ else {
     });
   }
   function updateChrome() {
-    document.title = "Middara Combat Helper - V2.2K Auto-Calc Live Flow";
+    document.title = "Middara Combat Helper - V2.3B Header Stability";
     var sub = document.querySelector("header .subtitle");
-    if (sub) sub.textContent = "V2.3A Rook defensive/counter polish with explicit spell Empower control. Live combat flow remains Actor -> Target -> Action -> Dice -> Apply.";
+    if (sub) sub.textContent = "V2.3B stability patch: auto-calc flow, Rook defense, explicit Spell Empower.";
     var pwa = byId("pwaVersionText"); if (pwa) pwa.textContent = "V2.2E";
-    var h = document.querySelector("#mobileCombatFlowPanel h2"); if (h) h.textContent = "V2.3A Tablet / mobile live combat flow";
+    var h = document.querySelector("#mobileCombatFlowPanel h2"); if (h) h.textContent = "V2.3B Tablet / mobile live combat flow";
   }
   function bindMobileHelp() {
     var flow = byId("mobileCombatFlowPanel");
@@ -16582,7 +16587,7 @@ else {
 <script id="v22g-table-session-script">
 (function(){
   "use strict";
-  var VERSION = "V2.2K";
+  var VERSION = "V2.3B";
   var CHECK_KEY = "middaraCombatHelperV22GSessionChecklist";
   var RECENT_KEY = "middaraCombatHelperV22GRecentActions";
   function byId(id){ return document.getElementById(id); }
@@ -16695,7 +16700,7 @@ else {
     hub.id = "v22gSessionHub";
     hub.className = "v22g-session-hub";
     hub.innerHTML = '' +
-      '<div class="v22g-session-head"><div><h3>V2.2K live-play readiness</h3><div class="tiny">One-tablet controls for setup, backup, quick undo, and end-of-encounter cleanup. Use this as a safety rail around the main live combat flow.</div></div><div class="v22g-session-badge">Table-ready pass</div></div>' +
+      '<div class="v22g-session-head"><div><h3>V2.3B live-play readiness</h3><div class="tiny">One-tablet controls for setup, backup, quick undo, and end-of-encounter cleanup. Use this as a safety rail around the main live combat flow.</div></div><div class="v22g-session-badge">Table-ready pass</div></div>' +
       '<div id="v22gStatusStrip" class="v22g-status-strip"></div>' +
       '<div id="v22gChecklist" class="v22g-checklist"></div>' +
       '<div class="v22g-session-grid">' +
@@ -16749,11 +16754,11 @@ else {
     else if (action === "rewards") route("rewards", "rewardsLootPanel");
   }
   function init(){
-    document.title = "Middara Combat Helper - V2.2K Auto-Calc Live Flow";
+    document.title = "Middara Combat Helper - V2.3B Header Stability";
     var h = document.querySelector("header h1"); if (h) h.textContent = "Middara Combat Helper";
-    var sub = document.querySelector("header .subtitle"); if (sub) sub.textContent = "V2.2K auto-calc live flow. The four-step combat flow stays first; session hub and guide are collapsed below it.";
-    var flowH = document.querySelector("#mobileCombatFlowPanel h2"); if (flowH) flowH.textContent = "V2.3A Tablet / mobile live combat flow";
-    var badge = document.querySelector("#mobileCombatFlowPanel .cockpit-badge"); if (badge) badge.textContent = "V2.3A Flow";
+    var sub = document.querySelector("header .subtitle"); if (sub) sub.textContent = "V2.3B stability patch: auto-calc flow, Rook defense, explicit Spell Empower.";
+    var flowH = document.querySelector("#mobileCombatFlowPanel h2"); if (flowH) flowH.textContent = "V2.3B Tablet / mobile live combat flow";
+    var badge = document.querySelector("#mobileCombatFlowPanel .cockpit-badge"); if (badge) badge.textContent = "V2.3B Flow";
     injectHub(); addFooterUndo();
     document.addEventListener("click", function(ev){
       var node = ev.target && ev.target.closest ? ev.target.closest("[data-v22g-action]") : null;
@@ -16766,7 +16771,7 @@ else {
     }, true);
     document.addEventListener("click", function(){ setTimeout(function(){ addFooterUndo(); renderStatus(); }, 240); }, true);
     setInterval(renderStatus, 4000);
-    setStatus("V2.2K session hub ready. Rewards are kept on the Rewards/Encounter views; the Data tab is reserved for backups, QA, and deployment tools.", "ok");
+    setStatus("V2.3B session hub ready. Rewards are kept on the Rewards/Encounter views; the Data tab is reserved for backups, QA, and deployment tools.", "ok");
   }
   if (document.readyState === "loading") document.addEventListener("DOMContentLoaded", init);
   else setTimeout(init, 0);
@@ -16777,7 +16782,7 @@ else {
 <script>
 (function(){
   "use strict";
-  var VERSION = "V2.2K";
+  var VERSION = "V2.3B";
   var CHECK_KEY = "middara_v22i_live_checklist";
   var EXPORT_KEY = "middara_v22i_last_snapshot_export";
   var TEST_KEY = "middara_v22i_last_self_test";
@@ -16925,7 +16930,7 @@ else {
     panel.className = "panel v22i-help-panel";
     panel.setAttribute("data-v17-mode", "play");
     panel.innerHTML = '' +
-      '<div class="v22i-help-head"><div><h3>V2.2K live-play guide</h3><div class="note">Use this as the tablet workflow reference during a session. It summarizes the intended route without opening the external guide.</div></div><div class="v22i-badge">Table workflow</div></div>' +
+      '<div class="v22i-help-head"><div><h3>V2.3B live-play guide</h3><div class="note">Use this as the tablet workflow reference during a session. It summarizes the intended route without opening the external guide.</div></div><div class="v22i-badge">Table workflow</div></div>' +
       '<div class="v22i-recipe-grid">' +
         '<div class="v22i-recipe"><strong>Adventurer attack</strong><div><code>Actor -> Target + Attack -> Dice auto-calc -> Apply -> Chain/Next</code></div></div>' +
         '<div class="v22i-recipe"><strong>Adventurer / Esper spell</strong><div><code>Actor -> target -> spell action -> Force/Conviction auto-calc -> Apply</code></div></div>' +
@@ -16963,7 +16968,7 @@ else {
         '<button type="button" data-v22i-action="openData">Open backup / update tools</button>' +
       '</div>' +
       '<div id="v22iSelfTestOutput" class="tiny" style="margin-top:10px">Run the table workflow test to verify the main live-use hooks loaded.</div>' +
-      '<div id="v22iStatus" class="ok-box note" style="margin-top:10px">V2.2K guide ready.</div>';
+      '<div id="v22iStatus" class="ok-box note" style="margin-top:10px">V2.3B guide ready.</div>';
     anchor.insertAdjacentElement("afterend", panel);
     renderChecklist();
   }
@@ -16978,7 +16983,7 @@ else {
     wrap.style.borderRadius = "14px";
     wrap.style.padding = "12px";
     wrap.innerHTML = '' +
-      '<h3 style="margin-top:0">V2.2K save / update status</h3>' +
+      '<h3 style="margin-top:0">V2.3B save / update status</h3>' +
       '<div class="note">Save state is local to this browser and this hosted URL. Use full snapshot export before changing devices, hosts, or GitHub builds.</div>' +
       '<div class="v22i-status-grid">' +
         '<div class="v22i-status-card"><div class="label">Version</div><div class="value" id="v22iVersionValue">-</div></div>' +
@@ -17016,14 +17021,14 @@ else {
     });
   }
   function patchTitles(){
-    document.title = "Middara Combat Helper - V2.2K Auto-Calc Live Flow";
+    document.title = "Middara Combat Helper - V2.3B Header Stability";
     var sub = document.querySelector("header .subtitle");
-    if (sub) sub.textContent = "V2.2K auto-calc live flow. Collapsible session tools, collapsible in-app guide, and live combat flow kept at the top of Play.";
-    var flowH = document.querySelector("#mobileCombatFlowPanel h2"); if (flowH) flowH.textContent = "V2.2K Tablet live combat flow";
-    var badge = document.querySelector("#mobileCombatFlowPanel .cockpit-badge"); if (badge) badge.textContent = "V2.3A Flow";
-    var hubH = document.querySelector("#v22gSessionHub h3"); if (hubH) hubH.textContent = "V2.2K table session hub";
+    if (sub) sub.textContent = "V2.3B stability patch: auto-calc flow, Rook defense, explicit Spell Empower.";
+    var flowH = document.querySelector("#mobileCombatFlowPanel h2"); if (flowH) flowH.textContent = "V2.3B Tablet live combat flow";
+    var badge = document.querySelector("#mobileCombatFlowPanel .cockpit-badge"); if (badge) badge.textContent = "V2.3B Flow";
+    var hubH = document.querySelector("#v22gSessionHub h3"); if (hubH) hubH.textContent = "V2.3B table session hub";
     var hubTiny = document.querySelector("#v22gSessionHub .v22g-session-head .tiny"); if (hubTiny) hubTiny.textContent = "One-tablet controls for setup, backup, quick undo, end-of-encounter cleanup, and live-play readiness.";
-    var pwaSummary = document.querySelector(".v22c-pwa-panel summary"); if (pwaSummary) pwaSummary.textContent = "V2.2K hosted / installable web app";
+    var pwaSummary = document.querySelector(".v22c-pwa-panel summary"); if (pwaSummary) pwaSummary.textContent = "V2.3B hosted / installable web app";
     var pwa = byId("pwaVersionText"); if (pwa) pwa.textContent = VERSION;
   }
   function init(){
@@ -17047,7 +17052,7 @@ else {
 
 
 <style id="v22jLiveFlowPriorityStyles">
-  /* V2.2K Live-flow priority / collapsible session tools */
+  /* V2.3B Live-flow priority / collapsible session tools */
   #mobileCombatFlowPanel.v22j-flow-priority {
     border-color: rgba(163,230,53,.42);
     background: linear-gradient(180deg, rgba(163,230,53,.07), rgba(56,189,248,.035), rgba(255,255,255,.012)), var(--panel);
@@ -17158,7 +17163,7 @@ else {
 <script id="v22jLiveFlowPriorityScript">
 (function(){
   "use strict";
-  var VERSION = "V2.2K";
+  var VERSION = "V2.3B";
   function byId(id){ return document.getElementById(id); }
   function text(el, value){ if (el) el.textContent = value; }
   function hasClass(el, cls){ return el && (" " + el.className + " ").indexOf(" " + cls + " ") >= 0; }
@@ -17173,16 +17178,16 @@ else {
     if (flow && flow.scrollIntoView) flow.scrollIntoView({behavior:"smooth", block:"start"});
   }
   function patchTitles(){
-    document.title = "Middara Combat Helper - V2.2K Auto-Calc Live Flow";
+    document.title = "Middara Combat Helper - V2.3B Header Stability";
     var sub = document.querySelector("header .subtitle");
-    if (sub) sub.textContent = "V2.2K auto-calc live flow. The core Actor -> Target -> Action -> Resolve path stays first; session hub and guide are collapsed below it.";
+    if (sub) sub.textContent = "V2.3B stability patch: auto-calc flow, Rook defense, explicit Spell Empower.";
     var flowH = document.querySelector("#mobileCombatFlowPanel h2");
-    if (flowH) flowH.textContent = "V2.2K Tablet live combat flow";
+    if (flowH) flowH.textContent = "V2.3B Tablet live combat flow";
     var badge = document.querySelector("#mobileCombatFlowPanel .cockpit-badge");
-    if (badge) badge.textContent = "V2.3A Flow";
+    if (badge) badge.textContent = "V2.3B Flow";
     var pwa = byId("pwaVersionText"); if (pwa) pwa.textContent = VERSION;
-    var pwaSummary = document.querySelector(".v22c-pwa-panel summary"); if (pwaSummary) pwaSummary.textContent = "V2.2K hosted / installable web app";
-    var dataH = document.querySelector("#v22iDataStatusPanel h3"); if (dataH) dataH.textContent = "V2.2K save / update status";
+    var pwaSummary = document.querySelector(".v22c-pwa-panel summary"); if (pwaSummary) pwaSummary.textContent = "V2.3B hosted / installable web app";
+    var dataH = document.querySelector("#v22iDataStatusPanel h3"); if (dataH) dataH.textContent = "V2.3B save / update status";
     var hubTitle = document.querySelector("#v22gSessionHub h3"); if (hubTitle) hubTitle.textContent = "Table session hub";
     var guideTitle = document.querySelector("#v22iGuidePanel h3"); if (guideTitle) guideTitle.textContent = "Live-play guide";
   }
@@ -17286,7 +17291,7 @@ else {
 
 
 <style id="v22k-auto-calc-style">
-  /* V2.2K auto-calc streamlined flow */
+  /* V2.3B auto-calc streamlined flow */
   #v22bFooterCalc,
   #mobileCombatFlowPanel .v22b-primary-actions [data-v22b-action="calculateCurrent"] {
     display: none !important;
@@ -17317,7 +17322,7 @@ else {
 <script id="v22k-auto-calc-script">
 (function(){
   "use strict";
-  var VERSION = "V2.2K";
+  var VERSION = "V2.3B";
   var appliedKey = "";
   var appliedLabel = "";
   var autoTimer = null;
@@ -17487,12 +17492,12 @@ else {
     var mo = new MutationObserver(function(){ schedulePaint(); });
     mo.observe(document.body, { childList:true, subtree:true, characterData:true });
     setInterval(paint, 1000);
-    document.title = "Middara Combat Helper - V2.2K Auto-Calc Live Flow";
+    document.title = "Middara Combat Helper - V2.3B Header Stability";
     var sub = document.querySelector("header .subtitle");
-    if (sub) sub.textContent = "V2.2K auto-calc live flow. Dice changes auto-refresh results; the main table path is Actor -> Target -> Action -> Dice -> Apply.";
-    var flowH = document.querySelector("#mobileCombatFlowPanel h2"); if (flowH) flowH.textContent = "V2.2K Tablet live combat flow";
-    var badge = document.querySelector("#mobileCombatFlowPanel .cockpit-badge"); if (badge) badge.textContent = "V2.2K Auto-calc";
-    var pwaSummary = document.querySelector(".v22c-pwa-panel summary"); if (pwaSummary) pwaSummary.textContent = "V2.2K hosted / installable web app";
+    if (sub) sub.textContent = "V2.3B stability patch: auto-calc flow, Rook defense, explicit Spell Empower.";
+    var flowH = document.querySelector("#mobileCombatFlowPanel h2"); if (flowH) flowH.textContent = "V2.3B Tablet live combat flow";
+    var badge = document.querySelector("#mobileCombatFlowPanel .cockpit-badge"); if (badge) badge.textContent = "V2.3B Auto-calc";
+    var pwaSummary = document.querySelector(".v22c-pwa-panel summary"); if (pwaSummary) pwaSummary.textContent = "V2.3B hosted / installable web app";
     setTimeout(function(){ paint(); autoCalcAttack(); }, 350);
   }
   if (document.readyState === "loading") document.addEventListener("DOMContentLoaded", install);
@@ -17514,7 +17519,7 @@ else {
 </style>
 <script id="v23a-rook-defense-spell-empower-script">
 (function(){
-  var VERSION = "V2.3A";
+  var VERSION = "V2.3B";
   function byId(id){ return document.getElementById(id); }
   function setVal(id, value){ var el = byId(id); if (el) el.value = value; }
   function setChecked(id, value){ var el = byId(id); if (el) el.checked = !!value; }
@@ -17597,12 +17602,12 @@ else {
     box.innerHTML = html;
   }
   function updateVersionChrome(){
-    document.title = "Middara Combat Helper - V2.3A Rook Defense + Spell Empower";
-    var sub = document.querySelector("header .subtitle"); if (sub) sub.textContent = "V2.3A Rook defensive/counter polish with explicit spell Empower control. Live combat flow remains Actor -> Target -> Action -> Dice -> Apply.";
-    var flowH = document.querySelector("#mobileCombatFlowPanel h2"); if (flowH) flowH.textContent = "V2.3A Tablet live combat flow";
-    var badge = document.querySelector("#mobileCombatFlowPanel .cockpit-badge"); if (badge) badge.textContent = "V2.3A";
-    var pwaSummary = document.querySelector(".v22c-pwa-panel summary"); if (pwaSummary) pwaSummary.textContent = "V2.3A hosted / installable web app";
-    var dataH = document.querySelector("#v22iDataStatusPanel h3"); if (dataH) dataH.textContent = "V2.3A save / update status";
+    document.title = "Middara Combat Helper - V2.3B Header Stability";
+    var sub = document.querySelector("header .subtitle"); if (sub) sub.textContent = "V2.3B stability patch: auto-calc flow, Rook defense, explicit Spell Empower.";
+    var flowH = document.querySelector("#mobileCombatFlowPanel h2"); if (flowH) flowH.textContent = "V2.3B Tablet live combat flow";
+    var badge = document.querySelector("#mobileCombatFlowPanel .cockpit-badge"); if (badge) badge.textContent = "V2.3B";
+    var pwaSummary = document.querySelector(".v22c-pwa-panel summary"); if (pwaSummary) pwaSummary.textContent = "V2.3B hosted / installable web app";
+    var dataH = document.querySelector("#v22iDataStatusPanel h3"); if (dataH) dataH.textContent = "V2.3B save / update status";
     var v = byId("v22iVersionValue"); if (v) v.textContent = VERSION;
   }
   function syncRookPanelEmpowerToSpell(){
@@ -17623,6 +17628,33 @@ else {
   }
   function ready(fn){ if (document.readyState === "loading") document.addEventListener("DOMContentLoaded", fn); else setTimeout(fn,0); }
   ready(function(){ updateVersionChrome(); bind(); renderSummary(); setTimeout(renderSummary, 600); });
+})();
+</script>
+
+
+<script>
+(function () {
+  "use strict";
+  var TITLE = "Middara Combat Helper - V2.3B Header Stability";
+  var SUBTITLE = "V2.3B stability patch: auto-calc flow, Rook defense, explicit Spell Empower.";
+  function stabilizeHeader() {
+    try {
+      if (document.title !== TITLE) document.title = TITLE;
+      var sub = document.querySelector("header .subtitle");
+      if (sub && sub.textContent !== SUBTITLE) sub.textContent = SUBTITLE;
+      var flowH = document.querySelector("#mobileCombatFlowPanel h2");
+      if (flowH && flowH.textContent.indexOf("V2.3B") < 0) flowH.textContent = "V2.3B Tablet live combat flow";
+      var badge = document.querySelector("#mobileCombatFlowPanel .cockpit-badge");
+      if (badge && badge.textContent.indexOf("V2.3B") < 0) badge.textContent = "V2.3B";
+      var pwaSummary = document.querySelector(".v22c-pwa-panel summary");
+      if (pwaSummary && pwaSummary.textContent.indexOf("V2.3B") < 0) pwaSummary.textContent = "V2.3B hosted / installable web app";
+    } catch (err) {}
+  }
+  if (document.readyState === "loading") document.addEventListener("DOMContentLoaded", stabilizeHeader);
+  else stabilizeHeader();
+  setTimeout(stabilizeHeader, 250);
+  setTimeout(stabilizeHeader, 1000);
+  setInterval(stabilizeHeader, 3000);
 })();
 </script>
 
