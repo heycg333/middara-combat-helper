@@ -1,2 +1,2 @@
-Middara Combat Helper V2.2F - Tablet live-play flow polish
+Middara Combat Helper V2.2G - Table session hub
 Built for GitHub Pages / PWA deployment.
