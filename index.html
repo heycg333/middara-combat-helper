@@ -3,7 +3,7 @@
 <head>
   <meta charset="utf-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1" />
-  <title>Middara Combat Helper - V2.2I Live Play Readiness</title>
+  <title>Middara Combat Helper - V2.2J Live Play Readiness</title>
   <style>
     :root {
       --bg: #101827;
@@ -650,7 +650,7 @@
     }
 
 
-    /* V2.2I Live-play readiness / in-app guide sync */
+    /* V2.2J Live-play readiness / in-app guide sync */
     .v22i-help-panel {
       border-color: rgba(163,230,53,.32);
       background: linear-gradient(180deg, rgba(163,230,53,.08), rgba(255,255,255,.012)), var(--panel);
@@ -700,7 +700,7 @@
   <link rel="apple-touch-icon" sizes="180x180" href="./icons/apple-touch-icon.png" />
 
 <style id="v22g-table-session-style">
-  /* V2.2I live-play readiness / one-tablet live-play safety layer */
+  /* V2.2J live-play readiness / one-tablet live-play safety layer */
   .v22g-session-hub {
     margin-top: 12px;
     border: 1px solid rgba(163,230,53,.28);
@@ -786,7 +786,7 @@
 <body>
   <header>
     <h1>Middara Combat Helper</h1>
-    <div class="subtitle">V2.2I live-play readiness. Tablet-first session hub, in-app workflow guide, table self-test, clearer save/update status, and cleaned legacy labels.</div>
+    <div class="subtitle">V2.2J live-flow priority. Collapsible session hub and guide keep the core Actor -> Target -> Action -> Resolve path visible.</div>
   </header>
 
   <main>
@@ -873,10 +873,10 @@
     <section class="panel v22b-flow-panel" id="mobileCombatFlowPanel" data-v17-mode="play">
       <div class="cockpit-header">
         <div>
-          <h2>V2.2I Tablet / mobile live combat flow</h2>
+          <h2>V2.2J Tablet / mobile live combat flow</h2>
           <div class="note">Live table mode: choose Actor, Target, Action, then Resolve. This is now the primary tablet/phone workflow; the older Play cockpit is hidden in focused mode but still available with Show full play panels.</div>
         </div>
-        <div class="cockpit-badge">V2.2I Flow</div>
+        <div class="cockpit-badge">V2.2J Flow</div>
       </div>
       <div class="v22b-toolbar">
         <button type="button" id="v22bFocusToggle" class="v22b-focus-toggle">Focused phone mode: on</button>
@@ -2123,7 +2123,7 @@
     </section>
 
     <section class="panel rewards-panel" id="rewardsLootPanel" data-v17-mode="rewards encounter">
-      <!-- V2.2I: intentionally not shown in Data tab; Data is for backups, QA, and deployment. -->
+      <!-- V2.2J: intentionally not shown in Data tab; Data is for backups, QA, and deployment. -->
       <h2>8. Rewards / loot tracker</h2>
       <div class="note">Track combatant loot draws, loot-token outcomes, party gold, XP, and item notes. This does not replace the physical decks; it keeps the bookkeeping and session history clean.</div>
       <div class="rewards-metrics">
@@ -15465,7 +15465,7 @@ else {
   function updateChrome() {
     try {
       var sub = document.querySelector("header .subtitle");
-      if (sub) sub.textContent = "V2.2I live-play readiness. Tablet-first session hub, in-app workflow guide, table self-test, clearer save/update status, and cleaned legacy labels.";
+      if (sub) sub.textContent = "V2.2J live-flow priority. Collapsible session hub and guide keep the core Actor -> Target -> Action -> Resolve path visible.";
     } catch (err) { }
   }
 
@@ -15500,7 +15500,7 @@ else {
 <script>
 (function () {
   "use strict";
-  var VERSION = "V2.2I";
+  var VERSION = "V2.2J";
   var STORAGE_KEY = "middaraCombatHelperV22BMobileFlow";
   var FOCUS_KEY = "middaraCombatHelperV22BPhoneFocus";
   var renderTimer = null;
@@ -15901,7 +15901,7 @@ else {
 
   function calculateCurrent() {
     var type = state.pendingType || "attack";
-    // V2.2I: if the attack tray/action is active, never let stale spell state steal the Apply button.
+    // V2.2J: if the attack tray/action is active, never let stale spell state steal the Apply button.
     if (document.body.classList.contains("v22b-show-attack")) type = "attack";
     if (document.body.classList.contains("v22b-show-spell") && type !== "attack") type = "spell";
     clearApplied();
@@ -16117,7 +16117,7 @@ else {
   function patchSnapshots() {
     if (window.__middaraV22BSnapshotPatch) return;
     window.__middaraV22BSnapshotPatch = true;
-    function addFlow(snap) { try { snap.version = "V2.2I"; snap.pwaDeploymentVersion = "V2.2I"; snap.mobileFlowState = JSON.parse(JSON.stringify(state)); } catch (err) {} return snap; }
+    function addFlow(snap) { try { snap.version = "V2.2J"; snap.pwaDeploymentVersion = "V2.2J"; snap.mobileFlowState = JSON.parse(JSON.stringify(state)); } catch (err) {} return snap; }
     if (window.middaraDataManagerApi) {
       var api = window.middaraDataManagerApi;
       var oldFull = api.exportFullSnapshot;
@@ -16130,9 +16130,9 @@ else {
   }
 
   function updateChrome() {
-    document.title = "Middara Combat Helper - V2.2I Live Play Readiness";
+    document.title = "Middara Combat Helper - V2.2J Live Play Readiness";
     var sub = document.querySelector("header .subtitle");
-    if (sub) sub.textContent = "V2.2I live-play readiness. Tablet-first session hub, in-app workflow guide, table self-test, clearer save/update status, and cleaned legacy labels.";
+    if (sub) sub.textContent = "V2.2J live-flow priority. Collapsible session hub and guide keep the core Actor -> Target -> Action -> Resolve path visible.";
   }
 
   function init() {
@@ -16145,7 +16145,7 @@ else {
     render();
     setTimeout(function () { patchSnapshots(); updateChrome(); render(); }, 700);
     setInterval(function () { updateFooter(); }, 1200);
-    setStatus("V2.2I live flow ready. The live flow is now the first Play screen; choose Actor -> Target -> Action -> Resolve.", "ok");
+    setStatus("V2.2J live flow ready. The live flow is now the first Play screen; choose Actor -> Target -> Action -> Resolve.", "ok");
   }
 
   ready(init);
@@ -16157,7 +16157,7 @@ else {
 <script>
 (function () {
   "use strict";
-  var VERSION = "V2.2I";
+  var VERSION = "V2.2J";
   function ready(fn) { if (document.readyState === "loading") document.addEventListener("DOMContentLoaded", fn); else setTimeout(fn, 0); }
   function byId(id) { return document.getElementById(id); }
   function esc(v) { return String(v == null ? "" : v).replace(/[&<>"']/g, function (c) { return {"&":"&amp;","<":"&lt;",">":"&gt;","\"":"&quot;","'":"&#39;"}[c]; }); }
@@ -16284,11 +16284,11 @@ else {
     }, true);
   }
   function updateChrome() {
-    document.title = "Middara Combat Helper - V2.2I Live Play Readiness";
+    document.title = "Middara Combat Helper - V2.2J Live Play Readiness";
     var sub = document.querySelector("header .subtitle");
-    if (sub) sub.textContent = "V2.2I live-play readiness. Mobile/tablet flow remains the primary screen; quick guide, save status, and table workflow test are built in.";
-    var h = document.querySelector("#mobileCombatFlowPanel h2"); if (h) h.textContent = "V2.2I Tablet / mobile live combat flow";
-    var badge = document.querySelector("#mobileCombatFlowPanel .cockpit-badge"); if (badge) badge.textContent = "V2.2I Flow";
+    if (sub) sub.textContent = "V2.2J live-flow priority. Mobile/tablet combat flow remains primary, with help and session tools collapsed below it.";
+    var h = document.querySelector("#mobileCombatFlowPanel h2"); if (h) h.textContent = "V2.2J Tablet / mobile live combat flow";
+    var badge = document.querySelector("#mobileCombatFlowPanel .cockpit-badge"); if (badge) badge.textContent = "V2.2J Flow";
     var pwa = byId("pwaVersionText"); if (pwa) pwa.textContent = VERSION;
   }
   function tick() {
@@ -16313,7 +16313,7 @@ else {
 <script>
 (function () {
   "use strict";
-  var VERSION = "V2.2I";
+  var VERSION = "V2.2J";
   var CACHE_PREFIX = "middara-helper-";
   function ready(fn) { if (document.readyState === "loading") document.addEventListener("DOMContentLoaded", fn); else fn(); }
   function byId(id) { return document.getElementById(id); }
@@ -16461,11 +16461,11 @@ else {
     });
   }
   function updateChrome() {
-    document.title = "Middara Combat Helper - V2.2I Live Play Readiness";
+    document.title = "Middara Combat Helper - V2.2J Live Play Readiness";
     var sub = document.querySelector("header .subtitle");
-    if (sub) sub.textContent = "V2.2I live-play readiness. Tablet-first session hub, in-app workflow guide, table self-test, clearer save/update status, and cleaned legacy labels.";
+    if (sub) sub.textContent = "V2.2J live-flow priority. Collapsible session hub and guide keep the core Actor -> Target -> Action -> Resolve path visible.";
     var pwa = byId("pwaVersionText"); if (pwa) pwa.textContent = "V2.2E";
-    var h = document.querySelector("#mobileCombatFlowPanel h2"); if (h) h.textContent = "V2.2I Tablet / mobile live combat flow";
+    var h = document.querySelector("#mobileCombatFlowPanel h2"); if (h) h.textContent = "V2.2J Tablet / mobile live combat flow";
   }
   function bindMobileHelp() {
     var flow = byId("mobileCombatFlowPanel");
@@ -16495,7 +16495,7 @@ else {
 <script id="v22g-table-session-script">
 (function(){
   "use strict";
-  var VERSION = "V2.2I";
+  var VERSION = "V2.2J";
   var CHECK_KEY = "middaraCombatHelperV22GSessionChecklist";
   var RECENT_KEY = "middaraCombatHelperV22GRecentActions";
   function byId(id){ return document.getElementById(id); }
@@ -16608,7 +16608,7 @@ else {
     hub.id = "v22gSessionHub";
     hub.className = "v22g-session-hub";
     hub.innerHTML = '' +
-      '<div class="v22g-session-head"><div><h3>V2.2I live-play readiness</h3><div class="tiny">One-tablet controls for setup, backup, quick undo, and end-of-encounter cleanup. Use this as a safety rail around the main live combat flow.</div></div><div class="v22g-session-badge">Table-ready pass</div></div>' +
+      '<div class="v22g-session-head"><div><h3>V2.2J live-play readiness</h3><div class="tiny">One-tablet controls for setup, backup, quick undo, and end-of-encounter cleanup. Use this as a safety rail around the main live combat flow.</div></div><div class="v22g-session-badge">Table-ready pass</div></div>' +
       '<div id="v22gStatusStrip" class="v22g-status-strip"></div>' +
       '<div id="v22gChecklist" class="v22g-checklist"></div>' +
       '<div class="v22g-session-grid">' +
@@ -16662,11 +16662,11 @@ else {
     else if (action === "rewards") route("rewards", "rewardsLootPanel");
   }
   function init(){
-    document.title = "Middara Combat Helper - V2.2I Live Play Readiness";
+    document.title = "Middara Combat Helper - V2.2J Live Play Readiness";
     var h = document.querySelector("header h1"); if (h) h.textContent = "Middara Combat Helper";
-    var sub = document.querySelector("header .subtitle"); if (sub) sub.textContent = "V2.2I live-play readiness. Tablet-first live flow with setup, backup, quick undo, reward scan, in-app guide, and save/update clarity.";
-    var flowH = document.querySelector("#mobileCombatFlowPanel h2"); if (flowH) flowH.textContent = "V2.2I Tablet / mobile live combat flow";
-    var badge = document.querySelector("#mobileCombatFlowPanel .cockpit-badge"); if (badge) badge.textContent = "V2.2I Flow";
+    var sub = document.querySelector("header .subtitle"); if (sub) sub.textContent = "V2.2J live-flow priority. The four-step combat flow stays first; session hub and guide are collapsed below it.";
+    var flowH = document.querySelector("#mobileCombatFlowPanel h2"); if (flowH) flowH.textContent = "V2.2J Tablet / mobile live combat flow";
+    var badge = document.querySelector("#mobileCombatFlowPanel .cockpit-badge"); if (badge) badge.textContent = "V2.2J Flow";
     injectHub(); addFooterUndo();
     document.addEventListener("click", function(ev){
       var node = ev.target && ev.target.closest ? ev.target.closest("[data-v22g-action]") : null;
@@ -16679,7 +16679,7 @@ else {
     }, true);
     document.addEventListener("click", function(){ setTimeout(function(){ addFooterUndo(); renderStatus(); }, 240); }, true);
     setInterval(renderStatus, 4000);
-    setStatus("V2.2I session hub ready. Rewards are kept on the Rewards/Encounter views; the Data tab is reserved for backups, QA, and deployment tools.", "ok");
+    setStatus("V2.2J session hub ready. Rewards are kept on the Rewards/Encounter views; the Data tab is reserved for backups, QA, and deployment tools.", "ok");
   }
   if (document.readyState === "loading") document.addEventListener("DOMContentLoaded", init);
   else setTimeout(init, 0);
@@ -16690,7 +16690,7 @@ else {
 <script>
 (function(){
   "use strict";
-  var VERSION = "V2.2I";
+  var VERSION = "V2.2J";
   var CHECK_KEY = "middara_v22i_live_checklist";
   var EXPORT_KEY = "middara_v22i_last_snapshot_export";
   var TEST_KEY = "middara_v22i_last_self_test";
@@ -16838,7 +16838,7 @@ else {
     panel.className = "panel v22i-help-panel";
     panel.setAttribute("data-v17-mode", "play");
     panel.innerHTML = '' +
-      '<div class="v22i-help-head"><div><h3>V2.2I live-play guide</h3><div class="note">Use this as the tablet workflow reference during a session. It summarizes the intended route without opening the external guide.</div></div><div class="v22i-badge">Table workflow</div></div>' +
+      '<div class="v22i-help-head"><div><h3>V2.2J live-play guide</h3><div class="note">Use this as the tablet workflow reference during a session. It summarizes the intended route without opening the external guide.</div></div><div class="v22i-badge">Table workflow</div></div>' +
       '<div class="v22i-recipe-grid">' +
         '<div class="v22i-recipe"><strong>Adventurer attack</strong><div><code>Actor -> Target + Attack -> Dice -> Calculate -> Apply -> Chain/Next</code></div></div>' +
         '<div class="v22i-recipe"><strong>Adventurer / Esper spell</strong><div><code>Actor -> target -> spell action -> Force/Conviction -> Calculate -> Apply</code></div></div>' +
@@ -16876,7 +16876,7 @@ else {
         '<button type="button" data-v22i-action="openData">Open backup / update tools</button>' +
       '</div>' +
       '<div id="v22iSelfTestOutput" class="tiny" style="margin-top:10px">Run the table workflow test to verify the main live-use hooks loaded.</div>' +
-      '<div id="v22iStatus" class="ok-box note" style="margin-top:10px">V2.2I guide ready.</div>';
+      '<div id="v22iStatus" class="ok-box note" style="margin-top:10px">V2.2J guide ready.</div>';
     anchor.insertAdjacentElement("afterend", panel);
     renderChecklist();
   }
@@ -16891,7 +16891,7 @@ else {
     wrap.style.borderRadius = "14px";
     wrap.style.padding = "12px";
     wrap.innerHTML = '' +
-      '<h3 style="margin-top:0">V2.2I save / update status</h3>' +
+      '<h3 style="margin-top:0">V2.2J save / update status</h3>' +
       '<div class="note">Save state is local to this browser and this hosted URL. Use full snapshot export before changing devices, hosts, or GitHub builds.</div>' +
       '<div class="v22i-status-grid">' +
         '<div class="v22i-status-card"><div class="label">Version</div><div class="value" id="v22iVersionValue">-</div></div>' +
@@ -16929,14 +16929,14 @@ else {
     });
   }
   function patchTitles(){
-    document.title = "Middara Combat Helper - V2.2I Live Play Readiness";
+    document.title = "Middara Combat Helper - V2.2J Live Play Readiness";
     var sub = document.querySelector("header .subtitle");
-    if (sub) sub.textContent = "V2.2I live-play readiness. Tablet-first workflow guide, table self-test, clearer save/update status, and cleaned legacy labels.";
-    var flowH = document.querySelector("#mobileCombatFlowPanel h2"); if (flowH) flowH.textContent = "V2.2I Tablet live combat flow";
-    var badge = document.querySelector("#mobileCombatFlowPanel .cockpit-badge"); if (badge) badge.textContent = "V2.2I Flow";
-    var hubH = document.querySelector("#v22gSessionHub h3"); if (hubH) hubH.textContent = "V2.2I table session hub";
+    if (sub) sub.textContent = "V2.2J live-flow priority. Collapsible session tools, collapsible in-app guide, and live combat flow kept at the top of Play.";
+    var flowH = document.querySelector("#mobileCombatFlowPanel h2"); if (flowH) flowH.textContent = "V2.2J Tablet live combat flow";
+    var badge = document.querySelector("#mobileCombatFlowPanel .cockpit-badge"); if (badge) badge.textContent = "V2.2J Flow";
+    var hubH = document.querySelector("#v22gSessionHub h3"); if (hubH) hubH.textContent = "V2.2J table session hub";
     var hubTiny = document.querySelector("#v22gSessionHub .v22g-session-head .tiny"); if (hubTiny) hubTiny.textContent = "One-tablet controls for setup, backup, quick undo, end-of-encounter cleanup, and live-play readiness.";
-    var pwaSummary = document.querySelector(".v22c-pwa-panel summary"); if (pwaSummary) pwaSummary.textContent = "V2.2I hosted / installable web app";
+    var pwaSummary = document.querySelector(".v22c-pwa-panel summary"); if (pwaSummary) pwaSummary.textContent = "V2.2J hosted / installable web app";
     var pwa = byId("pwaVersionText"); if (pwa) pwa.textContent = VERSION;
   }
   function init(){
@@ -16951,6 +16951,245 @@ else {
     }, true);
     setInterval(function(){ patchTitles(); renderVersionStatus(); patchExportButtons(); }, 5000);
     setTimeout(function(){ patchTitles(); renderVersionStatus(); }, 600);
+  }
+  if (document.readyState === "loading") document.addEventListener("DOMContentLoaded", init);
+  else setTimeout(init, 0);
+})();
+</script>
+
+
+
+<style id="v22jLiveFlowPriorityStyles">
+  /* V2.2J Live-flow priority / collapsible session tools */
+  #mobileCombatFlowPanel.v22j-flow-priority {
+    border-color: rgba(163,230,53,.42);
+    background: linear-gradient(180deg, rgba(163,230,53,.07), rgba(56,189,248,.035), rgba(255,255,255,.012)), var(--panel);
+  }
+  #mobileCombatFlowPanel.v22j-flow-priority .cockpit-header {
+    margin-bottom: 8px;
+  }
+  #mobileCombatFlowPanel.v22j-flow-priority .v22f-live-note {
+    margin: 8px 0;
+  }
+  #v22jHelperDock {
+    display: grid;
+    gap: 10px;
+    margin-top: 12px;
+  }
+  .v22j-collapsible-wrap {
+    border: 1px solid rgba(148,163,184,.30);
+    border-radius: 14px;
+    background: rgba(15,23,42,.42);
+    overflow: hidden;
+  }
+  .v22j-collapsible-wrap > summary {
+    list-style: none;
+    cursor: pointer;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 12px;
+    padding: 12px 14px;
+    color: var(--text);
+    font-weight: 900;
+    border-bottom: 1px solid transparent;
+  }
+  .v22j-collapsible-wrap > summary::-webkit-details-marker { display: none; }
+  .v22j-collapsible-title {
+    display: grid;
+    gap: 2px;
+    min-width: 0;
+  }
+  .v22j-collapsible-title span:first-child {
+    overflow-wrap: anywhere;
+  }
+  .v22j-collapsible-title span:last-child {
+    font-size: .8rem;
+    color: var(--dim);
+    font-weight: 600;
+  }
+  .v22j-collapsible-chevron {
+    flex: 0 0 auto;
+    color: var(--accent2);
+    font-size: .78rem;
+    text-transform: uppercase;
+    letter-spacing: .06em;
+    border: 1px solid rgba(56,189,248,.35);
+    border-radius: 999px;
+    padding: 5px 8px;
+    background: rgba(56,189,248,.08);
+  }
+  .v22j-collapsible-wrap[open] > summary {
+    border-bottom-color: rgba(148,163,184,.20);
+  }
+  .v22j-collapsible-wrap[open] .v22j-collapsible-chevron::before { content: "Hide "; }
+  .v22j-collapsible-wrap:not([open]) .v22j-collapsible-chevron::before { content: "Show "; }
+  .v22j-collapsible-wrap > #v22gSessionHub,
+  .v22j-collapsible-wrap > #v22iGuidePanel {
+    margin: 0;
+    border: 0;
+    border-radius: 0;
+    box-shadow: none;
+    background: transparent;
+  }
+  .v22j-collapsible-wrap > #v22iGuidePanel.panel {
+    padding: 14px;
+  }
+  .v22j-collapsible-wrap > #v22gSessionHub {
+    padding: 14px;
+  }
+  .v22j-flow-anchor-note {
+    border: 1px solid rgba(163,230,53,.35);
+    background: rgba(163,230,53,.075);
+    border-radius: 12px;
+    padding: 9px 11px;
+    color: var(--muted);
+    margin: 8px 0 10px;
+    font-size: .88rem;
+  }
+  .v22j-flow-anchor-note strong { color: var(--text); }
+  .v22j-flow-jump-row {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 8px;
+    margin: 8px 0 0;
+  }
+  .v22j-flow-jump-row button {
+    width: auto;
+    min-width: auto;
+    padding: 7px 10px;
+    font-size: .84rem;
+  }
+  @media (max-width: 700px) {
+    #mobileCombatFlowPanel.v22j-flow-priority { padding: 12px; }
+    #mobileCombatFlowPanel.v22j-flow-priority .v22b-toolbar { gap: 6px; }
+    .v22j-collapsible-wrap > summary { padding: 11px 12px; align-items: flex-start; }
+    .v22j-collapsible-chevron { font-size: .72rem; }
+  }
+</style>
+
+<script id="v22jLiveFlowPriorityScript">
+(function(){
+  "use strict";
+  var VERSION = "V2.2J";
+  function byId(id){ return document.getElementById(id); }
+  function text(el, value){ if (el) el.textContent = value; }
+  function hasClass(el, cls){ return el && (" " + el.className + " ").indexOf(" " + cls + " ") >= 0; }
+  function childrenWithClass(parent, cls){
+    if (!parent) return [];
+    var out = [];
+    for (var i = 0; i < parent.children.length; i++) if (hasClass(parent.children[i], cls)) out.push(parent.children[i]);
+    return out;
+  }
+  function scrollToFlow(){
+    var flow = byId("mobileCombatFlowPanel");
+    if (flow && flow.scrollIntoView) flow.scrollIntoView({behavior:"smooth", block:"start"});
+  }
+  function patchTitles(){
+    document.title = "Middara Combat Helper - V2.2J Live Flow Priority";
+    var sub = document.querySelector("header .subtitle");
+    if (sub) sub.textContent = "V2.2J live-flow priority. The core Actor -> Target -> Action -> Resolve path stays first; session hub and guide are collapsed below it.";
+    var flowH = document.querySelector("#mobileCombatFlowPanel h2");
+    if (flowH) flowH.textContent = "V2.2J Tablet live combat flow";
+    var badge = document.querySelector("#mobileCombatFlowPanel .cockpit-badge");
+    if (badge) badge.textContent = "V2.2J Flow";
+    var pwa = byId("pwaVersionText"); if (pwa) pwa.textContent = VERSION;
+    var pwaSummary = document.querySelector(".v22c-pwa-panel summary"); if (pwaSummary) pwaSummary.textContent = "V2.2J hosted / installable web app";
+    var dataH = document.querySelector("#v22iDataStatusPanel h3"); if (dataH) dataH.textContent = "V2.2J save / update status";
+    var hubTitle = document.querySelector("#v22gSessionHub h3"); if (hubTitle) hubTitle.textContent = "Table session hub";
+    var guideTitle = document.querySelector("#v22iGuidePanel h3"); if (guideTitle) guideTitle.textContent = "Live-play guide";
+  }
+  function promoteFlow(){
+    var flow = byId("mobileCombatFlowPanel");
+    var nav = byId("v17NavWrap");
+    if (!flow || !nav) return;
+    flow.classList.add("v22j-flow-priority");
+    // Keep the live combat flow as the first substantial Play panel.
+    if (nav.nextElementSibling !== flow) nav.parentNode.insertBefore(flow, nav.nextElementSibling);
+    if (!byId("v22jFlowAnchorNote")) {
+      var note = document.createElement("div");
+      note.id = "v22jFlowAnchorNote";
+      note.className = "v22j-flow-anchor-note";
+      note.innerHTML = "<strong>Primary table flow:</strong> use the four cards below first. Session tools and the guide are collapsed after the flow so they do not bury Actor / Target / Action / Resolve." +
+        "<div class='v22j-flow-jump-row'><button type='button' data-v22j-jump='actor'>Actor</button><button type='button' data-v22j-jump='target'>Target drawer</button><button type='button' data-v22j-jump='action'>Action</button><button type='button' data-v22j-jump='resolve'>Resolve / apply</button></div>";
+      var stateStrip = byId("v22bStateStrip");
+      if (stateStrip) stateStrip.insertAdjacentElement("afterend", note);
+      else flow.insertBefore(note, flow.firstChild);
+    }
+  }
+  function ensureDock(){
+    var flow = byId("mobileCombatFlowPanel");
+    if (!flow) return null;
+    var dock = byId("v22jHelperDock");
+    if (!dock) {
+      dock = document.createElement("div");
+      dock.id = "v22jHelperDock";
+      var grids = childrenWithClass(flow, "v22b-flow-grid");
+      var lastGrid = grids.length ? grids[grids.length - 1] : null;
+      if (lastGrid && lastGrid.nextSibling) flow.insertBefore(dock, lastGrid.nextSibling);
+      else flow.appendChild(dock);
+    }
+    return dock;
+  }
+  function makeSummary(title, subtitle){
+    var summary = document.createElement("summary");
+    summary.innerHTML = "<span class='v22j-collapsible-title'><span>" + title + "</span><span>" + subtitle + "</span></span><span class='v22j-collapsible-chevron'>details</span>";
+    return summary;
+  }
+  function wrapInDetails(el, wrapperId, title, subtitle, openByDefault){
+    if (!el) return null;
+    var wrapper = byId(wrapperId);
+    if (wrapper && wrapper.tagName && wrapper.tagName.toLowerCase() === "details") {
+      if (el.parentNode !== wrapper) wrapper.appendChild(el);
+      return wrapper;
+    }
+    wrapper = document.createElement("details");
+    wrapper.id = wrapperId;
+    wrapper.className = "v22j-collapsible-wrap";
+    wrapper.setAttribute("data-v17-mode", "play");
+    if (openByDefault) wrapper.open = true;
+    wrapper.appendChild(makeSummary(title, subtitle));
+    if (el.parentNode) el.parentNode.insertBefore(wrapper, el);
+    wrapper.appendChild(el);
+    return wrapper;
+  }
+  function collapseHelpers(){
+    var dock = ensureDock();
+    if (!dock) return;
+    var hub = byId("v22gSessionHub");
+    var guide = byId("v22iGuidePanel");
+    var hubWrap = wrapInDetails(hub, "v22jSessionHubDetails", "Table session hub", "Setup, snapshot, Undo, rewards, and cleanup shortcuts", false);
+    var guideWrap = wrapInDetails(guide, "v22jLiveGuideDetails", "Live-play guide and checklist", "Quick recipes, table workflow test, and session checklist", false);
+    if (hubWrap && hubWrap.parentNode !== dock) dock.appendChild(hubWrap);
+    if (guideWrap && guideWrap.parentNode !== dock) dock.appendChild(guideWrap);
+  }
+  function attachClicks(){
+    if (document.documentElement.getAttribute("data-v22j-clicks")) return;
+    document.documentElement.setAttribute("data-v22j-clicks", "1");
+    document.addEventListener("click", function(ev){
+      var jump = ev.target && ev.target.closest ? ev.target.closest("[data-v22j-jump]") : null;
+      if (jump) {
+        ev.preventDefault();
+        var key = jump.getAttribute("data-v22j-jump");
+        var map = {actor:"v22bActorStep", target:"v22bTargetStep", action:"v22bActionStep", resolve:"v22bResolveStep"};
+        var el = byId(map[key]);
+        if (el && el.scrollIntoView) el.scrollIntoView({behavior:"smooth", block:"start"});
+        return;
+      }
+      var modeBtn = ev.target && ev.target.closest ? ev.target.closest('[data-v17-mode-button="play"]') : null;
+      if (modeBtn) setTimeout(scrollToFlow, 120);
+    }, true);
+  }
+  function initOnce(){
+    patchTitles();
+    promoteFlow();
+    collapseHelpers();
+    attachClicks();
+  }
+  function init(){
+    initOnce();
+    [120, 400, 900, 1600, 2800].forEach(function(ms){ setTimeout(initOnce, ms); });
+    setInterval(initOnce, 4500);
   }
   if (document.readyState === "loading") document.addEventListener("DOMContentLoaded", init);
   else setTimeout(init, 0);
