@@ -1,2 +1,2 @@
-Middara Combat Helper V2.2E Mobile Flow Target/Apply Polish
-Hosted/PWA package with Remi icon.
+Middara Combat Helper V2.2F - Tablet live-play flow polish
+Built for GitHub Pages / PWA deployment.

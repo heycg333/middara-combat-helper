@@ -1,4 +1,4 @@
-# Middara Combat Helper V2.2E Hosted / PWA Package
+# Middara Combat Helper V2.2F Hosted / PWA Package
 
 This folder is ready to upload to GitHub Pages, Netlify, Cloudflare Pages, or another static host.
 
@@ -45,7 +45,7 @@ Data > Export full snapshot > Download JSON
 After deploying a new version, open the app and use:
 
 ```text
-Data > V2.2E hosted / installable web app > Update app cache
+Data > V2.2F hosted / installable web app > Update app cache
 ```
 
 Then reload the app if the old version is still visible.
@@ -61,17 +61,22 @@ After the first successful hosted load, the service worker caches the app shell 
 
 ## Remi app icon refresh
 
-This package uses the supplied square Remi artwork for the Home Screen / PWA icon files. Upload the extracted `icons/` folder together with `index.html`, `manifest.webmanifest`, and `service-worker.js` so Safari and GitHub Pages can pick up the new icon set. If your phone still shows the old icon, remove the old Home Screen shortcut, open the site in Safari, run **Data -> V2.2E hosted / installable web app -> Update app cache**, then add it to the Home Screen again.
+This package uses the supplied square Remi artwork for the Home Screen / PWA icon files. Upload the extracted `icons/` folder together with `index.html`, `manifest.webmanifest`, and `service-worker.js` so Safari and GitHub Pages can pick up the new icon set. If your phone still shows the old icon, remove the old Home Screen shortcut, open the site in Safari, run **Data -> V2.2F hosted / installable web app -> Update app cache**, then add it to the Home Screen again.
 
 
-## V2.2E notes
+## V2.2F notes
 
 This build keeps the hosted/PWA deployment package and adds mobile/tablet target/action/apply flow polish: attack/spell roll trays are moved next to the Mobile combat flow, selected actions no longer fall back to stale spell results, Apply labels say what they will apply, and Eliphie support actions now prompt for a support target before firing.
 
 
-## V2.2E notes
+## V2.2F notes
 
 - Mobile flow is now ordered Actor -> Target -> Action -> Resolve.
 - Attack/Spell actions wait for an encounter target before jumping to the roll tray.
 - The sticky Apply button stays locked to the selected action and changes to Applied ✓ after use.
 - Eliphie support actions require an explicitly selected support target from the Target drawer before applying.
+
+
+## V2.2F notes
+
+V2.2F makes the Mobile/Tablet Combat Flow the first Play screen, hides the older Play cockpit in focused mode, adds quick encounter enemy setup from the target drawer, adds a Target + Attack shortcut, strengthens selected-target visibility, and adds confirmation before Command support actions apply to a support target.

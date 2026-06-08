@@ -3,7 +3,7 @@
 <head>
   <meta charset="utf-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1" />
-  <title>Middara Combat Helper - V2.2E Mobile Flow Target/Apply Polish</title>
+  <title>Middara Combat Helper - V2.2F Tablet Live-Play Flow Polish</title>
   <style>
     :root {
       --bg: #101827;
@@ -667,7 +667,7 @@
 <body>
   <header>
     <h1>Middara Combat Helper</h1>
-    <div class="subtitle">V2.2E mobile/tablet flow polish. Reorders live play as Actor -> Target -> Action -> Resolve, fixes stale spell/attack Apply state, and adds applied-result confidence feedback.</div>
+    <div class="subtitle">V2.2F tablet-first live-play flow polish. Makes the live flow the first Play screen, hides the older cockpit in focused mode, adds quick encounter target setup, and improves tablet handoff visibility.</div>
   </header>
 
   <main>
@@ -754,10 +754,10 @@
     <section class="panel v22b-flow-panel" id="mobileCombatFlowPanel" data-v17-mode="play">
       <div class="cockpit-header">
         <div>
-          <h2>V2.2E Mobile / tablet combat flow</h2>
-          <div class="note">Live table mode: choose actor, choose the already-loaded encounter target card, choose the action, enter dice in the nearby roll tray, then use the sticky result bar to apply bookkeeping without hunting through long panels.</div>
+          <h2>V2.2F Tablet / mobile live combat flow</h2>
+          <div class="note">Live table mode: choose Actor, Target, Action, then Resolve. This is now the primary tablet/phone workflow; the older Play cockpit is hidden in focused mode but still available with Show full play panels.</div>
         </div>
-        <div class="cockpit-badge">V2.2E Flow</div>
+        <div class="cockpit-badge">V2.2F Flow</div>
       </div>
       <div class="v22b-toolbar">
         <button type="button" id="v22bFocusToggle" class="v22b-focus-toggle">Focused phone mode: on</button>
@@ -765,6 +765,7 @@
         <button type="button" data-v22b-action="refresh">Refresh flow</button>
         <button type="button" data-v22b-action="showAllPlay">Show full play panels</button>
       </div>
+      <div class="v22f-live-note"><strong>Recommended table setup:</strong> one shared tablet works best because saves are local to this browser. Export a snapshot before updating the GitHub Pages app.</div>
       <div id="v22bStateStrip" class="v22b-state-strip"></div>
       <div class="v22b-flow-grid">
         <div class="v22b-step-card" id="v22bActorStep">
@@ -809,7 +810,7 @@
         <div class="v22b-step-card v22b-resolve-card" id="v22bResolveStep">
           <h3><span><span class="v22b-step-number">4</span>Resolve / apply</span></h3>
           <div id="v22bPendingSummary" class="v22b-pending-summary">No pending result yet. Pick an actor, target, and action; then enter dice in the roll tray below and calculate.</div>
-          <div class="v22d-mobile-note">Tip: on phone, attacks now wait for an encounter target before jumping to the roll tray. On tablet, keep the 2x2 flow visible and use the sticky Apply button as the final confirmation.</div>
+          <div class="v22d-mobile-note">Tip: use the green Target + Attack shortcut on an enemy card for the fastest attack flow. After Apply, the button changes to Applied ✓ so you know the result was already booked.</div>
           <div class="v22b-primary-actions">
             <button type="button" class="primary-action" data-v22b-action="calculateCurrent">Calculate current</button>
             <button type="button" class="primary-action" data-v22b-action="applyPending">Apply pending result</button>
@@ -15344,7 +15345,7 @@ else {
   function updateChrome() {
     try {
       var sub = document.querySelector("header .subtitle");
-      if (sub) sub.textContent = "V2.2E mobile/tablet flow polish. Reorders live play as Actor -> Target -> Action -> Resolve, fixes stale spell/attack Apply state, and adds applied-result confidence feedback.";
+      if (sub) sub.textContent = "V2.2F tablet-first live-play flow polish. Makes the live flow the first Play screen, hides the older cockpit in focused mode, adds quick encounter target setup, and improves tablet handoff visibility.";
     } catch (err) { }
   }
 
@@ -15379,7 +15380,7 @@ else {
 <script>
 (function () {
   "use strict";
-  var VERSION = "V2.2E";
+  var VERSION = "V2.2F";
   var STORAGE_KEY = "middaraCombatHelperV22BMobileFlow";
   var FOCUS_KEY = "middaraCombatHelperV22BPhoneFocus";
   var renderTimer = null;
@@ -15780,12 +15781,29 @@ else {
 
   function calculateCurrent() {
     var type = state.pendingType || "attack";
+    // V2.2F: if the attack tray/action is active, never let stale spell state steal the Apply button.
+    if (document.body.classList.contains("v22b-show-attack")) type = "attack";
+    if (document.body.classList.contains("v22b-show-spell") && type !== "attack") type = "spell";
     clearApplied();
     state.pendingType = type;
-    if (type === "spell") { click("calculateSpellButton"); if (typeof window.calculateSpell === "function") { try { window.calculateSpell(); } catch (err) {} } state.pendingType = "spell"; }
-    else if (type === "enemyAttack") { click("calculateEnemyAttackButton"); state.pendingType = "enemyAttack"; }
+    if (type === "spell") {
+      if (typeof window.calculateSpell === "function") { try { window.calculateSpell(); } catch (err) {} }
+      else click("calculateSpellButton");
+      state.pendingType = "spell";
+      setResolverView("spell");
+    }
+    else if (type === "enemyAttack") {
+      if (window.middaraEnemyAttackApi && typeof window.middaraEnemyAttackApi.calculate === "function") { try { window.middaraEnemyAttackApi.calculate(); } catch (errA) { click("calculateEnemyAttackButton"); } }
+      else click("calculateEnemyAttackButton");
+      state.pendingType = "enemyAttack";
+    }
     else if (type === "enemySpell") { click("enemySpellCalculate"); state.pendingType = "enemySpell"; }
-    else { state.pendingType = "attack"; if (typeof window.calculate === "function") { try { window.calculate(); } catch (err2) {} } state.pendingType = "attack"; }
+    else {
+      state.pendingType = "attack";
+      setResolverView("attack");
+      if (typeof window.calculate === "function") { try { window.calculate(); } catch (err2) {} }
+      state.pendingType = "attack";
+    }
     setStatus("Calculated current " + state.pendingType + ". Use Apply when ready.", "ok");
     save(); scheduleRender();
   }
@@ -15838,6 +15856,10 @@ else {
         save(); scheduleRender(); scrollFlowStep("v22bTargetStep"); return;
       }
       setSelect("v21bSupportTargetSelect", t.kind + ":" + t.id);
+      if (window.confirm && !window.confirm("Apply this support action to " + targetLabel() + "?")) {
+        setStatus("Support action canceled. Choose a different support target or tap the action again when ready.", "warn");
+        return;
+      }
     }
     setTimeout(function () {
       var selector = '[' + attr + '="' + String(id).replace(/"/g, '\"') + '"]';
@@ -15975,7 +15997,7 @@ else {
   function patchSnapshots() {
     if (window.__middaraV22BSnapshotPatch) return;
     window.__middaraV22BSnapshotPatch = true;
-    function addFlow(snap) { try { snap.version = "V2.2E"; snap.pwaDeploymentVersion = "V2.2E"; snap.mobileFlowState = JSON.parse(JSON.stringify(state)); } catch (err) {} return snap; }
+    function addFlow(snap) { try { snap.version = "V2.2F"; snap.pwaDeploymentVersion = "V2.2F"; snap.mobileFlowState = JSON.parse(JSON.stringify(state)); } catch (err) {} return snap; }
     if (window.middaraDataManagerApi) {
       var api = window.middaraDataManagerApi;
       var oldFull = api.exportFullSnapshot;
@@ -15988,9 +16010,9 @@ else {
   }
 
   function updateChrome() {
-    document.title = "Middara Combat Helper - V2.2E Mobile Flow Target/Apply Polish";
+    document.title = "Middara Combat Helper - V2.2F Tablet Live-Play Flow Polish";
     var sub = document.querySelector("header .subtitle");
-    if (sub) sub.textContent = "V2.2E mobile/tablet flow polish. Reorders live play as Actor -> Target -> Action -> Resolve, fixes stale spell/attack Apply state, and adds applied-result confidence feedback.";
+    if (sub) sub.textContent = "V2.2F tablet-first live-play flow polish. Makes the live flow the first Play screen, hides the older cockpit in focused mode, adds quick encounter target setup, and improves tablet handoff visibility.";
   }
 
   function init() {
@@ -16003,7 +16025,7 @@ else {
     render();
     setTimeout(function () { patchSnapshots(); updateChrome(); render(); }, 700);
     setInterval(function () { updateFooter(); }, 1200);
-    setStatus("V2.2E mobile flow ready. Start at Actor -> Target -> Action; Apply turns to Applied ✓ after use.", "ok");
+    setStatus("V2.2F live flow ready. The live flow is now the first Play screen; choose Actor -> Target -> Action -> Resolve.", "ok");
   }
 
   ready(init);
@@ -16015,7 +16037,163 @@ else {
 <script>
 (function () {
   "use strict";
-  var VERSION = "V2.2E";
+  var VERSION = "V2.2F";
+  function ready(fn) { if (document.readyState === "loading") document.addEventListener("DOMContentLoaded", fn); else setTimeout(fn, 0); }
+  function byId(id) { return document.getElementById(id); }
+  function esc(v) { return String(v == null ? "" : v).replace(/[&<>"']/g, function (c) { return {"&":"&amp;","<":"&lt;",">":"&gt;","\"":"&quot;","'":"&#39;"}[c]; }); }
+  function click(id) { var el = byId(id); if (el && typeof el.click === "function") el.click(); }
+  function setStatus(msg, kind) {
+    var el = byId("v22bFlowStatus");
+    if (!el) return;
+    el.className = (kind === "warn" ? "warning-box" : kind === "danger" ? "danger-box" : "ok-box") + " note v22b-flow-status";
+    el.textContent = msg;
+  }
+  function flowApi() { return window.middaraMobileFlowV22BApi || null; }
+  function trackerEnemies() { try { return (window.trackerState && trackerState.enemies) || []; } catch (err) { return []; } }
+  function optionHtmlFrom(selectId) {
+    var src = byId(selectId);
+    if (!src || !src.options || !src.options.length) return '<option value="">No enemy presets found</option>';
+    var html = "";
+    for (var i = 0; i < src.options.length; i++) html += '<option value="' + esc(src.options[i].value) + '">' + esc(src.options[i].textContent) + '</option>';
+    return html;
+  }
+  function moveFlowFirst() {
+    var flow = byId("mobileCombatFlowPanel"), cockpit = byId("combatCockpitPanel");
+    if (flow && cockpit && cockpit.parentNode && cockpit.previousElementSibling !== flow) cockpit.parentNode.insertBefore(flow, cockpit);
+  }
+  function ensureQuickAddEnemy() {
+    var targetStep = byId("v22bTargetStep");
+    var cards = byId("v22bTargetCards");
+    if (!targetStep || !cards || byId("v22fQuickAddEnemy")) return;
+    var wrap = document.createElement("details");
+    wrap.id = "v22fQuickAddEnemy";
+    wrap.className = "v22f-quick-add";
+    wrap.innerHTML = '<summary><strong>Quick add encounter enemy</strong></summary>' +
+      '<div class="tiny" style="margin-top:6px">Use this when setup/spawns add a combatant and you do not want to leave the live flow.</div>' +
+      '<div class="v22f-quick-add-grid">' +
+      '<div><label for="v22fEnemyPreset">Enemy preset</label><select id="v22fEnemyPreset">' + optionHtmlFrom("trackerEnemyType") + '</select></div>' +
+      '<div><label for="v22fEnemyLabel">Label</label><input id="v22fEnemyLabel" type="text" placeholder="Enemy 1" /></div>' +
+      '<button type="button" id="v22fAddEnemyBtn">Add + target</button>' +
+      '</div>';
+    targetStep.insertBefore(wrap, cards);
+    byId("v22fAddEnemyBtn").addEventListener("click", function () {
+      var preset = byId("v22fEnemyPreset"), label = byId("v22fEnemyLabel");
+      var realPreset = byId("trackerEnemyType"), realLabel = byId("trackerLabel");
+      if (realPreset && preset) { realPreset.value = preset.value; realPreset.dispatchEvent(new Event("change", { bubbles:true })); }
+      if (realLabel && label) realLabel.value = label.value || "";
+      var before = trackerEnemies().map(function (e) { return e.id; }).join("|");
+      click("addTrackerEnemy");
+      setTimeout(function () {
+        var enemies = trackerEnemies();
+        var added = enemies.length ? enemies[enemies.length - 1] : null;
+        if (added && enemies.map(function (e) { return e.id; }).join("|") !== before) {
+          var api = flowApi();
+          if (api && api.setTarget) api.setTarget("enemy:" + added.id, "attack");
+          setStatus("Added and targeted " + (added.label || added.name || "enemy") + ". Choose Attack, then enter dice.", "ok");
+        } else {
+          setStatus("Enemy add requested. If it did not appear, open the Enemies tab and check required fields.", "warn");
+        }
+        if (flowApi() && flowApi().render) flowApi().render();
+      }, 160);
+    });
+  }
+  function refreshQuickAddOptions() {
+    var q = byId("v22fEnemyPreset");
+    if (!q) return;
+    var old = q.value;
+    q.innerHTML = optionHtmlFrom("trackerEnemyType");
+    if (old) q.value = old;
+  }
+  function enhanceTargetCards() {
+    var cards = document.querySelectorAll("#v22bTargetCards .v22b-entity-card.enemy");
+    for (var i = 0; i < cards.length; i++) {
+      var card = cards[i];
+      if (card.getAttribute("data-v22f-enhanced")) continue;
+      card.setAttribute("data-v22f-enhanced", "1");
+      var firstTarget = card.querySelector('[data-v22b-target^="enemy:"][data-v22b-target-role="attack"]');
+      var actions = card.querySelector(".v22b-entity-actions");
+      if (!firstTarget || !actions) continue;
+      var combo = document.createElement("button");
+      combo.type = "button";
+      combo.className = "v22f-combo-action";
+      combo.textContent = "Target + Attack";
+      combo.addEventListener("click", function (ev) {
+        ev.preventDefault();
+        ev.stopPropagation();
+        var target = this.parentNode && this.parentNode.querySelector('[data-v22b-target^="enemy:"][data-v22b-target-role="attack"]');
+        if (target) target.click();
+        setTimeout(function () {
+          var attack = document.querySelector('#v22bActionCards [data-v22b-action="routeAttack"]') || document.querySelector('#mobileCombatFlowPanel [data-v22b-action="routeAttack"]');
+          if (attack) attack.click();
+          setStatus("Enemy targeted and Attack loaded. Enter dice in the roll tray, then Calculate.", "ok");
+        }, 90);
+      });
+      actions.insertBefore(combo, actions.firstChild);
+    }
+  }
+  function addNewRollButton() {
+    var row = document.querySelector("#v22bResolveStep .v22b-primary-actions");
+    if (!row || byId("v22fNewRollButton")) return;
+    var b = document.createElement("button");
+    b.type = "button";
+    b.id = "v22fNewRollButton";
+    b.textContent = "New roll / clear Applied";
+    b.addEventListener("click", function () {
+      try {
+        var hit = byId("hitText");
+        if (hit) hit.textContent = "-";
+      } catch (err) {}
+      setStatus("Ready for the next roll. Choose/confirm target and action, then enter dice.", "ok");
+      if (flowApi() && flowApi().render) flowApi().render();
+    });
+    row.appendChild(b);
+  }
+  function pulseApplied() {
+    var status = byId("v22bFlowStatus");
+    if (!status || status.getAttribute("data-v22f-pulse-hook")) return;
+    status.setAttribute("data-v22f-pulse-hook", "1");
+    document.addEventListener("click", function (ev) {
+      var t = ev.target;
+      while (t && t !== document && !(t.getAttribute && t.getAttribute("data-v22b-action") === "applyPending")) t = t.parentNode;
+      if (!t || t === document) return;
+      setTimeout(function () {
+        status.classList.remove("v22f-applied-pulse");
+        void status.offsetWidth;
+        status.classList.add("v22f-applied-pulse");
+      }, 180);
+    }, true);
+  }
+  function updateChrome() {
+    document.title = "Middara Combat Helper - V2.2F Tablet Live-Play Flow Polish";
+    var sub = document.querySelector("header .subtitle");
+    if (sub) sub.textContent = "V2.2F tablet-first live-play polish. Mobile/tablet flow is the primary screen, with quick target setup, clearer selected target visibility, support-action confirmation, and safer Attack/Spell apply state.";
+    var h = document.querySelector("#mobileCombatFlowPanel h2"); if (h) h.textContent = "V2.2F Tablet / mobile live combat flow";
+    var badge = document.querySelector("#mobileCombatFlowPanel .cockpit-badge"); if (badge) badge.textContent = "V2.2F Flow";
+    var pwa = byId("pwaVersionText"); if (pwa) pwa.textContent = VERSION;
+  }
+  function tick() {
+    moveFlowFirst();
+    ensureQuickAddEnemy();
+    refreshQuickAddOptions();
+    enhanceTargetCards();
+    addNewRollButton();
+    updateChrome();
+  }
+  ready(function () {
+    tick();
+    pulseApplied();
+    setTimeout(tick, 400);
+    setTimeout(tick, 1200);
+    setInterval(function () { enhanceTargetCards(); refreshQuickAddOptions(); }, 1500);
+  });
+})();
+</script>
+
+
+<script>
+(function () {
+  "use strict";
+  var VERSION = "V2.2F";
   var CACHE_PREFIX = "middara-helper-";
   function ready(fn) { if (document.readyState === "loading") document.addEventListener("DOMContentLoaded", fn); else fn(); }
   function byId(id) { return document.getElementById(id); }
@@ -16163,11 +16341,11 @@ else {
     });
   }
   function updateChrome() {
-    document.title = "Middara Combat Helper - V2.2E Mobile Flow Target/Apply Polish";
+    document.title = "Middara Combat Helper - V2.2F Tablet Live-Play Flow Polish";
     var sub = document.querySelector("header .subtitle");
-    if (sub) sub.textContent = "V2.2E mobile/tablet flow polish. Reorders live play as Actor -> Target -> Action -> Resolve, fixes stale spell/attack Apply state, and adds applied-result confidence feedback.";
+    if (sub) sub.textContent = "V2.2F tablet-first live-play flow polish. Makes the live flow the first Play screen, hides the older cockpit in focused mode, adds quick encounter target setup, and improves tablet handoff visibility.";
     var pwa = byId("pwaVersionText"); if (pwa) pwa.textContent = "V2.2E";
-    var h = document.querySelector("#mobileCombatFlowPanel h2"); if (h) h.textContent = "V2.2E Mobile / tablet combat flow";
+    var h = document.querySelector("#mobileCombatFlowPanel h2"); if (h) h.textContent = "V2.2F Tablet / mobile live combat flow";
   }
   function bindMobileHelp() {
     var flow = byId("mobileCombatFlowPanel");
