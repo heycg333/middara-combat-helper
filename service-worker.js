@@ -1,6 +1,6 @@
-// Middara Combat Helper V2.2G table session hub service worker
+// Middara Combat Helper V2.2I live-play readiness service worker
 // Network-first for the app shell so GitHub Pages updates are picked up, with cache fallback for table use.
-const CACHE_VERSION = "v2-2g-table-session-hub-2026-06-08";
+const CACHE_VERSION = "v2-2i-live-play-readiness-2026-06-08";
 const CACHE_NAME = `middara-helper-${CACHE_VERSION}`;
 const CORE_ASSETS = [
   "./",

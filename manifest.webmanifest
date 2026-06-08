@@ -1,7 +1,7 @@
 {
   "name": "Middara Combat Helper",
-  "short_name": "Middara",
-  "description": "Middara Combat Helper V2.2G table session hub PWA.",
+  "short_name": "Middara Helper",
+  "description": "Middara Combat Helper V2.2I live-play readiness PWA.",
   "id": "./?app=middara-combat-helper",
   "start_url": "./?source=pwa",
   "scope": "./",

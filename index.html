@@ -3,7 +3,7 @@
 <head>
   <meta charset="utf-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1" />
-  <title>Middara Combat Helper - V2.2G Table Session Hub</title>
+  <title>Middara Combat Helper - V2.2I Live Play Readiness</title>
   <style>
     :root {
       --bg: #101827;
@@ -648,7 +648,42 @@
       .v22b-primary-actions button { min-height: 46px; }
       .v17-sticky-footer { left: max(6px, env(safe-area-inset-left)); right: max(6px, env(safe-area-inset-right)); bottom: max(6px, env(safe-area-inset-bottom)); padding: 9px; border-radius: 14px; }
     }
-</style>
+
+
+    /* V2.2I Live-play readiness / in-app guide sync */
+    .v22i-help-panel {
+      border-color: rgba(163,230,53,.32);
+      background: linear-gradient(180deg, rgba(163,230,53,.08), rgba(255,255,255,.012)), var(--panel);
+    }
+    .v22i-help-head { display:flex; justify-content:space-between; gap:12px; align-items:flex-start; flex-wrap:wrap; }
+    .v22i-help-head h3 { margin:0 0 4px; color:var(--accent); }
+    .v22i-badge { border:1px solid rgba(163,230,53,.38); background:rgba(163,230,53,.10); color:#dcfce7; border-radius:999px; padding:6px 10px; font-weight:900; font-size:.78rem; white-space:nowrap; }
+    .v22i-recipe-grid { display:grid; grid-template-columns:repeat(3,minmax(0,1fr)); gap:10px; margin-top:12px; }
+    .v22i-recipe { border:1px solid rgba(148,163,184,.22); border-radius:14px; padding:11px; background:rgba(15,23,42,.48); }
+    .v22i-recipe strong { display:block; margin-bottom:4px; }
+    .v22i-recipe div { color:var(--muted); font-size:.84rem; line-height:1.35; }
+    .v22i-recipe code { color:var(--accent); white-space:normal; }
+    .v22i-check-grid { display:grid; grid-template-columns:repeat(3,minmax(0,1fr)); gap:10px; margin-top:12px; }
+    .v22i-check-card { border:1px solid rgba(148,163,184,.22); border-radius:14px; padding:11px; background:rgba(2,6,23,.24); }
+    .v22i-check-card h4 { margin:0 0 8px; color:var(--accent2); }
+    .v22i-check-line { display:flex; align-items:flex-start; gap:8px; margin:7px 0; color:var(--muted); font-size:.86rem; }
+    .v22i-check-line input { margin-top:2px; flex:0 0 auto; }
+    .v22i-status-grid { display:grid; grid-template-columns:repeat(4,minmax(0,1fr)); gap:10px; margin-top:10px; }
+    .v22i-status-card { border:1px solid rgba(148,163,184,.22); border-radius:13px; padding:10px; background:rgba(2,6,23,.30); }
+    .v22i-status-card .label { color:var(--dim); font-size:.72rem; text-transform:uppercase; letter-spacing:.07em; }
+    .v22i-status-card .value { color:var(--text); font-weight:900; margin-top:3px; overflow-wrap:anywhere; }
+    .v22i-actions { display:flex; flex-wrap:wrap; gap:8px; margin-top:10px; }
+    .v22i-actions button { width:auto; min-width:auto; padding:8px 10px; font-size:.84rem; }
+    .v22i-self-test-list { display:grid; gap:6px; margin-top:8px; }
+    .v22i-test-pass { color:var(--ok); }
+    .v22i-test-warn { color:var(--warn); }
+    .v22i-test-fail { color:var(--danger); }
+    .v22i-label-note { margin-top:8px; color:var(--dim); font-size:.78rem; }
+    .v22i-primary-link { border-color:rgba(163,230,53,.35); background:rgba(163,230,53,.10); }
+    @media (max-width: 980px) { .v22i-recipe-grid, .v22i-check-grid, .v22i-status-grid { grid-template-columns:1fr 1fr; } }
+    @media (max-width: 620px) { .v22i-recipe-grid, .v22i-check-grid, .v22i-status-grid { grid-template-columns:1fr; } .v22i-actions button { width:100%; } }
+
+  </style>
 
   <!-- V2.2C hosted/PWA metadata -->
   <meta name="application-name" content="Middara Helper" />
@@ -665,7 +700,7 @@
   <link rel="apple-touch-icon" sizes="180x180" href="./icons/apple-touch-icon.png" />
 
 <style id="v22g-table-session-style">
-  /* V2.2G table session hub / one-tablet live-play safety layer */
+  /* V2.2I live-play readiness / one-tablet live-play safety layer */
   .v22g-session-hub {
     margin-top: 12px;
     border: 1px solid rgba(163,230,53,.28);
@@ -751,7 +786,7 @@
 <body>
   <header>
     <h1>Middara Combat Helper</h1>
-    <div class="subtitle">V2.2G table session hub. Keeps the tablet-first live flow and adds session setup, quick backup, quick undo, and end-of-encounter controls for one-tablet play.</div>
+    <div class="subtitle">V2.2I live-play readiness. Tablet-first session hub, in-app workflow guide, table self-test, clearer save/update status, and cleaned legacy labels.</div>
   </header>
 
   <main>
@@ -838,10 +873,10 @@
     <section class="panel v22b-flow-panel" id="mobileCombatFlowPanel" data-v17-mode="play">
       <div class="cockpit-header">
         <div>
-          <h2>V2.2G Tablet / mobile live combat flow</h2>
+          <h2>V2.2I Tablet / mobile live combat flow</h2>
           <div class="note">Live table mode: choose Actor, Target, Action, then Resolve. This is now the primary tablet/phone workflow; the older Play cockpit is hidden in focused mode but still available with Show full play panels.</div>
         </div>
-        <div class="cockpit-badge">V2.2G Flow</div>
+        <div class="cockpit-badge">V2.2I Flow</div>
       </div>
       <div class="v22b-toolbar">
         <button type="button" id="v22bFocusToggle" class="v22b-focus-toggle">Focused phone mode: on</button>
@@ -2087,7 +2122,8 @@
       </div>
     </section>
 
-    <section class="panel rewards-panel" id="rewardsLootPanel" data-v17-mode="rewards encounter data">
+    <section class="panel rewards-panel" id="rewardsLootPanel" data-v17-mode="rewards encounter">
+      <!-- V2.2I: intentionally not shown in Data tab; Data is for backups, QA, and deployment. -->
       <h2>8. Rewards / loot tracker</h2>
       <div class="note">Track combatant loot draws, loot-token outcomes, party gold, XP, and item notes. This does not replace the physical decks; it keeps the bookkeeping and session history clean.</div>
       <div class="rewards-metrics">
@@ -15429,7 +15465,7 @@ else {
   function updateChrome() {
     try {
       var sub = document.querySelector("header .subtitle");
-      if (sub) sub.textContent = "V2.2G table session hub. Keeps the tablet-first live flow and adds session setup, quick backup, quick undo, and end-of-encounter controls for one-tablet play.";
+      if (sub) sub.textContent = "V2.2I live-play readiness. Tablet-first session hub, in-app workflow guide, table self-test, clearer save/update status, and cleaned legacy labels.";
     } catch (err) { }
   }
 
@@ -15464,7 +15500,7 @@ else {
 <script>
 (function () {
   "use strict";
-  var VERSION = "V2.2G";
+  var VERSION = "V2.2I";
   var STORAGE_KEY = "middaraCombatHelperV22BMobileFlow";
   var FOCUS_KEY = "middaraCombatHelperV22BPhoneFocus";
   var renderTimer = null;
@@ -15865,7 +15901,7 @@ else {
 
   function calculateCurrent() {
     var type = state.pendingType || "attack";
-    // V2.2G: if the attack tray/action is active, never let stale spell state steal the Apply button.
+    // V2.2I: if the attack tray/action is active, never let stale spell state steal the Apply button.
     if (document.body.classList.contains("v22b-show-attack")) type = "attack";
     if (document.body.classList.contains("v22b-show-spell") && type !== "attack") type = "spell";
     clearApplied();
@@ -16081,7 +16117,7 @@ else {
   function patchSnapshots() {
     if (window.__middaraV22BSnapshotPatch) return;
     window.__middaraV22BSnapshotPatch = true;
-    function addFlow(snap) { try { snap.version = "V2.2G"; snap.pwaDeploymentVersion = "V2.2G"; snap.mobileFlowState = JSON.parse(JSON.stringify(state)); } catch (err) {} return snap; }
+    function addFlow(snap) { try { snap.version = "V2.2I"; snap.pwaDeploymentVersion = "V2.2I"; snap.mobileFlowState = JSON.parse(JSON.stringify(state)); } catch (err) {} return snap; }
     if (window.middaraDataManagerApi) {
       var api = window.middaraDataManagerApi;
       var oldFull = api.exportFullSnapshot;
@@ -16094,9 +16130,9 @@ else {
   }
 
   function updateChrome() {
-    document.title = "Middara Combat Helper - V2.2G Table Session Hub";
+    document.title = "Middara Combat Helper - V2.2I Live Play Readiness";
     var sub = document.querySelector("header .subtitle");
-    if (sub) sub.textContent = "V2.2G table session hub. Keeps the tablet-first live flow and adds session setup, quick backup, quick undo, and end-of-encounter controls for one-tablet play.";
+    if (sub) sub.textContent = "V2.2I live-play readiness. Tablet-first session hub, in-app workflow guide, table self-test, clearer save/update status, and cleaned legacy labels.";
   }
 
   function init() {
@@ -16109,7 +16145,7 @@ else {
     render();
     setTimeout(function () { patchSnapshots(); updateChrome(); render(); }, 700);
     setInterval(function () { updateFooter(); }, 1200);
-    setStatus("V2.2G live flow ready. The live flow is now the first Play screen; choose Actor -> Target -> Action -> Resolve.", "ok");
+    setStatus("V2.2I live flow ready. The live flow is now the first Play screen; choose Actor -> Target -> Action -> Resolve.", "ok");
   }
 
   ready(init);
@@ -16121,7 +16157,7 @@ else {
 <script>
 (function () {
   "use strict";
-  var VERSION = "V2.2G";
+  var VERSION = "V2.2I";
   function ready(fn) { if (document.readyState === "loading") document.addEventListener("DOMContentLoaded", fn); else setTimeout(fn, 0); }
   function byId(id) { return document.getElementById(id); }
   function esc(v) { return String(v == null ? "" : v).replace(/[&<>"']/g, function (c) { return {"&":"&amp;","<":"&lt;",">":"&gt;","\"":"&quot;","'":"&#39;"}[c]; }); }
@@ -16248,11 +16284,11 @@ else {
     }, true);
   }
   function updateChrome() {
-    document.title = "Middara Combat Helper - V2.2G Table Session Hub";
+    document.title = "Middara Combat Helper - V2.2I Live Play Readiness";
     var sub = document.querySelector("header .subtitle");
-    if (sub) sub.textContent = "V2.2G table session hub. Mobile/tablet flow remains the primary screen, with session setup, quick backup, quick undo, and end-of-encounter controls.";
-    var h = document.querySelector("#mobileCombatFlowPanel h2"); if (h) h.textContent = "V2.2G Tablet / mobile live combat flow";
-    var badge = document.querySelector("#mobileCombatFlowPanel .cockpit-badge"); if (badge) badge.textContent = "V2.2G Flow";
+    if (sub) sub.textContent = "V2.2I live-play readiness. Mobile/tablet flow remains the primary screen; quick guide, save status, and table workflow test are built in.";
+    var h = document.querySelector("#mobileCombatFlowPanel h2"); if (h) h.textContent = "V2.2I Tablet / mobile live combat flow";
+    var badge = document.querySelector("#mobileCombatFlowPanel .cockpit-badge"); if (badge) badge.textContent = "V2.2I Flow";
     var pwa = byId("pwaVersionText"); if (pwa) pwa.textContent = VERSION;
   }
   function tick() {
@@ -16277,7 +16313,7 @@ else {
 <script>
 (function () {
   "use strict";
-  var VERSION = "V2.2G";
+  var VERSION = "V2.2I";
   var CACHE_PREFIX = "middara-helper-";
   function ready(fn) { if (document.readyState === "loading") document.addEventListener("DOMContentLoaded", fn); else fn(); }
   function byId(id) { return document.getElementById(id); }
@@ -16425,11 +16461,11 @@ else {
     });
   }
   function updateChrome() {
-    document.title = "Middara Combat Helper - V2.2G Table Session Hub";
+    document.title = "Middara Combat Helper - V2.2I Live Play Readiness";
     var sub = document.querySelector("header .subtitle");
-    if (sub) sub.textContent = "V2.2G table session hub. Keeps the tablet-first live flow and adds session setup, quick backup, quick undo, and end-of-encounter controls for one-tablet play.";
+    if (sub) sub.textContent = "V2.2I live-play readiness. Tablet-first session hub, in-app workflow guide, table self-test, clearer save/update status, and cleaned legacy labels.";
     var pwa = byId("pwaVersionText"); if (pwa) pwa.textContent = "V2.2E";
-    var h = document.querySelector("#mobileCombatFlowPanel h2"); if (h) h.textContent = "V2.2G Tablet / mobile live combat flow";
+    var h = document.querySelector("#mobileCombatFlowPanel h2"); if (h) h.textContent = "V2.2I Tablet / mobile live combat flow";
   }
   function bindMobileHelp() {
     var flow = byId("mobileCombatFlowPanel");
@@ -16459,7 +16495,7 @@ else {
 <script id="v22g-table-session-script">
 (function(){
   "use strict";
-  var VERSION = "V2.2G";
+  var VERSION = "V2.2I";
   var CHECK_KEY = "middaraCombatHelperV22GSessionChecklist";
   var RECENT_KEY = "middaraCombatHelperV22GRecentActions";
   function byId(id){ return document.getElementById(id); }
@@ -16572,7 +16608,7 @@ else {
     hub.id = "v22gSessionHub";
     hub.className = "v22g-session-hub";
     hub.innerHTML = '' +
-      '<div class="v22g-session-head"><div><h3>V2.2G table session hub</h3><div class="tiny">One-tablet controls for setup, backup, quick undo, and end-of-encounter cleanup. Use this as a safety rail around the main live combat flow.</div></div><div class="v22g-session-badge">Table-ready pass</div></div>' +
+      '<div class="v22g-session-head"><div><h3>V2.2I live-play readiness</h3><div class="tiny">One-tablet controls for setup, backup, quick undo, and end-of-encounter cleanup. Use this as a safety rail around the main live combat flow.</div></div><div class="v22g-session-badge">Table-ready pass</div></div>' +
       '<div id="v22gStatusStrip" class="v22g-status-strip"></div>' +
       '<div id="v22gChecklist" class="v22g-checklist"></div>' +
       '<div class="v22g-session-grid">' +
@@ -16626,11 +16662,11 @@ else {
     else if (action === "rewards") route("rewards", "rewardsLootPanel");
   }
   function init(){
-    document.title = "Middara Combat Helper - V2.2G Table Session Hub";
+    document.title = "Middara Combat Helper - V2.2I Live Play Readiness";
     var h = document.querySelector("header h1"); if (h) h.textContent = "Middara Combat Helper";
-    var sub = document.querySelector("header .subtitle"); if (sub) sub.textContent = "V2.2G table session hub. Tablet-first live flow with setup, backup, quick undo, reward scan, and end-of-encounter controls.";
-    var flowH = document.querySelector("#mobileCombatFlowPanel h2"); if (flowH) flowH.textContent = "V2.2G Tablet / mobile live combat flow";
-    var badge = document.querySelector("#mobileCombatFlowPanel .cockpit-badge"); if (badge) badge.textContent = "V2.2G Flow";
+    var sub = document.querySelector("header .subtitle"); if (sub) sub.textContent = "V2.2I live-play readiness. Tablet-first live flow with setup, backup, quick undo, reward scan, in-app guide, and save/update clarity.";
+    var flowH = document.querySelector("#mobileCombatFlowPanel h2"); if (flowH) flowH.textContent = "V2.2I Tablet / mobile live combat flow";
+    var badge = document.querySelector("#mobileCombatFlowPanel .cockpit-badge"); if (badge) badge.textContent = "V2.2I Flow";
     injectHub(); addFooterUndo();
     document.addEventListener("click", function(ev){
       var node = ev.target && ev.target.closest ? ev.target.closest("[data-v22g-action]") : null;
@@ -16643,7 +16679,278 @@ else {
     }, true);
     document.addEventListener("click", function(){ setTimeout(function(){ addFooterUndo(); renderStatus(); }, 240); }, true);
     setInterval(renderStatus, 4000);
-    setStatus("V2.2G session hub ready. Use the live flow for combat, and the hub for backup, undo, setup, rewards, and cleanup.", "ok");
+    setStatus("V2.2I session hub ready. Rewards are kept on the Rewards/Encounter views; the Data tab is reserved for backups, QA, and deployment tools.", "ok");
+  }
+  if (document.readyState === "loading") document.addEventListener("DOMContentLoaded", init);
+  else setTimeout(init, 0);
+})();
+</script>
+
+
+<script>
+(function(){
+  "use strict";
+  var VERSION = "V2.2I";
+  var CHECK_KEY = "middara_v22i_live_checklist";
+  var EXPORT_KEY = "middara_v22i_last_snapshot_export";
+  var TEST_KEY = "middara_v22i_last_self_test";
+  function byId(id){ return document.getElementById(id); }
+  function safeJSON(value, fallback){ try { return JSON.parse(value); } catch (err) { return fallback; } }
+  function loadChecks(){ return safeJSON(localStorage.getItem(CHECK_KEY) || "{}", {}); }
+  function saveChecks(obj){ try { localStorage.setItem(CHECK_KEY, JSON.stringify(obj)); } catch (err) {} }
+  function text(el, value){ if (el) el.textContent = value; }
+  function html(el, value){ if (el) el.innerHTML = value; }
+  function esc(value){ return String(value == null ? "" : value).replace(/[&<>\"]/g, function(ch){ return {"&":"&amp;","<":"&lt;",">":"&gt;","\"":"&quot;"}[ch]; }); }
+  function route(mode, id){
+    try {
+      var btn = document.querySelector('[data-v17-mode-button="' + mode + '"]');
+      if (btn) btn.click();
+      if (id) setTimeout(function(){ var el = byId(id); if (el && el.scrollIntoView) el.scrollIntoView({behavior:"smooth", block:"start"}); }, 80);
+    } catch (err) {}
+  }
+  function click(id){ var el = byId(id); if (el) el.click(); }
+  function actorCount(){ var sel = byId("v22bActorSelect"); return sel ? sel.options.length : 0; }
+  function targetCardCount(){ return document.querySelectorAll('#v22bTargetCards .v22b-target-card, #v22bTargetCards [data-v22b-target]').length; }
+  function enemyRows(){ return document.querySelectorAll('#trackerTable tbody tr, #trackerTable tr').length; }
+  function isStandalone(){ return (window.matchMedia && window.matchMedia('(display-mode: standalone)').matches) || window.navigator.standalone === true; }
+  function hostedLabel(){
+    if (location.protocol === "file:") return "local file";
+    if (/github\.io/i.test(location.hostname)) return "GitHub Pages";
+    if (/netlify\.app/i.test(location.hostname)) return "Netlify";
+    if (/pages\.dev/i.test(location.hostname)) return "Cloudflare Pages";
+    return location.hostname ? "hosted" : "unknown";
+  }
+  function saveLocation(){
+    if (location.protocol === "file:") return "local file storage";
+    var path = location.pathname || "/";
+    return location.hostname + path.replace(/index\.html$/i, "");
+  }
+  function lastExportLabel(){
+    var raw = localStorage.getItem(EXPORT_KEY);
+    if (!raw) return "not recorded";
+    try { return new Date(raw).toLocaleString(); } catch (err) { return raw; }
+  }
+  function setStatus(msg, klass){
+    var el = byId("v22iStatus");
+    if (!el) return;
+    el.className = (klass === "warn" ? "warning-box" : klass === "danger" ? "danger-box" : "ok-box") + " note";
+    el.textContent = msg;
+  }
+  function renderVersionStatus(){
+    text(byId("v22iVersionValue"), VERSION);
+    text(byId("v22iHostedValue"), hostedLabel());
+    text(byId("v22iInstallValue"), isStandalone() ? "Home Screen" : "Browser tab");
+    text(byId("v22iSaveValue"), saveLocation());
+    text(byId("v22iLastExportValue"), lastExportLabel());
+    if (navigator.serviceWorker && navigator.serviceWorker.controller) text(byId("v22iCacheValue"), "active");
+    else if (navigator.serviceWorker) text(byId("v22iCacheValue"), "available");
+    else text(byId("v22iCacheValue"), "not available");
+  }
+  function renderChecklist(){
+    var checks = loadChecks();
+    var items = [
+      ["beforeSnapshot", "Snapshot saved"],
+      ["beforePrepared", "Party prepared or restored correctly"],
+      ["beforeEncounter", "Encounter notes / objective reminders loaded"],
+      ["beforeEnemies", "Enemies added to tracker"],
+      ["beforeInitiative", "Initiative ready"],
+      ["duringFlow", "Use Mobile Combat Flow as the primary path"],
+      ["duringApply", "Use sticky Apply and Undo as needed"],
+      ["duringBoard", "Board legality checked manually"],
+      ["afterLoot", "Scan defeated enemies / loot"],
+      ["afterRewards", "Record rewards, gold, XP, inventory"],
+      ["afterCleanup", "Prepare or Full Restore as instructed"],
+      ["afterExport", "Export final session snapshot"]
+    ];
+    items.forEach(function(pair){ var el = byId("v22iCheck_" + pair[0]); if (el) el.checked = !!checks[pair[0]]; });
+  }
+  function markCheck(key, val){ var checks = loadChecks(); checks[key] = !!val; saveChecks(checks); renderChecklist(); }
+  function checkIcon(ok){ return ok ? "PASS" : "WARN"; }
+  function testClass(ok){ return ok ? "v22i-test-pass" : "v22i-test-warn"; }
+  function runSelfTest(){
+    var tests = [
+      ["Live flow panel", !!byId("mobileCombatFlowPanel")],
+      ["Actor selector", !!byId("v22bActorSelect") && actorCount() > 0],
+      ["Target drawer", !!byId("v22bTargetCards")],
+      ["Action cards", !!byId("v22bActionCards")],
+      ["Resolve/apply card", !!byId("v22bResolveStep")],
+      ["Sticky footer", !!byId("v17StickyFooter") || !!document.querySelector(".v17-sticky-footer")],
+      ["Enemy tracker", !!byId("trackerTable")],
+      ["Party tracker", !!byId("partyTable")],
+      ["Command tracker", !!byId("v21CommandPanel") || !!byId("commandCombatantPanel") || !!document.querySelector('[data-v17-mode="command"]')],
+      ["Rewards tab", !!byId("rewardsLootPanel") || !!document.querySelector(".rewards-panel")],
+      ["Full snapshot export", !!(byId("v21fExportFullSnapshot") || byId("dmExportFullSnapshot") || byId("dmExportJson"))],
+      ["PWA cache controls", !!byId("pwaUpdateCache")]
+    ];
+    var pass = tests.filter(function(t){ return t[1]; }).length;
+    var out = tests.map(function(t){ return '<div><span class="' + testClass(t[1]) + '">' + checkIcon(t[1]) + '</span> - ' + esc(t[0]) + '</div>'; }).join("");
+    html(byId("v22iSelfTestOutput"), '<div class="v22i-self-test-list">' + out + '</div><div class="tiny" style="margin-top:8px">' + pass + ' / ' + tests.length + ' checks passed. This does not play the board; it only verifies that live-use UI hooks are present.</div>');
+    try { localStorage.setItem(TEST_KEY, new Date().toISOString()); } catch (err) {}
+    setStatus(pass === tests.length ? "Table workflow self-test passed." : "Table workflow self-test completed with warnings. Review the list before live play.", pass === tests.length ? "ok" : "warn");
+  }
+  function exportSnapshot(download){
+    var clicked = false;
+    ["v22gExportDownload", "v21fExportFullSnapshot", "dmExportFullSnapshot", "dmExportJson"].forEach(function(id){ if (!clicked && byId(id)) { click(id); clicked = true; } });
+    try { localStorage.setItem(EXPORT_KEY, new Date().toISOString()); } catch (err) {}
+    markCheck(download ? "beforeSnapshot" : "afterExport", true);
+    renderVersionStatus();
+    setStatus(clicked ? "Snapshot export was requested. Use Download JSON or Copy JSON in Data if a file did not download automatically." : "Could not find a snapshot export button; use Data > Export full snapshot manually.", clicked ? "ok" : "warn");
+  }
+  function copyQuickGuide(){
+    var guide = [
+      "Middara Combat Helper " + VERSION + " quick flow",
+      "Adventurer attack: Actor -> Target + Attack -> Dice -> Calculate -> Apply -> Chain/Next.",
+      "Enemy attack: Enemy actor -> Enemy Attack -> target -> dice/Dodge -> Calculate -> Apply.",
+      "Eliphie support: Eliphie -> Party/Command support target -> Blood Barrier / Invigorate / Gore Cleanse.",
+      "End encounter: Scan loot -> Rewards -> Prepare or Full Restore -> Save snapshot.",
+      "Board legality, SOI, adjacency, movement, line of sight, and hidden text stay manual."
+    ].join("\n");
+    if (navigator.clipboard && navigator.clipboard.writeText) navigator.clipboard.writeText(guide).then(function(){ setStatus("Quick guide copied.", "ok"); }).catch(function(){ setStatus("Could not copy quick guide; use the visible guide panel.", "warn"); });
+    else setStatus("Clipboard is unavailable in this browser; use the visible guide panel.", "warn");
+  }
+  function normalizeHeadings(){
+    var map = [
+      ["guidedWorkflowPanel", "Guided workflow / quick apply"],
+      ["chainAssistantPanel", "Follow-up / chain assistant"],
+      ["probabilityPanel", "Probability mode + rerolls"],
+      ["encounterObjectivePanel", "Encounter objective / special-rule tracker"],
+      ["enemyAiAssistantPanel", "Enemy AI preset library"],
+      ["enemySpellPanel", "Enemy spell / party Conviction resolver"]
+    ];
+    map.forEach(function(pair){ var h = document.querySelector('#' + pair[0] + ' h2'); if (h) h.textContent = pair[1]; });
+    var h2s = Array.prototype.slice.call(document.querySelectorAll('section.panel > h2, section.grid h2'));
+    h2s.forEach(function(h){
+      h.textContent = h.textContent
+        .replace(/^\s*\d+(?:\.\d+)?\.\s*/, "")
+        .replace(/^\s*0(?:\.5)?\s*/, "")
+        .replace(/^Enemy attack result$/, "Enemy attack result");
+    });
+    var targetH = Array.prototype.find ? h2s.find(function(h){ return /Target$/.test(h.textContent); }) : null;
+    if (targetH && targetH.textContent === "Target") targetH.textContent = "Legacy target preset / manual target";
+  }
+  function buildCheckLine(key, label){ return '<label class="v22i-check-line"><input id="v22iCheck_' + key + '" type="checkbox" data-v22i-check="' + key + '" /> <span>' + esc(label) + '</span></label>'; }
+  function injectGuide(){
+    if (byId("v22iGuidePanel")) return;
+    var anchor = byId("v22gSessionHub") || byId("v22bStateStrip") || byId("mobileCombatFlowPanel");
+    if (!anchor) return;
+    var panel = document.createElement("section");
+    panel.id = "v22iGuidePanel";
+    panel.className = "panel v22i-help-panel";
+    panel.setAttribute("data-v17-mode", "play");
+    panel.innerHTML = '' +
+      '<div class="v22i-help-head"><div><h3>V2.2I live-play guide</h3><div class="note">Use this as the tablet workflow reference during a session. It summarizes the intended route without opening the external guide.</div></div><div class="v22i-badge">Table workflow</div></div>' +
+      '<div class="v22i-recipe-grid">' +
+        '<div class="v22i-recipe"><strong>Adventurer attack</strong><div><code>Actor -> Target + Attack -> Dice -> Calculate -> Apply -> Chain/Next</code></div></div>' +
+        '<div class="v22i-recipe"><strong>Adventurer / Esper spell</strong><div><code>Actor -> target -> spell action -> Force/Conviction -> Calculate -> Apply</code></div></div>' +
+        '<div class="v22i-recipe"><strong>Enemy attack</strong><div><code>Enemy actor -> Enemy Attack -> target -> dice/Dodge -> Calculate -> Apply</code></div></div>' +
+        '<div class="v22i-recipe"><strong>Eliphie support</strong><div><code>Eliphie -> Party/Command support target -> Blood Barrier / Invigorate / Gore Cleanse</code></div></div>' +
+        '<div class="v22i-recipe"><strong>End encounter</strong><div><code>Scan loot -> Rewards -> Prepare or Full Restore -> Save snapshot</code></div></div>' +
+        '<div class="v22i-recipe"><strong>What stays manual</strong><div>SOI, adjacency, line of sight, movement legality, hidden text, and tactical target choice.</div></div>' +
+      '</div>' +
+      '<details style="margin-top:12px" open><summary>Live play checklist</summary>' +
+        '<div class="v22i-check-grid">' +
+          '<div class="v22i-check-card"><h4>Before encounter</h4>' +
+            buildCheckLine("beforeSnapshot", "Snapshot saved") +
+            buildCheckLine("beforePrepared", "Party prepared/restored correctly") +
+            buildCheckLine("beforeEncounter", "Encounter notes loaded") +
+            buildCheckLine("beforeEnemies", "Enemies added") +
+            buildCheckLine("beforeInitiative", "Initiative ready") +
+          '</div>' +
+          '<div class="v22i-check-card"><h4>During encounter</h4>' +
+            buildCheckLine("duringFlow", "Use Mobile Combat Flow") +
+            buildCheckLine("duringApply", "Use sticky Apply and Undo") +
+            buildCheckLine("duringBoard", "Board legality checked manually") +
+          '</div>' +
+          '<div class="v22i-check-card"><h4>After encounter</h4>' +
+            buildCheckLine("afterLoot", "Scan defeated enemies / loot") +
+            buildCheckLine("afterRewards", "Record rewards") +
+            buildCheckLine("afterCleanup", "Prepare or Full Restore") +
+            buildCheckLine("afterExport", "Export session snapshot") +
+          '</div>' +
+        '</div>' +
+      '</details>' +
+      '<div class="v22i-actions">' +
+        '<button type="button" class="v22i-primary-link" data-v22i-action="copyGuide">Copy quick guide</button>' +
+        '<button type="button" data-v22i-action="runSelfTest">Run table workflow test</button>' +
+        '<button type="button" data-v22i-action="exportSnapshot">Save snapshot now</button>' +
+        '<button type="button" data-v22i-action="openData">Open backup / update tools</button>' +
+      '</div>' +
+      '<div id="v22iSelfTestOutput" class="tiny" style="margin-top:10px">Run the table workflow test to verify the main live-use hooks loaded.</div>' +
+      '<div id="v22iStatus" class="ok-box note" style="margin-top:10px">V2.2I guide ready.</div>';
+    anchor.insertAdjacentElement("afterend", panel);
+    renderChecklist();
+  }
+  function injectDataStatus(){
+    if (byId("v22iDataStatusPanel")) return;
+    var anchor = byId("pwaStatus") || byId("pwaVersionText") || byId("dataManagerPanel");
+    if (!anchor) return;
+    var wrap = document.createElement("div");
+    wrap.id = "v22iDataStatusPanel";
+    wrap.className = "v22i-help-panel";
+    wrap.style.marginTop = "12px";
+    wrap.style.borderRadius = "14px";
+    wrap.style.padding = "12px";
+    wrap.innerHTML = '' +
+      '<h3 style="margin-top:0">V2.2I save / update status</h3>' +
+      '<div class="note">Save state is local to this browser and this hosted URL. Use full snapshot export before changing devices, hosts, or GitHub builds.</div>' +
+      '<div class="v22i-status-grid">' +
+        '<div class="v22i-status-card"><div class="label">Version</div><div class="value" id="v22iVersionValue">-</div></div>' +
+        '<div class="v22i-status-card"><div class="label">Hosted mode</div><div class="value" id="v22iHostedValue">-</div></div>' +
+        '<div class="v22i-status-card"><div class="label">Install mode</div><div class="value" id="v22iInstallValue">-</div></div>' +
+        '<div class="v22i-status-card"><div class="label">Offline cache</div><div class="value" id="v22iCacheValue">-</div></div>' +
+        '<div class="v22i-status-card" style="grid-column:span 2"><div class="label">Save location</div><div class="value" id="v22iSaveValue">-</div></div>' +
+        '<div class="v22i-status-card" style="grid-column:span 2"><div class="label">Last snapshot export</div><div class="value" id="v22iLastExportValue">-</div></div>' +
+      '</div>' +
+      '<div class="v22i-actions">' +
+        '<button type="button" data-v22i-action="refreshStatus">Refresh save/update status</button>' +
+        '<button type="button" data-v22i-action="exportSnapshot">Export full snapshot</button>' +
+        '<button type="button" data-v22i-action="updateCache">Update app cache</button>' +
+        '<button type="button" data-v22i-action="clearCache">Clear app cache only</button>' +
+      '</div>';
+    anchor.parentNode.insertBefore(wrap, anchor.nextSibling);
+    renderVersionStatus();
+  }
+  function handle(action){
+    if (action === "copyGuide") copyQuickGuide();
+    else if (action === "runSelfTest") runSelfTest();
+    else if (action === "exportSnapshot") exportSnapshot(true);
+    else if (action === "openData") route("data", "v22iDataStatusPanel");
+    else if (action === "refreshStatus") { renderVersionStatus(); setStatus("Save/update status refreshed.", "ok"); }
+    else if (action === "updateCache") { click("pwaUpdateCache"); setTimeout(renderVersionStatus, 800); }
+    else if (action === "clearCache") { click("pwaClearCaches"); setTimeout(renderVersionStatus, 800); }
+  }
+  function patchExportButtons(){
+    ["v21fExportFullSnapshot", "dmExportFullSnapshot", "dmExportJson", "pwaCopyDeployNote"].forEach(function(id){
+      var el = byId(id);
+      if (el && !el.getAttribute("data-v22i-export-patched")) {
+        el.setAttribute("data-v22i-export-patched", "1");
+        el.addEventListener("click", function(){ try { localStorage.setItem(EXPORT_KEY, new Date().toISOString()); } catch (err) {} setTimeout(renderVersionStatus, 300); }, true);
+      }
+    });
+  }
+  function patchTitles(){
+    document.title = "Middara Combat Helper - V2.2I Live Play Readiness";
+    var sub = document.querySelector("header .subtitle");
+    if (sub) sub.textContent = "V2.2I live-play readiness. Tablet-first workflow guide, table self-test, clearer save/update status, and cleaned legacy labels.";
+    var flowH = document.querySelector("#mobileCombatFlowPanel h2"); if (flowH) flowH.textContent = "V2.2I Tablet live combat flow";
+    var badge = document.querySelector("#mobileCombatFlowPanel .cockpit-badge"); if (badge) badge.textContent = "V2.2I Flow";
+    var hubH = document.querySelector("#v22gSessionHub h3"); if (hubH) hubH.textContent = "V2.2I table session hub";
+    var hubTiny = document.querySelector("#v22gSessionHub .v22g-session-head .tiny"); if (hubTiny) hubTiny.textContent = "One-tablet controls for setup, backup, quick undo, end-of-encounter cleanup, and live-play readiness.";
+    var pwaSummary = document.querySelector(".v22c-pwa-panel summary"); if (pwaSummary) pwaSummary.textContent = "V2.2I hosted / installable web app";
+    var pwa = byId("pwaVersionText"); if (pwa) pwa.textContent = VERSION;
+  }
+  function init(){
+    patchTitles(); normalizeHeadings(); injectGuide(); injectDataStatus(); renderVersionStatus(); patchExportButtons();
+    document.addEventListener("click", function(ev){
+      var node = ev.target && ev.target.closest ? ev.target.closest("[data-v22i-action]") : null;
+      if (node) { ev.preventDefault(); handle(node.getAttribute("data-v22i-action")); }
+    }, true);
+    document.addEventListener("change", function(ev){
+      var node = ev.target && ev.target.closest ? ev.target.closest("[data-v22i-check]") : null;
+      if (node) markCheck(node.getAttribute("data-v22i-check"), node.checked);
+    }, true);
+    setInterval(function(){ patchTitles(); renderVersionStatus(); patchExportButtons(); }, 5000);
+    setTimeout(function(){ patchTitles(); renderVersionStatus(); }, 600);
   }
   if (document.readyState === "loading") document.addEventListener("DOMContentLoaded", init);
   else setTimeout(init, 0);
