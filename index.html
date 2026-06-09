@@ -3,7 +3,7 @@
 <head>
   <meta charset="utf-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1" />
-  <title>Middara Combat Helper - V2.3K Chain / Live-Flow QA Polish</title>
+  <title>Middara Combat Helper - V2.4A Chain / Live-Flow QA Polish</title>
   <style>
     :root {
       --bg: #101827;
@@ -834,7 +834,7 @@
 <body>
   <header>
     <h1>Middara Combat Helper</h1>
-    <div class="subtitle">V2.3K chain/live-flow QA polish: Remi/Zeke chains, Whirlwind, Onslaught, Counter routing, sticky Apply, and contextual panels are stabilized for tablet live play.</div>
+    <div class="subtitle">V2.4A chain/live-flow QA polish: Remi/Zeke chains, Whirlwind, Onslaught, Counter routing, sticky Apply, and contextual panels are stabilized for tablet live play.</div>
   </header>
 
   <main>
@@ -921,10 +921,10 @@
     <section class="panel v22b-flow-panel" id="mobileCombatFlowPanel" data-v17-mode="play">
       <div class="cockpit-header">
         <div>
-          <h2>V2.3K Tablet / mobile live combat flow</h2>
+          <h2>V2.4A Tablet / mobile live combat flow</h2>
           <div class="note">Live table mode: choose Actor, Target, Action, then Resolve. Tablets use a 2x2 grid by default; phones stack the cards. Use the Layout toggle to force grid or stack if needed.</div>
         </div>
-        <div class="cockpit-badge">V2.3K Flow</div>
+        <div class="cockpit-badge">V2.4A Flow</div>
       </div>
       <div class="v22b-toolbar">
         <button type="button" id="v22bFocusToggle" class="v22b-focus-toggle">Focused phone mode: on</button>
@@ -11998,7 +11998,7 @@ else {
     var h = document.querySelector("#enemyAiAssistantPanel h2");
     if (h) h.textContent = "6. Enemy AI preset library";
     var subtitle = document.querySelector("header .subtitle");
-    if (subtitle) subtitle.textContent = "V2.3K chain/live-flow QA polish: Remi/Zeke chains, Whirlwind, Onslaught, Counter routing, sticky Apply, and contextual panels are stabilized for tablet live play.";
+    if (subtitle) subtitle.textContent = "V2.4A chain/live-flow QA polish: Remi/Zeke chains, Whirlwind, Onslaught, Counter routing, sticky Apply, and contextual panels are stabilized for tablet live play.";
   }
 
   function installPresetOptions() {
@@ -14664,9 +14664,9 @@ else {
     document.head.appendChild(style);
   }
   function updateChrome() {
-    document.title = "Middara Combat Helper - V2.3K Chain / Live-Flow QA Polish";
+    document.title = "Middara Combat Helper - V2.4A Chain / Live-Flow QA Polish";
     var subtitle = document.querySelector("header .subtitle");
-    if (subtitle) subtitle.textContent = "V2.3K chain/live-flow QA polish: Remi/Zeke chains, Whirlwind, Onslaught, Counter routing, sticky Apply, and contextual panels are stabilized for tablet live play.";
+    if (subtitle) subtitle.textContent = "V2.4A chain/live-flow QA polish: Remi/Zeke chains, Whirlwind, Onslaught, Counter routing, sticky Apply, and contextual panels are stabilized for tablet live play.";
     var h = byId("commandCombatantPanel") && byId("commandCombatantPanel").querySelector("h2");
     if (h) h.textContent = "V2.1E Command Combatant / Loyal Esper tracker";
     var badge = byId("commandCombatantPanel") && byId("commandCombatantPanel").querySelector(".cockpit-badge");
@@ -15138,7 +15138,7 @@ else {
   }
   function updateChrome() {
     var title = document.querySelector("header .subtitle");
-    if (title && title.textContent.indexOf("V2.1F") < 0) title.textContent = "V2.3K chain/live-flow QA polish: Remi/Zeke chains, Whirlwind, Onslaught, Counter routing, sticky Apply, and contextual panels are stabilized for tablet live play.";
+    if (title && title.textContent.indexOf("V2.1F") < 0) title.textContent = "V2.4A chain/live-flow QA polish: Remi/Zeke chains, Whirlwind, Onslaught, Counter routing, sticky Apply, and contextual panels are stabilized for tablet live play.";
   }
   installRestoreWrapper();
   ready(function () {
@@ -15601,7 +15601,7 @@ else {
   function updateChrome() {
     try {
       var sub = document.querySelector("header .subtitle");
-      if (sub) sub.textContent = "V2.3K chain/live-flow QA polish: Remi/Zeke chains, Whirlwind, Onslaught, Counter routing, sticky Apply, and contextual panels are stabilized for tablet live play.";
+      if (sub) sub.textContent = "V2.4A chain/live-flow QA polish: Remi/Zeke chains, Whirlwind, Onslaught, Counter routing, sticky Apply, and contextual panels are stabilized for tablet live play.";
     } catch (err) { }
   }
 
@@ -15636,7 +15636,7 @@ else {
 <script>
 (function () {
   "use strict";
-  var VERSION = "V2.3K";
+  var VERSION = "V2.4A";
   var STORAGE_KEY = "middaraCombatHelperV22BMobileFlow";
   var FOCUS_KEY = "middaraCombatHelperV22BPhoneFocus";
   var renderTimer = null;
@@ -16253,7 +16253,7 @@ else {
   function patchSnapshots() {
     if (window.__middaraV22BSnapshotPatch) return;
     window.__middaraV22BSnapshotPatch = true;
-    function addFlow(snap) { try { snap.version = "V2.3K"; snap.pwaDeploymentVersion = "V2.3K"; snap.mobileFlowState = JSON.parse(JSON.stringify(state)); } catch (err) {} return snap; }
+    function addFlow(snap) { try { snap.version = "V2.4A"; snap.pwaDeploymentVersion = "V2.4A"; snap.mobileFlowState = JSON.parse(JSON.stringify(state)); } catch (err) {} return snap; }
     if (window.middaraDataManagerApi) {
       var api = window.middaraDataManagerApi;
       var oldFull = api.exportFullSnapshot;
@@ -16266,9 +16266,9 @@ else {
   }
 
   function updateChrome() {
-    document.title = "Middara Combat Helper - V2.3K Chain / Live-Flow QA Polish";
+    document.title = "Middara Combat Helper - V2.4A Chain / Live-Flow QA Polish";
     var sub = document.querySelector("header .subtitle");
-    if (sub) sub.textContent = "V2.3K chain/live-flow QA polish: Remi/Zeke chains, Whirlwind, Onslaught, Counter routing, sticky Apply, and contextual panels are stabilized for tablet live play.";
+    if (sub) sub.textContent = "V2.4A chain/live-flow QA polish: Remi/Zeke chains, Whirlwind, Onslaught, Counter routing, sticky Apply, and contextual panels are stabilized for tablet live play.";
   }
 
   function init() {
@@ -16293,7 +16293,7 @@ else {
 <script>
 (function () {
   "use strict";
-  var VERSION = "V2.3K";
+  var VERSION = "V2.4A";
   function ready(fn) { if (document.readyState === "loading") document.addEventListener("DOMContentLoaded", fn); else setTimeout(fn, 0); }
   function byId(id) { return document.getElementById(id); }
   function esc(v) { return String(v == null ? "" : v).replace(/[&<>"']/g, function (c) { return {"&":"&amp;","<":"&lt;",">":"&gt;","\"":"&quot;","'":"&#39;"}[c]; }); }
@@ -16420,11 +16420,11 @@ else {
     }, true);
   }
   function updateChrome() {
-    document.title = "Middara Combat Helper - V2.3K Chain / Live-Flow QA Polish";
+    document.title = "Middara Combat Helper - V2.4A Chain / Live-Flow QA Polish";
     var sub = document.querySelector("header .subtitle");
-    if (sub) sub.textContent = "V2.3K chain/live-flow QA polish: Remi/Zeke chains, Whirlwind, Onslaught, Counter routing, sticky Apply, and contextual panels are stabilized for tablet live play.";
-    var h = document.querySelector("#mobileCombatFlowPanel h2"); if (h) h.textContent = "V2.3K Tablet / mobile live combat flow";
-    var badge = document.querySelector("#mobileCombatFlowPanel .cockpit-badge"); if (badge) badge.textContent = "V2.3K Flow";
+    if (sub) sub.textContent = "V2.4A chain/live-flow QA polish: Remi/Zeke chains, Whirlwind, Onslaught, Counter routing, sticky Apply, and contextual panels are stabilized for tablet live play.";
+    var h = document.querySelector("#mobileCombatFlowPanel h2"); if (h) h.textContent = "V2.4A Tablet / mobile live combat flow";
+    var badge = document.querySelector("#mobileCombatFlowPanel .cockpit-badge"); if (badge) badge.textContent = "V2.4A Flow";
     var pwa = byId("pwaVersionText"); if (pwa) pwa.textContent = VERSION;
   }
   function tick() {
@@ -16449,7 +16449,7 @@ else {
 <script>
 (function () {
   "use strict";
-  var VERSION = "V2.3K";
+  var VERSION = "V2.4A";
   var CACHE_PREFIX = "middara-helper-";
   function ready(fn) { if (document.readyState === "loading") document.addEventListener("DOMContentLoaded", fn); else fn(); }
   function byId(id) { return document.getElementById(id); }
@@ -16597,11 +16597,11 @@ else {
     });
   }
   function updateChrome() {
-    document.title = "Middara Combat Helper - V2.3K Chain / Live-Flow QA Polish";
+    document.title = "Middara Combat Helper - V2.4A Chain / Live-Flow QA Polish";
     var sub = document.querySelector("header .subtitle");
-    if (sub) sub.textContent = "V2.3K chain/live-flow QA polish: Remi/Zeke chains, Whirlwind, Onslaught, Counter routing, sticky Apply, and contextual panels are stabilized for tablet live play.";
+    if (sub) sub.textContent = "V2.4A chain/live-flow QA polish: Remi/Zeke chains, Whirlwind, Onslaught, Counter routing, sticky Apply, and contextual panels are stabilized for tablet live play.";
     var pwa = byId("pwaVersionText"); if (pwa) pwa.textContent = "V2.2E";
-    var h = document.querySelector("#mobileCombatFlowPanel h2"); if (h) h.textContent = "V2.3K Tablet / mobile live combat flow";
+    var h = document.querySelector("#mobileCombatFlowPanel h2"); if (h) h.textContent = "V2.4A Tablet / mobile live combat flow";
   }
   function bindMobileHelp() {
     var flow = byId("mobileCombatFlowPanel");
@@ -16631,7 +16631,7 @@ else {
 <script id="v22g-table-session-script">
 (function(){
   "use strict";
-  var VERSION = "V2.3K";
+  var VERSION = "V2.4A";
   var CHECK_KEY = "middaraCombatHelperV22GSessionChecklist";
   var RECENT_KEY = "middaraCombatHelperV22GRecentActions";
   function byId(id){ return document.getElementById(id); }
@@ -16798,11 +16798,11 @@ else {
     else if (action === "rewards") route("rewards", "rewardsLootPanel");
   }
   function init(){
-    document.title = "Middara Combat Helper - V2.3K Chain / Live-Flow QA Polish";
+    document.title = "Middara Combat Helper - V2.4A Chain / Live-Flow QA Polish";
     var h = document.querySelector("header h1"); if (h) h.textContent = "Middara Combat Helper";
-    var sub = document.querySelector("header .subtitle"); if (sub) sub.textContent = "V2.3K chain/live-flow QA polish: Remi/Zeke chains, Whirlwind, Onslaught, Counter routing, sticky Apply, and contextual panels are stabilized for tablet live play.";
-    var flowH = document.querySelector("#mobileCombatFlowPanel h2"); if (flowH) flowH.textContent = "V2.3K Tablet / mobile live combat flow";
-    var badge = document.querySelector("#mobileCombatFlowPanel .cockpit-badge"); if (badge) badge.textContent = "V2.3K Flow";
+    var sub = document.querySelector("header .subtitle"); if (sub) sub.textContent = "V2.4A chain/live-flow QA polish: Remi/Zeke chains, Whirlwind, Onslaught, Counter routing, sticky Apply, and contextual panels are stabilized for tablet live play.";
+    var flowH = document.querySelector("#mobileCombatFlowPanel h2"); if (flowH) flowH.textContent = "V2.4A Tablet / mobile live combat flow";
+    var badge = document.querySelector("#mobileCombatFlowPanel .cockpit-badge"); if (badge) badge.textContent = "V2.4A Flow";
     injectHub(); addFooterUndo();
     document.addEventListener("click", function(ev){
       var node = ev.target && ev.target.closest ? ev.target.closest("[data-v22g-action]") : null;
@@ -16826,7 +16826,7 @@ else {
 <script>
 (function(){
   "use strict";
-  var VERSION = "V2.3K";
+  var VERSION = "V2.4A";
   var CHECK_KEY = "middara_v22i_live_checklist";
   var EXPORT_KEY = "middara_v22i_last_snapshot_export";
   var TEST_KEY = "middara_v22i_last_self_test";
@@ -17027,7 +17027,7 @@ else {
     wrap.style.borderRadius = "14px";
     wrap.style.padding = "12px";
     wrap.innerHTML = '' +
-      '<h3 style="margin-top:0">V2.3K save / update status</h3>' +
+      '<h3 style="margin-top:0">V2.4A save / update status</h3>' +
       '<div class="note">Save state is local to this browser and this hosted URL. Use full snapshot export before changing devices, hosts, or GitHub builds.</div>' +
       '<div class="v22i-status-grid">' +
         '<div class="v22i-status-card"><div class="label">Version</div><div class="value" id="v22iVersionValue">-</div></div>' +
@@ -17065,14 +17065,14 @@ else {
     });
   }
   function patchTitles(){
-    document.title = "Middara Combat Helper - V2.3K Chain / Live-Flow QA Polish";
+    document.title = "Middara Combat Helper - V2.4A Chain / Live-Flow QA Polish";
     var sub = document.querySelector("header .subtitle");
-    if (sub) sub.textContent = "V2.3K chain/live-flow QA polish: Remi/Zeke chains, Whirlwind, Onslaught, Counter routing, sticky Apply, and contextual panels are stabilized for tablet live play.";
-    var flowH = document.querySelector("#mobileCombatFlowPanel h2"); if (flowH) flowH.textContent = "V2.3K Tablet live combat flow";
-    var badge = document.querySelector("#mobileCombatFlowPanel .cockpit-badge"); if (badge) badge.textContent = "V2.3K Flow";
+    if (sub) sub.textContent = "V2.4A chain/live-flow QA polish: Remi/Zeke chains, Whirlwind, Onslaught, Counter routing, sticky Apply, and contextual panels are stabilized for tablet live play.";
+    var flowH = document.querySelector("#mobileCombatFlowPanel h2"); if (flowH) flowH.textContent = "V2.4A Tablet live combat flow";
+    var badge = document.querySelector("#mobileCombatFlowPanel .cockpit-badge"); if (badge) badge.textContent = "V2.4A Flow";
     var hubH = document.querySelector("#v22gSessionHub h3"); if (hubH) hubH.textContent = "V2.3I table session hub";
     var hubTiny = document.querySelector("#v22gSessionHub .v22g-session-head .tiny"); if (hubTiny) hubTiny.textContent = "One-tablet controls for setup, backup, quick undo, end-of-encounter cleanup, and live-play readiness.";
-    var pwaSummary = document.querySelector(".v22c-pwa-panel summary"); if (pwaSummary) pwaSummary.textContent = "V2.3K hosted / installable web app";
+    var pwaSummary = document.querySelector(".v22c-pwa-panel summary"); if (pwaSummary) pwaSummary.textContent = "V2.4A hosted / installable web app";
     var pwa = byId("pwaVersionText"); if (pwa) pwa.textContent = VERSION;
   }
   function init(){
@@ -17207,7 +17207,7 @@ else {
 <script id="v22jLiveFlowPriorityScript">
 (function(){
   "use strict";
-  var VERSION = "V2.3K";
+  var VERSION = "V2.4A";
   function byId(id){ return document.getElementById(id); }
   function text(el, value){ if (el) el.textContent = value; }
   function hasClass(el, cls){ return el && (" " + el.className + " ").indexOf(" " + cls + " ") >= 0; }
@@ -17222,16 +17222,16 @@ else {
     if (flow && flow.scrollIntoView) flow.scrollIntoView({behavior:"smooth", block:"start"});
   }
   function patchTitles(){
-    document.title = "Middara Combat Helper - V2.3K Chain / Live-Flow QA Polish";
+    document.title = "Middara Combat Helper - V2.4A Chain / Live-Flow QA Polish";
     var sub = document.querySelector("header .subtitle");
-    if (sub) sub.textContent = "V2.3K chain/live-flow QA polish: Remi/Zeke chains, Whirlwind, Onslaught, Counter routing, sticky Apply, and contextual panels are stabilized for tablet live play.";
+    if (sub) sub.textContent = "V2.4A chain/live-flow QA polish: Remi/Zeke chains, Whirlwind, Onslaught, Counter routing, sticky Apply, and contextual panels are stabilized for tablet live play.";
     var flowH = document.querySelector("#mobileCombatFlowPanel h2");
-    if (flowH) flowH.textContent = "V2.3K Tablet live combat flow";
+    if (flowH) flowH.textContent = "V2.4A Tablet live combat flow";
     var badge = document.querySelector("#mobileCombatFlowPanel .cockpit-badge");
-    if (badge) badge.textContent = "V2.3K Flow";
+    if (badge) badge.textContent = "V2.4A Flow";
     var pwa = byId("pwaVersionText"); if (pwa) pwa.textContent = VERSION;
-    var pwaSummary = document.querySelector(".v22c-pwa-panel summary"); if (pwaSummary) pwaSummary.textContent = "V2.3K hosted / installable web app";
-    var dataH = document.querySelector("#v22iDataStatusPanel h3"); if (dataH) dataH.textContent = "V2.3K save / update status";
+    var pwaSummary = document.querySelector(".v22c-pwa-panel summary"); if (pwaSummary) pwaSummary.textContent = "V2.4A hosted / installable web app";
+    var dataH = document.querySelector("#v22iDataStatusPanel h3"); if (dataH) dataH.textContent = "V2.4A save / update status";
     var hubTitle = document.querySelector("#v22gSessionHub h3"); if (hubTitle) hubTitle.textContent = "Table session hub";
     var guideTitle = document.querySelector("#v22iGuidePanel h3"); if (guideTitle) guideTitle.textContent = "Live-play guide";
   }
@@ -17366,7 +17366,7 @@ else {
 <script id="v22k-auto-calc-script">
 (function(){
   "use strict";
-  var VERSION = "V2.3K";
+  var VERSION = "V2.4A";
   var appliedKey = "";
   var appliedLabel = "";
   var autoTimer = null;
@@ -17536,12 +17536,12 @@ else {
     var mo = new MutationObserver(function(){ schedulePaint(); });
     mo.observe(document.body, { childList:true, subtree:true, characterData:true });
     setInterval(paint, 1000);
-    document.title = "Middara Combat Helper - V2.3K Chain / Live-Flow QA Polish";
+    document.title = "Middara Combat Helper - V2.4A Chain / Live-Flow QA Polish";
     var sub = document.querySelector("header .subtitle");
-    if (sub) sub.textContent = "V2.3K chain/live-flow QA polish: Remi/Zeke chains, Whirlwind, Onslaught, Counter routing, sticky Apply, and contextual panels are stabilized for tablet live play.";
-    var flowH = document.querySelector("#mobileCombatFlowPanel h2"); if (flowH) flowH.textContent = "V2.3K Tablet live combat flow";
+    if (sub) sub.textContent = "V2.4A chain/live-flow QA polish: Remi/Zeke chains, Whirlwind, Onslaught, Counter routing, sticky Apply, and contextual panels are stabilized for tablet live play.";
+    var flowH = document.querySelector("#mobileCombatFlowPanel h2"); if (flowH) flowH.textContent = "V2.4A Tablet live combat flow";
     var badge = document.querySelector("#mobileCombatFlowPanel .cockpit-badge"); if (badge) badge.textContent = "V2.3I Auto-calc";
-    var pwaSummary = document.querySelector(".v22c-pwa-panel summary"); if (pwaSummary) pwaSummary.textContent = "V2.3K hosted / installable web app";
+    var pwaSummary = document.querySelector(".v22c-pwa-panel summary"); if (pwaSummary) pwaSummary.textContent = "V2.4A hosted / installable web app";
     setTimeout(function(){ paint(); autoCalcAttack(); }, 350);
   }
   if (document.readyState === "loading") document.addEventListener("DOMContentLoaded", install);
@@ -17563,7 +17563,7 @@ else {
 </style>
 <script id="v23a-rook-defense-spell-empower-script">
 (function(){
-  var VERSION = "V2.3K";
+  var VERSION = "V2.4A";
   function byId(id){ return document.getElementById(id); }
   function setVal(id, value){ var el = byId(id); if (el) el.value = value; }
   function setChecked(id, value){ var el = byId(id); if (el) el.checked = !!value; }
@@ -17646,12 +17646,12 @@ else {
     box.innerHTML = html;
   }
   function updateVersionChrome(){
-    document.title = "Middara Combat Helper - V2.3K Chain / Live-Flow QA Polish";
-    var sub = document.querySelector("header .subtitle"); if (sub) sub.textContent = "V2.3K chain/live-flow QA polish: Remi/Zeke chains, Whirlwind, Onslaught, Counter routing, sticky Apply, and contextual panels are stabilized for tablet live play.";
-    var flowH = document.querySelector("#mobileCombatFlowPanel h2"); if (flowH) flowH.textContent = "V2.3K Tablet live combat flow";
-    var badge = document.querySelector("#mobileCombatFlowPanel .cockpit-badge"); if (badge) badge.textContent = "V2.3K";
-    var pwaSummary = document.querySelector(".v22c-pwa-panel summary"); if (pwaSummary) pwaSummary.textContent = "V2.3K hosted / installable web app";
-    var dataH = document.querySelector("#v22iDataStatusPanel h3"); if (dataH) dataH.textContent = "V2.3K save / update status";
+    document.title = "Middara Combat Helper - V2.4A Chain / Live-Flow QA Polish";
+    var sub = document.querySelector("header .subtitle"); if (sub) sub.textContent = "V2.4A chain/live-flow QA polish: Remi/Zeke chains, Whirlwind, Onslaught, Counter routing, sticky Apply, and contextual panels are stabilized for tablet live play.";
+    var flowH = document.querySelector("#mobileCombatFlowPanel h2"); if (flowH) flowH.textContent = "V2.4A Tablet live combat flow";
+    var badge = document.querySelector("#mobileCombatFlowPanel .cockpit-badge"); if (badge) badge.textContent = "V2.4A";
+    var pwaSummary = document.querySelector(".v22c-pwa-panel summary"); if (pwaSummary) pwaSummary.textContent = "V2.4A hosted / installable web app";
+    var dataH = document.querySelector("#v22iDataStatusPanel h3"); if (dataH) dataH.textContent = "V2.4A save / update status";
     var v = byId("v22iVersionValue"); if (v) v.textContent = VERSION;
   }
   function syncRookPanelEmpowerToSpell(){
@@ -17679,19 +17679,19 @@ else {
 <script>
 (function () {
   "use strict";
-  var TITLE = "Middara Combat Helper - V2.3K Chain / Live-Flow QA Polish";
-  var SUBTITLE = "V2.3K chain/live-flow QA polish: Remi/Zeke chains, Whirlwind, Onslaught, Counter routing, sticky Apply, and contextual panels are stabilized for tablet live play.";
+  var TITLE = "Middara Combat Helper - V2.4A Chain / Live-Flow QA Polish";
+  var SUBTITLE = "V2.4A chain/live-flow QA polish: Remi/Zeke chains, Whirlwind, Onslaught, Counter routing, sticky Apply, and contextual panels are stabilized for tablet live play.";
   function stabilizeHeader() {
     try {
       if (document.title !== TITLE) document.title = TITLE;
       var sub = document.querySelector("header .subtitle");
       if (sub && sub.textContent !== SUBTITLE) sub.textContent = SUBTITLE;
       var flowH = document.querySelector("#mobileCombatFlowPanel h2");
-      if (flowH && flowH.textContent.indexOf("V2.3K") < 0) flowH.textContent = "V2.3K Tablet live combat flow";
+      if (flowH && flowH.textContent.indexOf("V2.4A") < 0) flowH.textContent = "V2.4A Tablet live combat flow";
       var badge = document.querySelector("#mobileCombatFlowPanel .cockpit-badge");
-      if (badge && badge.textContent.indexOf("V2.3K") < 0) badge.textContent = "V2.3K";
+      if (badge && badge.textContent.indexOf("V2.4A") < 0) badge.textContent = "V2.4A";
       var pwaSummary = document.querySelector(".v22c-pwa-panel summary");
-      if (pwaSummary && pwaSummary.textContent.indexOf("V2.3K") < 0) pwaSummary.textContent = "V2.3K hosted / installable web app";
+      if (pwaSummary && pwaSummary.textContent.indexOf("V2.4A") < 0) pwaSummary.textContent = "V2.4A hosted / installable web app";
     } catch (err) {}
   }
   if (document.readyState === "loading") document.addEventListener("DOMContentLoaded", stabilizeHeader);
@@ -17817,7 +17817,7 @@ else {
 <script id="v23c-in-context-defense-script">
 (function () {
   "use strict";
-  var VERSION = "V2.3K";
+  var VERSION = "V2.4A";
   var lastMode = "";
   function ready(fn) { if (document.readyState === "loading") document.addEventListener("DOMContentLoaded", fn); else setTimeout(fn, 0); }
   function byId(id) { return document.getElementById(id); }
@@ -18085,7 +18085,7 @@ else {
 <script>
 (function () {
   "use strict";
-  var VERSION = "V2.3K";
+  var VERSION = "V2.4A";
   var MOBILE_FLOW_STORAGE_KEY = "middaraCombatHelperV22BMobileFlow";
   function ready(fn) { if (document.readyState === "loading") document.addEventListener("DOMContentLoaded", fn); else setTimeout(fn, 0); }
   function byId(id) { return document.getElementById(id); }
@@ -18389,7 +18389,7 @@ else {
 <script id="v23e-universal-counter-script">
 (function () {
   "use strict";
-  var VERSION = "V2.3K";
+  var VERSION = "V2.4A";
   var MOBILE_FLOW_STORAGE_KEY = "middaraCombatHelperV22BMobileFlow";
   var ADVENTURERS = {
     rook: { name:"Rook", profile:"rook_loche_svalinn" },
@@ -18626,14 +18626,14 @@ else {
     var calc = byId("calculateEnemyAttackButton"); if (calc) calc.addEventListener("click", function () { setTimeout(renderUniversalCounterTray, 60); }, true);
   }
   function patchChromeAndSnapshot() {
-    document.title = "Middara Combat Helper - V2.3K Chain / Live-Flow QA Polish";
+    document.title = "Middara Combat Helper - V2.4A Chain / Live-Flow QA Polish";
     var sub = document.querySelector("header .subtitle");
-    if (sub) sub.textContent = "V2.3K chain/live-flow QA polish: Remi/Zeke chains, Whirlwind, Onslaught, Counter routing, sticky Apply, and contextual panels are stabilized for tablet live play.";
-    var h = document.querySelector("#mobileCombatFlowPanel h2"); if (h) h.textContent = "V2.3K Tablet live combat flow";
-    var badge = document.querySelector("#mobileCombatFlowPanel .cockpit-badge"); if (badge) badge.textContent = "V2.3K Flow";
+    if (sub) sub.textContent = "V2.4A chain/live-flow QA polish: Remi/Zeke chains, Whirlwind, Onslaught, Counter routing, sticky Apply, and contextual panels are stabilized for tablet live play.";
+    var h = document.querySelector("#mobileCombatFlowPanel h2"); if (h) h.textContent = "V2.4A Tablet live combat flow";
+    var badge = document.querySelector("#mobileCombatFlowPanel .cockpit-badge"); if (badge) badge.textContent = "V2.4A Flow";
     var pwa = byId("pwaVersionText"); if (pwa) pwa.textContent = VERSION;
-    var pwaSummary = document.querySelector(".v22c-pwa-panel summary"); if (pwaSummary) pwaSummary.textContent = "V2.3K hosted / installable web app";
-    var dataH = document.querySelector("#v22iDataStatusPanel h3"); if (dataH) dataH.textContent = "V2.3K save / update status";
+    var pwaSummary = document.querySelector(".v22c-pwa-panel summary"); if (pwaSummary) pwaSummary.textContent = "V2.4A hosted / installable web app";
+    var dataH = document.querySelector("#v22iDataStatusPanel h3"); if (dataH) dataH.textContent = "V2.4A save / update status";
     try {
       if (window.middaraDataManagerApi && !window.__v23eSnapshotPatch) {
         window.__v23eSnapshotPatch = true;
@@ -18767,7 +18767,7 @@ else {
 <script id="v23f-universal-defense-trays-script">
 (function () {
   "use strict";
-  var VERSION = "V2.3K";
+  var VERSION = "V2.4A";
   var ADVENTURERS = {
     rook: "Rook",
     remi: "Remi",
@@ -19125,14 +19125,14 @@ else {
     var calc = byId("calculateEnemyAttackButton"); if (calc) calc.addEventListener("click", function () { setTimeout(function(){ renderDefenseTray(lastEnemyAttack()); }, 80); }, true);
   }
   function patchChromeAndSnapshots() {
-    document.title = "Middara Combat Helper - V2.3K Chain / Live-Flow QA Polish";
+    document.title = "Middara Combat Helper - V2.4A Chain / Live-Flow QA Polish";
     var sub = document.querySelector("header .subtitle");
-    if (sub) sub.textContent = "V2.3K chain/live-flow QA polish: Remi/Zeke chains, Whirlwind, Onslaught, Counter routing, sticky Apply, and contextual panels are stabilized for tablet live play.";
-    var h = document.querySelector("#mobileCombatFlowPanel h2"); if (h) h.textContent = "V2.3K Tablet live combat flow";
-    var badge = document.querySelector("#mobileCombatFlowPanel .cockpit-badge"); if (badge) badge.textContent = "V2.3K Flow";
+    if (sub) sub.textContent = "V2.4A chain/live-flow QA polish: Remi/Zeke chains, Whirlwind, Onslaught, Counter routing, sticky Apply, and contextual panels are stabilized for tablet live play.";
+    var h = document.querySelector("#mobileCombatFlowPanel h2"); if (h) h.textContent = "V2.4A Tablet live combat flow";
+    var badge = document.querySelector("#mobileCombatFlowPanel .cockpit-badge"); if (badge) badge.textContent = "V2.4A Flow";
     var pwa = byId("pwaVersionText"); if (pwa) pwa.textContent = VERSION;
-    var pwaSummary = document.querySelector(".v22c-pwa-panel summary"); if (pwaSummary) pwaSummary.textContent = "V2.3K hosted / installable web app";
-    var dataH = document.querySelector("#v22iDataStatusPanel h3"); if (dataH) dataH.textContent = "V2.3K save / update status";
+    var pwaSummary = document.querySelector(".v22c-pwa-panel summary"); if (pwaSummary) pwaSummary.textContent = "V2.4A hosted / installable web app";
+    var dataH = document.querySelector("#v22iDataStatusPanel h3"); if (dataH) dataH.textContent = "V2.4A save / update status";
     try {
       if (window.middaraDataManagerApi && !window.__v23fSnapshotPatch) {
         window.__v23fSnapshotPatch = true;
@@ -19164,9 +19164,9 @@ else {
 <script>
 (function () {
   "use strict";
-  var VERSION = "V2.3K";
-  var TITLE = "Middara Combat Helper - V2.3K Chain / Live-Flow QA Polish";
-  var SUBTITLE = "V2.3K chain/live-flow QA polish: Remi/Zeke chains, Whirlwind, Onslaught, Counter routing, sticky Apply, and contextual panels are stabilized for tablet live play.";
+  var VERSION = "V2.4A";
+  var TITLE = "Middara Combat Helper - V2.4A Chain / Live-Flow QA Polish";
+  var SUBTITLE = "V2.4A chain/live-flow QA polish: Remi/Zeke chains, Whirlwind, Onslaught, Counter routing, sticky Apply, and contextual panels are stabilized for tablet live play.";
   var KEY = "middara_v23g_live_flow_layout_mode";
   function ready(fn) { if (document.readyState === "loading") document.addEventListener("DOMContentLoaded", fn); else fn(); }
   function byId(id) { return document.getElementById(id); }
@@ -19186,11 +19186,11 @@ else {
   function patchChrome() {
     document.title = TITLE;
     var sub = document.querySelector("header .subtitle"); if (sub) sub.textContent = SUBTITLE;
-    var h = document.querySelector("#mobileCombatFlowPanel h2"); if (h) h.textContent = "V2.3K Tablet live combat flow";
-    var badge = document.querySelector("#mobileCombatFlowPanel .cockpit-badge"); if (badge) badge.textContent = "V2.3K Flow";
+    var h = document.querySelector("#mobileCombatFlowPanel h2"); if (h) h.textContent = "V2.4A Tablet live combat flow";
+    var badge = document.querySelector("#mobileCombatFlowPanel .cockpit-badge"); if (badge) badge.textContent = "V2.4A Flow";
     var pwa = byId("pwaVersionText"); if (pwa) pwa.textContent = VERSION;
-    var pwaSummary = document.querySelector(".v22c-pwa-panel summary"); if (pwaSummary) pwaSummary.textContent = "V2.3K hosted / installable web app";
-    var dataH = document.querySelector("#v22iDataStatusPanel h3"); if (dataH) dataH.textContent = "V2.3K save / update status";
+    var pwaSummary = document.querySelector(".v22c-pwa-panel summary"); if (pwaSummary) pwaSummary.textContent = "V2.4A hosted / installable web app";
+    var dataH = document.querySelector("#v22iDataStatusPanel h3"); if (dataH) dataH.textContent = "V2.4A save / update status";
     document.querySelectorAll('[data-v22b-action="calculateCurrent"]').forEach(function (b) { b.style.display = "none"; });
   }
   function patchSnapshots() {
@@ -19224,7 +19224,7 @@ else {
 <script>
 (function () {
   "use strict";
-  var VERSION = "V2.3K";
+  var VERSION = "V2.4A";
   var STORAGE_KEY = "middaraCombatHelperV23HChainPolish";
   var state = { onslaughtRemaining: 0, onslaughtStartedAt: 0, whirlwindActive: false, whirlwindCount: 0, lastMessage: "Remi/Zeke chain helper ready." };
   var renderTimer = null;
@@ -19458,7 +19458,7 @@ else {
     section.id = "v23hChainPolishPanel";
     section.className = "panel";
     section.setAttribute("data-v17-mode", "play");
-    section.innerHTML = '<details open><summary>V2.3K Remi / Zeke chain QA shortcuts</summary>' +
+    section.innerHTML = '<details open><summary>V2.4A Remi / Zeke chain QA shortcuts</summary>' +
       '<div class="note" style="margin-top:10px">Contextual follow-up shortcuts for Remi Chain Pick / Scimitar / Whirlwind and Zeke Onslaught / Blade Works. Resolve the attack math normally, then use these buttons for the next action or reminder.</div>' +
       '<div id="v23hStatus" class="ok-box note" style="margin-top:10px">Remi/Zeke chain helper ready.</div>' +
       '<div id="v23hContext" class="pillbox" style="margin-top:10px"></div>' +
@@ -19525,9 +19525,9 @@ else {
     window.__middaraV23HCalcCapture = true;
   }
   function patchChromeAndSnapshots() {
-    document.title = "Middara Combat Helper - V2.3K Chain / Live-Flow QA Polish";
+    document.title = "Middara Combat Helper - V2.4A Chain / Live-Flow QA Polish";
     var sub = document.querySelector("header .subtitle");
-    if (sub) sub.textContent = "V2.3K chain/live-flow QA polish: Remi/Zeke chains, Whirlwind, Onslaught, Counter routing, sticky Apply, and contextual panels are stabilized for tablet live play.";
+    if (sub) sub.textContent = "V2.4A chain/live-flow QA polish: Remi/Zeke chains, Whirlwind, Onslaught, Counter routing, sticky Apply, and contextual panels are stabilized for tablet live play.";
     try {
       if (window.middaraDataManagerApi && !window.__middaraV23HSnapshotPatch) {
         var api = window.middaraDataManagerApi;
@@ -19557,7 +19557,7 @@ else {
     load(); injectStyles(); injectPanel(); bind(); patchCalculateCapture(); patchChromeAndSnapshots(); render();
     setTimeout(function () { patchCalculateCapture(); patchChromeAndSnapshots(); render(); }, 800);
     setInterval(function () { patchChromeAndSnapshots(); decorateMobileActionCards(); }, 1600);
-    status("V2.3K Remi/Zeke chain helper loaded. Use normal attack math, then use contextual follow-up buttons.", "ok");
+    status("V2.4A Remi/Zeke chain helper loaded. Use normal attack math, then use contextual follow-up buttons.", "ok");
   }
   ready(init);
   window.middaraV23HChainApi = { render: render, getState: function () { return JSON.parse(JSON.stringify(state)); }, startOnslaught: startOnslaught, nextOnslaught: nextOnslaught, startWhirlwind: startWhirlwind };
@@ -19569,9 +19569,9 @@ else {
 <script id="v23i-remi-zeke-chain-flow-fix">
 (function () {
   "use strict";
-  var VERSION = "V2.3K";
-  var TITLE = "Middara Combat Helper - V2.3K Chain / Live-Flow QA Polish";
-  var SUBTITLE = "V2.3K chain/live-flow QA polish: Remi/Zeke chains, Whirlwind, Onslaught, Counter routing, sticky Apply, and contextual panels are stabilized for tablet live play.";
+  var VERSION = "V2.4A";
+  var TITLE = "Middara Combat Helper - V2.4A Chain / Live-Flow QA Polish";
+  var SUBTITLE = "V2.4A chain/live-flow QA polish: Remi/Zeke chains, Whirlwind, Onslaught, Counter routing, sticky Apply, and contextual panels are stabilized for tablet live play.";
   var timer = null;
 
   function ready(fn) { if (document.readyState === "loading") document.addEventListener("DOMContentLoaded", fn); else setTimeout(fn, 0); }
@@ -19712,8 +19712,8 @@ else {
     ensureWhirlwindSelector();
     var panel = byId("v23hChainPolishPanel");
     if (panel) {
-      var summary = panel.querySelector("summary"); if (summary) summary.textContent = "V2.3K Remi / Zeke chain QA shortcuts";
-      var note = panel.querySelector(".note"); if (note && note.textContent.indexOf("V2.3K") < 0) note.textContent = "V2.3K QA: chain helpers preserve the intended actor/target/action state, new attacks reset dice/options, and stale Apply state is cleared when routing follow-ups.";
+      var summary = panel.querySelector("summary"); if (summary) summary.textContent = "V2.4A Remi / Zeke chain QA shortcuts";
+      var note = panel.querySelector(".note"); if (note && note.textContent.indexOf("V2.4A") < 0) note.textContent = "V2.4A QA: chain helpers preserve the intended actor/target/action state, new attacks reset dice/options, and stale Apply state is cleared when routing follow-ups.";
     }
     var box = byId("v22bActionCards");
     if (box) {
@@ -19728,11 +19728,11 @@ else {
   function refreshChrome() {
     document.title = TITLE;
     var sub = document.querySelector("header .subtitle"); if (sub) sub.textContent = SUBTITLE;
-    var h = document.querySelector("#mobileCombatFlowPanel h2"); if (h) h.textContent = "V2.3K Tablet live combat flow";
-    var badge = document.querySelector("#mobileCombatFlowPanel .cockpit-badge"); if (badge) badge.textContent = "V2.3K Flow";
+    var h = document.querySelector("#mobileCombatFlowPanel h2"); if (h) h.textContent = "V2.4A Tablet live combat flow";
+    var badge = document.querySelector("#mobileCombatFlowPanel .cockpit-badge"); if (badge) badge.textContent = "V2.4A Flow";
     var pwa = byId("pwaVersionText"); if (pwa) pwa.textContent = VERSION;
-    var pwaSummary = document.querySelector(".v22c-pwa-panel summary"); if (pwaSummary) pwaSummary.textContent = "V2.3K hosted / installable web app";
-    var dataH = document.querySelector("#v22iDataStatusPanel h3"); if (dataH) dataH.textContent = "V2.3K save / update status";
+    var pwaSummary = document.querySelector(".v22c-pwa-panel summary"); if (pwaSummary) pwaSummary.textContent = "V2.4A hosted / installable web app";
+    var dataH = document.querySelector("#v22iDataStatusPanel h3"); if (dataH) dataH.textContent = "V2.4A save / update status";
   }
   function bind() {
     document.addEventListener("click", function (ev) {
@@ -19758,7 +19758,7 @@ else {
   }
   function init() {
     injectStyles(); bind(); decorate(); refreshChrome();
-    setTimeout(function () { decorate(); refreshChrome(); status("V2.3K chain/live-flow QA fixes loaded.", "ok"); }, 650);
+    setTimeout(function () { decorate(); refreshChrome(); status("V2.4A chain/live-flow QA fixes loaded.", "ok"); }, 650);
     setInterval(function () { decorate(); refreshChrome(); }, 1700);
   }
   ready(init);
@@ -19769,9 +19769,9 @@ else {
 <script>
 (function(){
   "use strict";
-  var VERSION = "V2.3K";
-  var TITLE = "Middara Combat Helper - V2.3K Chain / Live-Flow QA Polish";
-  var SUBTITLE = "V2.3K chain/live-flow QA polish: Remi/Zeke chains, Whirlwind, Onslaught, Counter routing, sticky Apply, and contextual panels are stabilized for tablet live play.";
+  var VERSION = "V2.4A";
+  var TITLE = "Middara Combat Helper - V2.4A Chain / Live-Flow QA Polish";
+  var SUBTITLE = "V2.4A chain/live-flow QA polish: Remi/Zeke chains, Whirlwind, Onslaught, Counter routing, sticky Apply, and contextual panels are stabilized for tablet live play.";
   var awaitingWhirlwindTarget = false;
   var targetChosenAt = 0;
   function ready(fn){ if(document.readyState === "loading") document.addEventListener("DOMContentLoaded", fn); else setTimeout(fn, 0); }
@@ -19808,14 +19808,14 @@ else {
   function updateChrome(){
     document.title = TITLE;
     var sub = document.querySelector("header .subtitle"); if(sub) sub.textContent = SUBTITLE;
-    var h = document.querySelector("#mobileCombatFlowPanel h2"); if(h) h.textContent = "V2.3K Tablet / mobile live combat flow";
-    var badge = document.querySelector("#mobileCombatFlowPanel .cockpit-badge"); if(badge) badge.textContent = "V2.3K Flow";
+    var h = document.querySelector("#mobileCombatFlowPanel h2"); if(h) h.textContent = "V2.4A Tablet / mobile live combat flow";
+    var badge = document.querySelector("#mobileCombatFlowPanel .cockpit-badge"); if(badge) badge.textContent = "V2.4A Flow";
     var pwa = byId("pwaVersionText"); if(pwa) pwa.textContent = VERSION;
-    var pwaSummary = document.querySelector(".v22c-pwa-panel summary"); if(pwaSummary) pwaSummary.textContent = "V2.3K hosted / installable web app";
-    var dataH = document.querySelector("#v22iDataStatusPanel h3"); if(dataH) dataH.textContent = "V2.3K save / update status";
-    var chainSummary = document.querySelector("#v23hChainPolishPanel summary"); if(chainSummary) chainSummary.textContent = "V2.3K Remi / Zeke chain QA shortcuts";
+    var pwaSummary = document.querySelector(".v22c-pwa-panel summary"); if(pwaSummary) pwaSummary.textContent = "V2.4A hosted / installable web app";
+    var dataH = document.querySelector("#v22iDataStatusPanel h3"); if(dataH) dataH.textContent = "V2.4A save / update status";
+    var chainSummary = document.querySelector("#v23hChainPolishPanel summary"); if(chainSummary) chainSummary.textContent = "V2.4A Remi / Zeke chain QA shortcuts";
     var note = document.querySelector("#v23hChainPolishPanel .note");
-    if(note && note.textContent.indexOf("V2.3K") < 0) note.textContent = "V2.3K QA: chain helpers preserve the intended actor/target/action state, new attacks reset dice/options, and stale Apply state is cleared when routing follow-ups.";
+    if(note && note.textContent.indexOf("V2.4A") < 0) note.textContent = "V2.4A QA: chain helpers preserve the intended actor/target/action state, new attacks reset dice/options, and stale Apply state is cleared when routing follow-ups.";
   }
   function updateWhirlwindProfileVisibility(){
     var show = isRemiContext();
@@ -19882,7 +19882,7 @@ else {
   function init(){
     injectStyles(); bind(); tick();
     setInterval(tick, 1700);
-    setTimeout(function(){ tick(); status("V2.3K chain/live-flow QA patch loaded.", "ok"); }, 800);
+    setTimeout(function(){ tick(); status("V2.4A chain/live-flow QA patch loaded.", "ok"); }, 800);
   }
   ready(init);
 })();
@@ -19891,7 +19891,7 @@ else {
 
 
 <style id="v23k-chain-live-flow-qa-style">
-  /* V2.3K chain/live-flow QA polish */
+  /* V2.4A chain/live-flow QA polish */
   #v23kQaPanel {
     border-color: rgba(163,230,53,.32);
     background: linear-gradient(180deg, rgba(163,230,53,.07), rgba(255,255,255,.012)), var(--panel);
@@ -19934,9 +19934,9 @@ else {
 <script id="v23k-chain-live-flow-qa-script">
 (function(){
   "use strict";
-  var VERSION = "V2.3K";
-  var TITLE = "Middara Combat Helper - V2.3K Chain / Live-Flow QA Polish";
-  var SUBTITLE = "V2.3K chain/live-flow QA polish: Remi/Zeke chains, Whirlwind, Onslaught, Counter routing, sticky Apply, and contextual panels are stabilized for tablet live play.";
+  var VERSION = "V2.4A";
+  var TITLE = "Middara Combat Helper - V2.4A Chain / Live-Flow QA Polish";
+  var SUBTITLE = "V2.4A chain/live-flow QA polish: Remi/Zeke chains, Whirlwind, Onslaught, Counter routing, sticky Apply, and contextual panels are stabilized for tablet live play.";
   var FLOW_KEY = "middaraCombatHelperV22BMobileFlow";
   var QA_KEY = "middaraCombatHelperV23KQaState";
   var pendingWhirlwindTarget = false;
@@ -20093,16 +20093,16 @@ else {
       panel.setAttribute("aria-hidden", (currentMode() === "play" && (remi || zeke)) ? "false" : "true");
     }
     var summary = document.querySelector("#v23hChainPolishPanel summary");
-    if(summary) summary.textContent = "V2.3K Remi / Zeke chain QA shortcuts";
+    if(summary) summary.textContent = "V2.4A Remi / Zeke chain QA shortcuts";
   }
   function paintChrome(){
     document.title = TITLE;
     var sub = document.querySelector("header .subtitle"); if(sub) sub.textContent = SUBTITLE;
-    var h = document.querySelector("#mobileCombatFlowPanel h2"); if(h) h.textContent = "V2.3K Tablet / mobile live combat flow";
-    var badge = document.querySelector("#mobileCombatFlowPanel .cockpit-badge"); if(badge) badge.textContent = "V2.3K Flow";
+    var h = document.querySelector("#mobileCombatFlowPanel h2"); if(h) h.textContent = "V2.4A Tablet / mobile live combat flow";
+    var badge = document.querySelector("#mobileCombatFlowPanel .cockpit-badge"); if(badge) badge.textContent = "V2.4A Flow";
     var pwa = byId("pwaVersionText"); if(pwa) pwa.textContent = VERSION;
-    var pwaSummary = document.querySelector(".v22c-pwa-panel summary"); if(pwaSummary) pwaSummary.textContent = "V2.3K hosted / installable web app";
-    var dataH = document.querySelector("#v22iDataStatusPanel h3"); if(dataH) dataH.textContent = "V2.3K save / update status";
+    var pwaSummary = document.querySelector(".v22c-pwa-panel summary"); if(pwaSummary) pwaSummary.textContent = "V2.4A hosted / installable web app";
+    var dataH = document.querySelector("#v22iDataStatusPanel h3"); if(dataH) dataH.textContent = "V2.4A save / update status";
   }
   function paint(){ paintChrome(); paintContext(); paintApplyButtons(); }
 
@@ -20191,7 +20191,7 @@ else {
     sec.id = "v23kQaPanel";
     sec.className = "panel";
     sec.setAttribute("data-v17-mode", "play");
-    sec.innerHTML = '<details><summary>V2.3K chain/live-flow QA tools</summary>' +
+    sec.innerHTML = '<details><summary>V2.4A chain/live-flow QA tools</summary>' +
       '<div class="note" style="margin-top:10px">Use these only if a chain/counter flow feels stale. They do not change board legality or choose targets; they just verify live UI hooks and clear stale Apply state.</div>' +
       '<div class="v23k-qa-grid">' +
         '<div class="v23k-qa-card"><strong>Current context</strong><div id="v23kContextText" class="tiny">-</div></div>' +
@@ -20199,7 +20199,7 @@ else {
         '<div class="v23k-qa-card"><strong>Apply guard</strong><div class="tiny">Sticky Apply follows the active Attack/Spell/Enemy result and shows Applied ✓ after use.</div></div>' +
       '</div>' +
       '<div class="v23k-qa-actions"><button type="button" data-v23k-action="runQa">Run live-flow sanity check</button><button type="button" data-v23k-action="clearStale">Clear stale Apply state</button><button type="button" data-v23k-action="resetAttack">Reset current attack roll</button></div>' +
-      '<div id="v23kQaStatus" class="ok-box note" style="margin-top:10px">V2.3K QA tools ready.</div>' +
+      '<div id="v23kQaStatus" class="ok-box note" style="margin-top:10px">V2.4A QA tools ready.</div>' +
       '</details>';
     anchor.parentNode.insertBefore(sec, anchor.nextSibling);
   }
@@ -20268,7 +20268,7 @@ else {
     paint();
     updateQaContext();
     setInterval(function(){ paint(); updateQaContext(); patchSnapshots(); }, 700);
-    setTimeout(function(){ paint(); updateQaContext(); setFlowStatus("V2.3K chain/live-flow QA loaded. Chain helpers now reset/preserve state more consistently, and stale Apply state can be cleared from the QA tools.", "ok"); }, 900);
+    setTimeout(function(){ paint(); updateQaContext(); setFlowStatus("V2.4A chain/live-flow QA loaded. Chain helpers now reset/preserve state more consistently, and stale Apply state can be cleared from the QA tools.", "ok"); }, 900);
   }
   ready(init);
   window.middaraV23KLiveFlowQaApi = {
@@ -20277,6 +20277,395 @@ else {
     resetAttackDiceAndOptions: resetAttackDiceAndOptions,
     getState: function(){ return { qa:qaState(), flow:flowState(), actor:actorId(), target:targetLabel(), pendingType:currentPendingType(), lastChainAction:lastChainAction }; }
   };
+})();
+</script>
+
+
+
+<style id="v23l-stable-onslaught-footer-style">
+  #mobileCombatFlowPanel h2 {
+    position: relative !important;
+    height: 1.35em !important;
+    min-height: 1.35em !important;
+    max-height: 1.35em !important;
+    overflow: hidden !important;
+    color: transparent !important;
+    line-height: 1.25 !important;
+  }
+  #mobileCombatFlowPanel h2::after {
+    content: "V2.4A Tablet live combat flow";
+    position: absolute;
+    left: 0;
+    top: 0;
+    right: 0;
+    color: var(--text);
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+  }
+  #v17StickyFooter.v23l-footer-stable #v17FooterTitle,
+  #v17StickyFooter.v23l-footer-stable #v17FooterDetail { display: none !important; }
+  #v23lFooterMirrorTitle { font-weight: 900; color: var(--text); overflow-wrap: anywhere; }
+  #v23lFooterMirrorDetail { color: var(--muted); font-size: .82rem; margin-top: 2px; min-height: 1.2em; }
+  body.v23l-onslaught-lock #attackDicePanel {
+    outline: 2px solid rgba(163,230,53,.72);
+    box-shadow: 0 0 0 4px rgba(163,230,53,.12);
+  }
+</style>
+<script id="v23l-stable-onslaught-footer-script">
+(function(){
+  "use strict";
+  var VERSION = "V2.4A";
+  var TITLE = "Middara Combat Helper - V2.4A Stable Onslaught / Footer Patch";
+  var SUBTITLE = "V2.4A stable live-flow patch: Onslaught follow-ups stay in the attack roll tray, and contested header/footer text no longer flickers.";
+  var FLOW_KEY = "middaraCombatHelperV22BMobileFlow";
+  var savedOnslaughtTarget = null;
+  var lastFooterTitle = "";
+  var lastFooterDetail = "";
+
+  function ready(fn){ if(document.readyState === "loading") document.addEventListener("DOMContentLoaded", fn); else setTimeout(fn, 0); }
+  function byId(id){ return document.getElementById(id); }
+  function text(id){ var el = byId(id); return el ? String(el.textContent || el.value || "").trim() : ""; }
+  function val(id){ var el = byId(id); return el ? String(el.value || "") : ""; }
+  function selectedText(id){ var el = byId(id); return el && el.options && el.selectedIndex >= 0 ? String(el.options[el.selectedIndex].textContent || el.value || "") : val(id); }
+  function fire(elOrId, type){ var el = typeof elOrId === "string" ? byId(elOrId) : elOrId; if(!el) return; try{ el.dispatchEvent(new Event(type || "change", {bubbles:true})); }catch(err){ try{ var ev=document.createEvent("Event"); ev.initEvent(type || "change", true, true); el.dispatchEvent(ev); }catch(e){} } }
+  function setSelect(id, value){ var el=byId(id); if(!el || !el.options) return false; var s=String(value || ""); for(var i=0;i<el.options.length;i++){ if(el.options[i].value === s){ el.value=s; fire(el,"change"); return true; } } return false; }
+  function setVal(id, value){ var el=byId(id); if(el){ el.value=String(value == null ? "" : value); fire(el,"input"); fire(el,"change"); } }
+  function setChecked(id, value){ var el=byId(id); if(el){ el.checked=!!value; fire(el,"change"); } }
+  function readFlow(){ try{ return JSON.parse(localStorage.getItem(FLOW_KEY) || "{}"); }catch(err){ return {}; } }
+  function writeFlow(s){ try{ localStorage.setItem(FLOW_KEY, JSON.stringify(s || {})); }catch(err){} }
+  function flowTargetName(flowTarget){
+    var parts = String(flowTarget || "").split(":"), kind = parts[0], id = parts.slice(1).join(":");
+    try{
+      if(kind === "enemy" && window.trackerState && Array.isArray(trackerState.enemies)){
+        var e = trackerState.enemies.filter(function(x){ return String(x.id) === id; })[0];
+        if(e) return e.label || e.name || id;
+      }
+      if(kind === "party" && window.partyState && Array.isArray(partyState.members)){
+        var p = partyState.members.filter(function(x){ return String(x.id) === id; })[0];
+        if(p) return p.name || p.id || id;
+      }
+    }catch(err){}
+    return selectedText("targetSelect") || selectedText("enemyAttackTarget") || "target";
+  }
+  function currentTargetSnapshot(){
+    var flow = readFlow();
+    var snap = { flowTarget: flow.target || "", trackerId: "", label: "" };
+    try{ if(window.trackerState && trackerState.selectedId) snap.trackerId = String(trackerState.selectedId); }catch(err){}
+    if(!snap.flowTarget && snap.trackerId) snap.flowTarget = "enemy:" + snap.trackerId;
+    snap.label = flowTargetName(snap.flowTarget);
+    return snap;
+  }
+  function restoreTargetSnapshot(snap){
+    snap = snap || savedOnslaughtTarget || currentTargetSnapshot();
+    var flow = readFlow();
+    flow.actor = "party:zeke";
+    flow.pendingType = "attack";
+    flow.awaitingTargetFor = "";
+    flow.appliedKey = "";
+    flow.appliedLabel = "";
+    if(snap.flowTarget){ flow.target = snap.flowTarget; if(snap.flowTarget.indexOf("enemy:") === 0) flow.targetFilter = "enemy"; flow.targetRole = ""; }
+    writeFlow(flow);
+    if(snap.flowTarget && snap.flowTarget.indexOf("enemy:") === 0){
+      var id = snap.flowTarget.slice(6);
+      try{ if(typeof window.useTrackerEnemyAsTarget === "function") window.useTrackerEnemyAsTarget(id, false); }
+      catch(err){ try{ if(window.trackerState) trackerState.selectedId = id; if(typeof window.renderTracker === "function") renderTracker(); }catch(e){} }
+    }
+  }
+  function resetAttackControls(){
+    try{ document.querySelectorAll(".die-face").forEach(function(sel){ if(sel.options && sel.options.length){ sel.selectedIndex = 0; fire(sel,"change"); } }); }catch(err){}
+    setVal("blackFace", "0");
+    ["useMasterWork","useMotV","useChallengeSupreme","useMorbidEnvy","reserveChainMeleeFU","reserveChainRangedFU","reserveCriticalDefense","reserveSvalinn","empowered","flanking"].forEach(function(id){ setChecked(id, false); });
+    ["challengeSupremeSp","attackMod","physMod","magicMod","apMod","adjacentArmor","targetDodge"].forEach(function(id){ setVal(id, "0"); });
+  }
+  function setAttackMode(){
+    try{ document.body.classList.remove("v22b-show-spell", "v22b-show-rook"); document.body.classList.add("v22b-show-attack"); }catch(err){}
+    var flow = readFlow(); flow.actor = "party:zeke"; flow.pendingType = "attack"; flow.awaitingTargetFor = ""; writeFlow(flow);
+  }
+  function setFlowStatus(msg, kind){
+    var cls = (kind === "warn" ? "warning-box" : kind === "danger" ? "danger-box" : "ok-box") + " note v22b-flow-status";
+    var flow = byId("v22bFlowStatus"); if(flow){ flow.className = cls; flow.textContent = msg; }
+    var qa = byId("v23kQaStatus"); if(qa){ qa.className = cls; qa.textContent = msg; }
+  }
+  function routeToAttackRoll(delay){
+    setTimeout(function(){
+      var play = document.querySelector('[data-v17-mode-button="play"]'); if(play && typeof play.click === "function") play.click();
+      setTimeout(function(){ var el = byId("attackDicePanel"); if(el && el.scrollIntoView){ try{ el.scrollIntoView({behavior:"smooth", block:"start"}); }catch(err){ el.scrollIntoView(true); } } }, 70);
+    }, delay || 0);
+  }
+  function forceOnslaughtAttackRoll(label, snap){
+    snap = snap || savedOnslaughtTarget || currentTargetSnapshot();
+    restoreTargetSnapshot(snap);
+    setAttackMode();
+    setSelect("characterSelect", "zeke");
+    try{ if(typeof window.syncProfiles === "function") window.syncProfiles(); }catch(err){}
+    setTimeout(function(){
+      setSelect("profileSelect", "zeke_dual_short_swords");
+      try{ if(typeof window.syncProfileControls === "function") window.syncProfileControls(); }catch(err2){}
+      resetAttackControls();
+      restoreTargetSnapshot(snap);
+      setAttackMode();
+      try{ if(typeof window.calculate === "function") window.calculate(); }catch(err3){}
+      try{ if(window.middaraMobileFlowV22BApi && middaraMobileFlowV22BApi.render) middaraMobileFlowV22BApi.render(); }catch(err4){}
+      document.body.classList.add("v23l-onslaught-lock");
+      setTimeout(function(){ document.body.classList.remove("v23l-onslaught-lock"); }, 2600);
+      setFlowStatus((label || "Onslaught follow-up") + ": Zeke remains the actor, target is preserved as " + (snap.label || flowTargetName(snap.flowTarget)) + ", and the next attack roll is ready.", "ok");
+      routeToAttackRoll(10);
+    }, 60);
+  }
+  function hardCorrectOnslaught(label, snap){
+    [90, 260, 620, 1050, 1650, 2450].forEach(function(ms){ setTimeout(function(){ forceOnslaughtAttackRoll(label, snap); }, ms); });
+  }
+  function bindOnslaughtGuards(){
+    ["pointerdown","touchstart","mousedown"].forEach(function(evt){
+      document.addEventListener(evt, function(ev){
+        var node = ev.target && ev.target.closest ? ev.target.closest('[data-v23h-action="zeke-next-onslaught"], [data-v23h-action="zeke-start-onslaught"]') : null;
+        if(node) savedOnslaughtTarget = currentTargetSnapshot();
+      }, true);
+    });
+    document.addEventListener("click", function(ev){
+      var node = ev.target && ev.target.closest ? ev.target.closest('[data-v23h-action="zeke-next-onslaught"], [data-v23h-action="zeke-start-onslaught"]') : null;
+      if(!node) return;
+      var action = node.getAttribute("data-v23h-action") || "";
+      var snap = savedOnslaughtTarget || currentTargetSnapshot();
+      hardCorrectOnslaught(action === "zeke-start-onslaught" ? "Onslaught started" : "Onslaught follow-up", snap);
+    }, false);
+  }
+  function ensureFooterMirror(){
+    var footer = byId("v17StickyFooter"); if(!footer) return;
+    footer.classList.add("v23l-footer-stable");
+    if(byId("v23lFooterMirror")) return;
+    var host = footer.firstElementChild || footer;
+    var div = document.createElement("div");
+    div.id = "v23lFooterMirror";
+    div.innerHTML = '<div id="v23lFooterMirrorTitle" class="v17-footer-title">Current result</div><div id="v23lFooterMirrorDetail" class="v17-footer-detail">No result yet.</div>';
+    host.insertBefore(div, host.firstChild || null);
+  }
+  function footerTarget(){
+    var f = readFlow();
+    if(f.target) return flowTargetName(f.target);
+    return selectedText("targetSelect") || selectedText("enemyAttackTarget") || "target";
+  }
+  function pendingType(){
+    if(document.body.classList.contains("v22b-show-attack")) return "attack";
+    if(document.body.classList.contains("v22b-show-spell")) return "spell";
+    return readFlow().pendingType || "attack";
+  }
+  function applyInfo(){
+    var type = pendingType();
+    if(type === "enemyAttack") return { title:"Enemy attack", detail:"Result " + (text("enemyAttackResultText") || "-") + " | Final damage " + (text("enemyAttackFinalDamageText") || "0") };
+    if(type === "enemySpell") return { title:"Enemy spell", detail:text("enemySpellStatus") || "Resolve enemy spell" };
+    if(type === "spell") return { title:"Spell result -> " + footerTarget(), detail:"Result " + (text("spellResultText") || "-") + " | Damage/effect " + (text("spellDamageText") || "0") };
+    return { title:"Attack result -> " + footerTarget(), detail:"Result " + (text("hitText") || "-") + " | Final damage " + (text("finalDamage") || "0") + " | Target " + footerTarget() };
+  }
+  function paintFooterMirror(){
+    ensureFooterMirror();
+    var info = applyInfo();
+    var title = byId("v23lFooterMirrorTitle"), detail = byId("v23lFooterMirrorDetail");
+    if(title && info.title !== lastFooterTitle){ title.textContent = info.title; lastFooterTitle = info.title; }
+    if(detail && info.detail !== lastFooterDetail){ detail.textContent = info.detail; lastFooterDetail = info.detail; }
+  }
+  function patchChrome(){
+    document.title = TITLE;
+    var sub = document.querySelector("header .subtitle"); if(sub) sub.textContent = SUBTITLE;
+    var badge = document.querySelector("#mobileCombatFlowPanel .cockpit-badge"); if(badge) badge.textContent = "V2.4A Flow";
+    var pwa = byId("pwaVersionText"); if(pwa) pwa.textContent = VERSION;
+    var pwaSummary = document.querySelector(".v22c-pwa-panel summary"); if(pwaSummary) pwaSummary.textContent = "V2.4A hosted / installable web app";
+    var dataH = document.querySelector("#v22iDataStatusPanel h3"); if(dataH) dataH.textContent = "V2.4A save / update status";
+  }
+  function patchSnapshots(){
+    try{
+      if(!window.middaraDataManagerApi || window.__middaraV23LSnapshotPatch) return;
+      window.__middaraV23LSnapshotPatch = true;
+      var api = window.middaraDataManagerApi;
+      var oldFull = api.exportFullSnapshot;
+      var oldApp = api.exportAppData;
+      function add(snap){ try{ snap.version = VERSION; snap.pwaDeploymentVersion = VERSION; snap.v23l = { stableOnslaughtRouting:true, stableFooterMirror:true, stableLiveFlowHeading:true }; }catch(err){} return snap; }
+      if(typeof oldFull === "function") api.exportFullSnapshot = function(){ return add(oldFull.apply(this, arguments)); };
+      if(typeof oldApp === "function") api.exportAppData = function(){ return add(oldApp.apply(this, arguments)); };
+    }catch(err){}
+  }
+  function init(){
+    bindOnslaughtGuards();
+    patchChrome(); patchSnapshots(); ensureFooterMirror(); paintFooterMirror();
+    setInterval(function(){ patchChrome(); patchSnapshots(); paintFooterMirror(); }, 250);
+    setTimeout(function(){ setFlowStatus("V2.4A stable routing loaded. Onslaught follow-ups should remain in the attack roll tray, and the live-flow header/footer should no longer flicker.", "ok"); }, 900);
+  }
+  ready(init);
+  window.middaraV23LStableApi = { forceOnslaughtAttackRoll:forceOnslaughtAttackRoll, currentTargetSnapshot:currentTargetSnapshot, paintFooterMirror:paintFooterMirror };
+})();
+</script>
+
+
+<style id="v24a-nightingale-polish-style">
+  /* V2.4A Nightingale spell / familiar polish */
+  #mobileCombatFlowPanel h2::after { content: "V2.4A Tablet live combat flow" !important; }
+  #v24aNightingalePanel { border-color: rgba(192,132,252,.42); background: linear-gradient(180deg, rgba(192,132,252,.08), rgba(255,255,255,.012)), var(--panel); }
+  body:not(.v24a-actor-nightingale) #v24aNightingalePanel { display: none !important; }
+  #v24aNightingalePanel summary { color: #d8b4fe; font-weight: 900; }
+  .v24a-grid { display: grid; grid-template-columns: minmax(0,.8fr) minmax(0,1.2fr); gap: 12px; align-items: start; margin-top: 12px; }
+  .v24a-card { border: 1px solid rgba(148,163,184,.24); border-radius: 14px; padding: 12px; background: rgba(15,23,42,.48); }
+  .v24a-card h3 { margin-top: 0; }
+  .v24a-actions { display: grid; grid-template-columns: repeat(2, minmax(0,1fr)); gap: 8px; }
+  .v24a-actions button { text-align: left; min-height: 56px; }
+  .v24a-actions button strong { display:block; color: var(--text); }
+  .v24a-actions button span { display:block; margin-top: 3px; color: var(--muted); font-size: .78rem; font-weight: 500; line-height: 1.25; }
+  .v24a-life-grid { display: grid; grid-template-columns: repeat(2, minmax(0,1fr)); gap: 10px; }
+  .v24a-target-grid { display: grid; gap: 10px; margin-top: 10px; }
+  .v24a-life-target { border: 1px solid rgba(148,163,184,.24); border-radius: 12px; padding: 10px; background: rgba(2,6,23,.28); }
+  .v24a-life-target.active { border-color: rgba(192,132,252,.45); }
+  .v24a-life-target .field-grid { margin-top: 8px; }
+  .v24a-result-line { border-radius: 10px; padding: 8px 10px; background: rgba(15,23,42,.72); border: 1px solid rgba(148,163,184,.22); margin-top: 8px; color: var(--muted); }
+  .v24a-result-line strong { color: var(--text); }
+  .v24a-status { margin-top: 10px; }
+  .v24a-warn { color: var(--warn); }
+  .v24a-ok { color: var(--ok); }
+  #v24aLifeSummaryTable { margin-top: 10px; }
+  #v24aLifeSummaryTable th, #v24aLifeSummaryTable td { padding: 8px; }
+  .v24a-toolbar { display:flex; flex-wrap:wrap; gap: 8px; margin-top: 10px; }
+  .v24a-toolbar button { width:auto; min-width: 150px; }
+  .v24a-card .check-row { padding: 6px 0; }
+  .v24a-pill-row { display:flex; flex-wrap:wrap; gap:6px; margin-top:8px; }
+  .v24a-pill { display:inline-flex; border:1px solid rgba(148,163,184,.24); border-radius:999px; padding:4px 8px; background:rgba(2,6,23,.35); color:var(--muted); font-size:.78rem; }
+  @media (max-width: 920px) { .v24a-grid, .v24a-life-grid { grid-template-columns: 1fr; } .v24a-actions { grid-template-columns: 1fr; } }
+</style>
+<script id="v24a-nightingale-polish-script">
+(function(){
+  "use strict";
+  var VERSION = "V2.4A";
+  var TITLE = "Middara Combat Helper - V2.4A Nightingale Spell / Familiar Polish";
+  var SUBTITLE = "V2.4A Nightingale spell and familiar polish: Life Grasp multi-target helper, explicit Force math, one-time self-damage, Trophy effects, Blood Toll, Infection, Ring of Blood, and Yuxa shortcuts.";
+  var KEY = "middara_v24a_nightingale_state";
+  function byId(id){ return document.getElementById(id); }
+  function ready(fn){ if(document.readyState === "loading") document.addEventListener("DOMContentLoaded", fn); else fn(); }
+  function esc(v){ return String(v == null ? "" : v).replace(/[&<>\"']/g, function(ch){ return ({"&":"&amp;","<":"&lt;",">":"&gt;","\"":"&quot;","'":"&#039;"})[ch]; }); }
+  function num(v, d){ var n = Number(v); return Number.isFinite(n) ? n : (d || 0); }
+  function clamp(v, min, max){ return Math.max(min, Math.min(max, v)); }
+  function cap(s){ s = String(s || ""); return s.charAt(0).toUpperCase() + s.slice(1); }
+  function arr(x){ return Array.isArray(x) ? x : []; }
+  function fire(el, type){ if(!el) return; try{ el.dispatchEvent(new Event(type || "change", { bubbles:true })); } catch(err){} }
+  function click(id){ var el = byId(id); if(el) try{ el.click(); }catch(err){} }
+  function setSelect(id, value){ var el = byId(id); if(!el) return false; var v = String(value || ""); for(var i=0;i<el.options.length;i++){ if(el.options[i].value === v){ el.value = v; fire(el, "change"); return true; } } return false; }
+  function setChecked(id, checked){ var el = byId(id); if(!el) return; el.checked = !!checked; fire(el, "change"); }
+  function text(id){ var el = byId(id); return el ? String(el.textContent || "").trim() : ""; }
+  function die(color, idx){ var list = (window.DICE && DICE[color]) || []; return list[clamp(Math.trunc(num(idx,0)), 0, Math.max(0, list.length - 1))] || { value:0, book:0, shield:0, burst:0, skull:false, label:"None" }; }
+  function dieLabel(color, face){ if(!face) return cap(color); if(face.skull) return cap(color) + " Skull"; var bits = []; if(face.book) bits.push(face.book + " Book"); if(face.shield) bits.push(face.shield + " Shield"); if(face.burst) bits.push(face.burst + " Burst"); return cap(color) + " " + (face.value || 0) + ": " + (bits.length ? bits.join(", ") : "No symbols"); }
+  function dieOptions(color, selected){ var list = (window.DICE && DICE[color]) || []; return list.map(function(face, idx){ return '<option value="' + idx + '"' + (String(idx) === String(selected) ? ' selected' : '') + '>' + esc(dieLabel(color, face)) + '</option>'; }).join(""); }
+  function blackOptions(selected){ return dieOptions("black", selected); }
+  function defaultState(){ return { life:{ castingFace:4, empower:true, blackFace:0, usePicker:false, pickerGreyFace:4, pickerPurpleFace:4, boost:false, otherworldly:true, manualForce:0, targets:["", "", ""], conv1:[2,2,2], conv2:[2,2,2], appliedDamageKey:"", appliedSelfKey:"", markedKey:"", lastKey:"" }, trophyBlackFace:0, lastMessage:"" }; }
+  function loadState(){ try{ var raw = localStorage.getItem(KEY); if(raw) return Object.assign(defaultState(), JSON.parse(raw)); }catch(err){} return defaultState(); }
+  var state = loadState();
+  function save(){ try{ localStorage.setItem(KEY, JSON.stringify(state)); }catch(err){} }
+  function partyActorId(){ var sel = byId("v22bActorSelect"); var v = sel ? String(sel.value || "") : ""; if(v.indexOf("party:") === 0) return v.split(":")[1]; var c = byId("characterSelect"); return c ? String(c.value || "") : ""; }
+  function isNightingale(){ return partyActorId() === "nightingale"; }
+  function trackedEnemies(){ try{ return (window.trackerState && Array.isArray(trackerState.enemies)) ? trackerState.enemies : []; }catch(err){ return []; } }
+  function findEnemy(id){ return trackedEnemies().filter(function(e){ return e && e.id === id; })[0] || null; }
+  function enemyName(id){ var e = findEnemy(id); return e ? (e.label || e.name || id) : "None"; }
+  function enemyPreset(enemy){ var pid = enemy && (enemy.presetId || enemy.enemyId); var enemies = (window.DATA && Array.isArray(DATA.enemies)) ? DATA.enemies : []; return enemies.filter(function(e){ return e && e.id === pid; })[0] || null; }
+  function enemyConvColors(id){ var e = findEnemy(id); if(!e) return ["purple", "purple"]; if(Array.isArray(e.convictionDice) && e.convictionDice.length >= 2) return e.convictionDice.slice(0,2); var p = enemyPreset(e); if(p && Array.isArray(p.convictionDice) && p.convictionDice.length >= 2) return p.convictionDice.slice(0,2); return ["purple", "purple"]; }
+  function targetOptions(selected){ var opts = '<option value="">None / manual skip</option>'; trackedEnemies().forEach(function(e){ opts += '<option value="' + esc(e.id) + '"' + (e.id === selected ? ' selected' : '') + '>' + esc(e.label || e.name || e.id) + ' - HP ' + esc((e.hp || 0) - (e.damage || 0)) + ' / ' + esc(e.hp || 0) + '</option>'; }); return opts; }
+  function status(msg, kind){ state.lastMessage = msg || ""; save(); var el = byId("v24aStatus"); if(el){ el.className = (kind === "warn" ? "warning-box" : kind === "danger" ? "danger-box" : "ok-box") + " note v24a-status"; el.textContent = msg || ""; } try{ if(typeof window.setWorkflowStatus === "function") window.setWorkflowStatus(msg, kind || "ok"); }catch(err){} }
+  function setNightingaleActor(){ setSelect("characterSelect", "nightingale"); var actor = byId("v22bActorSelect"); if(actor) setSelect("v22bActorSelect", "party:nightingale"); }
+  function routeTo(id){ var el = byId(id); if(el && el.scrollIntoView){ try{ el.scrollIntoView({ behavior:"smooth", block:"start" }); }catch(err){ el.scrollIntoView(true); } } }
+  function selectSpell(spellId){ setNightingaleActor(); setSelect("spellSelect", spellId); if(spellId === "life_grasp") syncLifeFromMain(true); try{ if(typeof window.calculateSpell === "function") window.calculateSpell(); }catch(err){} document.body.classList.add("v22b-show-spell"); document.body.classList.remove("v22b-show-attack"); setTimeout(function(){ if(spellId === "life_grasp") routeTo("v24aLifeCard"); else routeTo("spellPanel"); }, 80); save(); paint(); }
+  function markCard(id, st, msg){ try{ if(window.middaraTurnApi && typeof middaraTurnApi.setCardState === "function") return middaraTurnApi.setCardState(id, st || "exhausted", msg || (id + " updated."), "ok"); }catch(err){} return false; }
+  function applyPartyDamageSafe(id, amount, source){ if(!amount) return false; try{ if(typeof window.applyPartyDamage === "function") return window.applyPartyDamage(id, amount, source || "Nightingale V2.4A"); }catch(err){} try{ var m = (partyState.members || []).filter(function(x){ return x.id === id; })[0]; if(!m) return false; if(typeof pushPartyHistory === "function") pushPartyHistory(); m.damage = clamp((m.damage || 0) + amount, 0, m.hp || 0); if(typeof savePartyState === "function") savePartyState(); if(typeof renderParty === "function") renderParty(); return true; }catch(err2){} return false; }
+  function applyPartySpSafe(id, delta){ try{ if(typeof window.applyPartySp === "function") return window.applyPartySp(id, delta); }catch(err){} return false; }
+  function healNight(amount, label, cardId){ var ok = applyPartyDamageSafe("nightingale", -Math.abs(amount), label); if(cardId) markCard(cardId, "exhausted", label + " marked exhausted."); status(label + (ok ? " applied." : " could not apply; check Party tracker."), ok ? "ok" : "warn"); paint(); }
+  function syncLifeFromMain(forceLife){ var life = state.life; if(forceLife) { setSelect("spellSelect", "life_grasp"); setChecked("spellUseEmpower", life.empower); setChecked("spellUseLifeForceBonus", life.boost); setChecked("spellUseOtherworldlyForce", life.otherworldly); }
+    var cf = byId("spellCastingFace"), bf = byId("spellBlackFace"), mf = byId("spellManualForceMod"), emp = byId("spellUseEmpower"), boost = byId("spellUseLifeForceBonus"), ow = byId("spellUseOtherworldlyForce");
+    if(cf) life.castingFace = num(cf.value, life.castingFace); if(bf) life.blackFace = num(bf.value, life.blackFace); if(mf) life.manualForce = num(mf.value, life.manualForce); if(emp) life.empower = !!emp.checked; if(boost) life.boost = !!boost.checked; if(ow) life.otherworldly = !!ow.checked; save(); }
+  function copyLifeToMain(){ var life = state.life; setNightingaleActor(); setSelect("spellSelect", "life_grasp"); setSelect("spellCastingFace", String(life.castingFace)); setChecked("spellUseEmpower", life.empower); setSelect("spellBlackFace", String(life.blackFace)); setChecked("spellUseLifeForceBonus", life.boost); setChecked("spellUseOtherworldlyForce", life.otherworldly); var mf = byId("spellManualForceMod"); if(mf){ mf.value = String(life.manualForce || 0); fire(mf, "input"); } try{ if(typeof window.calculateSpell === "function") window.calculateSpell(); }catch(err){} }
+  function symbolText(face){ if(!face || face.skull) return face && face.skull ? "Skull" : "None"; var bits=[]; if(face.book) bits.push(face.book+"B"); if(face.shield) bits.push(face.shield+"S"); if(face.burst) bits.push(face.burst+"Fu"); return bits.length ? bits.join(" ") : "No symbols"; }
+  function chosenForceFace(){ var life = state.life; var casting = Object.assign({ color:"grey" }, die("grey", life.castingFace)); if(!life.usePicker) return casting; var grey = Object.assign({ color:"grey" }, die("grey", life.pickerGreyFace)); var purple = Object.assign({ color:"purple" }, die("purple", life.pickerPurpleFace)); var options = [casting, grey, purple]; options.sort(function(a,b){ return (b.value || 0) - (a.value || 0); }); return options[0]; }
+  function calculateLife(){ var life = state.life; var forceFace = chosenForceFace(); var black = life.empower ? die("black", life.blackFace) : { value:0, book:0, shield:0, burst:0, skull:false, label:"Not empowered" };
+    var skull = !!(life.empower && black.skull); var blackBooksForForce = skull ? 0 : (life.empower ? (black.book || 0) : 0);
+    var coloredBooks = forceFace.book || 0, coloredShields = forceFace.shield || 0; var blackBooksLeft = skull ? 0 : Math.max(0, (black.book || 0) - blackBooksForForce); var blackShields = skull ? 0 : (black.shield || 0);
+    var otherPairs = life.otherworldly ? Math.min(coloredBooks + blackBooksLeft, coloredShields + blackShields) : 0;
+    var boost = life.boost ? 6 : 0; var manual = num(life.manualForce, 0); var force = Math.max(0, 6 + (forceFace.value || 0) + blackBooksForForce + otherPairs + boost + manual);
+    var results = []; var warnings = []; var seen = {};
+    for(var i=0;i<3;i++){ var tid = life.targets[i] || ""; var colors = enemyConvColors(tid); var f1 = die(colors[0], life.conv1[i]); var f2 = die(colors[1], life.conv2[i]); var conv = (f1.value || 0) + (f2.value || 0); var dmg = (!skull && tid) ? Math.max(0, force - conv) : 0; var failed = !!(!skull && tid && conv < force); if(tid){ if(seen[tid]) warnings.push("Life Grasp targets must be different; " + enemyName(tid) + " is selected more than once."); seen[tid] = true; }
+      results.push({ index:i, targetId:tid, targetName: enemyName(tid), colors:colors, face1:f1, face2:f2, conviction:conv, failed:failed, damage:dmg }); }
+    if(skull) warnings.push("Empower Skull: the spell fails and Nightingale takes 3 Irreducible Damage."); if(life.boost) warnings.push("Life Grasp +6 boost: Nightingale takes 6 Irreducible Damage once for the whole spell cast."); if(life.usePicker) warnings.push("Wand force picker used: force die is the highest of casting die, grey Conviction die, and purple Conviction die in this helper.");
+    var key = JSON.stringify({ cast:life.castingFace, emp:life.empower, black:life.blackFace, pick:life.usePicker, pg:life.pickerGreyFace, pp:life.pickerPurpleFace, boost:life.boost, ow:life.otherworldly, man:manual, targets:life.targets, c1:life.conv1, c2:life.conv2 });
+    return { key:key, forceFace:forceFace, black:black, skull:skull, blackForce:blackBooksForForce, otherworldly:otherPairs, boost:boost, manual:manual, force:force, results:results, warnings:warnings, selfDamage:(skull && life.empower ? 3 : 0) + boost };
+  }
+  function renderLifeResults(){ var r = calculateLife(); state.life.lastKey = r.key; save(); var force = byId("v24aLifeForceText"); if(force) force.textContent = String(r.force); var self = byId("v24aLifeSelfDamageText"); if(self) self.textContent = String(r.selfDamage); var detail = byId("v24aLifeForceDetail"); if(detail) detail.innerHTML = "Base 6 + " + esc(cap(r.forceFace.color) + " " + (r.forceFace.value || 0)) + " + Empower Books " + esc(r.blackForce) + " + Otherworldly " + esc(r.otherworldly) + " + Boost " + esc(r.boost) + " + Manual " + esc(r.manual) + (r.skull ? ' <span class="v24a-warn">| Skull fail</span>' : "");
+    for(var i=0;i<3;i++){ var row = r.results[i]; var box = byId("v24aLifeTargetResult"+i); if(box){ box.innerHTML = row.targetId ? ('<strong>' + esc(row.targetName) + '</strong>: Conviction ' + esc(row.conviction) + ' → ' + (row.failed ? '<span class="v24a-ok">fails, ' + esc(row.damage) + ' Magic Damage</span>' : '<span class="v24a-warn">resists / 0 damage</span>')) : 'Target slot skipped.'; } }
+    var rows = [['Final Force', r.force], ['Chosen Force die', cap(r.forceFace.color) + ' ' + (r.forceFace.value || 0) + ' (' + symbolText(r.forceFace) + ')'], ['Empower', state.life.empower ? (r.black.skull ? 'Skull' : symbolText(r.black)) : 'Off'], ['Otherworldly Force', '+' + r.otherworldly], ['Life Grasp +6 boost', state.life.boost ? 'Yes, +6 Force and 6 self Irreducible Damage once' : 'No'], ['Self-damage pending', r.selfDamage], ['Targets with damage', r.results.filter(function(x){return x.damage>0;}).map(function(x){return x.targetName + ' ' + x.damage;}).join(', ') || 'None']];
+    var table = byId("v24aLifeSummaryTable"); if(table) table.innerHTML = '<tr><th>Step</th><th>Value</th></tr>' + rows.map(function(row){ return '<tr><td>' + esc(row[0]) + '</td><td>' + esc(row[1]) + '</td></tr>'; }).join('');
+    var warn = byId("v24aLifeWarnings"); if(warn){ warn.className = (r.warnings.length ? "warning-box" : "ok-box") + " note v24a-status"; warn.innerHTML = r.warnings.length ? r.warnings.map(esc).join('<br>') : 'Life Grasp calculation ready. Apply target damage separately from one-time self-damage.'; }
+    var dmgBtn = byId("v24aApplyLifeDamage"); if(dmgBtn){ var applied = state.life.appliedDamageKey === r.key; dmgBtn.textContent = applied ? "Damage applied ✓" : "Apply Life Grasp target damage"; dmgBtn.disabled = applied || !r.results.some(function(x){return x.damage>0;}); }
+    var selfBtn = byId("v24aApplyLifeSelf"); if(selfBtn){ var selfApplied = state.life.appliedSelfKey === r.key; selfBtn.textContent = selfApplied ? "Self-damage applied ✓" : ("Apply self-damage (" + r.selfDamage + ")"); selfBtn.disabled = selfApplied || r.selfDamage <= 0; }
+    var markBtn = byId("v24aMarkLife"); if(markBtn){ markBtn.textContent = state.life.markedKey === r.key ? "Life Grasp marked ✓" : "Mark Life Grasp exhausted"; }
+  }
+  function duplicateTargets(){ var seen = {}, dup = false; state.life.targets.forEach(function(t){ if(t){ if(seen[t]) dup = true; seen[t]=true; } }); return dup; }
+  function applyLifeDamage(){ var r = calculateLife(); if(state.life.appliedDamageKey === r.key){ status("Life Grasp target damage has already been applied for this exact roll.", "warn"); return; } if(duplicateTargets()){ status("Life Grasp targets must be different. Remove duplicate target selections before applying damage.", "warn"); return; }
+    var applied = []; try{ if(typeof window.pushTrackerHistory === "function") pushTrackerHistory(); }catch(err){}
+    r.results.forEach(function(res){ if(!res.targetId || res.damage <= 0) return; var e = findEnemy(res.targetId); if(!e) return; var before = e.damage || 0; e.damage = Math.min(e.hp || 0, before + res.damage); applied.push((e.label || e.name || e.id) + " +" + (e.damage - before)); });
+    if(!applied.length){ status("No Life Grasp target damage to apply.", "warn"); return; }
+    state.life.appliedDamageKey = r.key; save(); try{ if(typeof window.saveTrackerState === "function") saveTrackerState(); if(typeof window.renderTracker === "function") renderTracker(); if(typeof window.calculate === "function") calculate(); }catch(err2){} status("Applied Life Grasp damage: " + applied.join(", ") + ".", "ok"); renderLifeResults(); }
+  function applyLifeSelf(){ var r = calculateLife(); if(r.selfDamage <= 0){ status("No Life Grasp self-damage is pending.", "warn"); return; } if(state.life.appliedSelfKey === r.key){ status("Life Grasp self-damage has already been applied for this exact roll.", "warn"); return; } var ok = applyPartyDamageSafe("nightingale", r.selfDamage, "Life Grasp / Empower"); if(ok){ state.life.appliedSelfKey = r.key; save(); status("Applied " + r.selfDamage + " Irreducible Damage to Nightingale once for this Life Grasp cast.", "ok"); } else status("Could not apply Life Grasp self-damage. Check Party tracker.", "warn"); renderLifeResults(); }
+  function markLife(){ var r = calculateLife(); markCard("night_life", "exhausted", "Nightingale Life Grasp exhausted."); state.life.markedKey = r.key; save(); status("Life Grasp marked exhausted.", "ok"); renderLifeResults(); }
+  function applyTrophy(){ var idx = num(state.trophyBlackFace, 0); var face = die("black", idx); if(face.skull){ status("Nightstalker's Trophy rolled Skull/no Books: no Trophy effect applied.", "warn"); markCard("night_trophy", "exhausted", "Nightstalker's Trophy exhausted after effect roll."); return; } var books = face.book || 0; var effect = books >= 4 ? "Darkness" : books === 3 ? "Condemn" : books === 2 ? "Wilt" : books === 1 ? "Disease" : ""; if(!effect){ status("Nightstalker's Trophy rolled no Books: no effect applied.", "warn"); markCard("night_trophy", "exhausted", "Nightstalker's Trophy exhausted after effect roll."); return; }
+    var tid = (state.life.targets || []).filter(Boolean)[0]; try{ var flow = window.middaraMobileFlowV22BApi && middaraMobileFlowV22BApi.getState ? middaraMobileFlowV22BApi.getState() : null; if(flow && flow.target && String(flow.target).indexOf("enemy:") === 0) tid = String(flow.target).split(":")[1]; }catch(err){}
+    try{ if(window.trackerState && trackerState.selectedId) tid = trackerState.selectedId; }catch(err2){}
+    var e = findEnemy(tid); if(!e){ status("Choose a tracked enemy target before applying Trophy effect.", "warn"); return; }
+    if(Array.isArray(e.immunities) && e.immunities.indexOf(effect) >= 0){ status(e.label + " has Immunity: " + effect + "; Trophy effect was not added.", "warn"); markCard("night_trophy", "exhausted", "Nightstalker's Trophy exhausted after immune effect roll."); return; }
+    try{ if(typeof window.pushTrackerHistory === "function") pushTrackerHistory(); }catch(err3){} if(!Array.isArray(e.effects)) e.effects = []; if(e.effects.indexOf(effect) < 0) e.effects.push(effect); try{ if(typeof window.saveTrackerState === "function") saveTrackerState(); if(typeof window.renderTracker === "function") renderTracker(); }catch(err4){} markCard("night_trophy", "exhausted", "Nightstalker's Trophy exhausted after effect roll."); status("Applied Nightstalker's Trophy: " + effect + " to " + (e.label || e.name) + ".", "ok"); }
+  function bloodToll(){ var a = applyPartyDamageSafe("nightingale", 2, "Blood Toll"); var b = applyPartySpSafe("nightingale", 2); markCard("night_blood_toll", "exhausted", "Blood Toll exhausted: +2 SP, 2 Irreducible Damage."); status("Blood Toll used: Nightingale takes 2 Irreducible Damage and gains +2 SP." + ((!a || !b) ? " Check Party tracker if one value did not change." : ""), (!a || !b) ? "warn" : "ok"); }
+  function infection(){ var ok = applyPartyDamageSafe("nightingale", 1, "The Infection"); markCard("night_infection", "exhausted", "The Infection exhausted for -1 SP cost."); status("The Infection used: Nightingale takes 1 Irreducible Damage. Reduce the current SP cost by 1 manually if the app did not already do it.", ok ? "ok" : "warn"); }
+  function installPanel(){ if(byId("v24aNightingalePanel")) return; var anchor = byId("mobileCombatFlowPanel") || byId("combatCockpitPanel") || document.querySelector("main"); if(!anchor || !anchor.parentNode) return; var sec = document.createElement("section"); sec.id = "v24aNightingalePanel"; sec.className = "panel"; sec.setAttribute("data-v17-mode", "play"); sec.innerHTML = '<details open><summary>V2.4A Nightingale spell / familiar polish</summary>' +
+      '<div class="note" style="margin-top:8px">Use this when Nightingale is active. Board legality, SOI, and target eligibility stay manual; the helper handles Force math, self-damage bookkeeping, per-target Conviction, and post-damage reminders.</div>' +
+      '<div class="v24a-grid"><div class="v24a-card"><h3>Quick Nightingale actions</h3><div class="v24a-actions">' +
+        '<button type="button" data-v24a-action="loadGore"><strong>Gore Shot</strong><span>Spell 6; optional 2 self Irreducible for +8 Magic.</span></button>' +
+        '<button type="button" data-v24a-action="loadLife"><strong>Life Grasp helper</strong><span>One Force roll, up to 3 target Conviction checks.</span></button>' +
+        '<button type="button" data-v24a-action="loadCorrosive"><strong>Corrosive Ideal</strong><span>Spell 6; apply Poison on failed Conviction.</span></button>' +
+        '<button type="button" data-v24a-action="loadAbbadon"><strong>Abbadon\'s Subtlety</strong><span>Spell 6 after Nightingale damage; damage equals previous result.</span></button>' +
+        '<button type="button" data-v24a-action="bloodToll"><strong>Blood Toll</strong><span>2 self Irreducible Damage, +2 SP, mark exhausted.</span></button>' +
+        '<button type="button" data-v24a-action="infection"><strong>The Infection</strong><span>1 self Irreducible Damage, reduce current SP cost by 1.</span></button>' +
+        '<button type="button" data-v24a-action="ringHeal"><strong>Ring of Blood</strong><span>After Nightingale deals damage: heal 2, mark Ring exhausted.</span></button>' +
+        '<button type="button" data-v24a-action="yuxaHeal"><strong>Yuxa heal</strong><span>After Nightingale deals damage: heal 1, mark Yuxa exhausted.</span></button>' +
+      '</div><div class="v24a-pill-row"><span class="v24a-pill">SOI reminders manual</span><span class="v24a-pill">Trophy Empower remains explicit</span><span class="v24a-pill">Self-damage applies once</span></div></div>' +
+      '<div class="v24a-card" id="v24aLifeCard"><h3>Life Grasp multi-target helper</h3>' +
+        '<div class="note">Life Grasp: Cast Spell 6 against up to 3 different opponents. Damage equals each failed Conviction difference. The +6 Force option deals 6 Irreducible Damage to Nightingale once for the spell cast.</div>' +
+        '<div class="v24a-life-grid" style="margin-top:10px">' +
+          '<div><label for="v24aLifeCastingFace">Casting die / Force roll</label><select id="v24aLifeCastingFace"></select></div>' +
+          '<label class="check-row"><input id="v24aLifeEmpower" type="checkbox" /><span>Empower this Spell / Nightstalker\'s Trophy applies</span></label>' +
+          '<div id="v24aLifeBlackWrap"><label for="v24aLifeBlackFace">Black die from Empower</label><select id="v24aLifeBlackFace"></select></div>' +
+          '<label class="check-row"><input id="v24aLifeBoost" type="checkbox" /><span>After Force roll: Nightingale takes 6 Irreducible Damage for +6 Force</span></label>' +
+          '<label class="check-row"><input id="v24aLifeUsePicker" type="checkbox" /><span>Use Wand force picker: choose highest of casting, grey Conviction, purple Conviction</span></label>' +
+          '<label class="check-row"><input id="v24aLifeOtherworldly" type="checkbox" /><span>Use Otherworldly Book+Shield pairs for +Force</span></label>' +
+          '<div><label for="v24aLifePickerGrey">Picker grey die</label><select id="v24aLifePickerGrey"></select></div>' +
+          '<div><label for="v24aLifePickerPurple">Picker purple die</label><select id="v24aLifePickerPurple"></select></div>' +
+          '<div><label for="v24aLifeManualForce">Manual Force modifier</label><input id="v24aLifeManualForce" type="number" step="1" value="0" /></div>' +
+          '<div class="metric"><div class="label">Final Force</div><div id="v24aLifeForceText" class="big">0</div></div>' +
+        '</div><div id="v24aLifeForceDetail" class="tiny" style="margin-top:8px"></div>' +
+        '<div class="v24a-target-grid" id="v24aLifeTargets"></div>' +
+        '<table id="v24aLifeSummaryTable"></table>' +
+        '<div id="v24aLifeWarnings" class="ok-box note v24a-status">Life Grasp helper ready.</div>' +
+        '<div class="v24a-toolbar"><button type="button" data-v24a-action="calcLife">Refresh Life Grasp math</button><button id="v24aApplyLifeDamage" type="button" data-v24a-action="applyLifeDamage">Apply Life Grasp target damage</button><button id="v24aApplyLifeSelf" type="button" data-v24a-action="applyLifeSelf">Apply self-damage</button><button id="v24aMarkLife" type="button" data-v24a-action="markLife">Mark Life Grasp exhausted</button><button type="button" data-v24a-action="syncLifeMain">Copy helper Force to spell resolver</button></div>' +
+        '<div class="v24a-toolbar"><div><label for="v24aTrophyBlackFace">Nightstalker\'s Trophy black die</label><select id="v24aTrophyBlackFace"></select></div><button type="button" data-v24a-action="applyTrophy">Apply Trophy effect to selected enemy</button><button type="button" data-v24a-action="refreshTargets">Refresh target list</button></div>' +
+        '<div class="tiny" style="margin-top:8px">Trophy effect mapping: 1 Book Disease, 2 Books Wilt, 3 Books Condemn, 4 Books Darkness. Skull/no Books applies no effect, but the Trophy can still be marked exhausted.</div>' +
+      '</div></div><div id="v24aStatus" class="ok-box note v24a-status">Nightingale helper ready.</div></details>';
+    anchor.parentNode.insertBefore(sec, anchor.nextSibling); fillStaticControls(); renderTargets(); bindPanel(); }
+  function fillStaticControls(){ var life = state.life; var c = byId("v24aLifeCastingFace"); if(c) c.innerHTML = dieOptions("grey", life.castingFace); var b = byId("v24aLifeBlackFace"); if(b) b.innerHTML = blackOptions(life.blackFace); var pg = byId("v24aLifePickerGrey"); if(pg) pg.innerHTML = dieOptions("grey", life.pickerGreyFace); var pp = byId("v24aLifePickerPurple"); if(pp) pp.innerHTML = dieOptions("purple", life.pickerPurpleFace); var tb = byId("v24aTrophyBlackFace"); if(tb) tb.innerHTML = blackOptions(state.trophyBlackFace); var emp = byId("v24aLifeEmpower"); if(emp) emp.checked = !!life.empower; var boost = byId("v24aLifeBoost"); if(boost) boost.checked = !!life.boost; var pick = byId("v24aLifeUsePicker"); if(pick) pick.checked = !!life.usePicker; var ow = byId("v24aLifeOtherworldly"); if(ow) ow.checked = !!life.otherworldly; var mf = byId("v24aLifeManualForce"); if(mf) mf.value = String(life.manualForce || 0); }
+  function renderTargets(){ var box = byId("v24aLifeTargets"); if(!box) return; var html = ""; for(var i=0;i<3;i++){ var tid = state.life.targets[i] || ""; var colors = enemyConvColors(tid); html += '<div class="v24a-life-target' + (tid ? ' active' : '') + '"><strong>Target ' + (i+1) + '</strong><div class="field-grid three"><div><label>Tracked enemy</label><select data-v24a-life-target="' + i + '">' + targetOptions(tid) + '</select></div><div><label>Conviction die 1 (' + esc(cap(colors[0])) + ')</label><select data-v24a-life-conv1="' + i + '">' + dieOptions(colors[0], state.life.conv1[i]) + '</select></div><div><label>Conviction die 2 (' + esc(cap(colors[1])) + ')</label><select data-v24a-life-conv2="' + i + '">' + dieOptions(colors[1], state.life.conv2[i]) + '</select></div></div><div id="v24aLifeTargetResult' + i + '" class="v24a-result-line">Target slot skipped.</div></div>'; }
+    box.innerHTML = html; renderLifeResults(); }
+  function bindPanel(){ if(window.__middaraV24ABound) return; window.__middaraV24ABound = true; document.addEventListener("click", function(ev){ var t = ev.target; while(t && t !== document){ if(t.getAttribute){ var a = t.getAttribute("data-v24a-action"); if(a){ ev.preventDefault(); handleAction(a, t); return; } } t = t.parentNode; } }, true); document.addEventListener("change", function(ev){ var t = ev.target; if(!t || !t.getAttribute) return; var life = state.life; var changed = false; var idx = t.getAttribute("data-v24a-life-target"); if(idx != null){ life.targets[Number(idx)] = t.value || ""; life.conv1[Number(idx)] = 2; life.conv2[Number(idx)] = 2; changed = true; save(); renderTargets(); return; } idx = t.getAttribute("data-v24a-life-conv1"); if(idx != null){ life.conv1[Number(idx)] = num(t.value,0); changed = true; } idx = t.getAttribute("data-v24a-life-conv2"); if(idx != null){ life.conv2[Number(idx)] = num(t.value,0); changed = true; } if(t.id === "v24aLifeCastingFace"){ life.castingFace = num(t.value,0); changed = true; } if(t.id === "v24aLifeBlackFace"){ life.blackFace = num(t.value,0); changed = true; } if(t.id === "v24aLifePickerGrey"){ life.pickerGreyFace = num(t.value,0); changed = true; } if(t.id === "v24aLifePickerPurple"){ life.pickerPurpleFace = num(t.value,0); changed = true; } if(t.id === "v24aLifeManualForce"){ life.manualForce = num(t.value,0); changed = true; } if(t.id === "v24aLifeEmpower"){ life.empower = !!t.checked; changed = true; } if(t.id === "v24aLifeBoost"){ life.boost = !!t.checked; changed = true; } if(t.id === "v24aLifeUsePicker"){ life.usePicker = !!t.checked; changed = true; } if(t.id === "v24aLifeOtherworldly"){ life.otherworldly = !!t.checked; changed = true; } if(t.id === "v24aTrophyBlackFace"){ state.trophyBlackFace = num(t.value,0); changed = true; }
+      if(changed){ life.appliedDamageKey = ""; life.appliedSelfKey = ""; save(); renderLifeResults(); }
+    }, true); }
+  function handleAction(a, source){ if(a === "loadGore") selectSpell("gore_shot"); else if(a === "loadLife") { selectSpell("life_grasp"); routeTo("v24aLifeCard"); status("Life Grasp helper loaded. Choose up to 3 different tracked enemies and enter each Conviction roll.", "ok"); } else if(a === "loadCorrosive") selectSpell("corrosive_ideal"); else if(a === "loadAbbadon") selectSpell("abbadon"); else if(a === "bloodToll") bloodToll(); else if(a === "infection") infection(); else if(a === "ringHeal") healNight(2, "Ring of Blood", "night_ring_blood"); else if(a === "yuxaHeal") healNight(1, "Yuxa heal", "night_yuxa_exhaust"); else if(a === "calcLife") { syncLifeFromMain(false); renderLifeResults(); status("Life Grasp math refreshed.", "ok"); } else if(a === "applyLifeDamage") applyLifeDamage(); else if(a === "applyLifeSelf") applyLifeSelf(); else if(a === "markLife") markLife(); else if(a === "syncLifeMain") { copyLifeToMain(); status("Copied Life Grasp helper Force options to the standard spell resolver.", "ok"); } else if(a === "applyTrophy") applyTrophy(); else if(a === "refreshTargets") { renderTargets(); status("Life Grasp target list refreshed from the enemy tracker.", "ok"); } }
+  function decorateActionCards(){ var box = byId("v22bActionCards"); if(!box) return; var night = isNightingale(); document.body.classList.toggle("v24a-actor-nightingale", night); if(!night) return; var buttons = Array.prototype.slice.call(box.querySelectorAll("button")); buttons.forEach(function(btn){ var strong = btn.querySelector("strong"); var label = strong ? String(strong.textContent || "").trim() : ""; if(label === "Life Grasp"){ btn.removeAttribute("data-v22b-action"); btn.setAttribute("data-v24a-action", "loadLife"); var span = btn.querySelector("span"); if(span) span.textContent = "Open the multi-target helper: one Force roll, up to three Conviction checks."; } });
+    var exists = function(label){ return buttons.some(function(btn){ var s=btn.querySelector("strong"); return s && String(s.textContent || "").trim() === label; }); };
+    function card(label, note, action){ return '<button type="button" class="v22b-action-card" data-v24a-action="' + esc(action) + '"><strong>' + esc(label) + '</strong><span>' + esc(note) + '</span></button>'; }
+    var add = ""; if(!exists("Corrosive Ideal")) add += card("Corrosive Ideal", "Spell 6; Poison on failed Conviction.", "loadCorrosive"); if(!exists("Abbadon's Subtlety")) add += card("Abbadon's Subtlety", "After Nightingale damage: Spell 6 for previous damage.", "loadAbbadon"); if(!exists("Blood Toll")) add += card("Blood Toll", "+2 SP and 2 self Irreducible Damage.", "bloodToll"); if(!exists("The Infection")) add += card("The Infection", "Take 1 self Irreducible Damage to reduce SP cost by 1.", "infection"); if(add) box.insertAdjacentHTML("beforeend", add); }
+  function patchChrome(){ document.title = TITLE; var sub = document.querySelector("header .subtitle"); if(sub) sub.textContent = SUBTITLE; var badge = document.querySelector("#mobileCombatFlowPanel .cockpit-badge"); if(badge) badge.textContent = "V2.4A Flow"; var pwa = byId("pwaVersionText"); if(pwa) pwa.textContent = VERSION; var pwaSummary = document.querySelector(".v22c-pwa-panel summary"); if(pwaSummary) pwaSummary.textContent = "V2.4A hosted / installable web app"; var dataH = document.querySelector("#v22iDataStatusPanel h3"); if(dataH) dataH.textContent = "V2.4A save / update status"; var qa = byId("v23kQaStatus"); if(qa && qa.textContent.indexOf("V2.4A") < 0) qa.textContent = qa.textContent.replace(/V2\.3[A-Z]/g, "V2.4A"); }
+  function patchSnapshots(){ try{ if(!window.middaraDataManagerApi || window.__middaraV24ASnapshotPatch) return; window.__middaraV24ASnapshotPatch = true; var api = window.middaraDataManagerApi; var oldFull = api.exportFullSnapshot; var oldApp = api.exportAppData; var oldApply = api.applyPayload; function add(snap){ try{ snap.version = VERSION; snap.pwaDeploymentVersion = VERSION; snap.v24aNightingaleState = JSON.parse(JSON.stringify(state)); }catch(err){} return snap; } if(typeof oldFull === "function") api.exportFullSnapshot = function(){ return add(oldFull.apply(this, arguments)); }; if(typeof oldApp === "function") api.exportAppData = function(){ return add(oldApp.apply(this, arguments)); }; if(typeof oldApply === "function") api.applyPayload = function(payload, includeState){ var r = oldApply.apply(this, arguments); if(payload && payload.v24aNightingaleState){ state = Object.assign(defaultState(), payload.v24aNightingaleState); save(); fillStaticControls(); renderTargets(); paint(); } return r; }; }catch(err){} }
+  function paint(){ installPanel(); fillStaticControls(); renderLifeResults(); decorateActionCards(); patchChrome(); patchSnapshots(); }
+  function init(){ installPanel(); patchChrome(); patchSnapshots(); paint(); setInterval(function(){ decorateActionCards(); patchChrome(); renderLifeResults(); }, 700); setTimeout(function(){ status("V2.4A Nightingale helper loaded. Life Grasp now supports one Force roll against up to three separate target Conviction checks.", "ok"); }, 900); }
+  ready(init);
+  window.middaraV24ANightingaleApi = { calculateLife:calculateLife, renderLifeResults:renderLifeResults, applyLifeDamage:applyLifeDamage, applyLifeSelf:applyLifeSelf, loadLife:function(){ selectSpell("life_grasp"); routeTo("v24aLifeCard"); }, getState:function(){ return JSON.parse(JSON.stringify(state)); } };
 })();
 </script>
 

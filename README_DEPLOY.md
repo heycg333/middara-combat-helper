@@ -1,7 +1,7 @@
-# Middara Combat Helper V2.3K Chain / Live-Flow QA Polish
+# Middara Combat Helper V2.4A
 
-Upload these extracted files to the root of the GitHub Pages repository. Do not upload this ZIP.
+Upload the extracted contents of this folder to the root of the GitHub Pages repository. Do not upload the ZIP itself.
 
-After deployment, open the app on the tablet, go to Data -> hosted / installable web app, tap Update app cache, then reload/reopen the Home Screen app.
+After GitHub Pages deploys, open the hosted app on the tablet, use Data -> hosted/installable web app -> Update app cache, then reload or reopen the Home Screen app.
 
-V2.3K Chain / Live-Flow QA Polish
+V2.4A focuses on Nightingale: Life Grasp multi-target Force/Conviction workflow, one-time self-damage bookkeeping, Nightstalker's Trophy effect helper, Blood Toll, The Infection, Ring of Blood, and Yuxa shortcuts.

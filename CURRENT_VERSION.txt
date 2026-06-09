@@ -1,3 +1,1 @@
-Middara Combat Helper V2.3K - Chain / Live-Flow QA Polish
-
-Stabilizes Remi/Zeke chain follow-ups, Whirlwind target flow, Onslaught same-target fresh-roll flow, universal Counter routing, sticky Apply state, and contextual panel visibility.
+V2.4A Nightingale Spell / Familiar Polish

@@ -1,9 +1,9 @@
 {
   "name": "Middara Combat Helper",
   "short_name": "Middara",
-  "description": "Middara Combat Helper V2.3K chain/live-flow QA polish: stabilized Remi/Zeke chains, Counter routing, sticky Apply, and contextual tablet flow.",
+  "description": "Middara Combat Helper V2.4A Nightingale spell/familiar polish: Life Grasp multi-target helper, Trophy effects, self-damage support, and post-damage heals.",
   "id": "./?app=middara-combat-helper",
-  "start_url": "./index.html?v=2.3k",
+  "start_url": "./index.html?v=2.4a",
   "scope": "./",
   "display": "standalone",
   "display_override": [
