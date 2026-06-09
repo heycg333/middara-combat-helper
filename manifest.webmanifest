@@ -1,9 +1,9 @@
 {
   "name": "Middara Combat Helper",
   "short_name": "Middara",
-  "description": "Middara Combat Helper V2.4B Nightingale flow cleanup, lowest-available enemy numbering, and sticky footer stabilization after support actions.",
+  "description": "Middara Combat Helper V2.4D Nightingale chain polish: Abbadon previous-damage capture, post-damage heal/Trophy shortcuts, and stable spell footer state.",
   "id": "./?app=middara-combat-helper",
-  "start_url": "./index.html?v=2.4b",
+  "start_url": "./index.html?v=2.4d",
   "scope": "./",
   "display": "standalone",
   "display_override": [

@@ -1,1 +1,1 @@
-V2.4B - Nightingale flow / spawn / footer patch
+V2.4D - Nightingale Abbadon chain / post-damage helper
