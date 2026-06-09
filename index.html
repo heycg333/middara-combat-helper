@@ -3,7 +3,7 @@
 <head>
   <meta charset="utf-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1" />
-  <title>Middara Combat Helper - V2.3D Counter Flow / Dodge Preserve</title>
+  <title>Middara Combat Helper - V2.3F Universal Defense Trays</title>
   <style>
     :root {
       --bg: #101827;
@@ -650,7 +650,7 @@
     }
 
 
-    /* V2.3D Live-play readiness / in-app guide sync */
+    /* V2.3F Live-play readiness / in-app guide sync */
     .v22i-help-panel {
       border-color: rgba(163,230,53,.32);
       background: linear-gradient(180deg, rgba(163,230,53,.08), rgba(255,255,255,.012)), var(--panel);
@@ -684,7 +684,7 @@
     @media (max-width: 620px) { .v22i-recipe-grid, .v22i-check-grid, .v22i-status-grid { grid-template-columns:1fr; } .v22i-actions button { width:100%; } }
 
 
-    /* V2.3D counter flow / dodge preserve: prevent subtitle line-count changes from moving the page. */
+    /* V2.3F counter flow / dodge preserve: prevent subtitle line-count changes from moving the page. */
     header .subtitle { min-height: 1.35em; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
     @media (max-width: 720px) { header .subtitle { white-space: normal; min-height: 2.7em; } }
 
@@ -705,7 +705,7 @@
   <link rel="apple-touch-icon" sizes="180x180" href="./icons/apple-touch-icon.png" />
 
 <style id="v22g-table-session-style">
-  /* V2.3D live-play readiness / one-tablet live-play safety layer */
+  /* V2.3F live-play readiness / one-tablet live-play safety layer */
   .v22g-session-hub {
     margin-top: 12px;
     border: 1px solid rgba(163,230,53,.28);
@@ -791,7 +791,7 @@
 <body>
   <header>
     <h1>Middara Combat Helper</h1>
-    <div class="subtitle">V2.3D counter flow: Dodge toggle preserves enemy rolls; Rook Plate/Nano toggles live in Enemy Attack; Counter buttons load Rook back against the attacker.</div>
+    <div class="subtitle">V2.3F universal defense trays: enemy attacks show target-specific defensive reactions inline, then Counter follow-ups reverse actor and target.</div>
   </header>
 
   <main>
@@ -878,10 +878,10 @@
     <section class="panel v22b-flow-panel" id="mobileCombatFlowPanel" data-v17-mode="play">
       <div class="cockpit-header">
         <div>
-          <h2>V2.3D Tablet / mobile live combat flow</h2>
+          <h2>V2.3F Tablet / mobile live combat flow</h2>
           <div class="note">Live table mode: choose Actor, Target, Action, then Resolve. This is now the primary tablet/phone workflow; the older Play cockpit is hidden in focused mode but still available with Show full play panels.</div>
         </div>
-        <div class="cockpit-badge">V2.3D Flow</div>
+        <div class="cockpit-badge">V2.3F Flow</div>
       </div>
       <div class="v22b-toolbar">
         <button type="button" id="v22bFocusToggle" class="v22b-focus-toggle">Focused phone mode: on</button>
@@ -963,7 +963,7 @@
 
     <section class="panel v23a-rook-defense-panel" id="rookDefensePanel" data-v17-mode="play">
       <details>
-        <summary>V2.3D Rook defensive / counter shortcuts</summary>
+        <summary>V2.3F Rook defensive / counter shortcuts</summary>
         <div class="note" style="margin-top:10px">Use these when Rook is targeted by an Attack, fails a Conviction check, or is about to Counter. The buttons route into existing enemy attack, enemy spell, card-state, workflow, and chain tools; board legality remains manual.</div>
         <div class="v23a-rook-defense-grid" style="margin-top:12px">
           <div class="soft-card">
@@ -2171,7 +2171,7 @@
     </section>
 
     <section class="panel rewards-panel" id="rewardsLootPanel" data-v17-mode="rewards encounter">
-      <!-- V2.3D: intentionally not shown in Data tab; Data is for backups, QA, and deployment. -->
+      <!-- V2.3F: intentionally not shown in Data tab; Data is for backups, QA, and deployment. -->
       <h2>8. Rewards / loot tracker</h2>
       <div class="note">Track combatant loot draws, loot-token outcomes, party gold, XP, and item notes. This does not replace the physical decks; it keeps the bookkeeping and session history clean.</div>
       <div class="rewards-metrics">
@@ -11954,7 +11954,7 @@ else {
     var h = document.querySelector("#enemyAiAssistantPanel h2");
     if (h) h.textContent = "6. Enemy AI preset library";
     var subtitle = document.querySelector("header .subtitle");
-    if (subtitle) subtitle.textContent = "V2.3D counter flow: Dodge toggle preserves enemy rolls; Rook Plate/Nano toggles live in Enemy Attack; Counter buttons load Rook back against the attacker.";
+    if (subtitle) subtitle.textContent = "V2.3F universal defense trays: enemy attacks show target-specific defensive reactions inline, then Counter follow-ups reverse actor and target.";
   }
 
   function installPresetOptions() {
@@ -14620,9 +14620,9 @@ else {
     document.head.appendChild(style);
   }
   function updateChrome() {
-    document.title = "Middara Combat Helper - V2.3D Counter Flow / Dodge Preserve";
+    document.title = "Middara Combat Helper - V2.3F Universal Defense Trays";
     var subtitle = document.querySelector("header .subtitle");
-    if (subtitle) subtitle.textContent = "V2.3D counter flow: Dodge toggle preserves enemy rolls; Rook Plate/Nano toggles live in Enemy Attack; Counter buttons load Rook back against the attacker.";
+    if (subtitle) subtitle.textContent = "V2.3F universal defense trays: enemy attacks show target-specific defensive reactions inline, then Counter follow-ups reverse actor and target.";
     var h = byId("commandCombatantPanel") && byId("commandCombatantPanel").querySelector("h2");
     if (h) h.textContent = "V2.1E Command Combatant / Loyal Esper tracker";
     var badge = byId("commandCombatantPanel") && byId("commandCombatantPanel").querySelector(".cockpit-badge");
@@ -15094,7 +15094,7 @@ else {
   }
   function updateChrome() {
     var title = document.querySelector("header .subtitle");
-    if (title && title.textContent.indexOf("V2.1F") < 0) title.textContent = "V2.3D counter flow: Dodge toggle preserves enemy rolls; Rook Plate/Nano toggles live in Enemy Attack; Counter buttons load Rook back against the attacker.";
+    if (title && title.textContent.indexOf("V2.1F") < 0) title.textContent = "V2.3F universal defense trays: enemy attacks show target-specific defensive reactions inline, then Counter follow-ups reverse actor and target.";
   }
   installRestoreWrapper();
   ready(function () {
@@ -15557,7 +15557,7 @@ else {
   function updateChrome() {
     try {
       var sub = document.querySelector("header .subtitle");
-      if (sub) sub.textContent = "V2.3D counter flow: Dodge toggle preserves enemy rolls; Rook Plate/Nano toggles live in Enemy Attack; Counter buttons load Rook back against the attacker.";
+      if (sub) sub.textContent = "V2.3F universal defense trays: enemy attacks show target-specific defensive reactions inline, then Counter follow-ups reverse actor and target.";
     } catch (err) { }
   }
 
@@ -15592,7 +15592,7 @@ else {
 <script>
 (function () {
   "use strict";
-  var VERSION = "V2.3D";
+  var VERSION = "V2.3F";
   var STORAGE_KEY = "middaraCombatHelperV22BMobileFlow";
   var FOCUS_KEY = "middaraCombatHelperV22BPhoneFocus";
   var renderTimer = null;
@@ -15993,7 +15993,7 @@ else {
 
   function calculateCurrent() {
     var type = state.pendingType || "attack";
-    // V2.3D: if the attack tray/action is active, never let stale spell state steal the Apply button.
+    // V2.3F: if the attack tray/action is active, never let stale spell state steal the Apply button.
     if (document.body.classList.contains("v22b-show-attack")) type = "attack";
     if (document.body.classList.contains("v22b-show-spell") && type !== "attack") type = "spell";
     clearApplied();
@@ -16209,7 +16209,7 @@ else {
   function patchSnapshots() {
     if (window.__middaraV22BSnapshotPatch) return;
     window.__middaraV22BSnapshotPatch = true;
-    function addFlow(snap) { try { snap.version = "V2.3D"; snap.pwaDeploymentVersion = "V2.3D"; snap.mobileFlowState = JSON.parse(JSON.stringify(state)); } catch (err) {} return snap; }
+    function addFlow(snap) { try { snap.version = "V2.3F"; snap.pwaDeploymentVersion = "V2.3F"; snap.mobileFlowState = JSON.parse(JSON.stringify(state)); } catch (err) {} return snap; }
     if (window.middaraDataManagerApi) {
       var api = window.middaraDataManagerApi;
       var oldFull = api.exportFullSnapshot;
@@ -16222,9 +16222,9 @@ else {
   }
 
   function updateChrome() {
-    document.title = "Middara Combat Helper - V2.3D Counter Flow / Dodge Preserve";
+    document.title = "Middara Combat Helper - V2.3F Universal Defense Trays";
     var sub = document.querySelector("header .subtitle");
-    if (sub) sub.textContent = "V2.3D counter flow: Dodge toggle preserves enemy rolls; Rook Plate/Nano toggles live in Enemy Attack; Counter buttons load Rook back against the attacker.";
+    if (sub) sub.textContent = "V2.3F universal defense trays: enemy attacks show target-specific defensive reactions inline, then Counter follow-ups reverse actor and target.";
   }
 
   function init() {
@@ -16237,7 +16237,7 @@ else {
     render();
     setTimeout(function () { patchSnapshots(); updateChrome(); render(); }, 700);
     setInterval(function () { updateFooter(); }, 1200);
-    setStatus("V2.3D live flow ready. Choose Actor -> Target -> Action -> Dice -> Apply; Dodge toggles preserve enemy rolls.", "ok");
+    setStatus("V2.3F live flow ready. Choose Actor -> Target -> Action -> Dice -> Apply; Dodge toggles preserve enemy rolls.", "ok");
   }
 
   ready(init);
@@ -16249,7 +16249,7 @@ else {
 <script>
 (function () {
   "use strict";
-  var VERSION = "V2.3D";
+  var VERSION = "V2.3F";
   function ready(fn) { if (document.readyState === "loading") document.addEventListener("DOMContentLoaded", fn); else setTimeout(fn, 0); }
   function byId(id) { return document.getElementById(id); }
   function esc(v) { return String(v == null ? "" : v).replace(/[&<>"']/g, function (c) { return {"&":"&amp;","<":"&lt;",">":"&gt;","\"":"&quot;","'":"&#39;"}[c]; }); }
@@ -16376,11 +16376,11 @@ else {
     }, true);
   }
   function updateChrome() {
-    document.title = "Middara Combat Helper - V2.3D Counter Flow / Dodge Preserve";
+    document.title = "Middara Combat Helper - V2.3F Universal Defense Trays";
     var sub = document.querySelector("header .subtitle");
-    if (sub) sub.textContent = "V2.3D counter flow: Dodge toggle preserves enemy rolls; Rook Plate/Nano toggles live in Enemy Attack; Counter buttons load Rook back against the attacker.";
-    var h = document.querySelector("#mobileCombatFlowPanel h2"); if (h) h.textContent = "V2.3D Tablet / mobile live combat flow";
-    var badge = document.querySelector("#mobileCombatFlowPanel .cockpit-badge"); if (badge) badge.textContent = "V2.3D Flow";
+    if (sub) sub.textContent = "V2.3F universal defense trays: enemy attacks show target-specific defensive reactions inline, then Counter follow-ups reverse actor and target.";
+    var h = document.querySelector("#mobileCombatFlowPanel h2"); if (h) h.textContent = "V2.3F Tablet / mobile live combat flow";
+    var badge = document.querySelector("#mobileCombatFlowPanel .cockpit-badge"); if (badge) badge.textContent = "V2.3F Flow";
     var pwa = byId("pwaVersionText"); if (pwa) pwa.textContent = VERSION;
   }
   function tick() {
@@ -16405,7 +16405,7 @@ else {
 <script>
 (function () {
   "use strict";
-  var VERSION = "V2.3D";
+  var VERSION = "V2.3F";
   var CACHE_PREFIX = "middara-helper-";
   function ready(fn) { if (document.readyState === "loading") document.addEventListener("DOMContentLoaded", fn); else fn(); }
   function byId(id) { return document.getElementById(id); }
@@ -16553,11 +16553,11 @@ else {
     });
   }
   function updateChrome() {
-    document.title = "Middara Combat Helper - V2.3D Counter Flow / Dodge Preserve";
+    document.title = "Middara Combat Helper - V2.3F Universal Defense Trays";
     var sub = document.querySelector("header .subtitle");
-    if (sub) sub.textContent = "V2.3D counter flow: Dodge toggle preserves enemy rolls; Rook Plate/Nano toggles live in Enemy Attack; Counter buttons load Rook back against the attacker.";
+    if (sub) sub.textContent = "V2.3F universal defense trays: enemy attacks show target-specific defensive reactions inline, then Counter follow-ups reverse actor and target.";
     var pwa = byId("pwaVersionText"); if (pwa) pwa.textContent = "V2.2E";
-    var h = document.querySelector("#mobileCombatFlowPanel h2"); if (h) h.textContent = "V2.3D Tablet / mobile live combat flow";
+    var h = document.querySelector("#mobileCombatFlowPanel h2"); if (h) h.textContent = "V2.3F Tablet / mobile live combat flow";
   }
   function bindMobileHelp() {
     var flow = byId("mobileCombatFlowPanel");
@@ -16587,7 +16587,7 @@ else {
 <script id="v22g-table-session-script">
 (function(){
   "use strict";
-  var VERSION = "V2.3D";
+  var VERSION = "V2.3F";
   var CHECK_KEY = "middaraCombatHelperV22GSessionChecklist";
   var RECENT_KEY = "middaraCombatHelperV22GRecentActions";
   function byId(id){ return document.getElementById(id); }
@@ -16700,7 +16700,7 @@ else {
     hub.id = "v22gSessionHub";
     hub.className = "v22g-session-hub";
     hub.innerHTML = '' +
-      '<div class="v22g-session-head"><div><h3>V2.3D live-play readiness</h3><div class="tiny">One-tablet controls for setup, backup, quick undo, and end-of-encounter cleanup. Use this as a safety rail around the main live combat flow.</div></div><div class="v22g-session-badge">Table-ready pass</div></div>' +
+      '<div class="v22g-session-head"><div><h3>V2.3F live-play readiness</h3><div class="tiny">One-tablet controls for setup, backup, quick undo, and end-of-encounter cleanup. Use this as a safety rail around the main live combat flow.</div></div><div class="v22g-session-badge">Table-ready pass</div></div>' +
       '<div id="v22gStatusStrip" class="v22g-status-strip"></div>' +
       '<div id="v22gChecklist" class="v22g-checklist"></div>' +
       '<div class="v22g-session-grid">' +
@@ -16754,11 +16754,11 @@ else {
     else if (action === "rewards") route("rewards", "rewardsLootPanel");
   }
   function init(){
-    document.title = "Middara Combat Helper - V2.3D Counter Flow / Dodge Preserve";
+    document.title = "Middara Combat Helper - V2.3F Universal Defense Trays";
     var h = document.querySelector("header h1"); if (h) h.textContent = "Middara Combat Helper";
-    var sub = document.querySelector("header .subtitle"); if (sub) sub.textContent = "V2.3D counter flow: Dodge toggle preserves enemy rolls; Rook Plate/Nano toggles live in Enemy Attack; Counter buttons load Rook back against the attacker.";
-    var flowH = document.querySelector("#mobileCombatFlowPanel h2"); if (flowH) flowH.textContent = "V2.3D Tablet / mobile live combat flow";
-    var badge = document.querySelector("#mobileCombatFlowPanel .cockpit-badge"); if (badge) badge.textContent = "V2.3D Flow";
+    var sub = document.querySelector("header .subtitle"); if (sub) sub.textContent = "V2.3F universal defense trays: enemy attacks show target-specific defensive reactions inline, then Counter follow-ups reverse actor and target.";
+    var flowH = document.querySelector("#mobileCombatFlowPanel h2"); if (flowH) flowH.textContent = "V2.3F Tablet / mobile live combat flow";
+    var badge = document.querySelector("#mobileCombatFlowPanel .cockpit-badge"); if (badge) badge.textContent = "V2.3F Flow";
     injectHub(); addFooterUndo();
     document.addEventListener("click", function(ev){
       var node = ev.target && ev.target.closest ? ev.target.closest("[data-v22g-action]") : null;
@@ -16771,7 +16771,7 @@ else {
     }, true);
     document.addEventListener("click", function(){ setTimeout(function(){ addFooterUndo(); renderStatus(); }, 240); }, true);
     setInterval(renderStatus, 4000);
-    setStatus("V2.3D session hub ready. Rewards are kept on the Rewards/Encounter views; the Data tab is reserved for backups, QA, and deployment tools.", "ok");
+    setStatus("V2.3F session hub ready. Rewards are kept on the Rewards/Encounter views; the Data tab is reserved for backups, QA, and deployment tools.", "ok");
   }
   if (document.readyState === "loading") document.addEventListener("DOMContentLoaded", init);
   else setTimeout(init, 0);
@@ -16782,7 +16782,7 @@ else {
 <script>
 (function(){
   "use strict";
-  var VERSION = "V2.3D";
+  var VERSION = "V2.3F";
   var CHECK_KEY = "middara_v22i_live_checklist";
   var EXPORT_KEY = "middara_v22i_last_snapshot_export";
   var TEST_KEY = "middara_v22i_last_self_test";
@@ -16930,7 +16930,7 @@ else {
     panel.className = "panel v22i-help-panel";
     panel.setAttribute("data-v17-mode", "play");
     panel.innerHTML = '' +
-      '<div class="v22i-help-head"><div><h3>V2.3D live-play guide</h3><div class="note">Use this as the tablet workflow reference during a session. It summarizes the intended route without opening the external guide.</div></div><div class="v22i-badge">Table workflow</div></div>' +
+      '<div class="v22i-help-head"><div><h3>V2.3F live-play guide</h3><div class="note">Use this as the tablet workflow reference during a session. It summarizes the intended route without opening the external guide.</div></div><div class="v22i-badge">Table workflow</div></div>' +
       '<div class="v22i-recipe-grid">' +
         '<div class="v22i-recipe"><strong>Adventurer attack</strong><div><code>Actor -> Target + Attack -> Dice auto-calc -> Apply -> Chain/Next</code></div></div>' +
         '<div class="v22i-recipe"><strong>Adventurer / Esper spell</strong><div><code>Actor -> target -> spell action -> Force/Conviction auto-calc -> Apply</code></div></div>' +
@@ -16968,7 +16968,7 @@ else {
         '<button type="button" data-v22i-action="openData">Open backup / update tools</button>' +
       '</div>' +
       '<div id="v22iSelfTestOutput" class="tiny" style="margin-top:10px">Run the table workflow test to verify the main live-use hooks loaded.</div>' +
-      '<div id="v22iStatus" class="ok-box note" style="margin-top:10px">V2.3D guide ready.</div>';
+      '<div id="v22iStatus" class="ok-box note" style="margin-top:10px">V2.3F guide ready.</div>';
     anchor.insertAdjacentElement("afterend", panel);
     renderChecklist();
   }
@@ -16983,7 +16983,7 @@ else {
     wrap.style.borderRadius = "14px";
     wrap.style.padding = "12px";
     wrap.innerHTML = '' +
-      '<h3 style="margin-top:0">V2.3D save / update status</h3>' +
+      '<h3 style="margin-top:0">V2.3F save / update status</h3>' +
       '<div class="note">Save state is local to this browser and this hosted URL. Use full snapshot export before changing devices, hosts, or GitHub builds.</div>' +
       '<div class="v22i-status-grid">' +
         '<div class="v22i-status-card"><div class="label">Version</div><div class="value" id="v22iVersionValue">-</div></div>' +
@@ -17021,14 +17021,14 @@ else {
     });
   }
   function patchTitles(){
-    document.title = "Middara Combat Helper - V2.3D Counter Flow / Dodge Preserve";
+    document.title = "Middara Combat Helper - V2.3F Universal Defense Trays";
     var sub = document.querySelector("header .subtitle");
-    if (sub) sub.textContent = "V2.3D counter flow: Dodge toggle preserves enemy rolls; Rook Plate/Nano toggles live in Enemy Attack; Counter buttons load Rook back against the attacker.";
-    var flowH = document.querySelector("#mobileCombatFlowPanel h2"); if (flowH) flowH.textContent = "V2.3D Tablet live combat flow";
-    var badge = document.querySelector("#mobileCombatFlowPanel .cockpit-badge"); if (badge) badge.textContent = "V2.3D Flow";
-    var hubH = document.querySelector("#v22gSessionHub h3"); if (hubH) hubH.textContent = "V2.3D table session hub";
+    if (sub) sub.textContent = "V2.3F universal defense trays: enemy attacks show target-specific defensive reactions inline, then Counter follow-ups reverse actor and target.";
+    var flowH = document.querySelector("#mobileCombatFlowPanel h2"); if (flowH) flowH.textContent = "V2.3F Tablet live combat flow";
+    var badge = document.querySelector("#mobileCombatFlowPanel .cockpit-badge"); if (badge) badge.textContent = "V2.3F Flow";
+    var hubH = document.querySelector("#v22gSessionHub h3"); if (hubH) hubH.textContent = "V2.3F table session hub";
     var hubTiny = document.querySelector("#v22gSessionHub .v22g-session-head .tiny"); if (hubTiny) hubTiny.textContent = "One-tablet controls for setup, backup, quick undo, end-of-encounter cleanup, and live-play readiness.";
-    var pwaSummary = document.querySelector(".v22c-pwa-panel summary"); if (pwaSummary) pwaSummary.textContent = "V2.3D hosted / installable web app";
+    var pwaSummary = document.querySelector(".v22c-pwa-panel summary"); if (pwaSummary) pwaSummary.textContent = "V2.3F hosted / installable web app";
     var pwa = byId("pwaVersionText"); if (pwa) pwa.textContent = VERSION;
   }
   function init(){
@@ -17052,7 +17052,7 @@ else {
 
 
 <style id="v22jLiveFlowPriorityStyles">
-  /* V2.3D Live-flow priority / collapsible session tools */
+  /* V2.3F Live-flow priority / collapsible session tools */
   #mobileCombatFlowPanel.v22j-flow-priority {
     border-color: rgba(163,230,53,.42);
     background: linear-gradient(180deg, rgba(163,230,53,.07), rgba(56,189,248,.035), rgba(255,255,255,.012)), var(--panel);
@@ -17163,7 +17163,7 @@ else {
 <script id="v22jLiveFlowPriorityScript">
 (function(){
   "use strict";
-  var VERSION = "V2.3D";
+  var VERSION = "V2.3F";
   function byId(id){ return document.getElementById(id); }
   function text(el, value){ if (el) el.textContent = value; }
   function hasClass(el, cls){ return el && (" " + el.className + " ").indexOf(" " + cls + " ") >= 0; }
@@ -17178,16 +17178,16 @@ else {
     if (flow && flow.scrollIntoView) flow.scrollIntoView({behavior:"smooth", block:"start"});
   }
   function patchTitles(){
-    document.title = "Middara Combat Helper - V2.3D Counter Flow / Dodge Preserve";
+    document.title = "Middara Combat Helper - V2.3F Universal Defense Trays";
     var sub = document.querySelector("header .subtitle");
-    if (sub) sub.textContent = "V2.3D counter flow: Dodge toggle preserves enemy rolls; Rook Plate/Nano toggles live in Enemy Attack; Counter buttons load Rook back against the attacker.";
+    if (sub) sub.textContent = "V2.3F universal defense trays: enemy attacks show target-specific defensive reactions inline, then Counter follow-ups reverse actor and target.";
     var flowH = document.querySelector("#mobileCombatFlowPanel h2");
-    if (flowH) flowH.textContent = "V2.3D Tablet live combat flow";
+    if (flowH) flowH.textContent = "V2.3F Tablet live combat flow";
     var badge = document.querySelector("#mobileCombatFlowPanel .cockpit-badge");
-    if (badge) badge.textContent = "V2.3D Flow";
+    if (badge) badge.textContent = "V2.3F Flow";
     var pwa = byId("pwaVersionText"); if (pwa) pwa.textContent = VERSION;
-    var pwaSummary = document.querySelector(".v22c-pwa-panel summary"); if (pwaSummary) pwaSummary.textContent = "V2.3D hosted / installable web app";
-    var dataH = document.querySelector("#v22iDataStatusPanel h3"); if (dataH) dataH.textContent = "V2.3D save / update status";
+    var pwaSummary = document.querySelector(".v22c-pwa-panel summary"); if (pwaSummary) pwaSummary.textContent = "V2.3F hosted / installable web app";
+    var dataH = document.querySelector("#v22iDataStatusPanel h3"); if (dataH) dataH.textContent = "V2.3F save / update status";
     var hubTitle = document.querySelector("#v22gSessionHub h3"); if (hubTitle) hubTitle.textContent = "Table session hub";
     var guideTitle = document.querySelector("#v22iGuidePanel h3"); if (guideTitle) guideTitle.textContent = "Live-play guide";
   }
@@ -17291,7 +17291,7 @@ else {
 
 
 <style id="v22k-auto-calc-style">
-  /* V2.3D auto-calc streamlined flow */
+  /* V2.3F auto-calc streamlined flow */
   #v22bFooterCalc,
   #mobileCombatFlowPanel .v22b-primary-actions [data-v22b-action="calculateCurrent"] {
     display: none !important;
@@ -17322,7 +17322,7 @@ else {
 <script id="v22k-auto-calc-script">
 (function(){
   "use strict";
-  var VERSION = "V2.3D";
+  var VERSION = "V2.3F";
   var appliedKey = "";
   var appliedLabel = "";
   var autoTimer = null;
@@ -17492,12 +17492,12 @@ else {
     var mo = new MutationObserver(function(){ schedulePaint(); });
     mo.observe(document.body, { childList:true, subtree:true, characterData:true });
     setInterval(paint, 1000);
-    document.title = "Middara Combat Helper - V2.3D Counter Flow / Dodge Preserve";
+    document.title = "Middara Combat Helper - V2.3F Universal Defense Trays";
     var sub = document.querySelector("header .subtitle");
-    if (sub) sub.textContent = "V2.3D counter flow: Dodge toggle preserves enemy rolls; Rook Plate/Nano toggles live in Enemy Attack; Counter buttons load Rook back against the attacker.";
-    var flowH = document.querySelector("#mobileCombatFlowPanel h2"); if (flowH) flowH.textContent = "V2.3D Tablet live combat flow";
-    var badge = document.querySelector("#mobileCombatFlowPanel .cockpit-badge"); if (badge) badge.textContent = "V2.3D Auto-calc";
-    var pwaSummary = document.querySelector(".v22c-pwa-panel summary"); if (pwaSummary) pwaSummary.textContent = "V2.3D hosted / installable web app";
+    if (sub) sub.textContent = "V2.3F universal defense trays: enemy attacks show target-specific defensive reactions inline, then Counter follow-ups reverse actor and target.";
+    var flowH = document.querySelector("#mobileCombatFlowPanel h2"); if (flowH) flowH.textContent = "V2.3F Tablet live combat flow";
+    var badge = document.querySelector("#mobileCombatFlowPanel .cockpit-badge"); if (badge) badge.textContent = "V2.3F Auto-calc";
+    var pwaSummary = document.querySelector(".v22c-pwa-panel summary"); if (pwaSummary) pwaSummary.textContent = "V2.3F hosted / installable web app";
     setTimeout(function(){ paint(); autoCalcAttack(); }, 350);
   }
   if (document.readyState === "loading") document.addEventListener("DOMContentLoaded", install);
@@ -17519,7 +17519,7 @@ else {
 </style>
 <script id="v23a-rook-defense-spell-empower-script">
 (function(){
-  var VERSION = "V2.3D";
+  var VERSION = "V2.3F";
   function byId(id){ return document.getElementById(id); }
   function setVal(id, value){ var el = byId(id); if (el) el.value = value; }
   function setChecked(id, value){ var el = byId(id); if (el) el.checked = !!value; }
@@ -17602,12 +17602,12 @@ else {
     box.innerHTML = html;
   }
   function updateVersionChrome(){
-    document.title = "Middara Combat Helper - V2.3D Counter Flow / Dodge Preserve";
-    var sub = document.querySelector("header .subtitle"); if (sub) sub.textContent = "V2.3D counter flow: Dodge toggle preserves enemy rolls; Rook Plate/Nano toggles live in Enemy Attack; Counter buttons load Rook back against the attacker.";
-    var flowH = document.querySelector("#mobileCombatFlowPanel h2"); if (flowH) flowH.textContent = "V2.3D Tablet live combat flow";
-    var badge = document.querySelector("#mobileCombatFlowPanel .cockpit-badge"); if (badge) badge.textContent = "V2.3D";
-    var pwaSummary = document.querySelector(".v22c-pwa-panel summary"); if (pwaSummary) pwaSummary.textContent = "V2.3D hosted / installable web app";
-    var dataH = document.querySelector("#v22iDataStatusPanel h3"); if (dataH) dataH.textContent = "V2.3D save / update status";
+    document.title = "Middara Combat Helper - V2.3F Universal Defense Trays";
+    var sub = document.querySelector("header .subtitle"); if (sub) sub.textContent = "V2.3F universal defense trays: enemy attacks show target-specific defensive reactions inline, then Counter follow-ups reverse actor and target.";
+    var flowH = document.querySelector("#mobileCombatFlowPanel h2"); if (flowH) flowH.textContent = "V2.3F Tablet live combat flow";
+    var badge = document.querySelector("#mobileCombatFlowPanel .cockpit-badge"); if (badge) badge.textContent = "V2.3F";
+    var pwaSummary = document.querySelector(".v22c-pwa-panel summary"); if (pwaSummary) pwaSummary.textContent = "V2.3F hosted / installable web app";
+    var dataH = document.querySelector("#v22iDataStatusPanel h3"); if (dataH) dataH.textContent = "V2.3F save / update status";
     var v = byId("v22iVersionValue"); if (v) v.textContent = VERSION;
   }
   function syncRookPanelEmpowerToSpell(){
@@ -17635,19 +17635,19 @@ else {
 <script>
 (function () {
   "use strict";
-  var TITLE = "Middara Combat Helper - V2.3D Counter Flow / Dodge Preserve";
-  var SUBTITLE = "V2.3D counter flow: Dodge toggle preserves enemy rolls; Rook Plate/Nano toggles live in Enemy Attack; Counter buttons load Rook back against the attacker.";
+  var TITLE = "Middara Combat Helper - V2.3F Universal Defense Trays";
+  var SUBTITLE = "V2.3F universal defense trays: enemy attacks show target-specific defensive reactions inline, then Counter follow-ups reverse actor and target.";
   function stabilizeHeader() {
     try {
       if (document.title !== TITLE) document.title = TITLE;
       var sub = document.querySelector("header .subtitle");
       if (sub && sub.textContent !== SUBTITLE) sub.textContent = SUBTITLE;
       var flowH = document.querySelector("#mobileCombatFlowPanel h2");
-      if (flowH && flowH.textContent.indexOf("V2.3D") < 0) flowH.textContent = "V2.3D Tablet live combat flow";
+      if (flowH && flowH.textContent.indexOf("V2.3F") < 0) flowH.textContent = "V2.3F Tablet live combat flow";
       var badge = document.querySelector("#mobileCombatFlowPanel .cockpit-badge");
-      if (badge && badge.textContent.indexOf("V2.3D") < 0) badge.textContent = "V2.3D";
+      if (badge && badge.textContent.indexOf("V2.3F") < 0) badge.textContent = "V2.3F";
       var pwaSummary = document.querySelector(".v22c-pwa-panel summary");
-      if (pwaSummary && pwaSummary.textContent.indexOf("V2.3D") < 0) pwaSummary.textContent = "V2.3D hosted / installable web app";
+      if (pwaSummary && pwaSummary.textContent.indexOf("V2.3F") < 0) pwaSummary.textContent = "V2.3F hosted / installable web app";
     } catch (err) {}
   }
   if (document.readyState === "loading") document.addEventListener("DOMContentLoaded", stabilizeHeader);
@@ -17661,7 +17661,7 @@ else {
 
 
 <style id="v23c-in-context-defense-style">
-  /* V2.3D in-context defense and Play-only live flow guard */
+  /* V2.3F in-context defense and Play-only live flow guard */
   body[data-v17-current-mode]:not([data-v17-current-mode="play"]):not([data-v17-current-mode="all"]) #mobileCombatFlowPanel {
     display: none !important;
   }
@@ -17773,7 +17773,7 @@ else {
 <script id="v23c-in-context-defense-script">
 (function () {
   "use strict";
-  var VERSION = "V2.3D";
+  var VERSION = "V2.3F";
   var lastMode = "";
   function ready(fn) { if (document.readyState === "loading") document.addEventListener("DOMContentLoaded", fn); else setTimeout(fn, 0); }
   function byId(id) { return document.getElementById(id); }
@@ -18041,7 +18041,7 @@ else {
 <script>
 (function () {
   "use strict";
-  var VERSION = "V2.3D";
+  var VERSION = "V2.3F";
   var MOBILE_FLOW_STORAGE_KEY = "middaraCombatHelperV22BMobileFlow";
   function ready(fn) { if (document.readyState === "loading") document.addEventListener("DOMContentLoaded", fn); else setTimeout(fn, 0); }
   function byId(id) { return document.getElementById(id); }
@@ -18264,6 +18264,855 @@ else {
   }
   ready(init);
   window.middaraV23DApi = { loadRookCounter: loadCounter, simplifyRookDefenseTray: simplifyRookDefenseTray, patchDodgePreservesEnemyRoll: patchDodgePreservesEnemyRoll };
+})();
+</script>
+
+
+
+<style id="v23e-universal-counter-style">
+  /* V2.3F universal defense trays */
+  #v23cRookCounterBox { display: none !important; }
+  .v23e-counter-tray {
+    border: 1px solid rgba(251,191,36,.46);
+    background: linear-gradient(180deg, rgba(251,191,36,.10), rgba(15,23,42,.58));
+    border-radius: 14px;
+    padding: 12px;
+    margin: 10px 0 14px;
+  }
+  .v23e-counter-tray.hidden { display: none !important; }
+  .v23e-counter-head {
+    display: flex;
+    justify-content: space-between;
+    gap: 10px;
+    align-items: flex-start;
+    flex-wrap: wrap;
+    margin-bottom: 10px;
+  }
+  .v23e-counter-head strong { color: var(--text); font-size: 1rem; }
+  .v23e-counter-badge {
+    display: inline-flex;
+    align-items: center;
+    border-radius: 999px;
+    padding: 5px 8px;
+    border: 1px solid rgba(251,191,36,.50);
+    background: rgba(251,191,36,.12);
+    color: var(--warn);
+    font-size: .78rem;
+    font-weight: 800;
+    white-space: nowrap;
+  }
+  .v23e-counter-status {
+    border: 1px solid rgba(148,163,184,.24);
+    border-radius: 12px;
+    padding: 9px 10px;
+    background: rgba(2,6,23,.30);
+    margin-top: 8px;
+  }
+  .v23e-counter-status.ready {
+    border-color: rgba(52,211,153,.42);
+    background: rgba(52,211,153,.08);
+  }
+  .v23e-counter-status.blocked {
+    border-color: rgba(148,163,184,.24);
+    background: rgba(15,23,42,.40);
+  }
+  .v23e-counter-actions {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 8px;
+    margin-top: 10px;
+  }
+  .v23e-counter-actions button {
+    width: auto;
+    min-width: 150px;
+    padding: 9px 11px;
+  }
+  .v23e-counter-actions button.primary {
+    border-color: rgba(52,211,153,.52);
+    background: linear-gradient(180deg, rgba(34,197,94,.34), rgba(21,128,61,.46));
+  }
+  .v23e-counter-actions button.special {
+    border-color: rgba(56,189,248,.45);
+    background: rgba(56,189,248,.12);
+  }
+  .v23e-counter-note { color: var(--muted); font-size: .86rem; margin-top: 8px; }
+  @media (max-width: 760px) {
+    .v23e-counter-actions { display: grid; grid-template-columns: 1fr; }
+    .v23e-counter-actions button { width: 100%; }
+  }
+</style>
+
+<script id="v23e-universal-counter-script">
+(function () {
+  "use strict";
+  var VERSION = "V2.3F";
+  var MOBILE_FLOW_STORAGE_KEY = "middaraCombatHelperV22BMobileFlow";
+  var ADVENTURERS = {
+    rook: { name:"Rook", profile:"rook_loche_svalinn" },
+    remi: { name:"Remi", profile:"remi_gigas_melee" },
+    nightingale: { name:"Nightingale", profile:"nightingale_wand_trophy" },
+    zeke: { name:"Zeke", profile:"zeke_dual_short_swords" }
+  };
+  function ready(fn) { if (document.readyState === "loading") document.addEventListener("DOMContentLoaded", fn); else setTimeout(fn, 0); }
+  function byId(id) { return document.getElementById(id); }
+  function val(id) { var el = byId(id); return el ? el.value : ""; }
+  function text(id) { var el = byId(id); return el ? String(el.textContent || "").trim() : ""; }
+  function esc(v) {
+    return String(v == null ? "" : v).replace(/[&<>"']/g, function (c) {
+      if (c === "&") return "&amp;";
+      if (c === "<") return "&lt;";
+      if (c === ">") return "&gt;";
+      if (c === '"') return "&quot;";
+      if (c === "'") return "&#39;";
+      return c;
+    });
+  }
+  function selectedText(id) { var el = byId(id); if (!el || !el.options || el.selectedIndex < 0) return ""; return el.options[el.selectedIndex].textContent || ""; }
+  function checked(id) { var el = byId(id); return !!(el && el.checked); }
+  function click(elOrId) { var el = typeof elOrId === "string" ? byId(elOrId) : elOrId; if (el && typeof el.click === "function") { el.click(); return true; } return false; }
+  function fire(elOrId, type) {
+    var el = typeof elOrId === "string" ? byId(elOrId) : elOrId;
+    if (!el) return;
+    try { el.dispatchEvent(new Event(type || "change", { bubbles:true })); }
+    catch (err) { try { var ev = document.createEvent("Event"); ev.initEvent(type || "change", true, true); el.dispatchEvent(ev); } catch (err2) {} }
+  }
+  function setSelect(id, value, fireChange) {
+    var el = byId(id); if (!el) return false;
+    var ok = false;
+    if (el.options) for (var i = 0; i < el.options.length; i++) if (el.options[i].value === value) { ok = true; break; }
+    if (!ok) return false;
+    el.value = value;
+    if (fireChange !== false) fire(el, "change");
+    return true;
+  }
+  function setStatus(msg, kind) {
+    var el = byId("v22bFlowStatus");
+    if (!el) return;
+    el.className = (kind === "warn" ? "warning-box" : kind === "danger" ? "danger-box" : "ok-box") + " note v22b-flow-status";
+    el.textContent = msg;
+  }
+  function addWorkflow(title, detail) { try { if (window.middaraWorkflowApi && middaraWorkflowApi.log) { middaraWorkflowApi.log(title, detail); return true; } } catch (err) {} return false; }
+  function setTurnCard(id, state, msg) { try { if (window.middaraTurnApi && middaraTurnApi.setCardState) return middaraTurnApi.setCardState(id, state, msg, "ok"); } catch (err) {} return false; }
+  function calcEnemyAttack() { try { if (window.middaraEnemyAttackApi && middaraEnemyAttackApi.calculate) return middaraEnemyAttackApi.calculate(); } catch (err) {} click("calculateEnemyAttackButton"); try { return window.middaraEnemyAttackApi && middaraEnemyAttackApi.getLastResult ? middaraEnemyAttackApi.getLastResult() : null; } catch (err2) { return null; } }
+  function lastEnemyAttack() { try { return window.middaraEnemyAttackApi && middaraEnemyAttackApi.getLastResult ? middaraEnemyAttackApi.getLastResult() : null; } catch (err) { return null; } }
+  function calcAttack() { try { if (typeof window.calculate === "function") return window.calculate(); } catch (err) {} return null; }
+  function trackerEnemies() { try { return (window.trackerState && trackerState.enemies) || []; } catch (err) { return []; } }
+  function findTrackerEnemy(id) { var list = trackerEnemies(); for (var i = 0; i < list.length; i++) if (list[i] && list[i].id === id) return list[i]; return null; }
+  function mobileFlowState() { try { return JSON.parse(localStorage.getItem(MOBILE_FLOW_STORAGE_KEY) || "{}"); } catch (err) { return {}; } }
+  function actorEnemyFromMobileFlow() {
+    var s = mobileFlowState();
+    var actor = String(s.actor || "");
+    if (actor.indexOf("enemy:") === 0) return findTrackerEnemy(actor.slice(6));
+    return null;
+  }
+  function selectedAiEnemy() {
+    var raw = val("aiActingEnemy");
+    if (raw.indexOf("tracker:") === 0) return findTrackerEnemy(raw.slice(8));
+    return null;
+  }
+  function presetMatches(enemy, presetId) {
+    if (!enemy || !presetId) return false;
+    return enemy.presetId === presetId || enemy.enemyId === presetId || enemy.id === presetId || String(enemy.name || "").toLowerCase().replace(/\s+/g,"_") === presetId;
+  }
+  function currentEnemyAttackAttacker() {
+    var fromFlow = actorEnemyFromMobileFlow();
+    if (fromFlow) return fromFlow;
+    var fromAi = selectedAiEnemy();
+    if (fromAi) return fromAi;
+    var preset = val("enemyAttackEnemy") || "";
+    try {
+      if (window.trackerState && trackerState.selectedId) {
+        var selected = findTrackerEnemy(trackerState.selectedId);
+        if (presetMatches(selected, preset)) return selected;
+      }
+    } catch (err) {}
+    var list = trackerEnemies();
+    for (var i = 0; i < list.length; i++) if (presetMatches(list[i], preset)) return list[i];
+    return null;
+  }
+  function useTrackerAsAttackTarget(enemy) {
+    if (!enemy) return false;
+    try { if (window.trackerState) trackerState.selectedId = enemy.id; } catch (err) {}
+    try { if (typeof window.useTrackerEnemyAsTarget === "function") window.useTrackerEnemyAsTarget(enemy.id, true); } catch (err2) {}
+    try { if (window.middaraMobileFlowV22BApi && middaraMobileFlowV22BApi.setTarget) middaraMobileFlowV22BApi.setTarget("enemy:" + enemy.id, "attack"); } catch (err3) {}
+    return true;
+  }
+  function targetAdventurerId() {
+    var raw = String(val("enemyAttackTarget") || "");
+    if (raw.indexOf("command:") === 0) return "";
+    return ADVENTURERS[raw] ? raw : "";
+  }
+  function targetAdventurerName() {
+    var id = targetAdventurerId();
+    return id && ADVENTURERS[id] ? ADVENTURERS[id].name : (selectedText("enemyAttackTarget") || "target");
+  }
+  function ensureCounterTray() {
+    if (byId("v23eCounterTray")) return;
+    var host = byId("v23cRookDefenseTray") || byId("enemyAttackWarnings");
+    if (!host || !host.parentNode) return;
+    var tray = document.createElement("div");
+    tray.id = "v23eCounterTray";
+    tray.className = "v23e-counter-tray hidden";
+    if (host.id === "enemyAttackWarnings") host.parentNode.insertBefore(tray, host);
+    else host.parentNode.insertBefore(tray, host.nextSibling);
+  }
+  function isCounterEligible(result) {
+    if (!result) return false;
+    return !!(result.forcedMiss || result.skullMiss || !result.hit || Number(result.finalDamage || 0) <= 0);
+  }
+  function renderUniversalCounterTray() {
+    ensureCounterTray();
+    var tray = byId("v23eCounterTray");
+    if (!tray) return;
+    var actorId = targetAdventurerId();
+    if (!actorId) { tray.classList.add("hidden"); return; }
+    var result = lastEnemyAttack();
+    if (!result) result = calcEnemyAttack();
+    var actorName = targetAdventurerName();
+    var enemy = currentEnemyAttackAttacker();
+    var enemyName = enemy ? (enemy.label || enemy.name || "the attacker") : (selectedText("enemyAttackEnemy") || "the attacker");
+    var eligible = isCounterEligible(result);
+    var rookPlate = actorId === "rook" && result && result.hit && Number(result.finalDamage || 0) > 0;
+    var canOffer = eligible || rookPlate;
+    var reason = "";
+    var statusClass = canOffer ? "ready" : "blocked";
+    if (eligible) {
+      reason = actorName + " can usually Counter because this enemy attack appears to miss or deal no Final Damage.";
+      if (checked("enemyAttackUseDodge")) reason += " If the attack was successfully Dodged, reduce the Counter cost by 1 SP.";
+    } else if (rookPlate) {
+      reason = "Rook took damage, but Plate of Superiority may allow Rook to Counter even when dealt damage by an attack. Confirm Plate timing manually.";
+    } else if (result) {
+      reason = "No standard Counter shortcut is offered because the current result deals " + Number(result.finalDamage || 0) + " Final Damage to " + actorName + ".";
+    } else {
+      reason = "Resolve the enemy attack result to see whether a Counter shortcut is available.";
+    }
+    var actions = [];
+    if (canOffer) {
+      actions.push('<button type="button" class="primary" data-v23e-counter="normal">Counter with ' + esc(actorName) + '</button>');
+      if (actorId === "rook") {
+        actions.push('<button type="button" class="special" data-v23e-counter="rook_svalinn">The Svalinn Counter</button>');
+        actions.push('<button type="button" class="special" data-v23e-counter="rook_pontifex">First Piece Counter / Spell</button>');
+      }
+      if (actorId === "zeke") {
+        actions.push('<button type="button" class="special" data-v23e-counter="zeke_black_ticket">Black Ticket Counter</button>');
+      }
+    }
+    tray.classList.remove("hidden");
+    tray.innerHTML = '<div class="v23e-counter-head"><div><strong>Counter follow-up</strong><div class="tiny">Targeted adventurer: ' + esc(actorName) + ' | Attacker: ' + esc(enemyName) + '</div></div><span class="v23e-counter-badge">Enemy Attack</span></div>' +
+      '<div class="v23e-counter-status ' + statusClass + '">' + esc(reason) + '</div>' +
+      (actions.length ? '<div class="v23e-counter-actions">' + actions.join("") + '</div>' : '') +
+      '<div class="v23e-counter-note">Board legality, SP cost, and timing remain manual. The shortcut only reverses actor/target and loads the counterattack workflow.</div>';
+  }
+  function setActorAsCurrent(actorId) {
+    setSelect("characterSelect", actorId, true);
+    var meta = ADVENTURERS[actorId] || {};
+    setTimeout(function () {
+      if (meta.profile) setSelect("profileSelect", meta.profile, true);
+      calcAttack();
+    }, 40);
+    var actorSelect = byId("v22bActorSelect");
+    if (actorSelect) {
+      var value = "party:" + actorId;
+      var ok = false;
+      if (actorSelect.options) for (var i = 0; i < actorSelect.options.length; i++) if (actorSelect.options[i].value === value) { ok = true; break; }
+      if (ok) { actorSelect.value = value; fire(actorSelect, "change"); }
+    }
+  }
+  function routeCounterToAttack(actorId, enemy, label) {
+    var play = document.querySelector('[data-v17-mode-button="play"]');
+    if (play) click(play);
+    setTimeout(function () {
+      setActorAsCurrent(actorId);
+      if (enemy) useTrackerAsAttackTarget(enemy);
+      try { if (window.middaraMobileFlowV22BApi && middaraMobileFlowV22BApi.render) middaraMobileFlowV22BApi.render(); } catch (err) {}
+      setTimeout(function () {
+        var attackBtn = document.querySelector('#mobileCombatFlowPanel [data-v22b-action="routeAttack"]');
+        if (attackBtn) click(attackBtn);
+        else {
+          var panel = byId("attackDicePanel") || byId("characterSelect");
+          if (panel && panel.scrollIntoView) panel.scrollIntoView({ behavior:"smooth", block:"start" });
+        }
+        calcAttack();
+        var actorName = ADVENTURERS[actorId] ? ADVENTURERS[actorId].name : actorId;
+        setStatus(label + (enemy ? " loaded: " + actorName + " is counterattacking " + (enemy.label || enemy.name || "the attacker") + "." : " loaded. Choose the attacking enemy as the Counter target."), enemy ? "ok" : "warn");
+      }, 120);
+    }, 80);
+  }
+  function loadUniversalCounter(kind) {
+    var actorId = targetAdventurerId();
+    if (!actorId) { setStatus("Counter shortcuts currently support party adventurers. Command Combatant counter support can be added later if needed.", "warn"); return; }
+    var actorName = targetAdventurerName();
+    var enemy = currentEnemyAttackAttacker();
+    var source = actorName + " Counter";
+    if (kind === "rook_svalinn") {
+      source = "Rook Counter - The Svalinn";
+      setTurnCard("rook_svalinn", "exhausted", "Rook The Svalinn exhausted for Counter.");
+    } else if (kind === "rook_pontifex") {
+      source = "Rook Counter - First Piece of the Pontifex";
+      setTurnCard("rook_pontifex", "exhausted", "Rook First Piece of the Pontifex exhausted for Counter.");
+    } else if (kind === "zeke_black_ticket") {
+      source = "Zeke Counter - The Black Ticket";
+      setTurnCard("zeke_black_ticket", "exhausted", "Zeke The Black Ticket exhausted for Counter.");
+    }
+    var msg = source + ": reversed enemy attack into " + actorName + " attacking " + (enemy ? (enemy.label || enemy.name || "the attacker") : "the attacker") + ". Confirm Counter timing, SP cost, and target legality manually.";
+    if (kind === "rook_pontifex") msg += " First Piece may also use a qualifying 2 SP-or-less Discipline Spell instead of an Attack.";
+    addWorkflow(source, msg);
+    routeCounterToAttack(actorId, enemy, source);
+  }
+  function bindUniversalCounterButtons() {
+    if (window.__v23eCounterButtonsBound) return;
+    window.__v23eCounterButtonsBound = true;
+    document.addEventListener("click", function (ev) {
+      var btn = ev.target && ev.target.closest ? ev.target.closest("[data-v23e-counter]") : null;
+      if (!btn) return;
+      ev.preventDefault();
+      ev.stopPropagation();
+      if (ev.stopImmediatePropagation) ev.stopImmediatePropagation();
+      loadUniversalCounter(btn.getAttribute("data-v23e-counter") || "normal");
+    }, true);
+  }
+  function patchRefreshHooks() {
+    if (window.__v23eRefreshHooks) return;
+    window.__v23eRefreshHooks = true;
+    ["enemyAttackTarget", "enemyAttackEnemy", "enemyAttackType", "enemyAttackUseDodge", "enemyAttackDodgeFace", "enemyDefenseForceMiss", "enemyDefenseRookPlate", "enemyDefenseRemiShearling", "enemyDefenseRemiPerEncounter", "enemyDefenseNightMorbid", "enemyDefenseNightReinforced", "enemyDefenseZekeBelts"].forEach(function (id) {
+      var el = byId(id); if (!el) return;
+      var evt = (el.tagName === "SELECT" || el.type === "checkbox") ? "change" : "input";
+      el.addEventListener(evt, function () { setTimeout(renderUniversalCounterTray, 80); }, true);
+    });
+    var calc = byId("calculateEnemyAttackButton"); if (calc) calc.addEventListener("click", function () { setTimeout(renderUniversalCounterTray, 60); }, true);
+  }
+  function patchChromeAndSnapshot() {
+    document.title = "Middara Combat Helper - V2.3F Universal Defense Trays";
+    var sub = document.querySelector("header .subtitle");
+    if (sub) sub.textContent = "V2.3F universal defense trays: enemy attacks show target-specific defensive reactions inline, then Counter follow-ups reverse actor and target.";
+    var h = document.querySelector("#mobileCombatFlowPanel h2"); if (h) h.textContent = "V2.3F Tablet live combat flow";
+    var badge = document.querySelector("#mobileCombatFlowPanel .cockpit-badge"); if (badge) badge.textContent = "V2.3F Flow";
+    var pwa = byId("pwaVersionText"); if (pwa) pwa.textContent = VERSION;
+    var pwaSummary = document.querySelector(".v22c-pwa-panel summary"); if (pwaSummary) pwaSummary.textContent = "V2.3F hosted / installable web app";
+    var dataH = document.querySelector("#v22iDataStatusPanel h3"); if (dataH) dataH.textContent = "V2.3F save / update status";
+    try {
+      if (window.middaraDataManagerApi && !window.__v23eSnapshotPatch) {
+        window.__v23eSnapshotPatch = true;
+        var api = window.middaraDataManagerApi;
+        var oldFull = api.exportFullSnapshot;
+        var oldApp = api.exportAppData;
+        function addVersion(snap) { try { snap.version = VERSION; snap.pwaDeploymentVersion = VERSION; snap.v23e = { universalCounterShortcuts:true, counterActorTargetReversal:true }; } catch (err) {} return snap; }
+        if (typeof oldFull === "function") api.exportFullSnapshot = function () { return addVersion(oldFull.apply(this, arguments)); };
+        if (typeof oldApp === "function") api.exportAppData = function () { return addVersion(oldApp.apply(this, arguments)); };
+      }
+    } catch (err) {}
+  }
+  function init() {
+    ensureCounterTray();
+    bindUniversalCounterButtons();
+    patchRefreshHooks();
+    patchChromeAndSnapshot();
+    renderUniversalCounterTray();
+    setTimeout(function () { ensureCounterTray(); patchChromeAndSnapshot(); renderUniversalCounterTray(); }, 500);
+    setInterval(function () { patchChromeAndSnapshot(); renderUniversalCounterTray(); }, 1800);
+  }
+  ready(init);
+  window.middaraV23EApi = { renderUniversalCounterTray: renderUniversalCounterTray, loadUniversalCounter: loadUniversalCounter };
+})();
+</script>
+
+
+
+<style id="v23f-universal-defense-tray-style">
+  /* V2.3F universal defensive reaction trays */
+  #v23cRookDefenseTray { display: none !important; }
+  .v23f-defense-tray {
+    border: 1px solid rgba(56,189,248,.46);
+    background: linear-gradient(180deg, rgba(56,189,248,.10), rgba(15,23,42,.58));
+    border-radius: 14px;
+    padding: 12px;
+    margin: 10px 0 14px;
+  }
+  .v23f-defense-tray.hidden { display: none !important; }
+  .v23f-defense-head {
+    display: flex;
+    justify-content: space-between;
+    gap: 10px;
+    align-items: flex-start;
+    flex-wrap: wrap;
+    margin-bottom: 10px;
+  }
+  .v23f-defense-head strong { color: var(--text); font-size: 1rem; }
+  .v23f-defense-badge {
+    display: inline-flex;
+    align-items: center;
+    border-radius: 999px;
+    padding: 5px 8px;
+    border: 1px solid rgba(56,189,248,.52);
+    background: rgba(56,189,248,.12);
+    color: #bae6fd;
+    font-size: .78rem;
+    font-weight: 800;
+    white-space: nowrap;
+  }
+  .v23f-defense-grid {
+    display: grid;
+    grid-template-columns: repeat(4, minmax(0, 1fr));
+    gap: 8px;
+    margin: 8px 0 10px;
+  }
+  .v23f-defense-metric {
+    border: 1px solid rgba(148,163,184,.24);
+    border-radius: 12px;
+    padding: 8px 9px;
+    background: rgba(2,6,23,.30);
+  }
+  .v23f-defense-metric .label {
+    color: var(--dim);
+    font-size: .72rem;
+    text-transform: uppercase;
+    letter-spacing: .06em;
+  }
+  .v23f-defense-metric .value { color: var(--text); font-weight: 900; margin-top: 2px; }
+  .v23f-defense-actions {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 8px;
+    margin-top: 10px;
+  }
+  .v23f-defense-actions button {
+    width: auto;
+    min-width: 155px;
+    padding: 9px 11px;
+    min-height: 42px;
+  }
+  .v23f-defense-actions button.active {
+    border-color: rgba(52,211,153,.56);
+    background: linear-gradient(180deg, rgba(34,197,94,.36), rgba(21,128,61,.48));
+  }
+  .v23f-defense-actions button.warn-action {
+    border-color: rgba(251,191,36,.48);
+    background: rgba(251,191,36,.12);
+  }
+  .v23f-defense-actions button.reminder-action {
+    border-color: rgba(148,163,184,.30);
+    background: rgba(148,163,184,.08);
+  }
+  .v23f-defense-status {
+    border: 1px solid rgba(148,163,184,.24);
+    border-radius: 12px;
+    padding: 9px 10px;
+    background: rgba(2,6,23,.30);
+    margin-top: 8px;
+    color: var(--muted);
+  }
+  .v23f-defense-status.ready {
+    border-color: rgba(52,211,153,.42);
+    background: rgba(52,211,153,.08);
+    color: var(--text);
+  }
+  .v23f-defense-status.warn {
+    border-color: rgba(251,191,36,.48);
+    background: rgba(251,191,36,.10);
+  }
+  .v23f-defense-section-title { color: var(--accent2); font-weight: 900; margin-top: 10px; }
+  .v23f-defense-note { color: var(--muted); font-size: .86rem; margin-top: 8px; }
+  @media (max-width: 900px) { .v23f-defense-grid { grid-template-columns: repeat(2, minmax(0, 1fr)); } }
+  @media (max-width: 620px) {
+    .v23f-defense-grid { grid-template-columns: 1fr 1fr; }
+    .v23f-defense-actions { display: grid; grid-template-columns: 1fr; }
+    .v23f-defense-actions button { width: 100%; min-width: 0; }
+  }
+</style>
+
+<script id="v23f-universal-defense-trays-script">
+(function () {
+  "use strict";
+  var VERSION = "V2.3F";
+  var ADVENTURERS = {
+    rook: "Rook",
+    remi: "Remi",
+    nightingale: "Nightingale",
+    zeke: "Zeke"
+  };
+  var targetLabel = { rook:"Rook", remi:"Remi", nightingale:"Nightingale", zeke:"Zeke" };
+  var state = window.__middaraV23FDefenseState || { targetId:"", intents:{} };
+  window.__middaraV23FDefenseState = state;
+  function ready(fn) { if (document.readyState === "loading") document.addEventListener("DOMContentLoaded", fn); else setTimeout(fn, 0); }
+  function byId(id) { return document.getElementById(id); }
+  function val(id) { var el = byId(id); return el ? el.value : ""; }
+  function checked(id) { var el = byId(id); return !!(el && el.checked); }
+  function esc(v) {
+    return String(v == null ? "" : v).replace(/[&<>"']/g, function (c) {
+      if (c === "&") return "&amp;";
+      if (c === "<") return "&lt;";
+      if (c === ">") return "&gt;";
+      if (c === '"') return "&quot;";
+      if (c === "'") return "&#39;";
+      return c;
+    });
+  }
+  function text(id) { var el = byId(id); return el ? String(el.textContent || "").trim() : ""; }
+  function click(elOrId) { var el = typeof elOrId === "string" ? byId(elOrId) : elOrId; if (el && typeof el.click === "function") { el.click(); return true; } return false; }
+  function fire(elOrId, type) {
+    var el = typeof elOrId === "string" ? byId(elOrId) : elOrId;
+    if (!el) return;
+    try { el.dispatchEvent(new Event(type || "change", { bubbles:true })); }
+    catch (err) { try { var ev = document.createEvent("Event"); ev.initEvent(type || "change", true, true); el.dispatchEvent(ev); } catch (err2) {} }
+  }
+  function setCheckedSilent(id, value) { var el = byId(id); if (el) el.checked = !!value; }
+  function setStatus(msg, kind) {
+    var el = byId("v22bFlowStatus") || byId("enemyAttackWarnings");
+    if (!el) return;
+    el.className = (kind === "warn" ? "warning-box" : kind === "danger" ? "danger-box" : "ok-box") + " note";
+    el.textContent = msg;
+  }
+  function addWorkflow(title, detail) {
+    try { if (window.middaraWorkflowApi && middaraWorkflowApi.log) { middaraWorkflowApi.log(title, detail); return true; } } catch (err) {}
+    try { if (window.middaraWorkflowApi && middaraWorkflowApi.addLog) { middaraWorkflowApi.addLog(title, detail); return true; } } catch (err2) {}
+    return false;
+  }
+  function setTurnCard(id, stateValue, msg) {
+    try { if (window.middaraTurnApi && middaraTurnApi.setCardState) return middaraTurnApi.setCardState(id, stateValue, msg, "ok"); } catch (err) {}
+    return false;
+  }
+  function setManyCards(changes, msg) {
+    if (!changes || !changes.length) return false;
+    try { if (window.middaraTurnApi && middaraTurnApi.setManyCardStates) return middaraTurnApi.setManyCardStates(changes, msg, "ok"); } catch (err) {}
+    var ok = false;
+    changes.forEach(function (c) { if (setTurnCard(c.id, c.state || "exhausted", msg || c.message || "Card state updated.")) ok = true; });
+    return ok;
+  }
+  function calcEnemyAttack() { try { if (window.middaraEnemyAttackApi && middaraEnemyAttackApi.calculate) return middaraEnemyAttackApi.calculate(); } catch (err) {} click("calculateEnemyAttackButton"); try { return window.middaraEnemyAttackApi && middaraEnemyAttackApi.getLastResult ? middaraEnemyAttackApi.getLastResult() : null; } catch (err2) { return null; } }
+  function lastEnemyAttack() { try { return window.middaraEnemyAttackApi && middaraEnemyAttackApi.getLastResult ? middaraEnemyAttackApi.getLastResult() : null; } catch (err) { return null; } }
+  function targetId() { return val("enemyAttackTarget") || ""; }
+  function isPartyTarget(id) { return !!ADVENTURERS[id]; }
+  function targetName(id) { return targetLabel[id] || id || "target"; }
+  function currentIntents(id) {
+    if (!id) id = targetId();
+    if (!state.intents[id]) state.intents[id] = {};
+    return state.intents[id];
+  }
+  function resetTargetIfChanged() {
+    var id = targetId();
+    if (state.targetId !== id) {
+      state.targetId = id;
+      state.intents = {};
+      currentIntents(id);
+    }
+  }
+  function markIntent(name, value) {
+    resetTargetIfChanged();
+    currentIntents()[name] = !!value;
+  }
+  function intent(name) { resetTargetIfChanged(); return !!currentIntents()[name]; }
+  function metric(label, value) { return '<div class="v23f-defense-metric"><div class="label">' + esc(label) + '</div><div class="value">' + esc(value) + '</div></div>'; }
+  function activeClass(v) { return v ? " active" : ""; }
+  function btn(label, action, active, cls) { return '<button type="button" class="' + esc((cls || "") + activeClass(active)) + '" data-v23f-defense="' + esc(action) + '">' + esc(label) + '</button>'; }
+  function ensureDefenseTray() {
+    if (byId("v23fDefenseTray")) return;
+    var forceMiss = byId("enemyDefenseForceMiss");
+    var panel = forceMiss && forceMiss.closest ? forceMiss.closest(".panel") : null;
+    if (!panel) return;
+    var tray = document.createElement("div");
+    tray.id = "v23fDefenseTray";
+    tray.className = "v23f-defense-tray hidden";
+    var resultHero = panel.querySelector(".result-hero");
+    if (resultHero && resultHero.parentNode) resultHero.parentNode.insertBefore(tray, resultHero.nextSibling);
+    else panel.insertBefore(tray, panel.firstChild);
+  }
+  function refreshEverything() {
+    var r = calcEnemyAttack();
+    try { if (window.middaraV23EApi && middaraV23EApi.renderUniversalCounterTray) middaraV23EApi.renderUniversalCounterTray(); } catch (err) {}
+    renderDefenseTray(r);
+    return r;
+  }
+  function toggleCheckbox(id, label) {
+    var next = !checked(id);
+    setCheckedSilent(id, next);
+    fire(id, "change");
+    refreshEverything();
+    setStatus(label + (next ? " enabled for this enemy attack." : " removed for this enemy attack."), "ok");
+  }
+  function enableDodgeWithSource(source, label) {
+    setCheckedSilent("enemyAttackUseDodge", true);
+    fire("enemyAttackUseDodge", "change");
+    markIntent(source, true);
+    refreshEverything();
+    setStatus(label + " selected. Enter/keep the Dodge die result in the enemy attack resolver.", "ok");
+  }
+  function toggleDodgeSource(source, label) {
+    var on = !intent(source);
+    markIntent(source, on);
+    if (on) {
+      setCheckedSilent("enemyAttackUseDodge", true);
+      fire("enemyAttackUseDodge", "change");
+    }
+    refreshEverything();
+    setStatus(label + (on ? " selected." : " cleared.") + " Use the normal Dodge controls for the final Dodge die result.", "ok");
+  }
+  function reminder(source, title, detail) {
+    markIntent(source, true);
+    addWorkflow(title, detail);
+    setStatus(title + " reminder logged. Enter the final kept dice/result manually.", "ok");
+    renderDefenseTray(lastEnemyAttack());
+  }
+  function partyMember(id) {
+    try {
+      if (typeof window.getPartyMember === "function") return window.getPartyMember(id);
+      if (window.partyState && Array.isArray(partyState.members)) for (var i = 0; i < partyState.members.length; i++) if (partyState.members[i].id === id) return partyState.members[i];
+    } catch (err) {}
+    return null;
+  }
+  function applySp(id, delta, source) {
+    try { if (typeof window.applyPartySp === "function") return window.applyPartySp(id, delta); } catch (err) {}
+    var m = partyMember(id); if (!m) return false;
+    try { if (typeof window.pushPartyHistory === "function") window.pushPartyHistory(); } catch (err2) {}
+    m.sp = Math.max(0, (Number(m.sp) || 0) + delta);
+    try { if (typeof window.savePartyState === "function") window.savePartyState(); if (typeof window.renderParty === "function") window.renderParty(); if (typeof window.renderDataJson === "function") window.renderDataJson(); } catch (err3) {}
+    return true;
+  }
+  function applyDamage(id, delta, source) {
+    try { if (typeof window.applyPartyDamage === "function") return window.applyPartyDamage(id, delta, source); } catch (err) {}
+    var m = partyMember(id); if (!m) return false;
+    try { if (typeof window.pushPartyHistory === "function") window.pushPartyHistory(); } catch (err2) {}
+    m.damage = Math.max(0, Math.min(Number(m.hp) || 0, (Number(m.damage) || 0) + delta));
+    try { if (typeof window.savePartyState === "function") window.savePartyState(); if (typeof window.renderParty === "function") window.renderParty(); if (typeof window.renderDataJson === "function") window.renderDataJson(); } catch (err3) {}
+    return true;
+  }
+  function addToken(id, token) {
+    try {
+      if (typeof window.addPartyTokenToMember === "function") {
+        if (typeof window.pushPartyHistory === "function") window.pushPartyHistory();
+        var ok = window.addPartyTokenToMember(id, token, "V2.3F defense tray");
+        if (typeof window.savePartyState === "function") window.savePartyState();
+        if (typeof window.renderParty === "function") window.renderParty();
+        if (typeof window.renderDataJson === "function") window.renderDataJson();
+        return ok;
+      }
+    } catch (err) {}
+    var m = partyMember(id); if (!m) return false;
+    try { if (typeof window.pushPartyHistory === "function") window.pushPartyHistory(); } catch (err2) {}
+    if (!Array.isArray(m.tokens)) m.tokens = [];
+    m.tokens.push(token);
+    try { if (typeof window.savePartyState === "function") window.savePartyState(); if (typeof window.renderParty === "function") window.renderParty(); if (typeof window.renderDataJson === "function") window.renderDataJson(); } catch (err3) {}
+    return true;
+  }
+  function resultSummary(r) {
+    if (!r) return "No result yet.";
+    if (r.skullMiss) return "Skull Miss";
+    if (r.forcedMiss) return "Forced Miss";
+    return r.hit ? "Hit" : "Miss";
+  }
+  function renderDefenseTray(existingResult) {
+    ensureDefenseTray();
+    resetTargetIfChanged();
+    var tray = byId("v23fDefenseTray");
+    if (!tray) return;
+    var id = targetId();
+    if (!id) { tray.classList.add("hidden"); return; }
+    var r = existingResult || lastEnemyAttack();
+    var isParty = isPartyTarget(id);
+    var isCommand = !!(id && !isParty && id.indexOf("cmd:") === 0);
+    if (!isParty && !isCommand) { tray.classList.add("hidden"); return; }
+    var name = isParty ? targetName(id) : "Command Combatant";
+    var base = '<div class="v23f-defense-head"><div><strong>Defensive reaction tray</strong><div class="tiny">Target: ' + esc(name) + '. Use these before Apply; card state is marked after Apply where practical.</div></div><span class="v23f-defense-badge">Enemy Attack</span></div>';
+    base += '<div class="v23f-defense-grid">' + metric("Result", resultSummary(r)) + metric("Final damage", r ? r.finalDamage : "-") + metric("Dodge", checked("enemyAttackUseDodge") ? "On" : "Off") + metric("Force miss", checked("enemyDefenseForceMiss") ? "On" : "Off") + '</div>';
+    var actions = [];
+    var status = "Choose target-specific defenses here. Existing detailed checkboxes remain below for review.";
+    if (id === "rook") {
+      actions.push(btn(checked("enemyDefenseRookPlate") ? "Remove Plate -4 Physical" : "Use Plate: -4 Physical", "rook_plate", checked("enemyDefenseRookPlate")));
+      actions.push(btn(checked("enemyDefenseForceMiss") ? "Remove Nano Robes miss" : "Use Nano Robes: attack misses", "rook_nano", checked("enemyDefenseForceMiss")));
+      actions.push(btn("Use normal Dodge controls", "focus_dodge", checked("enemyAttackUseDodge"), "reminder-action"));
+      status = "Rook: Plate and Nano toggle the resolver's existing defensive options. Counter follow-ups appear below after the result.";
+    } else if (id === "remi") {
+      actions.push(btn(checked("enemyDefenseRemiShearling") ? "Remove Shearling melee -2" : "Use Shearling melee -2", "remi_shearling", checked("enemyDefenseRemiShearling")));
+      actions.push(btn(checked("enemyDefenseRemiPerEncounter") ? "Remove Shearling PE reduction" : "Use Shearling PE reduction", "remi_shearling_pe", checked("enemyDefenseRemiPerEncounter")));
+      actions.push(btn(intent("remi_mantle_dodge") ? "Mantle Dodge selected" : "Mantle: Dodge", "remi_mantle_dodge", intent("remi_mantle_dodge")));
+      actions.push(btn(intent("remi_gage") ? "Gage selected" : "Gage before Dodge", "remi_gage", intent("remi_gage")));
+      actions.push(btn(intent("remi_shearling_reroll") ? "Shearling reroll noted" : "Shearling Dodge reroll", "remi_shearling_reroll", intent("remi_shearling_reroll"), "reminder-action"));
+      actions.push(btn(intent("remi_blackhand") ? "Blackhand reroll noted" : "Blackhand reroll reminder", "remi_blackhand", intent("remi_blackhand"), "reminder-action"));
+      actions.push(btn(checked("enemyDefenseRemiVow") ? "Remove Mantle Vow on Apply" : "Mantle: gain Vow if 3+ damage", "remi_mantle_vow", checked("enemyDefenseRemiVow")));
+      if (r && (!r.hit || r.finalDamage <= 0 || r.forcedMiss || r.skullMiss)) actions.push(btn("Mantle miss: spend 1 SP, heal 2", "remi_mantle_heal", false, "warn-action"));
+      if (r && (!r.hit || r.finalDamage <= 0 || r.forcedMiss || r.skullMiss) && intent("remi_gage")) actions.push(btn("Apply Gage +1 SP", "remi_gage_apply", false, "warn-action"));
+      status = "Remi: Shearling math toggles existing reductions. Gage, Blackhand, and Dodge rerolls are guided reminders because they depend on timing/final kept dice.";
+    } else if (id === "nightingale") {
+      actions.push(btn(checked("enemyDefenseNightMorbid") ? "Remove Morbid Leather melee -2" : "Use Morbid Leather melee -2", "night_morbid", checked("enemyDefenseNightMorbid")));
+      actions.push(btn(checked("enemyDefenseNightReinforced") ? "Remove Reinforced melee -2" : "Use Reinforced melee -2", "night_reinforced", checked("enemyDefenseNightReinforced")));
+      actions.push(btn(checked("enemyDefenseNightFlanking") ? "Remove flanking +1 Defense" : "Morbid: flanking +1 Defense", "night_flanking", checked("enemyDefenseNightFlanking")));
+      actions.push(btn(intent("night_yuxa_flip") ? "Yuxa Dodge selected" : "Yuxa Flip: Dodge +1 SP", "night_yuxa_flip", intent("night_yuxa_flip")));
+      actions.push(btn(intent("night_morbid_dodge") ? "Morbid Dodge reroll noted" : "Morbid Leather Dodge reroll", "night_morbid_dodge", intent("night_morbid_dodge"), "reminder-action"));
+      if (r && Number(r.magicDamage || 0) > 0) actions.push(btn("The Joining: Magic resistance reminder", "night_joining", false, "reminder-action"));
+      status = "Nightingale: Morbid/Reinforced toggles affect melee Physical Damage. Yuxa turns on Dodge and will be marked after Apply.";
+    } else if (id === "zeke") {
+      actions.push(btn(checked("enemyDefenseZekeBelts") ? "Remove Too Many Belts -2" : "Use Too Many Belts -2 if Dodge + damage", "zeke_belts", checked("enemyDefenseZekeBelts")));
+      actions.push(btn(intent("zeke_belts_dodge") ? "Belts Dodge selected" : "Too Many Belts: Dodge", "zeke_belts_dodge", intent("zeke_belts_dodge")));
+      actions.push(btn(intent("zeke_black_ticket_dodge") ? "Black Ticket Dodge selected" : "Black Ticket: Dodge", "zeke_black_ticket_dodge", intent("zeke_black_ticket_dodge")));
+      actions.push(btn(checked("enemyDefenseZekeFlanking") ? "Remove flanking +1 Defense" : "Morbid: flanking +1 Defense", "zeke_flanking", checked("enemyDefenseZekeFlanking")));
+      actions.push(btn(intent("zeke_nimble") ? "Nimble reroll noted" : "Nimble Fighter Dodge reroll", "zeke_nimble", intent("zeke_nimble"), "reminder-action"));
+      actions.push(btn(intent("zeke_morbid_dodge") ? "Morbid Dodge reroll noted" : "Morbid Leather Dodge reroll", "zeke_morbid_dodge", intent("zeke_morbid_dodge"), "reminder-action"));
+      status = "Zeke: Too Many Belts only reduces Physical Damage if he Dodged and the attack still deals damage. Black Ticket can be used for Dodge or Counter.";
+    } else if (isCommand) {
+      actions.push(btn("Command damage reminder", "command_reminder", false, "reminder-action"));
+      status = "Command target: resolve damage into the Command tracker. Summon-token reduction and Nightingale summoner-damage settings remain guided.";
+    }
+    tray.classList.remove("hidden");
+    tray.innerHTML = base + '<div class="v23f-defense-status ' + (isParty ? 'ready' : 'warn') + '">' + esc(status) + '</div>' + '<div class="v23f-defense-actions">' + actions.join("") + '</div>' + '<div class="v23f-defense-note">The detailed checkboxes below are still the source of truth. This tray is a target-specific shortcut layer for tablet play.</div>';
+  }
+  function applyPostResultAction(action) {
+    if (action === "remi_mantle_heal") {
+      applySp("remi", -1, "Mantle of Inner Peace");
+      applyDamage("remi", -2, "Mantle of Inner Peace miss heal");
+      addWorkflow("Remi - Mantle of Inner Peace", "Attack missed. Spent 1 SP and healed Remi 2 from the V2.3F defense tray.");
+      setStatus("Applied Remi Mantle miss heal: -1 SP, heal 2.", "ok");
+      return true;
+    }
+    if (action === "remi_gage_apply") {
+      applySp("remi", 1, "Gage");
+      setTurnCard("remi_gage", "exhausted", "Remi Gage exhausted after Dodge/attack-miss trigger.");
+      addWorkflow("Remi - Gage", "Gage +1 SP applied after the attack missed. Confirm Gage was exhausted before Dodge.");
+      setStatus("Applied Gage +1 SP and marked Gage exhausted.", "ok");
+      return true;
+    }
+    return false;
+  }
+  function handleDefenseClick(action) {
+    if (!action) return;
+    if (applyPostResultAction(action)) { refreshEverything(); return; }
+    if (action === "focus_dodge") {
+      var el = byId("enemyAttackUseDodge"); if (el && el.scrollIntoView) el.scrollIntoView({ behavior:"smooth", block:"center" });
+      setStatus("Use the normal Dodge checkbox/result controls in the Enemy Attack resolver.", "ok"); return;
+    }
+    if (action === "rook_plate") { toggleCheckbox("enemyDefenseRookPlate", "Rook Plate of Superiority"); return; }
+    if (action === "rook_nano") { var on = !checked("enemyDefenseForceMiss"); window.__v23cRookNanoSelected = on; setCheckedSilent("enemyDefenseForceMiss", on); fire("enemyDefenseForceMiss", "change"); refreshEverything(); setStatus(on ? "Rook Nano Robes force-miss enabled." : "Rook Nano Robes force-miss removed.", "ok"); return; }
+    if (action === "remi_shearling") { toggleCheckbox("enemyDefenseRemiShearling", "Remi Reinforced Shearling passive"); return; }
+    if (action === "remi_shearling_pe") { toggleCheckbox("enemyDefenseRemiPerEncounter", "Remi Reinforced Shearling Per Encounter"); return; }
+    if (action === "remi_mantle_vow") { toggleCheckbox("enemyDefenseRemiVow", "Remi Mantle Vow on 3+ damage"); return; }
+    if (action === "remi_mantle_dodge") { toggleDodgeSource("remi_mantle_dodge", "Remi Mantle of Inner Peace Dodge"); return; }
+    if (action === "remi_gage") { toggleDodgeSource("remi_gage", "Remi Gage before-Dodge trigger"); return; }
+    if (action === "remi_shearling_reroll") { reminder("remi_shearling_reroll", "Remi - Reinforced Shearling", "If Remi Dodged and did not roll Skull, she may exhaust Reinforced Shearling to reroll the Dodge roll. Enter the final kept Dodge result in the enemy attack resolver."); return; }
+    if (action === "remi_blackhand") { reminder("remi_blackhand", "Remi - Blackhand Nightgown", "At any time, Remi may exhaust Blackhand Nightgown to reroll dice rolled against her except the black die. Enter the final kept enemy dice manually."); return; }
+    if (action === "night_morbid") { toggleCheckbox("enemyDefenseNightMorbid", "Nightingale Morbid Leather passive"); return; }
+    if (action === "night_reinforced") { toggleCheckbox("enemyDefenseNightReinforced", "Nightingale Reinforced upgrade"); return; }
+    if (action === "night_flanking") { toggleCheckbox("enemyDefenseNightFlanking", "Nightingale Morbid flanking defense"); return; }
+    if (action === "night_yuxa_flip") { toggleDodgeSource("night_yuxa_flip", "Nightingale Yuxa Flip Dodge"); return; }
+    if (action === "night_morbid_dodge") { reminder("night_morbid_dodge", "Nightingale - Morbid Leather", "If Nightingale Dodged and did not roll Skull, Morbid Leather may exhaust to reroll Dodge. Enter the final kept Dodge result in the resolver."); return; }
+    if (action === "night_joining") { reminder("night_joining", "Nightingale - The Joining", "Nightingale has Resistance: Magic Damage. Confirm exact resistance behavior at the table before applying Magic Damage."); return; }
+    if (action === "zeke_belts") { toggleCheckbox("enemyDefenseZekeBelts", "Zeke Too Many Belts passive reduction"); return; }
+    if (action === "zeke_belts_dodge") { toggleDodgeSource("zeke_belts_dodge", "Zeke Too Many Belts Dodge"); setCheckedSilent("enemyDefenseZekeBelts", true); fire("enemyDefenseZekeBelts", "change"); refreshEverything(); return; }
+    if (action === "zeke_black_ticket_dodge") { toggleDodgeSource("zeke_black_ticket_dodge", "Zeke The Black Ticket Dodge"); return; }
+    if (action === "zeke_flanking") { toggleCheckbox("enemyDefenseZekeFlanking", "Zeke Morbid flanking defense"); return; }
+    if (action === "zeke_nimble") { reminder("zeke_nimble", "Zeke - Nimble Fighter", "Once per turn, if Zeke Dodged and did not roll Skull, he may reroll his Dodge roll. Enter the final kept Dodge result in the resolver."); return; }
+    if (action === "zeke_morbid_dodge") { reminder("zeke_morbid_dodge", "Zeke - Morbid Leather", "If Zeke Dodged and did not roll Skull, Morbid Leather may exhaust to reroll Dodge. Enter the final kept Dodge result in the resolver."); return; }
+    if (action === "command_reminder") { addWorkflow("Command Combatant defense", "Apply enemy damage through the Command target workflow. If this is a Loyal Esper and damage is non-Irreducible, consider Nightingale's Summon-token reduction. Summoner damage remains governed by campaign setting/house rule."); setStatus("Command defense reminder logged.", "ok"); return; }
+  }
+  function bindDefenseButtons() {
+    if (window.__v23fDefenseButtonsBound) return;
+    window.__v23fDefenseButtonsBound = true;
+    document.addEventListener("click", function (ev) {
+      var btn = ev.target && ev.target.closest ? ev.target.closest("[data-v23f-defense]") : null;
+      if (!btn) return;
+      ev.preventDefault();
+      ev.stopPropagation();
+      if (ev.stopImmediatePropagation) ev.stopImmediatePropagation();
+      handleDefenseClick(btn.getAttribute("data-v23f-defense") || "");
+    }, true);
+  }
+  function snapshotForApply() {
+    var id = targetId();
+    var intents = Object.assign({}, currentIntents(id));
+    return {
+      targetId:id,
+      targetName:targetName(id),
+      intents:intents,
+      forceMiss:checked("enemyDefenseForceMiss"),
+      remiShearlingPE:checked("enemyDefenseRemiPerEncounter"),
+      nightReinforced:checked("enemyDefenseNightReinforced"),
+      zekeBelts:checked("enemyDefenseZekeBelts"),
+      result:lastEnemyAttack()
+    };
+  }
+  function markOnApply(snap) {
+    if (!snap || !snap.targetId) return;
+    var changes = [];
+    var notes = [];
+    if (snap.targetId === "remi") {
+      if (snap.remiShearlingPE) { changes.push({ id:"remi_shearling_pe", state:"used" }); notes.push("Remi Reinforced Shearling Per Encounter used"); }
+      if (snap.intents.remi_mantle_dodge) { changes.push({ id:"remi_mantle", state:"exhausted" }); notes.push("Remi Mantle Dodge exhausted"); }
+      if (snap.intents.remi_shearling_reroll) { changes.push({ id:"remi_shearling_reroll", state:"exhausted" }); notes.push("Remi Shearling Dodge reroll exhausted"); }
+      if (snap.intents.remi_blackhand) { changes.push({ id:"remi_blackhand", state:"exhausted" }); notes.push("Remi Blackhand Nightgown exhausted"); }
+      if (snap.intents.remi_gage) { changes.push({ id:"remi_gage", state:"exhausted" }); notes.push("Remi Gage exhausted if its before-Dodge trigger was used"); }
+    }
+    if (snap.targetId === "nightingale") {
+      if (snap.nightReinforced) { changes.push({ id:"night_morbid_reinforced", state:"exhausted" }); notes.push("Nightingale Reinforced Morbid Leather exhausted"); }
+      if (snap.intents.night_yuxa_flip) { changes.push({ id:"night_yuxa_flip", state:"flipped" }); notes.push("Yuxa flipped for Dodge"); applySp("nightingale", 1, "Yuxa Flip Dodge"); }
+      if (snap.intents.night_morbid_dodge) { changes.push({ id:"night_morbid_dodge", state:"exhausted" }); notes.push("Nightingale Morbid Leather Dodge reroll exhausted"); }
+    }
+    if (snap.targetId === "zeke") {
+      if (snap.intents.zeke_belts_dodge) { changes.push({ id:"zeke_too_many_belts", state:"exhausted" }); notes.push("Zeke Too Many Belts exhausted for Dodge"); }
+      if (snap.intents.zeke_black_ticket_dodge) { changes.push({ id:"zeke_black_ticket", state:"exhausted" }); notes.push("Zeke Black Ticket exhausted for Dodge"); }
+      if (snap.intents.zeke_morbid_dodge) { changes.push({ id:"zeke_morbid_dodge", state:"exhausted" }); notes.push("Zeke Morbid Leather Dodge reroll exhausted"); }
+      if (snap.intents.zeke_nimble) notes.push("Zeke Nimble Fighter Dodge reroll noted");
+    }
+    if (changes.length) setManyCards(changes, "V2.3F enemy-attack defensive reactions applied: " + notes.join(", ") + ".");
+    if (notes.length) addWorkflow("Defensive reactions", "After Enemy Attack Apply: " + notes.join(", ") + ".");
+    if (notes.length) setStatus("Defensive state updated: " + notes.join(", ") + ".", "ok");
+    state.intents = {};
+    renderDefenseTray(lastEnemyAttack());
+  }
+  function patchApplyListener() {
+    if (window.__v23fApplyPatch) return;
+    window.__v23fApplyPatch = true;
+    document.addEventListener("click", function (ev) {
+      var t = ev.target && ev.target.closest ? ev.target.closest("#applyEnemyAttackToParty, [data-v17-footer-action='apply'], #v17FooterApply, [data-v22b-action='applyPending']") : null;
+      if (!t) return;
+      var direct = t.id === "applyEnemyAttackToParty";
+      var mobileEnemy = false;
+      try { var fs = window.middaraMobileFlowV22BApi && middaraMobileFlowV22BApi.getState ? middaraMobileFlowV22BApi.getState() : {}; mobileEnemy = fs && fs.pendingType === "enemyAttack"; } catch (err) {}
+      if (!direct && !mobileEnemy) return;
+      var snap = snapshotForApply();
+      setTimeout(function () { markOnApply(snap); }, 220);
+    }, false);
+  }
+  function patchRefreshHooks() {
+    if (window.__v23fRefreshHooks) return;
+    window.__v23fRefreshHooks = true;
+    var ids = ["enemyAttackTarget","enemyAttackEnemy","enemyAttackType","enemyAttackUseDodge","enemyAttackDodgeFace","enemyAttackDodgeMod","enemyDefenseForceMiss","enemyDefenseRookPlate","enemyDefenseRemiShearling","enemyDefenseRemiPerEncounter","enemyDefenseRemiVow","enemyDefenseNightMorbid","enemyDefenseNightReinforced","enemyDefenseNightFlanking","enemyDefenseZekeBelts","enemyDefenseZekeFlanking","enemyAttackFinalReduction","enemyAttackDefenseMod"];
+    ids.forEach(function (id) {
+      var el = byId(id); if (!el) return;
+      var evt = (el.tagName === "SELECT" || el.type === "checkbox") ? "change" : "input";
+      el.addEventListener(evt, function () { if (id === "enemyAttackTarget" || id === "enemyAttackEnemy") { state.targetId = ""; state.intents = {}; } setTimeout(function () { renderDefenseTray(lastEnemyAttack()); }, 90); }, true);
+    });
+    var calc = byId("calculateEnemyAttackButton"); if (calc) calc.addEventListener("click", function () { setTimeout(function(){ renderDefenseTray(lastEnemyAttack()); }, 80); }, true);
+  }
+  function patchChromeAndSnapshots() {
+    document.title = "Middara Combat Helper - V2.3F Universal Defense Trays";
+    var sub = document.querySelector("header .subtitle");
+    if (sub) sub.textContent = "V2.3F universal defense trays: target-specific defensive reactions live inside Enemy Attack, with Counter follow-ups after the result.";
+    var h = document.querySelector("#mobileCombatFlowPanel h2"); if (h) h.textContent = "V2.3F Tablet live combat flow";
+    var badge = document.querySelector("#mobileCombatFlowPanel .cockpit-badge"); if (badge) badge.textContent = "V2.3F Flow";
+    var pwa = byId("pwaVersionText"); if (pwa) pwa.textContent = VERSION;
+    var pwaSummary = document.querySelector(".v22c-pwa-panel summary"); if (pwaSummary) pwaSummary.textContent = "V2.3F hosted / installable web app";
+    var dataH = document.querySelector("#v22iDataStatusPanel h3"); if (dataH) dataH.textContent = "V2.3F save / update status";
+    try {
+      if (window.middaraDataManagerApi && !window.__v23fSnapshotPatch) {
+        window.__v23fSnapshotPatch = true;
+        var api = window.middaraDataManagerApi;
+        var oldFull = api.exportFullSnapshot;
+        var oldApp = api.exportAppData;
+        function addVersion(snap) { try { snap.version = VERSION; snap.pwaDeploymentVersion = VERSION; snap.v23f = { universalDefenseTrays:true, inContextEnemyAttackReactions:true, defensiveStateOnApply:true }; } catch (err) {} return snap; }
+        if (typeof oldFull === "function") api.exportFullSnapshot = function () { return addVersion(oldFull.apply(this, arguments)); };
+        if (typeof oldApp === "function") api.exportAppData = function () { return addVersion(oldApp.apply(this, arguments)); };
+      }
+    } catch (err) {}
+  }
+  function init() {
+    ensureDefenseTray();
+    bindDefenseButtons();
+    patchApplyListener();
+    patchRefreshHooks();
+    patchChromeAndSnapshots();
+    refreshEverything();
+    setTimeout(function () { ensureDefenseTray(); patchChromeAndSnapshots(); renderDefenseTray(lastEnemyAttack()); }, 500);
+    setInterval(function () { patchChromeAndSnapshots(); renderDefenseTray(lastEnemyAttack()); }, 1800);
+  }
+  ready(init);
+  window.middaraV23FApi = { renderDefenseTray: renderDefenseTray, refreshDefenseTray: refreshEverything };
 })();
 </script>
 

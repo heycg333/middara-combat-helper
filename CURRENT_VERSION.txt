@@ -1,3 +1,1 @@
-Middara Combat Helper V2.3D - Counter Flow / Dodge Preserve
-
-Dodge toggling in the Enemy Attack resolver preserves the enemy roll. Rook Defense Tray now uses simple toggles for Plate and Nano, with Dodge left to the default Dodge controls. Counter buttons now load Rook attacking the enemy attacker.
+V2.3F - Universal Defense Trays

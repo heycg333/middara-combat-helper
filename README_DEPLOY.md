@@ -1,4 +1,4 @@
-# Middara Combat Helper V2.3D Header Stability
+# Middara Combat Helper V2.3F Universal Defense Trays
 
 This folder is the GitHub Pages root for Middara Combat Helper V2.3D.
 
@@ -42,3 +42,8 @@ The app is local-first. Saves are stored in this browser for this hosted URL. Mu
 - Rook Plate/Nano controls now appear inside Enemy Attack when Rook is the target.
 - The old Play-side Rook defense shortcut panel is now only a reference.
 - The tablet/mobile live combat flow is Play-only and should not remain visible on the Enemies tab.
+
+
+## V2.3F Universal Defense Trays
+
+Enemy Attack now has universal Counter shortcuts for party adventurer targets. If an enemy attack misses or deals no Final Damage, use the Counter tray to load the targeted adventurer as actor and the attacking enemy as target. Rook and Zeke item-specific counter shortcuts remain available where relevant.
