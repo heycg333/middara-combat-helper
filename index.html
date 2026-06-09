@@ -3,7 +3,7 @@
 <head>
   <meta charset="utf-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1" />
-  <title>Middara Combat Helper - V2.4A Chain / Live-Flow QA Polish</title>
+  <title>Middara Combat Helper - V2.4B Chain / Live-Flow QA Polish</title>
   <style>
     :root {
       --bg: #101827;
@@ -834,7 +834,7 @@
 <body>
   <header>
     <h1>Middara Combat Helper</h1>
-    <div class="subtitle">V2.4A chain/live-flow QA polish: Remi/Zeke chains, Whirlwind, Onslaught, Counter routing, sticky Apply, and contextual panels are stabilized for tablet live play.</div>
+    <div class="subtitle">V2.4B chain/live-flow QA polish: Remi/Zeke chains, Whirlwind, Onslaught, Counter routing, sticky Apply, and contextual panels are stabilized for tablet live play.</div>
   </header>
 
   <main>
@@ -921,10 +921,10 @@
     <section class="panel v22b-flow-panel" id="mobileCombatFlowPanel" data-v17-mode="play">
       <div class="cockpit-header">
         <div>
-          <h2>V2.4A Tablet / mobile live combat flow</h2>
+          <h2>V2.4B Tablet / mobile live combat flow</h2>
           <div class="note">Live table mode: choose Actor, Target, Action, then Resolve. Tablets use a 2x2 grid by default; phones stack the cards. Use the Layout toggle to force grid or stack if needed.</div>
         </div>
-        <div class="cockpit-badge">V2.4A Flow</div>
+        <div class="cockpit-badge">V2.4B Flow</div>
       </div>
       <div class="v22b-toolbar">
         <button type="button" id="v22bFocusToggle" class="v22b-focus-toggle">Focused phone mode: on</button>
@@ -11998,7 +11998,7 @@ else {
     var h = document.querySelector("#enemyAiAssistantPanel h2");
     if (h) h.textContent = "6. Enemy AI preset library";
     var subtitle = document.querySelector("header .subtitle");
-    if (subtitle) subtitle.textContent = "V2.4A chain/live-flow QA polish: Remi/Zeke chains, Whirlwind, Onslaught, Counter routing, sticky Apply, and contextual panels are stabilized for tablet live play.";
+    if (subtitle) subtitle.textContent = "V2.4B chain/live-flow QA polish: Remi/Zeke chains, Whirlwind, Onslaught, Counter routing, sticky Apply, and contextual panels are stabilized for tablet live play.";
   }
 
   function installPresetOptions() {
@@ -14664,9 +14664,9 @@ else {
     document.head.appendChild(style);
   }
   function updateChrome() {
-    document.title = "Middara Combat Helper - V2.4A Chain / Live-Flow QA Polish";
+    document.title = "Middara Combat Helper - V2.4B Chain / Live-Flow QA Polish";
     var subtitle = document.querySelector("header .subtitle");
-    if (subtitle) subtitle.textContent = "V2.4A chain/live-flow QA polish: Remi/Zeke chains, Whirlwind, Onslaught, Counter routing, sticky Apply, and contextual panels are stabilized for tablet live play.";
+    if (subtitle) subtitle.textContent = "V2.4B chain/live-flow QA polish: Remi/Zeke chains, Whirlwind, Onslaught, Counter routing, sticky Apply, and contextual panels are stabilized for tablet live play.";
     var h = byId("commandCombatantPanel") && byId("commandCombatantPanel").querySelector("h2");
     if (h) h.textContent = "V2.1E Command Combatant / Loyal Esper tracker";
     var badge = byId("commandCombatantPanel") && byId("commandCombatantPanel").querySelector(".cockpit-badge");
@@ -15138,7 +15138,7 @@ else {
   }
   function updateChrome() {
     var title = document.querySelector("header .subtitle");
-    if (title && title.textContent.indexOf("V2.1F") < 0) title.textContent = "V2.4A chain/live-flow QA polish: Remi/Zeke chains, Whirlwind, Onslaught, Counter routing, sticky Apply, and contextual panels are stabilized for tablet live play.";
+    if (title && title.textContent.indexOf("V2.1F") < 0) title.textContent = "V2.4B chain/live-flow QA polish: Remi/Zeke chains, Whirlwind, Onslaught, Counter routing, sticky Apply, and contextual panels are stabilized for tablet live play.";
   }
   installRestoreWrapper();
   ready(function () {
@@ -15601,7 +15601,7 @@ else {
   function updateChrome() {
     try {
       var sub = document.querySelector("header .subtitle");
-      if (sub) sub.textContent = "V2.4A chain/live-flow QA polish: Remi/Zeke chains, Whirlwind, Onslaught, Counter routing, sticky Apply, and contextual panels are stabilized for tablet live play.";
+      if (sub) sub.textContent = "V2.4B chain/live-flow QA polish: Remi/Zeke chains, Whirlwind, Onslaught, Counter routing, sticky Apply, and contextual panels are stabilized for tablet live play.";
     } catch (err) { }
   }
 
@@ -15636,7 +15636,7 @@ else {
 <script>
 (function () {
   "use strict";
-  var VERSION = "V2.4A";
+  var VERSION = "V2.4B";
   var STORAGE_KEY = "middaraCombatHelperV22BMobileFlow";
   var FOCUS_KEY = "middaraCombatHelperV22BPhoneFocus";
   var renderTimer = null;
@@ -16253,7 +16253,7 @@ else {
   function patchSnapshots() {
     if (window.__middaraV22BSnapshotPatch) return;
     window.__middaraV22BSnapshotPatch = true;
-    function addFlow(snap) { try { snap.version = "V2.4A"; snap.pwaDeploymentVersion = "V2.4A"; snap.mobileFlowState = JSON.parse(JSON.stringify(state)); } catch (err) {} return snap; }
+    function addFlow(snap) { try { snap.version = "V2.4B"; snap.pwaDeploymentVersion = "V2.4B"; snap.mobileFlowState = JSON.parse(JSON.stringify(state)); } catch (err) {} return snap; }
     if (window.middaraDataManagerApi) {
       var api = window.middaraDataManagerApi;
       var oldFull = api.exportFullSnapshot;
@@ -16266,9 +16266,9 @@ else {
   }
 
   function updateChrome() {
-    document.title = "Middara Combat Helper - V2.4A Chain / Live-Flow QA Polish";
+    document.title = "Middara Combat Helper - V2.4B Chain / Live-Flow QA Polish";
     var sub = document.querySelector("header .subtitle");
-    if (sub) sub.textContent = "V2.4A chain/live-flow QA polish: Remi/Zeke chains, Whirlwind, Onslaught, Counter routing, sticky Apply, and contextual panels are stabilized for tablet live play.";
+    if (sub) sub.textContent = "V2.4B chain/live-flow QA polish: Remi/Zeke chains, Whirlwind, Onslaught, Counter routing, sticky Apply, and contextual panels are stabilized for tablet live play.";
   }
 
   function init() {
@@ -16293,7 +16293,7 @@ else {
 <script>
 (function () {
   "use strict";
-  var VERSION = "V2.4A";
+  var VERSION = "V2.4B";
   function ready(fn) { if (document.readyState === "loading") document.addEventListener("DOMContentLoaded", fn); else setTimeout(fn, 0); }
   function byId(id) { return document.getElementById(id); }
   function esc(v) { return String(v == null ? "" : v).replace(/[&<>"']/g, function (c) { return {"&":"&amp;","<":"&lt;",">":"&gt;","\"":"&quot;","'":"&#39;"}[c]; }); }
@@ -16420,11 +16420,11 @@ else {
     }, true);
   }
   function updateChrome() {
-    document.title = "Middara Combat Helper - V2.4A Chain / Live-Flow QA Polish";
+    document.title = "Middara Combat Helper - V2.4B Chain / Live-Flow QA Polish";
     var sub = document.querySelector("header .subtitle");
-    if (sub) sub.textContent = "V2.4A chain/live-flow QA polish: Remi/Zeke chains, Whirlwind, Onslaught, Counter routing, sticky Apply, and contextual panels are stabilized for tablet live play.";
-    var h = document.querySelector("#mobileCombatFlowPanel h2"); if (h) h.textContent = "V2.4A Tablet / mobile live combat flow";
-    var badge = document.querySelector("#mobileCombatFlowPanel .cockpit-badge"); if (badge) badge.textContent = "V2.4A Flow";
+    if (sub) sub.textContent = "V2.4B chain/live-flow QA polish: Remi/Zeke chains, Whirlwind, Onslaught, Counter routing, sticky Apply, and contextual panels are stabilized for tablet live play.";
+    var h = document.querySelector("#mobileCombatFlowPanel h2"); if (h) h.textContent = "V2.4B Tablet / mobile live combat flow";
+    var badge = document.querySelector("#mobileCombatFlowPanel .cockpit-badge"); if (badge) badge.textContent = "V2.4B Flow";
     var pwa = byId("pwaVersionText"); if (pwa) pwa.textContent = VERSION;
   }
   function tick() {
@@ -16449,7 +16449,7 @@ else {
 <script>
 (function () {
   "use strict";
-  var VERSION = "V2.4A";
+  var VERSION = "V2.4B";
   var CACHE_PREFIX = "middara-helper-";
   function ready(fn) { if (document.readyState === "loading") document.addEventListener("DOMContentLoaded", fn); else fn(); }
   function byId(id) { return document.getElementById(id); }
@@ -16597,11 +16597,11 @@ else {
     });
   }
   function updateChrome() {
-    document.title = "Middara Combat Helper - V2.4A Chain / Live-Flow QA Polish";
+    document.title = "Middara Combat Helper - V2.4B Chain / Live-Flow QA Polish";
     var sub = document.querySelector("header .subtitle");
-    if (sub) sub.textContent = "V2.4A chain/live-flow QA polish: Remi/Zeke chains, Whirlwind, Onslaught, Counter routing, sticky Apply, and contextual panels are stabilized for tablet live play.";
+    if (sub) sub.textContent = "V2.4B chain/live-flow QA polish: Remi/Zeke chains, Whirlwind, Onslaught, Counter routing, sticky Apply, and contextual panels are stabilized for tablet live play.";
     var pwa = byId("pwaVersionText"); if (pwa) pwa.textContent = "V2.2E";
-    var h = document.querySelector("#mobileCombatFlowPanel h2"); if (h) h.textContent = "V2.4A Tablet / mobile live combat flow";
+    var h = document.querySelector("#mobileCombatFlowPanel h2"); if (h) h.textContent = "V2.4B Tablet / mobile live combat flow";
   }
   function bindMobileHelp() {
     var flow = byId("mobileCombatFlowPanel");
@@ -16631,7 +16631,7 @@ else {
 <script id="v22g-table-session-script">
 (function(){
   "use strict";
-  var VERSION = "V2.4A";
+  var VERSION = "V2.4B";
   var CHECK_KEY = "middaraCombatHelperV22GSessionChecklist";
   var RECENT_KEY = "middaraCombatHelperV22GRecentActions";
   function byId(id){ return document.getElementById(id); }
@@ -16798,11 +16798,11 @@ else {
     else if (action === "rewards") route("rewards", "rewardsLootPanel");
   }
   function init(){
-    document.title = "Middara Combat Helper - V2.4A Chain / Live-Flow QA Polish";
+    document.title = "Middara Combat Helper - V2.4B Chain / Live-Flow QA Polish";
     var h = document.querySelector("header h1"); if (h) h.textContent = "Middara Combat Helper";
-    var sub = document.querySelector("header .subtitle"); if (sub) sub.textContent = "V2.4A chain/live-flow QA polish: Remi/Zeke chains, Whirlwind, Onslaught, Counter routing, sticky Apply, and contextual panels are stabilized for tablet live play.";
-    var flowH = document.querySelector("#mobileCombatFlowPanel h2"); if (flowH) flowH.textContent = "V2.4A Tablet / mobile live combat flow";
-    var badge = document.querySelector("#mobileCombatFlowPanel .cockpit-badge"); if (badge) badge.textContent = "V2.4A Flow";
+    var sub = document.querySelector("header .subtitle"); if (sub) sub.textContent = "V2.4B chain/live-flow QA polish: Remi/Zeke chains, Whirlwind, Onslaught, Counter routing, sticky Apply, and contextual panels are stabilized for tablet live play.";
+    var flowH = document.querySelector("#mobileCombatFlowPanel h2"); if (flowH) flowH.textContent = "V2.4B Tablet / mobile live combat flow";
+    var badge = document.querySelector("#mobileCombatFlowPanel .cockpit-badge"); if (badge) badge.textContent = "V2.4B Flow";
     injectHub(); addFooterUndo();
     document.addEventListener("click", function(ev){
       var node = ev.target && ev.target.closest ? ev.target.closest("[data-v22g-action]") : null;
@@ -16826,7 +16826,7 @@ else {
 <script>
 (function(){
   "use strict";
-  var VERSION = "V2.4A";
+  var VERSION = "V2.4B";
   var CHECK_KEY = "middara_v22i_live_checklist";
   var EXPORT_KEY = "middara_v22i_last_snapshot_export";
   var TEST_KEY = "middara_v22i_last_self_test";
@@ -17027,7 +17027,7 @@ else {
     wrap.style.borderRadius = "14px";
     wrap.style.padding = "12px";
     wrap.innerHTML = '' +
-      '<h3 style="margin-top:0">V2.4A save / update status</h3>' +
+      '<h3 style="margin-top:0">V2.4B save / update status</h3>' +
       '<div class="note">Save state is local to this browser and this hosted URL. Use full snapshot export before changing devices, hosts, or GitHub builds.</div>' +
       '<div class="v22i-status-grid">' +
         '<div class="v22i-status-card"><div class="label">Version</div><div class="value" id="v22iVersionValue">-</div></div>' +
@@ -17065,14 +17065,14 @@ else {
     });
   }
   function patchTitles(){
-    document.title = "Middara Combat Helper - V2.4A Chain / Live-Flow QA Polish";
+    document.title = "Middara Combat Helper - V2.4B Chain / Live-Flow QA Polish";
     var sub = document.querySelector("header .subtitle");
-    if (sub) sub.textContent = "V2.4A chain/live-flow QA polish: Remi/Zeke chains, Whirlwind, Onslaught, Counter routing, sticky Apply, and contextual panels are stabilized for tablet live play.";
-    var flowH = document.querySelector("#mobileCombatFlowPanel h2"); if (flowH) flowH.textContent = "V2.4A Tablet live combat flow";
-    var badge = document.querySelector("#mobileCombatFlowPanel .cockpit-badge"); if (badge) badge.textContent = "V2.4A Flow";
+    if (sub) sub.textContent = "V2.4B chain/live-flow QA polish: Remi/Zeke chains, Whirlwind, Onslaught, Counter routing, sticky Apply, and contextual panels are stabilized for tablet live play.";
+    var flowH = document.querySelector("#mobileCombatFlowPanel h2"); if (flowH) flowH.textContent = "V2.4B Tablet live combat flow";
+    var badge = document.querySelector("#mobileCombatFlowPanel .cockpit-badge"); if (badge) badge.textContent = "V2.4B Flow";
     var hubH = document.querySelector("#v22gSessionHub h3"); if (hubH) hubH.textContent = "V2.3I table session hub";
     var hubTiny = document.querySelector("#v22gSessionHub .v22g-session-head .tiny"); if (hubTiny) hubTiny.textContent = "One-tablet controls for setup, backup, quick undo, end-of-encounter cleanup, and live-play readiness.";
-    var pwaSummary = document.querySelector(".v22c-pwa-panel summary"); if (pwaSummary) pwaSummary.textContent = "V2.4A hosted / installable web app";
+    var pwaSummary = document.querySelector(".v22c-pwa-panel summary"); if (pwaSummary) pwaSummary.textContent = "V2.4B hosted / installable web app";
     var pwa = byId("pwaVersionText"); if (pwa) pwa.textContent = VERSION;
   }
   function init(){
@@ -17207,7 +17207,7 @@ else {
 <script id="v22jLiveFlowPriorityScript">
 (function(){
   "use strict";
-  var VERSION = "V2.4A";
+  var VERSION = "V2.4B";
   function byId(id){ return document.getElementById(id); }
   function text(el, value){ if (el) el.textContent = value; }
   function hasClass(el, cls){ return el && (" " + el.className + " ").indexOf(" " + cls + " ") >= 0; }
@@ -17222,16 +17222,16 @@ else {
     if (flow && flow.scrollIntoView) flow.scrollIntoView({behavior:"smooth", block:"start"});
   }
   function patchTitles(){
-    document.title = "Middara Combat Helper - V2.4A Chain / Live-Flow QA Polish";
+    document.title = "Middara Combat Helper - V2.4B Chain / Live-Flow QA Polish";
     var sub = document.querySelector("header .subtitle");
-    if (sub) sub.textContent = "V2.4A chain/live-flow QA polish: Remi/Zeke chains, Whirlwind, Onslaught, Counter routing, sticky Apply, and contextual panels are stabilized for tablet live play.";
+    if (sub) sub.textContent = "V2.4B chain/live-flow QA polish: Remi/Zeke chains, Whirlwind, Onslaught, Counter routing, sticky Apply, and contextual panels are stabilized for tablet live play.";
     var flowH = document.querySelector("#mobileCombatFlowPanel h2");
-    if (flowH) flowH.textContent = "V2.4A Tablet live combat flow";
+    if (flowH) flowH.textContent = "V2.4B Tablet live combat flow";
     var badge = document.querySelector("#mobileCombatFlowPanel .cockpit-badge");
-    if (badge) badge.textContent = "V2.4A Flow";
+    if (badge) badge.textContent = "V2.4B Flow";
     var pwa = byId("pwaVersionText"); if (pwa) pwa.textContent = VERSION;
-    var pwaSummary = document.querySelector(".v22c-pwa-panel summary"); if (pwaSummary) pwaSummary.textContent = "V2.4A hosted / installable web app";
-    var dataH = document.querySelector("#v22iDataStatusPanel h3"); if (dataH) dataH.textContent = "V2.4A save / update status";
+    var pwaSummary = document.querySelector(".v22c-pwa-panel summary"); if (pwaSummary) pwaSummary.textContent = "V2.4B hosted / installable web app";
+    var dataH = document.querySelector("#v22iDataStatusPanel h3"); if (dataH) dataH.textContent = "V2.4B save / update status";
     var hubTitle = document.querySelector("#v22gSessionHub h3"); if (hubTitle) hubTitle.textContent = "Table session hub";
     var guideTitle = document.querySelector("#v22iGuidePanel h3"); if (guideTitle) guideTitle.textContent = "Live-play guide";
   }
@@ -17366,7 +17366,7 @@ else {
 <script id="v22k-auto-calc-script">
 (function(){
   "use strict";
-  var VERSION = "V2.4A";
+  var VERSION = "V2.4B";
   var appliedKey = "";
   var appliedLabel = "";
   var autoTimer = null;
@@ -17536,12 +17536,12 @@ else {
     var mo = new MutationObserver(function(){ schedulePaint(); });
     mo.observe(document.body, { childList:true, subtree:true, characterData:true });
     setInterval(paint, 1000);
-    document.title = "Middara Combat Helper - V2.4A Chain / Live-Flow QA Polish";
+    document.title = "Middara Combat Helper - V2.4B Chain / Live-Flow QA Polish";
     var sub = document.querySelector("header .subtitle");
-    if (sub) sub.textContent = "V2.4A chain/live-flow QA polish: Remi/Zeke chains, Whirlwind, Onslaught, Counter routing, sticky Apply, and contextual panels are stabilized for tablet live play.";
-    var flowH = document.querySelector("#mobileCombatFlowPanel h2"); if (flowH) flowH.textContent = "V2.4A Tablet live combat flow";
+    if (sub) sub.textContent = "V2.4B chain/live-flow QA polish: Remi/Zeke chains, Whirlwind, Onslaught, Counter routing, sticky Apply, and contextual panels are stabilized for tablet live play.";
+    var flowH = document.querySelector("#mobileCombatFlowPanel h2"); if (flowH) flowH.textContent = "V2.4B Tablet live combat flow";
     var badge = document.querySelector("#mobileCombatFlowPanel .cockpit-badge"); if (badge) badge.textContent = "V2.3I Auto-calc";
-    var pwaSummary = document.querySelector(".v22c-pwa-panel summary"); if (pwaSummary) pwaSummary.textContent = "V2.4A hosted / installable web app";
+    var pwaSummary = document.querySelector(".v22c-pwa-panel summary"); if (pwaSummary) pwaSummary.textContent = "V2.4B hosted / installable web app";
     setTimeout(function(){ paint(); autoCalcAttack(); }, 350);
   }
   if (document.readyState === "loading") document.addEventListener("DOMContentLoaded", install);
@@ -17563,7 +17563,7 @@ else {
 </style>
 <script id="v23a-rook-defense-spell-empower-script">
 (function(){
-  var VERSION = "V2.4A";
+  var VERSION = "V2.4B";
   function byId(id){ return document.getElementById(id); }
   function setVal(id, value){ var el = byId(id); if (el) el.value = value; }
   function setChecked(id, value){ var el = byId(id); if (el) el.checked = !!value; }
@@ -17646,12 +17646,12 @@ else {
     box.innerHTML = html;
   }
   function updateVersionChrome(){
-    document.title = "Middara Combat Helper - V2.4A Chain / Live-Flow QA Polish";
-    var sub = document.querySelector("header .subtitle"); if (sub) sub.textContent = "V2.4A chain/live-flow QA polish: Remi/Zeke chains, Whirlwind, Onslaught, Counter routing, sticky Apply, and contextual panels are stabilized for tablet live play.";
-    var flowH = document.querySelector("#mobileCombatFlowPanel h2"); if (flowH) flowH.textContent = "V2.4A Tablet live combat flow";
-    var badge = document.querySelector("#mobileCombatFlowPanel .cockpit-badge"); if (badge) badge.textContent = "V2.4A";
-    var pwaSummary = document.querySelector(".v22c-pwa-panel summary"); if (pwaSummary) pwaSummary.textContent = "V2.4A hosted / installable web app";
-    var dataH = document.querySelector("#v22iDataStatusPanel h3"); if (dataH) dataH.textContent = "V2.4A save / update status";
+    document.title = "Middara Combat Helper - V2.4B Chain / Live-Flow QA Polish";
+    var sub = document.querySelector("header .subtitle"); if (sub) sub.textContent = "V2.4B chain/live-flow QA polish: Remi/Zeke chains, Whirlwind, Onslaught, Counter routing, sticky Apply, and contextual panels are stabilized for tablet live play.";
+    var flowH = document.querySelector("#mobileCombatFlowPanel h2"); if (flowH) flowH.textContent = "V2.4B Tablet live combat flow";
+    var badge = document.querySelector("#mobileCombatFlowPanel .cockpit-badge"); if (badge) badge.textContent = "V2.4B";
+    var pwaSummary = document.querySelector(".v22c-pwa-panel summary"); if (pwaSummary) pwaSummary.textContent = "V2.4B hosted / installable web app";
+    var dataH = document.querySelector("#v22iDataStatusPanel h3"); if (dataH) dataH.textContent = "V2.4B save / update status";
     var v = byId("v22iVersionValue"); if (v) v.textContent = VERSION;
   }
   function syncRookPanelEmpowerToSpell(){
@@ -17679,19 +17679,19 @@ else {
 <script>
 (function () {
   "use strict";
-  var TITLE = "Middara Combat Helper - V2.4A Chain / Live-Flow QA Polish";
-  var SUBTITLE = "V2.4A chain/live-flow QA polish: Remi/Zeke chains, Whirlwind, Onslaught, Counter routing, sticky Apply, and contextual panels are stabilized for tablet live play.";
+  var TITLE = "Middara Combat Helper - V2.4B Chain / Live-Flow QA Polish";
+  var SUBTITLE = "V2.4B chain/live-flow QA polish: Remi/Zeke chains, Whirlwind, Onslaught, Counter routing, sticky Apply, and contextual panels are stabilized for tablet live play.";
   function stabilizeHeader() {
     try {
       if (document.title !== TITLE) document.title = TITLE;
       var sub = document.querySelector("header .subtitle");
       if (sub && sub.textContent !== SUBTITLE) sub.textContent = SUBTITLE;
       var flowH = document.querySelector("#mobileCombatFlowPanel h2");
-      if (flowH && flowH.textContent.indexOf("V2.4A") < 0) flowH.textContent = "V2.4A Tablet live combat flow";
+      if (flowH && flowH.textContent.indexOf("V2.4B") < 0) flowH.textContent = "V2.4B Tablet live combat flow";
       var badge = document.querySelector("#mobileCombatFlowPanel .cockpit-badge");
-      if (badge && badge.textContent.indexOf("V2.4A") < 0) badge.textContent = "V2.4A";
+      if (badge && badge.textContent.indexOf("V2.4B") < 0) badge.textContent = "V2.4B";
       var pwaSummary = document.querySelector(".v22c-pwa-panel summary");
-      if (pwaSummary && pwaSummary.textContent.indexOf("V2.4A") < 0) pwaSummary.textContent = "V2.4A hosted / installable web app";
+      if (pwaSummary && pwaSummary.textContent.indexOf("V2.4B") < 0) pwaSummary.textContent = "V2.4B hosted / installable web app";
     } catch (err) {}
   }
   if (document.readyState === "loading") document.addEventListener("DOMContentLoaded", stabilizeHeader);
@@ -17817,7 +17817,7 @@ else {
 <script id="v23c-in-context-defense-script">
 (function () {
   "use strict";
-  var VERSION = "V2.4A";
+  var VERSION = "V2.4B";
   var lastMode = "";
   function ready(fn) { if (document.readyState === "loading") document.addEventListener("DOMContentLoaded", fn); else setTimeout(fn, 0); }
   function byId(id) { return document.getElementById(id); }
@@ -18085,7 +18085,7 @@ else {
 <script>
 (function () {
   "use strict";
-  var VERSION = "V2.4A";
+  var VERSION = "V2.4B";
   var MOBILE_FLOW_STORAGE_KEY = "middaraCombatHelperV22BMobileFlow";
   function ready(fn) { if (document.readyState === "loading") document.addEventListener("DOMContentLoaded", fn); else setTimeout(fn, 0); }
   function byId(id) { return document.getElementById(id); }
@@ -18389,7 +18389,7 @@ else {
 <script id="v23e-universal-counter-script">
 (function () {
   "use strict";
-  var VERSION = "V2.4A";
+  var VERSION = "V2.4B";
   var MOBILE_FLOW_STORAGE_KEY = "middaraCombatHelperV22BMobileFlow";
   var ADVENTURERS = {
     rook: { name:"Rook", profile:"rook_loche_svalinn" },
@@ -18626,14 +18626,14 @@ else {
     var calc = byId("calculateEnemyAttackButton"); if (calc) calc.addEventListener("click", function () { setTimeout(renderUniversalCounterTray, 60); }, true);
   }
   function patchChromeAndSnapshot() {
-    document.title = "Middara Combat Helper - V2.4A Chain / Live-Flow QA Polish";
+    document.title = "Middara Combat Helper - V2.4B Chain / Live-Flow QA Polish";
     var sub = document.querySelector("header .subtitle");
-    if (sub) sub.textContent = "V2.4A chain/live-flow QA polish: Remi/Zeke chains, Whirlwind, Onslaught, Counter routing, sticky Apply, and contextual panels are stabilized for tablet live play.";
-    var h = document.querySelector("#mobileCombatFlowPanel h2"); if (h) h.textContent = "V2.4A Tablet live combat flow";
-    var badge = document.querySelector("#mobileCombatFlowPanel .cockpit-badge"); if (badge) badge.textContent = "V2.4A Flow";
+    if (sub) sub.textContent = "V2.4B chain/live-flow QA polish: Remi/Zeke chains, Whirlwind, Onslaught, Counter routing, sticky Apply, and contextual panels are stabilized for tablet live play.";
+    var h = document.querySelector("#mobileCombatFlowPanel h2"); if (h) h.textContent = "V2.4B Tablet live combat flow";
+    var badge = document.querySelector("#mobileCombatFlowPanel .cockpit-badge"); if (badge) badge.textContent = "V2.4B Flow";
     var pwa = byId("pwaVersionText"); if (pwa) pwa.textContent = VERSION;
-    var pwaSummary = document.querySelector(".v22c-pwa-panel summary"); if (pwaSummary) pwaSummary.textContent = "V2.4A hosted / installable web app";
-    var dataH = document.querySelector("#v22iDataStatusPanel h3"); if (dataH) dataH.textContent = "V2.4A save / update status";
+    var pwaSummary = document.querySelector(".v22c-pwa-panel summary"); if (pwaSummary) pwaSummary.textContent = "V2.4B hosted / installable web app";
+    var dataH = document.querySelector("#v22iDataStatusPanel h3"); if (dataH) dataH.textContent = "V2.4B save / update status";
     try {
       if (window.middaraDataManagerApi && !window.__v23eSnapshotPatch) {
         window.__v23eSnapshotPatch = true;
@@ -18767,7 +18767,7 @@ else {
 <script id="v23f-universal-defense-trays-script">
 (function () {
   "use strict";
-  var VERSION = "V2.4A";
+  var VERSION = "V2.4B";
   var ADVENTURERS = {
     rook: "Rook",
     remi: "Remi",
@@ -19125,14 +19125,14 @@ else {
     var calc = byId("calculateEnemyAttackButton"); if (calc) calc.addEventListener("click", function () { setTimeout(function(){ renderDefenseTray(lastEnemyAttack()); }, 80); }, true);
   }
   function patchChromeAndSnapshots() {
-    document.title = "Middara Combat Helper - V2.4A Chain / Live-Flow QA Polish";
+    document.title = "Middara Combat Helper - V2.4B Chain / Live-Flow QA Polish";
     var sub = document.querySelector("header .subtitle");
-    if (sub) sub.textContent = "V2.4A chain/live-flow QA polish: Remi/Zeke chains, Whirlwind, Onslaught, Counter routing, sticky Apply, and contextual panels are stabilized for tablet live play.";
-    var h = document.querySelector("#mobileCombatFlowPanel h2"); if (h) h.textContent = "V2.4A Tablet live combat flow";
-    var badge = document.querySelector("#mobileCombatFlowPanel .cockpit-badge"); if (badge) badge.textContent = "V2.4A Flow";
+    if (sub) sub.textContent = "V2.4B chain/live-flow QA polish: Remi/Zeke chains, Whirlwind, Onslaught, Counter routing, sticky Apply, and contextual panels are stabilized for tablet live play.";
+    var h = document.querySelector("#mobileCombatFlowPanel h2"); if (h) h.textContent = "V2.4B Tablet live combat flow";
+    var badge = document.querySelector("#mobileCombatFlowPanel .cockpit-badge"); if (badge) badge.textContent = "V2.4B Flow";
     var pwa = byId("pwaVersionText"); if (pwa) pwa.textContent = VERSION;
-    var pwaSummary = document.querySelector(".v22c-pwa-panel summary"); if (pwaSummary) pwaSummary.textContent = "V2.4A hosted / installable web app";
-    var dataH = document.querySelector("#v22iDataStatusPanel h3"); if (dataH) dataH.textContent = "V2.4A save / update status";
+    var pwaSummary = document.querySelector(".v22c-pwa-panel summary"); if (pwaSummary) pwaSummary.textContent = "V2.4B hosted / installable web app";
+    var dataH = document.querySelector("#v22iDataStatusPanel h3"); if (dataH) dataH.textContent = "V2.4B save / update status";
     try {
       if (window.middaraDataManagerApi && !window.__v23fSnapshotPatch) {
         window.__v23fSnapshotPatch = true;
@@ -19164,9 +19164,9 @@ else {
 <script>
 (function () {
   "use strict";
-  var VERSION = "V2.4A";
-  var TITLE = "Middara Combat Helper - V2.4A Chain / Live-Flow QA Polish";
-  var SUBTITLE = "V2.4A chain/live-flow QA polish: Remi/Zeke chains, Whirlwind, Onslaught, Counter routing, sticky Apply, and contextual panels are stabilized for tablet live play.";
+  var VERSION = "V2.4B";
+  var TITLE = "Middara Combat Helper - V2.4B Chain / Live-Flow QA Polish";
+  var SUBTITLE = "V2.4B chain/live-flow QA polish: Remi/Zeke chains, Whirlwind, Onslaught, Counter routing, sticky Apply, and contextual panels are stabilized for tablet live play.";
   var KEY = "middara_v23g_live_flow_layout_mode";
   function ready(fn) { if (document.readyState === "loading") document.addEventListener("DOMContentLoaded", fn); else fn(); }
   function byId(id) { return document.getElementById(id); }
@@ -19186,11 +19186,11 @@ else {
   function patchChrome() {
     document.title = TITLE;
     var sub = document.querySelector("header .subtitle"); if (sub) sub.textContent = SUBTITLE;
-    var h = document.querySelector("#mobileCombatFlowPanel h2"); if (h) h.textContent = "V2.4A Tablet live combat flow";
-    var badge = document.querySelector("#mobileCombatFlowPanel .cockpit-badge"); if (badge) badge.textContent = "V2.4A Flow";
+    var h = document.querySelector("#mobileCombatFlowPanel h2"); if (h) h.textContent = "V2.4B Tablet live combat flow";
+    var badge = document.querySelector("#mobileCombatFlowPanel .cockpit-badge"); if (badge) badge.textContent = "V2.4B Flow";
     var pwa = byId("pwaVersionText"); if (pwa) pwa.textContent = VERSION;
-    var pwaSummary = document.querySelector(".v22c-pwa-panel summary"); if (pwaSummary) pwaSummary.textContent = "V2.4A hosted / installable web app";
-    var dataH = document.querySelector("#v22iDataStatusPanel h3"); if (dataH) dataH.textContent = "V2.4A save / update status";
+    var pwaSummary = document.querySelector(".v22c-pwa-panel summary"); if (pwaSummary) pwaSummary.textContent = "V2.4B hosted / installable web app";
+    var dataH = document.querySelector("#v22iDataStatusPanel h3"); if (dataH) dataH.textContent = "V2.4B save / update status";
     document.querySelectorAll('[data-v22b-action="calculateCurrent"]').forEach(function (b) { b.style.display = "none"; });
   }
   function patchSnapshots() {
@@ -19224,7 +19224,7 @@ else {
 <script>
 (function () {
   "use strict";
-  var VERSION = "V2.4A";
+  var VERSION = "V2.4B";
   var STORAGE_KEY = "middaraCombatHelperV23HChainPolish";
   var state = { onslaughtRemaining: 0, onslaughtStartedAt: 0, whirlwindActive: false, whirlwindCount: 0, lastMessage: "Remi/Zeke chain helper ready." };
   var renderTimer = null;
@@ -19458,7 +19458,7 @@ else {
     section.id = "v23hChainPolishPanel";
     section.className = "panel";
     section.setAttribute("data-v17-mode", "play");
-    section.innerHTML = '<details open><summary>V2.4A Remi / Zeke chain QA shortcuts</summary>' +
+    section.innerHTML = '<details open><summary>V2.4B Remi / Zeke chain QA shortcuts</summary>' +
       '<div class="note" style="margin-top:10px">Contextual follow-up shortcuts for Remi Chain Pick / Scimitar / Whirlwind and Zeke Onslaught / Blade Works. Resolve the attack math normally, then use these buttons for the next action or reminder.</div>' +
       '<div id="v23hStatus" class="ok-box note" style="margin-top:10px">Remi/Zeke chain helper ready.</div>' +
       '<div id="v23hContext" class="pillbox" style="margin-top:10px"></div>' +
@@ -19525,9 +19525,9 @@ else {
     window.__middaraV23HCalcCapture = true;
   }
   function patchChromeAndSnapshots() {
-    document.title = "Middara Combat Helper - V2.4A Chain / Live-Flow QA Polish";
+    document.title = "Middara Combat Helper - V2.4B Chain / Live-Flow QA Polish";
     var sub = document.querySelector("header .subtitle");
-    if (sub) sub.textContent = "V2.4A chain/live-flow QA polish: Remi/Zeke chains, Whirlwind, Onslaught, Counter routing, sticky Apply, and contextual panels are stabilized for tablet live play.";
+    if (sub) sub.textContent = "V2.4B chain/live-flow QA polish: Remi/Zeke chains, Whirlwind, Onslaught, Counter routing, sticky Apply, and contextual panels are stabilized for tablet live play.";
     try {
       if (window.middaraDataManagerApi && !window.__middaraV23HSnapshotPatch) {
         var api = window.middaraDataManagerApi;
@@ -19557,7 +19557,7 @@ else {
     load(); injectStyles(); injectPanel(); bind(); patchCalculateCapture(); patchChromeAndSnapshots(); render();
     setTimeout(function () { patchCalculateCapture(); patchChromeAndSnapshots(); render(); }, 800);
     setInterval(function () { patchChromeAndSnapshots(); decorateMobileActionCards(); }, 1600);
-    status("V2.4A Remi/Zeke chain helper loaded. Use normal attack math, then use contextual follow-up buttons.", "ok");
+    status("V2.4B Remi/Zeke chain helper loaded. Use normal attack math, then use contextual follow-up buttons.", "ok");
   }
   ready(init);
   window.middaraV23HChainApi = { render: render, getState: function () { return JSON.parse(JSON.stringify(state)); }, startOnslaught: startOnslaught, nextOnslaught: nextOnslaught, startWhirlwind: startWhirlwind };
@@ -19569,9 +19569,9 @@ else {
 <script id="v23i-remi-zeke-chain-flow-fix">
 (function () {
   "use strict";
-  var VERSION = "V2.4A";
-  var TITLE = "Middara Combat Helper - V2.4A Chain / Live-Flow QA Polish";
-  var SUBTITLE = "V2.4A chain/live-flow QA polish: Remi/Zeke chains, Whirlwind, Onslaught, Counter routing, sticky Apply, and contextual panels are stabilized for tablet live play.";
+  var VERSION = "V2.4B";
+  var TITLE = "Middara Combat Helper - V2.4B Chain / Live-Flow QA Polish";
+  var SUBTITLE = "V2.4B chain/live-flow QA polish: Remi/Zeke chains, Whirlwind, Onslaught, Counter routing, sticky Apply, and contextual panels are stabilized for tablet live play.";
   var timer = null;
 
   function ready(fn) { if (document.readyState === "loading") document.addEventListener("DOMContentLoaded", fn); else setTimeout(fn, 0); }
@@ -19712,8 +19712,8 @@ else {
     ensureWhirlwindSelector();
     var panel = byId("v23hChainPolishPanel");
     if (panel) {
-      var summary = panel.querySelector("summary"); if (summary) summary.textContent = "V2.4A Remi / Zeke chain QA shortcuts";
-      var note = panel.querySelector(".note"); if (note && note.textContent.indexOf("V2.4A") < 0) note.textContent = "V2.4A QA: chain helpers preserve the intended actor/target/action state, new attacks reset dice/options, and stale Apply state is cleared when routing follow-ups.";
+      var summary = panel.querySelector("summary"); if (summary) summary.textContent = "V2.4B Remi / Zeke chain QA shortcuts";
+      var note = panel.querySelector(".note"); if (note && note.textContent.indexOf("V2.4B") < 0) note.textContent = "V2.4B QA: chain helpers preserve the intended actor/target/action state, new attacks reset dice/options, and stale Apply state is cleared when routing follow-ups.";
     }
     var box = byId("v22bActionCards");
     if (box) {
@@ -19728,11 +19728,11 @@ else {
   function refreshChrome() {
     document.title = TITLE;
     var sub = document.querySelector("header .subtitle"); if (sub) sub.textContent = SUBTITLE;
-    var h = document.querySelector("#mobileCombatFlowPanel h2"); if (h) h.textContent = "V2.4A Tablet live combat flow";
-    var badge = document.querySelector("#mobileCombatFlowPanel .cockpit-badge"); if (badge) badge.textContent = "V2.4A Flow";
+    var h = document.querySelector("#mobileCombatFlowPanel h2"); if (h) h.textContent = "V2.4B Tablet live combat flow";
+    var badge = document.querySelector("#mobileCombatFlowPanel .cockpit-badge"); if (badge) badge.textContent = "V2.4B Flow";
     var pwa = byId("pwaVersionText"); if (pwa) pwa.textContent = VERSION;
-    var pwaSummary = document.querySelector(".v22c-pwa-panel summary"); if (pwaSummary) pwaSummary.textContent = "V2.4A hosted / installable web app";
-    var dataH = document.querySelector("#v22iDataStatusPanel h3"); if (dataH) dataH.textContent = "V2.4A save / update status";
+    var pwaSummary = document.querySelector(".v22c-pwa-panel summary"); if (pwaSummary) pwaSummary.textContent = "V2.4B hosted / installable web app";
+    var dataH = document.querySelector("#v22iDataStatusPanel h3"); if (dataH) dataH.textContent = "V2.4B save / update status";
   }
   function bind() {
     document.addEventListener("click", function (ev) {
@@ -19758,7 +19758,7 @@ else {
   }
   function init() {
     injectStyles(); bind(); decorate(); refreshChrome();
-    setTimeout(function () { decorate(); refreshChrome(); status("V2.4A chain/live-flow QA fixes loaded.", "ok"); }, 650);
+    setTimeout(function () { decorate(); refreshChrome(); status("V2.4B chain/live-flow QA fixes loaded.", "ok"); }, 650);
     setInterval(function () { decorate(); refreshChrome(); }, 1700);
   }
   ready(init);
@@ -19769,9 +19769,9 @@ else {
 <script>
 (function(){
   "use strict";
-  var VERSION = "V2.4A";
-  var TITLE = "Middara Combat Helper - V2.4A Chain / Live-Flow QA Polish";
-  var SUBTITLE = "V2.4A chain/live-flow QA polish: Remi/Zeke chains, Whirlwind, Onslaught, Counter routing, sticky Apply, and contextual panels are stabilized for tablet live play.";
+  var VERSION = "V2.4B";
+  var TITLE = "Middara Combat Helper - V2.4B Chain / Live-Flow QA Polish";
+  var SUBTITLE = "V2.4B chain/live-flow QA polish: Remi/Zeke chains, Whirlwind, Onslaught, Counter routing, sticky Apply, and contextual panels are stabilized for tablet live play.";
   var awaitingWhirlwindTarget = false;
   var targetChosenAt = 0;
   function ready(fn){ if(document.readyState === "loading") document.addEventListener("DOMContentLoaded", fn); else setTimeout(fn, 0); }
@@ -19808,14 +19808,14 @@ else {
   function updateChrome(){
     document.title = TITLE;
     var sub = document.querySelector("header .subtitle"); if(sub) sub.textContent = SUBTITLE;
-    var h = document.querySelector("#mobileCombatFlowPanel h2"); if(h) h.textContent = "V2.4A Tablet / mobile live combat flow";
-    var badge = document.querySelector("#mobileCombatFlowPanel .cockpit-badge"); if(badge) badge.textContent = "V2.4A Flow";
+    var h = document.querySelector("#mobileCombatFlowPanel h2"); if(h) h.textContent = "V2.4B Tablet / mobile live combat flow";
+    var badge = document.querySelector("#mobileCombatFlowPanel .cockpit-badge"); if(badge) badge.textContent = "V2.4B Flow";
     var pwa = byId("pwaVersionText"); if(pwa) pwa.textContent = VERSION;
-    var pwaSummary = document.querySelector(".v22c-pwa-panel summary"); if(pwaSummary) pwaSummary.textContent = "V2.4A hosted / installable web app";
-    var dataH = document.querySelector("#v22iDataStatusPanel h3"); if(dataH) dataH.textContent = "V2.4A save / update status";
-    var chainSummary = document.querySelector("#v23hChainPolishPanel summary"); if(chainSummary) chainSummary.textContent = "V2.4A Remi / Zeke chain QA shortcuts";
+    var pwaSummary = document.querySelector(".v22c-pwa-panel summary"); if(pwaSummary) pwaSummary.textContent = "V2.4B hosted / installable web app";
+    var dataH = document.querySelector("#v22iDataStatusPanel h3"); if(dataH) dataH.textContent = "V2.4B save / update status";
+    var chainSummary = document.querySelector("#v23hChainPolishPanel summary"); if(chainSummary) chainSummary.textContent = "V2.4B Remi / Zeke chain QA shortcuts";
     var note = document.querySelector("#v23hChainPolishPanel .note");
-    if(note && note.textContent.indexOf("V2.4A") < 0) note.textContent = "V2.4A QA: chain helpers preserve the intended actor/target/action state, new attacks reset dice/options, and stale Apply state is cleared when routing follow-ups.";
+    if(note && note.textContent.indexOf("V2.4B") < 0) note.textContent = "V2.4B QA: chain helpers preserve the intended actor/target/action state, new attacks reset dice/options, and stale Apply state is cleared when routing follow-ups.";
   }
   function updateWhirlwindProfileVisibility(){
     var show = isRemiContext();
@@ -19882,7 +19882,7 @@ else {
   function init(){
     injectStyles(); bind(); tick();
     setInterval(tick, 1700);
-    setTimeout(function(){ tick(); status("V2.4A chain/live-flow QA patch loaded.", "ok"); }, 800);
+    setTimeout(function(){ tick(); status("V2.4B chain/live-flow QA patch loaded.", "ok"); }, 800);
   }
   ready(init);
 })();
@@ -19891,7 +19891,7 @@ else {
 
 
 <style id="v23k-chain-live-flow-qa-style">
-  /* V2.4A chain/live-flow QA polish */
+  /* V2.4B chain/live-flow QA polish */
   #v23kQaPanel {
     border-color: rgba(163,230,53,.32);
     background: linear-gradient(180deg, rgba(163,230,53,.07), rgba(255,255,255,.012)), var(--panel);
@@ -19934,9 +19934,9 @@ else {
 <script id="v23k-chain-live-flow-qa-script">
 (function(){
   "use strict";
-  var VERSION = "V2.4A";
-  var TITLE = "Middara Combat Helper - V2.4A Chain / Live-Flow QA Polish";
-  var SUBTITLE = "V2.4A chain/live-flow QA polish: Remi/Zeke chains, Whirlwind, Onslaught, Counter routing, sticky Apply, and contextual panels are stabilized for tablet live play.";
+  var VERSION = "V2.4B";
+  var TITLE = "Middara Combat Helper - V2.4B Chain / Live-Flow QA Polish";
+  var SUBTITLE = "V2.4B chain/live-flow QA polish: Remi/Zeke chains, Whirlwind, Onslaught, Counter routing, sticky Apply, and contextual panels are stabilized for tablet live play.";
   var FLOW_KEY = "middaraCombatHelperV22BMobileFlow";
   var QA_KEY = "middaraCombatHelperV23KQaState";
   var pendingWhirlwindTarget = false;
@@ -20093,16 +20093,16 @@ else {
       panel.setAttribute("aria-hidden", (currentMode() === "play" && (remi || zeke)) ? "false" : "true");
     }
     var summary = document.querySelector("#v23hChainPolishPanel summary");
-    if(summary) summary.textContent = "V2.4A Remi / Zeke chain QA shortcuts";
+    if(summary) summary.textContent = "V2.4B Remi / Zeke chain QA shortcuts";
   }
   function paintChrome(){
     document.title = TITLE;
     var sub = document.querySelector("header .subtitle"); if(sub) sub.textContent = SUBTITLE;
-    var h = document.querySelector("#mobileCombatFlowPanel h2"); if(h) h.textContent = "V2.4A Tablet / mobile live combat flow";
-    var badge = document.querySelector("#mobileCombatFlowPanel .cockpit-badge"); if(badge) badge.textContent = "V2.4A Flow";
+    var h = document.querySelector("#mobileCombatFlowPanel h2"); if(h) h.textContent = "V2.4B Tablet / mobile live combat flow";
+    var badge = document.querySelector("#mobileCombatFlowPanel .cockpit-badge"); if(badge) badge.textContent = "V2.4B Flow";
     var pwa = byId("pwaVersionText"); if(pwa) pwa.textContent = VERSION;
-    var pwaSummary = document.querySelector(".v22c-pwa-panel summary"); if(pwaSummary) pwaSummary.textContent = "V2.4A hosted / installable web app";
-    var dataH = document.querySelector("#v22iDataStatusPanel h3"); if(dataH) dataH.textContent = "V2.4A save / update status";
+    var pwaSummary = document.querySelector(".v22c-pwa-panel summary"); if(pwaSummary) pwaSummary.textContent = "V2.4B hosted / installable web app";
+    var dataH = document.querySelector("#v22iDataStatusPanel h3"); if(dataH) dataH.textContent = "V2.4B save / update status";
   }
   function paint(){ paintChrome(); paintContext(); paintApplyButtons(); }
 
@@ -20191,7 +20191,7 @@ else {
     sec.id = "v23kQaPanel";
     sec.className = "panel";
     sec.setAttribute("data-v17-mode", "play");
-    sec.innerHTML = '<details><summary>V2.4A chain/live-flow QA tools</summary>' +
+    sec.innerHTML = '<details><summary>V2.4B chain/live-flow QA tools</summary>' +
       '<div class="note" style="margin-top:10px">Use these only if a chain/counter flow feels stale. They do not change board legality or choose targets; they just verify live UI hooks and clear stale Apply state.</div>' +
       '<div class="v23k-qa-grid">' +
         '<div class="v23k-qa-card"><strong>Current context</strong><div id="v23kContextText" class="tiny">-</div></div>' +
@@ -20199,7 +20199,7 @@ else {
         '<div class="v23k-qa-card"><strong>Apply guard</strong><div class="tiny">Sticky Apply follows the active Attack/Spell/Enemy result and shows Applied ✓ after use.</div></div>' +
       '</div>' +
       '<div class="v23k-qa-actions"><button type="button" data-v23k-action="runQa">Run live-flow sanity check</button><button type="button" data-v23k-action="clearStale">Clear stale Apply state</button><button type="button" data-v23k-action="resetAttack">Reset current attack roll</button></div>' +
-      '<div id="v23kQaStatus" class="ok-box note" style="margin-top:10px">V2.4A QA tools ready.</div>' +
+      '<div id="v23kQaStatus" class="ok-box note" style="margin-top:10px">V2.4B QA tools ready.</div>' +
       '</details>';
     anchor.parentNode.insertBefore(sec, anchor.nextSibling);
   }
@@ -20268,7 +20268,7 @@ else {
     paint();
     updateQaContext();
     setInterval(function(){ paint(); updateQaContext(); patchSnapshots(); }, 700);
-    setTimeout(function(){ paint(); updateQaContext(); setFlowStatus("V2.4A chain/live-flow QA loaded. Chain helpers now reset/preserve state more consistently, and stale Apply state can be cleared from the QA tools.", "ok"); }, 900);
+    setTimeout(function(){ paint(); updateQaContext(); setFlowStatus("V2.4B chain/live-flow QA loaded. Chain helpers now reset/preserve state more consistently, and stale Apply state can be cleared from the QA tools.", "ok"); }, 900);
   }
   ready(init);
   window.middaraV23KLiveFlowQaApi = {
@@ -20293,7 +20293,7 @@ else {
     line-height: 1.25 !important;
   }
   #mobileCombatFlowPanel h2::after {
-    content: "V2.4A Tablet live combat flow";
+    content: "V2.4B Tablet live combat flow";
     position: absolute;
     left: 0;
     top: 0;
@@ -20315,9 +20315,9 @@ else {
 <script id="v23l-stable-onslaught-footer-script">
 (function(){
   "use strict";
-  var VERSION = "V2.4A";
-  var TITLE = "Middara Combat Helper - V2.4A Stable Onslaught / Footer Patch";
-  var SUBTITLE = "V2.4A stable live-flow patch: Onslaught follow-ups stay in the attack roll tray, and contested header/footer text no longer flickers.";
+  var VERSION = "V2.4B";
+  var TITLE = "Middara Combat Helper - V2.4B Stable Onslaught / Footer Patch";
+  var SUBTITLE = "V2.4B stable live-flow patch: Onslaught follow-ups stay in the attack roll tray, and contested header/footer text no longer flickers.";
   var FLOW_KEY = "middaraCombatHelperV22BMobileFlow";
   var savedOnslaughtTarget = null;
   var lastFooterTitle = "";
@@ -20468,10 +20468,10 @@ else {
   function patchChrome(){
     document.title = TITLE;
     var sub = document.querySelector("header .subtitle"); if(sub) sub.textContent = SUBTITLE;
-    var badge = document.querySelector("#mobileCombatFlowPanel .cockpit-badge"); if(badge) badge.textContent = "V2.4A Flow";
+    var badge = document.querySelector("#mobileCombatFlowPanel .cockpit-badge"); if(badge) badge.textContent = "V2.4B Flow";
     var pwa = byId("pwaVersionText"); if(pwa) pwa.textContent = VERSION;
-    var pwaSummary = document.querySelector(".v22c-pwa-panel summary"); if(pwaSummary) pwaSummary.textContent = "V2.4A hosted / installable web app";
-    var dataH = document.querySelector("#v22iDataStatusPanel h3"); if(dataH) dataH.textContent = "V2.4A save / update status";
+    var pwaSummary = document.querySelector(".v22c-pwa-panel summary"); if(pwaSummary) pwaSummary.textContent = "V2.4B hosted / installable web app";
+    var dataH = document.querySelector("#v22iDataStatusPanel h3"); if(dataH) dataH.textContent = "V2.4B save / update status";
   }
   function patchSnapshots(){
     try{
@@ -20489,7 +20489,7 @@ else {
     bindOnslaughtGuards();
     patchChrome(); patchSnapshots(); ensureFooterMirror(); paintFooterMirror();
     setInterval(function(){ patchChrome(); patchSnapshots(); paintFooterMirror(); }, 250);
-    setTimeout(function(){ setFlowStatus("V2.4A stable routing loaded. Onslaught follow-ups should remain in the attack roll tray, and the live-flow header/footer should no longer flicker.", "ok"); }, 900);
+    setTimeout(function(){ setFlowStatus("V2.4B stable routing loaded. Onslaught follow-ups should remain in the attack roll tray, and the live-flow header/footer should no longer flicker.", "ok"); }, 900);
   }
   ready(init);
   window.middaraV23LStableApi = { forceOnslaughtAttackRoll:forceOnslaughtAttackRoll, currentTargetSnapshot:currentTargetSnapshot, paintFooterMirror:paintFooterMirror };
@@ -20498,8 +20498,8 @@ else {
 
 
 <style id="v24a-nightingale-polish-style">
-  /* V2.4A Nightingale spell / familiar polish */
-  #mobileCombatFlowPanel h2::after { content: "V2.4A Tablet live combat flow" !important; }
+  /* V2.4B Nightingale spell / familiar polish */
+  #mobileCombatFlowPanel h2::after { content: "V2.4B Tablet live combat flow" !important; }
   #v24aNightingalePanel { border-color: rgba(192,132,252,.42); background: linear-gradient(180deg, rgba(192,132,252,.08), rgba(255,255,255,.012)), var(--panel); }
   body:not(.v24a-actor-nightingale) #v24aNightingalePanel { display: none !important; }
   #v24aNightingalePanel summary { color: #d8b4fe; font-weight: 900; }
@@ -20532,9 +20532,9 @@ else {
 <script id="v24a-nightingale-polish-script">
 (function(){
   "use strict";
-  var VERSION = "V2.4A";
-  var TITLE = "Middara Combat Helper - V2.4A Nightingale Spell / Familiar Polish";
-  var SUBTITLE = "V2.4A Nightingale spell and familiar polish: Life Grasp multi-target helper, explicit Force math, one-time self-damage, Trophy effects, Blood Toll, Infection, Ring of Blood, and Yuxa shortcuts.";
+  var VERSION = "V2.4B";
+  var TITLE = "Middara Combat Helper - V2.4B Nightingale Spell / Familiar Polish";
+  var SUBTITLE = "V2.4B Nightingale spell and familiar polish: Life Grasp multi-target helper, explicit Force math, one-time self-damage, Trophy effects, Blood Toll, Infection, Ring of Blood, and Yuxa shortcuts.";
   var KEY = "middara_v24a_nightingale_state";
   function byId(id){ return document.getElementById(id); }
   function ready(fn){ if(document.readyState === "loading") document.addEventListener("DOMContentLoaded", fn); else fn(); }
@@ -20569,7 +20569,7 @@ else {
   function routeTo(id){ var el = byId(id); if(el && el.scrollIntoView){ try{ el.scrollIntoView({ behavior:"smooth", block:"start" }); }catch(err){ el.scrollIntoView(true); } } }
   function selectSpell(spellId){ setNightingaleActor(); setSelect("spellSelect", spellId); if(spellId === "life_grasp") syncLifeFromMain(true); try{ if(typeof window.calculateSpell === "function") window.calculateSpell(); }catch(err){} document.body.classList.add("v22b-show-spell"); document.body.classList.remove("v22b-show-attack"); setTimeout(function(){ if(spellId === "life_grasp") routeTo("v24aLifeCard"); else routeTo("spellPanel"); }, 80); save(); paint(); }
   function markCard(id, st, msg){ try{ if(window.middaraTurnApi && typeof middaraTurnApi.setCardState === "function") return middaraTurnApi.setCardState(id, st || "exhausted", msg || (id + " updated."), "ok"); }catch(err){} return false; }
-  function applyPartyDamageSafe(id, amount, source){ if(!amount) return false; try{ if(typeof window.applyPartyDamage === "function") return window.applyPartyDamage(id, amount, source || "Nightingale V2.4A"); }catch(err){} try{ var m = (partyState.members || []).filter(function(x){ return x.id === id; })[0]; if(!m) return false; if(typeof pushPartyHistory === "function") pushPartyHistory(); m.damage = clamp((m.damage || 0) + amount, 0, m.hp || 0); if(typeof savePartyState === "function") savePartyState(); if(typeof renderParty === "function") renderParty(); return true; }catch(err2){} return false; }
+  function applyPartyDamageSafe(id, amount, source){ if(!amount) return false; try{ if(typeof window.applyPartyDamage === "function") return window.applyPartyDamage(id, amount, source || "Nightingale V2.4B"); }catch(err){} try{ var m = (partyState.members || []).filter(function(x){ return x.id === id; })[0]; if(!m) return false; if(typeof pushPartyHistory === "function") pushPartyHistory(); m.damage = clamp((m.damage || 0) + amount, 0, m.hp || 0); if(typeof savePartyState === "function") savePartyState(); if(typeof renderParty === "function") renderParty(); return true; }catch(err2){} return false; }
   function applyPartySpSafe(id, delta){ try{ if(typeof window.applyPartySp === "function") return window.applyPartySp(id, delta); }catch(err){} return false; }
   function healNight(amount, label, cardId){ var ok = applyPartyDamageSafe("nightingale", -Math.abs(amount), label); if(cardId) markCard(cardId, "exhausted", label + " marked exhausted."); status(label + (ok ? " applied." : " could not apply; check Party tracker."), ok ? "ok" : "warn"); paint(); }
   function syncLifeFromMain(forceLife){ var life = state.life; if(forceLife) { setSelect("spellSelect", "life_grasp"); setChecked("spellUseEmpower", life.empower); setChecked("spellUseLifeForceBonus", life.boost); setChecked("spellUseOtherworldlyForce", life.otherworldly); }
@@ -20615,7 +20615,7 @@ else {
     try{ if(typeof window.pushTrackerHistory === "function") pushTrackerHistory(); }catch(err3){} if(!Array.isArray(e.effects)) e.effects = []; if(e.effects.indexOf(effect) < 0) e.effects.push(effect); try{ if(typeof window.saveTrackerState === "function") saveTrackerState(); if(typeof window.renderTracker === "function") renderTracker(); }catch(err4){} markCard("night_trophy", "exhausted", "Nightstalker's Trophy exhausted after effect roll."); status("Applied Nightstalker's Trophy: " + effect + " to " + (e.label || e.name) + ".", "ok"); }
   function bloodToll(){ var a = applyPartyDamageSafe("nightingale", 2, "Blood Toll"); var b = applyPartySpSafe("nightingale", 2); markCard("night_blood_toll", "exhausted", "Blood Toll exhausted: +2 SP, 2 Irreducible Damage."); status("Blood Toll used: Nightingale takes 2 Irreducible Damage and gains +2 SP." + ((!a || !b) ? " Check Party tracker if one value did not change." : ""), (!a || !b) ? "warn" : "ok"); }
   function infection(){ var ok = applyPartyDamageSafe("nightingale", 1, "The Infection"); markCard("night_infection", "exhausted", "The Infection exhausted for -1 SP cost."); status("The Infection used: Nightingale takes 1 Irreducible Damage. Reduce the current SP cost by 1 manually if the app did not already do it.", ok ? "ok" : "warn"); }
-  function installPanel(){ if(byId("v24aNightingalePanel")) return; var anchor = byId("mobileCombatFlowPanel") || byId("combatCockpitPanel") || document.querySelector("main"); if(!anchor || !anchor.parentNode) return; var sec = document.createElement("section"); sec.id = "v24aNightingalePanel"; sec.className = "panel"; sec.setAttribute("data-v17-mode", "play"); sec.innerHTML = '<details open><summary>V2.4A Nightingale spell / familiar polish</summary>' +
+  function installPanel(){ if(byId("v24aNightingalePanel")) return; var anchor = byId("mobileCombatFlowPanel") || byId("combatCockpitPanel") || document.querySelector("main"); if(!anchor || !anchor.parentNode) return; var sec = document.createElement("section"); sec.id = "v24aNightingalePanel"; sec.className = "panel"; sec.setAttribute("data-v17-mode", "play"); sec.innerHTML = '<details open><summary>V2.4B Nightingale spell / familiar polish</summary>' +
       '<div class="note" style="margin-top:8px">Use this when Nightingale is active. Board legality, SOI, and target eligibility stay manual; the helper handles Force math, self-damage bookkeeping, per-target Conviction, and post-damage reminders.</div>' +
       '<div class="v24a-grid"><div class="v24a-card"><h3>Quick Nightingale actions</h3><div class="v24a-actions">' +
         '<button type="button" data-v24a-action="loadGore"><strong>Gore Shot</strong><span>Spell 6; optional 2 self Irreducible for +8 Magic.</span></button>' +
@@ -20660,12 +20660,237 @@ else {
     var exists = function(label){ return buttons.some(function(btn){ var s=btn.querySelector("strong"); return s && String(s.textContent || "").trim() === label; }); };
     function card(label, note, action){ return '<button type="button" class="v22b-action-card" data-v24a-action="' + esc(action) + '"><strong>' + esc(label) + '</strong><span>' + esc(note) + '</span></button>'; }
     var add = ""; if(!exists("Corrosive Ideal")) add += card("Corrosive Ideal", "Spell 6; Poison on failed Conviction.", "loadCorrosive"); if(!exists("Abbadon's Subtlety")) add += card("Abbadon's Subtlety", "After Nightingale damage: Spell 6 for previous damage.", "loadAbbadon"); if(!exists("Blood Toll")) add += card("Blood Toll", "+2 SP and 2 self Irreducible Damage.", "bloodToll"); if(!exists("The Infection")) add += card("The Infection", "Take 1 self Irreducible Damage to reduce SP cost by 1.", "infection"); if(add) box.insertAdjacentHTML("beforeend", add); }
-  function patchChrome(){ document.title = TITLE; var sub = document.querySelector("header .subtitle"); if(sub) sub.textContent = SUBTITLE; var badge = document.querySelector("#mobileCombatFlowPanel .cockpit-badge"); if(badge) badge.textContent = "V2.4A Flow"; var pwa = byId("pwaVersionText"); if(pwa) pwa.textContent = VERSION; var pwaSummary = document.querySelector(".v22c-pwa-panel summary"); if(pwaSummary) pwaSummary.textContent = "V2.4A hosted / installable web app"; var dataH = document.querySelector("#v22iDataStatusPanel h3"); if(dataH) dataH.textContent = "V2.4A save / update status"; var qa = byId("v23kQaStatus"); if(qa && qa.textContent.indexOf("V2.4A") < 0) qa.textContent = qa.textContent.replace(/V2\.3[A-Z]/g, "V2.4A"); }
+  function patchChrome(){ document.title = TITLE; var sub = document.querySelector("header .subtitle"); if(sub) sub.textContent = SUBTITLE; var badge = document.querySelector("#mobileCombatFlowPanel .cockpit-badge"); if(badge) badge.textContent = "V2.4B Flow"; var pwa = byId("pwaVersionText"); if(pwa) pwa.textContent = VERSION; var pwaSummary = document.querySelector(".v22c-pwa-panel summary"); if(pwaSummary) pwaSummary.textContent = "V2.4B hosted / installable web app"; var dataH = document.querySelector("#v22iDataStatusPanel h3"); if(dataH) dataH.textContent = "V2.4B save / update status"; var qa = byId("v23kQaStatus"); if(qa && qa.textContent.indexOf("V2.4B") < 0) qa.textContent = qa.textContent.replace(/V2\.3[A-Z]/g, "V2.4B"); }
   function patchSnapshots(){ try{ if(!window.middaraDataManagerApi || window.__middaraV24ASnapshotPatch) return; window.__middaraV24ASnapshotPatch = true; var api = window.middaraDataManagerApi; var oldFull = api.exportFullSnapshot; var oldApp = api.exportAppData; var oldApply = api.applyPayload; function add(snap){ try{ snap.version = VERSION; snap.pwaDeploymentVersion = VERSION; snap.v24aNightingaleState = JSON.parse(JSON.stringify(state)); }catch(err){} return snap; } if(typeof oldFull === "function") api.exportFullSnapshot = function(){ return add(oldFull.apply(this, arguments)); }; if(typeof oldApp === "function") api.exportAppData = function(){ return add(oldApp.apply(this, arguments)); }; if(typeof oldApply === "function") api.applyPayload = function(payload, includeState){ var r = oldApply.apply(this, arguments); if(payload && payload.v24aNightingaleState){ state = Object.assign(defaultState(), payload.v24aNightingaleState); save(); fillStaticControls(); renderTargets(); paint(); } return r; }; }catch(err){} }
   function paint(){ installPanel(); fillStaticControls(); renderLifeResults(); decorateActionCards(); patchChrome(); patchSnapshots(); }
-  function init(){ installPanel(); patchChrome(); patchSnapshots(); paint(); setInterval(function(){ decorateActionCards(); patchChrome(); renderLifeResults(); }, 700); setTimeout(function(){ status("V2.4A Nightingale helper loaded. Life Grasp now supports one Force roll against up to three separate target Conviction checks.", "ok"); }, 900); }
+  function init(){ installPanel(); patchChrome(); patchSnapshots(); paint(); setInterval(function(){ decorateActionCards(); patchChrome(); renderLifeResults(); }, 700); setTimeout(function(){ status("V2.4B Nightingale helper loaded. Life Grasp now supports one Force roll against up to three separate target Conviction checks.", "ok"); }, 900); }
   ready(init);
   window.middaraV24ANightingaleApi = { calculateLife:calculateLife, renderLifeResults:renderLifeResults, applyLifeDamage:applyLifeDamage, applyLifeSelf:applyLifeSelf, loadLife:function(){ selectSpell("life_grasp"); routeTo("v24aLifeCard"); }, getState:function(){ return JSON.parse(JSON.stringify(state)); } };
+})();
+</script>
+
+
+
+<style id="v24b-nightingale-flow-spawn-footer-style">
+  /* V2.4B Nightingale flow / spawn numbering / sticky footer stabilization */
+  #mobileCombatFlowPanel h2::after { content: "V2.4B Tablet live combat flow" !important; }
+  body.v24b-actor-nightingale #v22bActionCards .v24b-night-hidden { display: none !important; }
+  body.v24b-actor-nightingale #v22bActionCards [data-v24b-night-spell-route="1"] {
+    border-color: rgba(192,132,252,.55);
+    background: rgba(192,132,252,.12);
+  }
+  #v23lFooterMirrorTitle,
+  #v23lFooterMirrorDetail {
+    position: relative !important;
+    color: transparent !important;
+  }
+  #v23lFooterMirrorTitle::after,
+  #v23lFooterMirrorDetail::after {
+    content: attr(data-v24b-text);
+    position: absolute;
+    left: 0;
+    top: 0;
+    right: 0;
+    color: var(--text);
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+    pointer-events: none;
+  }
+  #v23lFooterMirrorDetail::after { color: var(--muted); }
+  #v17StickyFooter.v24b-support-locked .v22b-footer-apply,
+  #v17StickyFooter.v24b-support-locked [data-v22b-action="applyPending"] {
+    background: linear-gradient(180deg, #22c55e, #15803d) !important;
+    border-color: rgba(34,197,94,.55) !important;
+    opacity: .86;
+  }
+</style>
+<script id="v24b-nightingale-flow-spawn-footer-script">
+(function(){
+  "use strict";
+  var VERSION = "V2.4B";
+  var TITLE = "Middara Combat Helper - V2.4B Nightingale Flow / Spawn / Footer Patch";
+  var SUBTITLE = "V2.4B Nightingale flow cleanup, lowest-available enemy group numbering, and stable sticky Apply state after Trophy/heal/support actions.";
+  var FLOW_KEY = "middaraCombatHelperV22BMobileFlow";
+  var supportLock = { active:false, label:"" };
+
+  function ready(fn){ if(document.readyState === "loading") document.addEventListener("DOMContentLoaded", fn); else setTimeout(fn, 0); }
+  function byId(id){ return document.getElementById(id); }
+  function esc(v){ return String(v == null ? "" : v).replace(/[&<>\"']/g, function(ch){ return ({"&":"&amp;","<":"&lt;",">":"&gt;","\"":"&quot;","'":"&#039;"})[ch]; }); }
+  function val(id){ var el = byId(id); return el ? String(el.value || "") : ""; }
+  function text(id){ var el = byId(id); return el ? String(el.textContent || "").trim() : ""; }
+  function num(v, d){ var n = Number(v); return Number.isFinite(n) ? n : (d || 0); }
+  function readFlow(){ try{ return JSON.parse(localStorage.getItem(FLOW_KEY) || "{}"); }catch(err){ return {}; } }
+  function writeFlow(s){ try{ localStorage.setItem(FLOW_KEY, JSON.stringify(s || {})); }catch(err){} }
+  function fire(el, type){ if(!el) return; try{ el.dispatchEvent(new Event(type || "change", { bubbles:true })); }catch(err){} }
+  function setFlowStatus(msg, kind){ var el = byId("v22bFlowStatus"); if(!el) return; el.className = (kind === "warn" ? "warning-box" : kind === "danger" ? "danger-box" : "ok-box") + " note v22b-flow-status"; el.textContent = msg; }
+  function scrollToId(id){ var el = byId(id); if(el && el.scrollIntoView){ try{ el.scrollIntoView({ behavior:"smooth", block:"start" }); }catch(err){ el.scrollIntoView(true); } } }
+  function actorValue(){ var a = byId("v22bActorSelect"); if(a && a.value) return String(a.value); var c = byId("characterSelect"); return c ? "party:" + String(c.value || "") : ""; }
+  function isNightingale(){ return actorValue() === "party:nightingale"; }
+  function targetName(){
+    try{ var f = readFlow(); if(f.target && f.target.indexOf("enemy:") === 0 && window.trackerState && Array.isArray(trackerState.enemies)){ var id = f.target.slice(6); var e = trackerState.enemies.filter(function(x){ return String(x.id) === id; })[0]; if(e) return e.label || e.name || "target"; } }catch(err){}
+    var ts = byId("targetSelect"); if(ts && ts.options && ts.selectedIndex >= 0) return ts.options[ts.selectedIndex].textContent || ts.value || "target";
+    return "target";
+  }
+  function selectedTargetId(){ try{ if(window.trackerState && trackerState.selectedId) return String(trackerState.selectedId); }catch(err){} var f=readFlow(); return f.target && f.target.indexOf("enemy:")===0 ? f.target.slice(6) : ""; }
+
+  function showNightingalePanel(){
+    var panel = byId("v24aNightingalePanel");
+    if(panel){ var d = panel.querySelector("details"); if(d) d.open = true; }
+    var f = readFlow(); f.pendingType = "support"; f.awaitingTargetFor = ""; f.appliedKey = ""; f.appliedLabel = ""; writeFlow(f);
+    supportLock.active = false;
+    setFlowStatus("Nightingale Spell / Force opened. Use the dedicated Nightingale spell/familiar panel for Gore Shot, Life Grasp, Corrosive Ideal, Abbadon's, Blood Toll, and The Infection.", "ok");
+    setTimeout(function(){ scrollToId("v24aNightingalePanel"); }, 30);
+    try{ if(window.middaraMobileFlowV22BApi && middaraMobileFlowV22BApi.render) middaraMobileFlowV22BApi.render(); }catch(err){}
+  }
+
+  function simplifyNightingaleActionCards(){
+    var night = isNightingale();
+    document.body.classList.toggle("v24b-actor-nightingale", night);
+    var box = byId("v22bActionCards"); if(!box) return;
+    if(!night) return;
+    var removeLabels = {
+      "Gore Shot":1,
+      "Life Grasp":1,
+      "Corrosive Ideal":1,
+      "Abbadon's Subtlety":1,
+      "Blood Toll":1,
+      "The Infection":1
+    };
+    Array.prototype.slice.call(box.querySelectorAll("button")).forEach(function(btn){
+      var strong = btn.querySelector("strong");
+      var label = strong ? String(strong.textContent || "").trim() : "";
+      if(removeLabels[label]) { btn.classList.add("v24b-night-hidden"); btn.setAttribute("aria-hidden", "true"); return; }
+      if(label === "Spell / Force"){
+        btn.setAttribute("data-v24b-night-spell-route", "1");
+        var span = btn.querySelector("span"); if(span) span.textContent = "Open Nightingale's dedicated spell/familiar panel.";
+      }
+    });
+  }
+
+  function interceptNightingaleSpellRoute(){
+    document.addEventListener("click", function(ev){
+      var btn = ev.target && ev.target.closest ? ev.target.closest('[data-v22b-action="routeSpell"]') : null;
+      if(!btn || !isNightingale()) return;
+      ev.preventDefault();
+      ev.stopPropagation();
+      if(ev.stopImmediatePropagation) ev.stopImmediatePropagation();
+      showNightingalePanel();
+    }, true);
+  }
+
+  function regexEscape(s){ return String(s || "").replace(/[.*+?^${}()|[\]\\]/g, "\\$&"); }
+  function liveEnemiesForBase(base){
+    try{ return ((window.trackerState && trackerState.enemies) || []).filter(function(e){ return e && String(e.name || "") === String(base || "") && num(e.damage,0) < num(e.hp,0); }); }catch(err){ return []; }
+  }
+  function trailingNumber(label, base){
+    label = String(label || "").trim(); base = String(base || "").trim();
+    if(!label) return null;
+    var exact = label.match(new RegExp("^" + regexEscape(base) + "\\s+(\\d+)\\s*$", "i"));
+    if(exact) return Math.max(1, parseInt(exact[1], 10));
+    if(label.toLowerCase().indexOf(base.toLowerCase()) === 0){ var m = label.match(/(?:^|\s)(\d+)\s*$/); if(m) return Math.max(1, parseInt(m[1], 10)); }
+    return null;
+  }
+  function lowestAvailableLabel(enemyName){
+    var base = String(enemyName || "Enemy").trim() || "Enemy";
+    var used = {};
+    liveEnemiesForBase(base).forEach(function(e){ var n = trailingNumber(e.label || "", base); if(n) used[n] = true; });
+    var idx = 1; while(used[idx]) idx += 1;
+    return base + " " + idx;
+  }
+  function patchEnemyNumbering(){
+    window.nextTrackerLabel = lowestAvailableLabel;
+    try{ eval("nextTrackerLabel = window.nextTrackerLabel"); }catch(err){}
+  }
+
+  function setSupportLock(label){
+    supportLock.active = true;
+    supportLock.label = label || "Nightingale support applied.";
+    var f = readFlow(); f.pendingType = "support"; f.awaitingTargetFor = ""; writeFlow(f);
+    setFlowStatus(label || "Nightingale support applied.", "ok");
+    stabilizeFooter();
+  }
+  function clearSupportLock(){ supportLock.active = false; supportLock.label = ""; stabilizeFooter(); }
+  function bindSupportLock(){
+    document.addEventListener("click", function(ev){
+      var v24 = ev.target && ev.target.closest ? ev.target.closest("[data-v24a-action]") : null;
+      var flow = ev.target && ev.target.closest ? ev.target.closest("[data-v22b-action], [data-v22b-target], [data-v22b-damage]") : null;
+      if(flow) clearSupportLock();
+      if(v24){
+        var action = v24.getAttribute("data-v24a-action") || "";
+        var labels = {
+          applyTrophy:"Nightstalker's Trophy resolved.",
+          ringHeal:"Ring of Blood heal resolved.",
+          yuxaHeal:"Yuxa heal resolved.",
+          bloodToll:"Blood Toll resolved.",
+          infection:"The Infection resolved.",
+          applyLifeSelf:"Life Grasp self-damage resolved.",
+          markLife:"Life Grasp marked used."
+        };
+        if(labels[action]) setTimeout(function(){ setSupportLock(labels[action]); }, 180);
+        if(action === "loadGore" || action === "loadLife" || action === "loadCorrosive" || action === "loadAbbadon") clearSupportLock();
+      }
+    }, true);
+    ["input","change"].forEach(function(evt){ document.addEventListener(evt, function(ev){
+      var id = ev.target && ev.target.id || "";
+      if(/^(spell|v24aLife|target|profile|character|enemyAttack)/.test(id)) clearSupportLock();
+    }, true); });
+  }
+
+  function currentFooterInfo(){
+    if(supportLock.active) return { title:"Nightingale support", detail:supportLock.label || "Support action applied." };
+    var f = readFlow();
+    var type = document.body.classList.contains("v22b-show-attack") ? "attack" : (document.body.classList.contains("v22b-show-spell") ? "spell" : (f.pendingType || "attack"));
+    if(type === "spell") return { title:"Spell result -> " + targetName(), detail:"Result " + (text("spellResultText") || "-") + " | Damage/effect " + (text("spellDamageText") || "0") + " | Target " + targetName() };
+    if(type === "enemyAttack") return { title:"Enemy attack", detail:"Result " + (text("enemyAttackResultText") || "-") + " | Final damage " + (text("enemyAttackFinalDamageText") || "0") };
+    if(type === "enemySpell") return { title:"Enemy spell", detail:text("enemySpellStatus") || "Resolve enemy spell." };
+    if(type === "support") return { title:"Support / helper", detail:"Choose an action or resolver from the current panel." };
+    return { title:"Attack result -> " + targetName(), detail:"Result " + (text("hitText") || "-") + " | Final damage " + (text("finalDamage") || "0") + " | Target " + targetName() };
+  }
+  function stabilizeFooter(){
+    var title = byId("v23lFooterMirrorTitle"), detail = byId("v23lFooterMirrorDetail");
+    var footer = byId("v17StickyFooter");
+    var info = currentFooterInfo();
+    if(title) title.setAttribute("data-v24b-text", info.title);
+    if(detail) detail.setAttribute("data-v24b-text", info.detail);
+    if(footer) footer.classList.toggle("v24b-support-locked", !!supportLock.active);
+    if(supportLock.active){
+      Array.prototype.slice.call(document.querySelectorAll('[data-v22b-action="applyPending"]:not([data-v22b-target])')).forEach(function(btn){ btn.textContent = "Support applied ✓"; btn.disabled = true; btn.classList.add("v22e-applied"); });
+    }
+  }
+
+  function patchChrome(){
+    document.title = TITLE;
+    var sub = document.querySelector("header .subtitle"); if(sub) sub.textContent = SUBTITLE;
+    var badge = document.querySelector("#mobileCombatFlowPanel .cockpit-badge"); if(badge) badge.textContent = "V2.4B Flow";
+    var pwa = byId("pwaVersionText"); if(pwa) pwa.textContent = VERSION;
+    var pwaSummary = document.querySelector(".v22c-pwa-panel summary"); if(pwaSummary) pwaSummary.textContent = "V2.4B hosted / installable web app";
+    var dataH = document.querySelector("#v22iDataStatusPanel h3"); if(dataH) dataH.textContent = "V2.4B save / update status";
+  }
+
+  function patchSnapshots(){
+    try{
+      if(!window.middaraDataManagerApi || window.__middaraV24BSnapshotPatch) return;
+      window.__middaraV24BSnapshotPatch = true;
+      var api = window.middaraDataManagerApi;
+      var oldFull = api.exportFullSnapshot;
+      var oldApp = api.exportAppData;
+      function add(snap){ try{ snap.version = VERSION; snap.pwaDeploymentVersion = VERSION; snap.v24b = { nightingaleActionTileUnified:true, lowestAvailableEnemyNumbering:true, stickySupportLock:true }; }catch(err){} return snap; }
+      if(typeof oldFull === "function") api.exportFullSnapshot = function(){ return add(oldFull.apply(this, arguments)); };
+      if(typeof oldApp === "function") api.exportAppData = function(){ return add(oldApp.apply(this, arguments)); };
+    }catch(err){}
+  }
+
+  function init(){
+    patchEnemyNumbering();
+    interceptNightingaleSpellRoute();
+    bindSupportLock();
+    patchChrome(); patchSnapshots(); simplifyNightingaleActionCards(); stabilizeFooter();
+    setInterval(function(){ patchEnemyNumbering(); patchChrome(); patchSnapshots(); simplifyNightingaleActionCards(); stabilizeFooter(); }, 250);
+    setTimeout(function(){ setFlowStatus("V2.4B loaded: Nightingale spells are centralized in her dedicated panel, enemy spawns use the lowest available alive group number, and Trophy/heal actions no longer steal the sticky Apply state.", "ok"); }, 900);
+  }
+  ready(init);
+  window.middaraV24BApi = { lowestAvailableLabel:lowestAvailableLabel, showNightingalePanel:showNightingalePanel, stabilizeFooter:stabilizeFooter, clearSupportLock:clearSupportLock };
 })();
 </script>
 

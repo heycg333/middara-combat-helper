@@ -1,6 +1,6 @@
-// Middara Combat Helper V2.4A Nightingale spell / familiar polish service worker
+// Middara Combat Helper V2.4B Nightingale flow / spawn / footer patch service worker
 // Network-first for the app shell so GitHub Pages updates are picked up, with cache fallback for table use.
-const CACHE_VERSION = "v2-4a-nightingale-spell-familiar-2026-06-09";
+const CACHE_VERSION = "v2-4b-nightingale-flow-spawn-footer-2026-06-09";
 const CACHE_NAME = `middara-helper-${CACHE_VERSION}`;
 const CORE_ASSETS = [
   "./",

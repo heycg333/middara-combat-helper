@@ -1,9 +1,9 @@
 {
   "name": "Middara Combat Helper",
   "short_name": "Middara",
-  "description": "Middara Combat Helper V2.4A Nightingale spell/familiar polish: Life Grasp multi-target helper, Trophy effects, self-damage support, and post-damage heals.",
+  "description": "Middara Combat Helper V2.4B Nightingale flow cleanup, lowest-available enemy numbering, and sticky footer stabilization after support actions.",
   "id": "./?app=middara-combat-helper",
-  "start_url": "./index.html?v=2.4a",
+  "start_url": "./index.html?v=2.4b",
   "scope": "./",
   "display": "standalone",
   "display_override": [

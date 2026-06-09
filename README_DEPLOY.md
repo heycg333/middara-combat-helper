@@ -1,7 +1,10 @@
-# Middara Combat Helper V2.4A
+# Middara Combat Helper V2.4B
 
-Upload the extracted contents of this folder to the root of the GitHub Pages repository. Do not upload the ZIP itself.
+GitHub Pages root package. Upload the extracted contents of this ZIP to the repository root.
 
-After GitHub Pages deploys, open the hosted app on the tablet, use Data -> hosted/installable web app -> Update app cache, then reload or reopen the Home Screen app.
+V2.4B changes:
+- Nightingale action tile simplified: Spell / Force opens the dedicated Nightingale spell/familiar helper.
+- Enemy tracker spawn labels now use the lowest available alive group number.
+- Sticky footer/apply state is stabilized after Nightstalker's Trophy, Ring of Blood, Yuxa, Blood Toll, The Infection, and Life Grasp support actions.
 
-V2.4A focuses on Nightingale: Life Grasp multi-target Force/Conviction workflow, one-time self-damage bookkeeping, Nightstalker's Trophy effect helper, Blood Toll, The Infection, Ring of Blood, and Yuxa shortcuts.
+After uploading, open the hosted app, use Data -> hosted / installable web app -> Update app cache, then reload/reopen the Home Screen app.
