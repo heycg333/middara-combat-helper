@@ -1,7 +1,16 @@
-# Middara Combat Helper V2.3H - Remi / Zeke Chain Polish
+# Middara Combat Helper V2.3I
 
-Upload these extracted files to the root of the GitHub Pages repository. Do not upload this folder as a zip.
+Upload the extracted contents of this folder to the root of your GitHub Pages repository.
 
-After GitHub Pages deploys, open the app on the tablet, use Data > hosted / installable web app > Update app cache, then reload/reopen the Home Screen app.
+Required files:
 
-This build adds Remi Chain Pick / Scimitar / Whirlwind shortcuts and Zeke Onslaught / Blade Works helpers while preserving V2.3G tablet grid layout and V2.3F universal defensive reaction trays.
+- `index.html`
+- `manifest.webmanifest`
+- `service-worker.js`
+- `.nojekyll`
+- `CURRENT_VERSION.txt`
+- `icons/`
+
+After GitHub Pages finishes deploying, open the app on the tablet and use **Data -> hosted / installable web app -> Update app cache**, then reload/reopen the Home Screen app.
+
+V2.3I fixes Remi Chain Pick ranged FU routing, Whirlwind profile selection, and Zeke Onslaught follow-up roll reset behavior.

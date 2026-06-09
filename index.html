@@ -3,7 +3,7 @@
 <head>
   <meta charset="utf-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1" />
-  <title>Middara Combat Helper - V2.3H Remi / Zeke Chain Polish</title>
+  <title>Middara Combat Helper - V2.3I Remi / Zeke Chain Flow Fix</title>
   <style>
     :root {
       --bg: #101827;
@@ -650,7 +650,7 @@
     }
 
 
-    /* V2.3H Live-play readiness / in-app guide sync */
+    /* V2.3I Live-play readiness / in-app guide sync */
     .v22i-help-panel {
       border-color: rgba(163,230,53,.32);
       background: linear-gradient(180deg, rgba(163,230,53,.08), rgba(255,255,255,.012)), var(--panel);
@@ -684,13 +684,13 @@
     @media (max-width: 620px) { .v22i-recipe-grid, .v22i-check-grid, .v22i-status-grid { grid-template-columns:1fr; } .v22i-actions button { width:100%; } }
 
 
-    /* V2.3H counter flow / dodge preserve: prevent subtitle line-count changes from moving the page. */
+    /* V2.3I counter flow / dodge preserve: prevent subtitle line-count changes from moving the page. */
     header .subtitle { min-height: 1.35em; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
     @media (max-width: 720px) { header .subtitle { white-space: normal; min-height: 2.7em; } }
 
   
 
-    /* V2.3H Tablet grid layout restore / responsive density */
+    /* V2.3I Tablet grid layout restore / responsive density */
     @media (min-width: 700px) {
       body:not(.v23g-layout-stack) #mobileCombatFlowPanel .v22b-flow-grid {
         grid-template-columns: repeat(2, minmax(0, 1fr)) !important;
@@ -748,7 +748,7 @@
   <link rel="apple-touch-icon" sizes="180x180" href="./icons/apple-touch-icon.png" />
 
 <style id="v22g-table-session-style">
-  /* V2.3H live-play readiness / one-tablet live-play safety layer */
+  /* V2.3I live-play readiness / one-tablet live-play safety layer */
   .v22g-session-hub {
     margin-top: 12px;
     border: 1px solid rgba(163,230,53,.28);
@@ -834,7 +834,7 @@
 <body>
   <header>
     <h1>Middara Combat Helper</h1>
-    <div class="subtitle">V2.3H Remi/Zeke chain polish: live combat flow keeps the tablet 2x2 layout, universal defense trays, and adds Remi/Zeke chain follow-up shortcuts.</div>
+    <div class="subtitle">V2.3I Remi/Zeke chain flow fix: Chain Pick Command FU opens the spell-like tray, Whirlwind uses the selected Remi attack profile, and Onslaught FU attacks reset dice/options without changing target.</div>
   </header>
 
   <main>
@@ -921,10 +921,10 @@
     <section class="panel v22b-flow-panel" id="mobileCombatFlowPanel" data-v17-mode="play">
       <div class="cockpit-header">
         <div>
-          <h2>V2.3H Tablet / mobile live combat flow</h2>
+          <h2>V2.3I Tablet / mobile live combat flow</h2>
           <div class="note">Live table mode: choose Actor, Target, Action, then Resolve. Tablets use a 2x2 grid by default; phones stack the cards. Use the Layout toggle to force grid or stack if needed.</div>
         </div>
-        <div class="cockpit-badge">V2.3H Flow</div>
+        <div class="cockpit-badge">V2.3I Flow</div>
       </div>
       <div class="v22b-toolbar">
         <button type="button" id="v22bFocusToggle" class="v22b-focus-toggle">Focused phone mode: on</button>
@@ -1007,7 +1007,7 @@
 
     <section class="panel v23a-rook-defense-panel" id="rookDefensePanel" data-v17-mode="play">
       <details>
-        <summary>V2.3H Rook defensive / counter shortcuts</summary>
+        <summary>V2.3I Rook defensive / counter shortcuts</summary>
         <div class="note" style="margin-top:10px">Use these when Rook is targeted by an Attack, fails a Conviction check, or is about to Counter. The buttons route into existing enemy attack, enemy spell, card-state, workflow, and chain tools; board legality remains manual.</div>
         <div class="v23a-rook-defense-grid" style="margin-top:12px">
           <div class="soft-card">
@@ -2215,7 +2215,7 @@
     </section>
 
     <section class="panel rewards-panel" id="rewardsLootPanel" data-v17-mode="rewards encounter">
-      <!-- V2.3H: intentionally not shown in Data tab; Data is for backups, QA, and deployment. -->
+      <!-- V2.3I: intentionally not shown in Data tab; Data is for backups, QA, and deployment. -->
       <h2>8. Rewards / loot tracker</h2>
       <div class="note">Track combatant loot draws, loot-token outcomes, party gold, XP, and item notes. This does not replace the physical decks; it keeps the bookkeeping and session history clean.</div>
       <div class="rewards-metrics">
@@ -11998,7 +11998,7 @@ else {
     var h = document.querySelector("#enemyAiAssistantPanel h2");
     if (h) h.textContent = "6. Enemy AI preset library";
     var subtitle = document.querySelector("header .subtitle");
-    if (subtitle) subtitle.textContent = "V2.3H Remi/Zeke chain polish: live combat flow keeps the tablet 2x2 layout, universal defense trays, and adds Remi/Zeke chain follow-up shortcuts.";
+    if (subtitle) subtitle.textContent = "V2.3I Remi/Zeke chain flow fix: Chain Pick Command FU opens the spell-like tray, Whirlwind uses the selected Remi attack profile, and Onslaught FU attacks reset dice/options without changing target.";
   }
 
   function installPresetOptions() {
@@ -14664,9 +14664,9 @@ else {
     document.head.appendChild(style);
   }
   function updateChrome() {
-    document.title = "Middara Combat Helper - V2.3H Remi / Zeke Chain Polish";
+    document.title = "Middara Combat Helper - V2.3I Remi / Zeke Chain Flow Fix";
     var subtitle = document.querySelector("header .subtitle");
-    if (subtitle) subtitle.textContent = "V2.3H Remi/Zeke chain polish: live combat flow keeps the tablet 2x2 layout, universal defense trays, and adds Remi/Zeke chain follow-up shortcuts.";
+    if (subtitle) subtitle.textContent = "V2.3I Remi/Zeke chain flow fix: Chain Pick Command FU opens the spell-like tray, Whirlwind uses the selected Remi attack profile, and Onslaught FU attacks reset dice/options without changing target.";
     var h = byId("commandCombatantPanel") && byId("commandCombatantPanel").querySelector("h2");
     if (h) h.textContent = "V2.1E Command Combatant / Loyal Esper tracker";
     var badge = byId("commandCombatantPanel") && byId("commandCombatantPanel").querySelector(".cockpit-badge");
@@ -15138,7 +15138,7 @@ else {
   }
   function updateChrome() {
     var title = document.querySelector("header .subtitle");
-    if (title && title.textContent.indexOf("V2.1F") < 0) title.textContent = "V2.3H Remi/Zeke chain polish: live combat flow keeps the tablet 2x2 layout, universal defense trays, and adds Remi/Zeke chain follow-up shortcuts.";
+    if (title && title.textContent.indexOf("V2.1F") < 0) title.textContent = "V2.3I Remi/Zeke chain flow fix: Chain Pick Command FU opens the spell-like tray, Whirlwind uses the selected Remi attack profile, and Onslaught FU attacks reset dice/options without changing target.";
   }
   installRestoreWrapper();
   ready(function () {
@@ -15601,7 +15601,7 @@ else {
   function updateChrome() {
     try {
       var sub = document.querySelector("header .subtitle");
-      if (sub) sub.textContent = "V2.3H Remi/Zeke chain polish: live combat flow keeps the tablet 2x2 layout, universal defense trays, and adds Remi/Zeke chain follow-up shortcuts.";
+      if (sub) sub.textContent = "V2.3I Remi/Zeke chain flow fix: Chain Pick Command FU opens the spell-like tray, Whirlwind uses the selected Remi attack profile, and Onslaught FU attacks reset dice/options without changing target.";
     } catch (err) { }
   }
 
@@ -15636,7 +15636,7 @@ else {
 <script>
 (function () {
   "use strict";
-  var VERSION = "V2.3H";
+  var VERSION = "V2.3I";
   var STORAGE_KEY = "middaraCombatHelperV22BMobileFlow";
   var FOCUS_KEY = "middaraCombatHelperV22BPhoneFocus";
   var renderTimer = null;
@@ -16037,7 +16037,7 @@ else {
 
   function calculateCurrent() {
     var type = state.pendingType || "attack";
-    // V2.3H: if the attack tray/action is active, never let stale spell state steal the Apply button.
+    // V2.3I: if the attack tray/action is active, never let stale spell state steal the Apply button.
     if (document.body.classList.contains("v22b-show-attack")) type = "attack";
     if (document.body.classList.contains("v22b-show-spell") && type !== "attack") type = "spell";
     clearApplied();
@@ -16253,7 +16253,7 @@ else {
   function patchSnapshots() {
     if (window.__middaraV22BSnapshotPatch) return;
     window.__middaraV22BSnapshotPatch = true;
-    function addFlow(snap) { try { snap.version = "V2.3H"; snap.pwaDeploymentVersion = "V2.3H"; snap.mobileFlowState = JSON.parse(JSON.stringify(state)); } catch (err) {} return snap; }
+    function addFlow(snap) { try { snap.version = "V2.3I"; snap.pwaDeploymentVersion = "V2.3I"; snap.mobileFlowState = JSON.parse(JSON.stringify(state)); } catch (err) {} return snap; }
     if (window.middaraDataManagerApi) {
       var api = window.middaraDataManagerApi;
       var oldFull = api.exportFullSnapshot;
@@ -16266,9 +16266,9 @@ else {
   }
 
   function updateChrome() {
-    document.title = "Middara Combat Helper - V2.3H Remi / Zeke Chain Polish";
+    document.title = "Middara Combat Helper - V2.3I Remi / Zeke Chain Flow Fix";
     var sub = document.querySelector("header .subtitle");
-    if (sub) sub.textContent = "V2.3H Remi/Zeke chain polish: live combat flow keeps the tablet 2x2 layout, universal defense trays, and adds Remi/Zeke chain follow-up shortcuts.";
+    if (sub) sub.textContent = "V2.3I Remi/Zeke chain flow fix: Chain Pick Command FU opens the spell-like tray, Whirlwind uses the selected Remi attack profile, and Onslaught FU attacks reset dice/options without changing target.";
   }
 
   function init() {
@@ -16281,7 +16281,7 @@ else {
     render();
     setTimeout(function () { patchSnapshots(); updateChrome(); render(); }, 700);
     setInterval(function () { updateFooter(); }, 1200);
-    setStatus("V2.3H live flow ready. Choose Actor -> Target -> Action -> Dice -> Apply; Dodge toggles preserve enemy rolls.", "ok");
+    setStatus("V2.3I live flow ready. Choose Actor -> Target -> Action -> Dice -> Apply; Dodge toggles preserve enemy rolls.", "ok");
   }
 
   ready(init);
@@ -16293,7 +16293,7 @@ else {
 <script>
 (function () {
   "use strict";
-  var VERSION = "V2.3H";
+  var VERSION = "V2.3I";
   function ready(fn) { if (document.readyState === "loading") document.addEventListener("DOMContentLoaded", fn); else setTimeout(fn, 0); }
   function byId(id) { return document.getElementById(id); }
   function esc(v) { return String(v == null ? "" : v).replace(/[&<>"']/g, function (c) { return {"&":"&amp;","<":"&lt;",">":"&gt;","\"":"&quot;","'":"&#39;"}[c]; }); }
@@ -16420,11 +16420,11 @@ else {
     }, true);
   }
   function updateChrome() {
-    document.title = "Middara Combat Helper - V2.3H Remi / Zeke Chain Polish";
+    document.title = "Middara Combat Helper - V2.3I Remi / Zeke Chain Flow Fix";
     var sub = document.querySelector("header .subtitle");
-    if (sub) sub.textContent = "V2.3H Remi/Zeke chain polish: live combat flow keeps the tablet 2x2 layout, universal defense trays, and adds Remi/Zeke chain follow-up shortcuts.";
-    var h = document.querySelector("#mobileCombatFlowPanel h2"); if (h) h.textContent = "V2.3H Tablet / mobile live combat flow";
-    var badge = document.querySelector("#mobileCombatFlowPanel .cockpit-badge"); if (badge) badge.textContent = "V2.3H Flow";
+    if (sub) sub.textContent = "V2.3I Remi/Zeke chain flow fix: Chain Pick Command FU opens the spell-like tray, Whirlwind uses the selected Remi attack profile, and Onslaught FU attacks reset dice/options without changing target.";
+    var h = document.querySelector("#mobileCombatFlowPanel h2"); if (h) h.textContent = "V2.3I Tablet / mobile live combat flow";
+    var badge = document.querySelector("#mobileCombatFlowPanel .cockpit-badge"); if (badge) badge.textContent = "V2.3I Flow";
     var pwa = byId("pwaVersionText"); if (pwa) pwa.textContent = VERSION;
   }
   function tick() {
@@ -16449,7 +16449,7 @@ else {
 <script>
 (function () {
   "use strict";
-  var VERSION = "V2.3H";
+  var VERSION = "V2.3I";
   var CACHE_PREFIX = "middara-helper-";
   function ready(fn) { if (document.readyState === "loading") document.addEventListener("DOMContentLoaded", fn); else fn(); }
   function byId(id) { return document.getElementById(id); }
@@ -16597,11 +16597,11 @@ else {
     });
   }
   function updateChrome() {
-    document.title = "Middara Combat Helper - V2.3H Remi / Zeke Chain Polish";
+    document.title = "Middara Combat Helper - V2.3I Remi / Zeke Chain Flow Fix";
     var sub = document.querySelector("header .subtitle");
-    if (sub) sub.textContent = "V2.3H Remi/Zeke chain polish: live combat flow keeps the tablet 2x2 layout, universal defense trays, and adds Remi/Zeke chain follow-up shortcuts.";
+    if (sub) sub.textContent = "V2.3I Remi/Zeke chain flow fix: Chain Pick Command FU opens the spell-like tray, Whirlwind uses the selected Remi attack profile, and Onslaught FU attacks reset dice/options without changing target.";
     var pwa = byId("pwaVersionText"); if (pwa) pwa.textContent = "V2.2E";
-    var h = document.querySelector("#mobileCombatFlowPanel h2"); if (h) h.textContent = "V2.3H Tablet / mobile live combat flow";
+    var h = document.querySelector("#mobileCombatFlowPanel h2"); if (h) h.textContent = "V2.3I Tablet / mobile live combat flow";
   }
   function bindMobileHelp() {
     var flow = byId("mobileCombatFlowPanel");
@@ -16631,7 +16631,7 @@ else {
 <script id="v22g-table-session-script">
 (function(){
   "use strict";
-  var VERSION = "V2.3H";
+  var VERSION = "V2.3I";
   var CHECK_KEY = "middaraCombatHelperV22GSessionChecklist";
   var RECENT_KEY = "middaraCombatHelperV22GRecentActions";
   function byId(id){ return document.getElementById(id); }
@@ -16744,7 +16744,7 @@ else {
     hub.id = "v22gSessionHub";
     hub.className = "v22g-session-hub";
     hub.innerHTML = '' +
-      '<div class="v22g-session-head"><div><h3>V2.3H live-play readiness</h3><div class="tiny">One-tablet controls for setup, backup, quick undo, and end-of-encounter cleanup. Use this as a safety rail around the main live combat flow.</div></div><div class="v22g-session-badge">Table-ready pass</div></div>' +
+      '<div class="v22g-session-head"><div><h3>V2.3I live-play readiness</h3><div class="tiny">One-tablet controls for setup, backup, quick undo, and end-of-encounter cleanup. Use this as a safety rail around the main live combat flow.</div></div><div class="v22g-session-badge">Table-ready pass</div></div>' +
       '<div id="v22gStatusStrip" class="v22g-status-strip"></div>' +
       '<div id="v22gChecklist" class="v22g-checklist"></div>' +
       '<div class="v22g-session-grid">' +
@@ -16798,11 +16798,11 @@ else {
     else if (action === "rewards") route("rewards", "rewardsLootPanel");
   }
   function init(){
-    document.title = "Middara Combat Helper - V2.3H Remi / Zeke Chain Polish";
+    document.title = "Middara Combat Helper - V2.3I Remi / Zeke Chain Flow Fix";
     var h = document.querySelector("header h1"); if (h) h.textContent = "Middara Combat Helper";
-    var sub = document.querySelector("header .subtitle"); if (sub) sub.textContent = "V2.3H Remi/Zeke chain polish: live combat flow keeps the tablet 2x2 layout, universal defense trays, and adds Remi/Zeke chain follow-up shortcuts.";
-    var flowH = document.querySelector("#mobileCombatFlowPanel h2"); if (flowH) flowH.textContent = "V2.3H Tablet / mobile live combat flow";
-    var badge = document.querySelector("#mobileCombatFlowPanel .cockpit-badge"); if (badge) badge.textContent = "V2.3H Flow";
+    var sub = document.querySelector("header .subtitle"); if (sub) sub.textContent = "V2.3I Remi/Zeke chain flow fix: Chain Pick Command FU opens the spell-like tray, Whirlwind uses the selected Remi attack profile, and Onslaught FU attacks reset dice/options without changing target.";
+    var flowH = document.querySelector("#mobileCombatFlowPanel h2"); if (flowH) flowH.textContent = "V2.3I Tablet / mobile live combat flow";
+    var badge = document.querySelector("#mobileCombatFlowPanel .cockpit-badge"); if (badge) badge.textContent = "V2.3I Flow";
     injectHub(); addFooterUndo();
     document.addEventListener("click", function(ev){
       var node = ev.target && ev.target.closest ? ev.target.closest("[data-v22g-action]") : null;
@@ -16815,7 +16815,7 @@ else {
     }, true);
     document.addEventListener("click", function(){ setTimeout(function(){ addFooterUndo(); renderStatus(); }, 240); }, true);
     setInterval(renderStatus, 4000);
-    setStatus("V2.3H session hub ready. Rewards are kept on the Rewards/Encounter views; the Data tab is reserved for backups, QA, and deployment tools.", "ok");
+    setStatus("V2.3I session hub ready. Rewards are kept on the Rewards/Encounter views; the Data tab is reserved for backups, QA, and deployment tools.", "ok");
   }
   if (document.readyState === "loading") document.addEventListener("DOMContentLoaded", init);
   else setTimeout(init, 0);
@@ -16826,7 +16826,7 @@ else {
 <script>
 (function(){
   "use strict";
-  var VERSION = "V2.3H";
+  var VERSION = "V2.3I";
   var CHECK_KEY = "middara_v22i_live_checklist";
   var EXPORT_KEY = "middara_v22i_last_snapshot_export";
   var TEST_KEY = "middara_v22i_last_self_test";
@@ -16974,7 +16974,7 @@ else {
     panel.className = "panel v22i-help-panel";
     panel.setAttribute("data-v17-mode", "play");
     panel.innerHTML = '' +
-      '<div class="v22i-help-head"><div><h3>V2.3H live-play guide</h3><div class="note">Use this as the tablet workflow reference during a session. It summarizes the intended route without opening the external guide.</div></div><div class="v22i-badge">Table workflow</div></div>' +
+      '<div class="v22i-help-head"><div><h3>V2.3I live-play guide</h3><div class="note">Use this as the tablet workflow reference during a session. It summarizes the intended route without opening the external guide.</div></div><div class="v22i-badge">Table workflow</div></div>' +
       '<div class="v22i-recipe-grid">' +
         '<div class="v22i-recipe"><strong>Adventurer attack</strong><div><code>Actor -> Target + Attack -> Dice auto-calc -> Apply -> Chain/Next</code></div></div>' +
         '<div class="v22i-recipe"><strong>Adventurer / Esper spell</strong><div><code>Actor -> target -> spell action -> Force/Conviction auto-calc -> Apply</code></div></div>' +
@@ -17012,7 +17012,7 @@ else {
         '<button type="button" data-v22i-action="openData">Open backup / update tools</button>' +
       '</div>' +
       '<div id="v22iSelfTestOutput" class="tiny" style="margin-top:10px">Run the table workflow test to verify the main live-use hooks loaded.</div>' +
-      '<div id="v22iStatus" class="ok-box note" style="margin-top:10px">V2.3H guide ready.</div>';
+      '<div id="v22iStatus" class="ok-box note" style="margin-top:10px">V2.3I guide ready.</div>';
     anchor.insertAdjacentElement("afterend", panel);
     renderChecklist();
   }
@@ -17027,7 +17027,7 @@ else {
     wrap.style.borderRadius = "14px";
     wrap.style.padding = "12px";
     wrap.innerHTML = '' +
-      '<h3 style="margin-top:0">V2.3H save / update status</h3>' +
+      '<h3 style="margin-top:0">V2.3I save / update status</h3>' +
       '<div class="note">Save state is local to this browser and this hosted URL. Use full snapshot export before changing devices, hosts, or GitHub builds.</div>' +
       '<div class="v22i-status-grid">' +
         '<div class="v22i-status-card"><div class="label">Version</div><div class="value" id="v22iVersionValue">-</div></div>' +
@@ -17065,14 +17065,14 @@ else {
     });
   }
   function patchTitles(){
-    document.title = "Middara Combat Helper - V2.3H Remi / Zeke Chain Polish";
+    document.title = "Middara Combat Helper - V2.3I Remi / Zeke Chain Flow Fix";
     var sub = document.querySelector("header .subtitle");
-    if (sub) sub.textContent = "V2.3H Remi/Zeke chain polish: live combat flow keeps the tablet 2x2 layout, universal defense trays, and adds Remi/Zeke chain follow-up shortcuts.";
-    var flowH = document.querySelector("#mobileCombatFlowPanel h2"); if (flowH) flowH.textContent = "V2.3H Tablet live combat flow";
-    var badge = document.querySelector("#mobileCombatFlowPanel .cockpit-badge"); if (badge) badge.textContent = "V2.3H Flow";
-    var hubH = document.querySelector("#v22gSessionHub h3"); if (hubH) hubH.textContent = "V2.3H table session hub";
+    if (sub) sub.textContent = "V2.3I Remi/Zeke chain flow fix: Chain Pick Command FU opens the spell-like tray, Whirlwind uses the selected Remi attack profile, and Onslaught FU attacks reset dice/options without changing target.";
+    var flowH = document.querySelector("#mobileCombatFlowPanel h2"); if (flowH) flowH.textContent = "V2.3I Tablet live combat flow";
+    var badge = document.querySelector("#mobileCombatFlowPanel .cockpit-badge"); if (badge) badge.textContent = "V2.3I Flow";
+    var hubH = document.querySelector("#v22gSessionHub h3"); if (hubH) hubH.textContent = "V2.3I table session hub";
     var hubTiny = document.querySelector("#v22gSessionHub .v22g-session-head .tiny"); if (hubTiny) hubTiny.textContent = "One-tablet controls for setup, backup, quick undo, end-of-encounter cleanup, and live-play readiness.";
-    var pwaSummary = document.querySelector(".v22c-pwa-panel summary"); if (pwaSummary) pwaSummary.textContent = "V2.3H hosted / installable web app";
+    var pwaSummary = document.querySelector(".v22c-pwa-panel summary"); if (pwaSummary) pwaSummary.textContent = "V2.3I hosted / installable web app";
     var pwa = byId("pwaVersionText"); if (pwa) pwa.textContent = VERSION;
   }
   function init(){
@@ -17096,7 +17096,7 @@ else {
 
 
 <style id="v22jLiveFlowPriorityStyles">
-  /* V2.3H Live-flow priority / collapsible session tools */
+  /* V2.3I Live-flow priority / collapsible session tools */
   #mobileCombatFlowPanel.v22j-flow-priority {
     border-color: rgba(163,230,53,.42);
     background: linear-gradient(180deg, rgba(163,230,53,.07), rgba(56,189,248,.035), rgba(255,255,255,.012)), var(--panel);
@@ -17207,7 +17207,7 @@ else {
 <script id="v22jLiveFlowPriorityScript">
 (function(){
   "use strict";
-  var VERSION = "V2.3H";
+  var VERSION = "V2.3I";
   function byId(id){ return document.getElementById(id); }
   function text(el, value){ if (el) el.textContent = value; }
   function hasClass(el, cls){ return el && (" " + el.className + " ").indexOf(" " + cls + " ") >= 0; }
@@ -17222,16 +17222,16 @@ else {
     if (flow && flow.scrollIntoView) flow.scrollIntoView({behavior:"smooth", block:"start"});
   }
   function patchTitles(){
-    document.title = "Middara Combat Helper - V2.3H Remi / Zeke Chain Polish";
+    document.title = "Middara Combat Helper - V2.3I Remi / Zeke Chain Flow Fix";
     var sub = document.querySelector("header .subtitle");
-    if (sub) sub.textContent = "V2.3H Remi/Zeke chain polish: live combat flow keeps the tablet 2x2 layout, universal defense trays, and adds Remi/Zeke chain follow-up shortcuts.";
+    if (sub) sub.textContent = "V2.3I Remi/Zeke chain flow fix: Chain Pick Command FU opens the spell-like tray, Whirlwind uses the selected Remi attack profile, and Onslaught FU attacks reset dice/options without changing target.";
     var flowH = document.querySelector("#mobileCombatFlowPanel h2");
-    if (flowH) flowH.textContent = "V2.3H Tablet live combat flow";
+    if (flowH) flowH.textContent = "V2.3I Tablet live combat flow";
     var badge = document.querySelector("#mobileCombatFlowPanel .cockpit-badge");
-    if (badge) badge.textContent = "V2.3H Flow";
+    if (badge) badge.textContent = "V2.3I Flow";
     var pwa = byId("pwaVersionText"); if (pwa) pwa.textContent = VERSION;
-    var pwaSummary = document.querySelector(".v22c-pwa-panel summary"); if (pwaSummary) pwaSummary.textContent = "V2.3H hosted / installable web app";
-    var dataH = document.querySelector("#v22iDataStatusPanel h3"); if (dataH) dataH.textContent = "V2.3H save / update status";
+    var pwaSummary = document.querySelector(".v22c-pwa-panel summary"); if (pwaSummary) pwaSummary.textContent = "V2.3I hosted / installable web app";
+    var dataH = document.querySelector("#v22iDataStatusPanel h3"); if (dataH) dataH.textContent = "V2.3I save / update status";
     var hubTitle = document.querySelector("#v22gSessionHub h3"); if (hubTitle) hubTitle.textContent = "Table session hub";
     var guideTitle = document.querySelector("#v22iGuidePanel h3"); if (guideTitle) guideTitle.textContent = "Live-play guide";
   }
@@ -17335,7 +17335,7 @@ else {
 
 
 <style id="v22k-auto-calc-style">
-  /* V2.3H auto-calc streamlined flow */
+  /* V2.3I auto-calc streamlined flow */
   #v22bFooterCalc,
   #mobileCombatFlowPanel .v22b-primary-actions [data-v22b-action="calculateCurrent"] {
     display: none !important;
@@ -17366,7 +17366,7 @@ else {
 <script id="v22k-auto-calc-script">
 (function(){
   "use strict";
-  var VERSION = "V2.3H";
+  var VERSION = "V2.3I";
   var appliedKey = "";
   var appliedLabel = "";
   var autoTimer = null;
@@ -17536,12 +17536,12 @@ else {
     var mo = new MutationObserver(function(){ schedulePaint(); });
     mo.observe(document.body, { childList:true, subtree:true, characterData:true });
     setInterval(paint, 1000);
-    document.title = "Middara Combat Helper - V2.3H Remi / Zeke Chain Polish";
+    document.title = "Middara Combat Helper - V2.3I Remi / Zeke Chain Flow Fix";
     var sub = document.querySelector("header .subtitle");
-    if (sub) sub.textContent = "V2.3H Remi/Zeke chain polish: live combat flow keeps the tablet 2x2 layout, universal defense trays, and adds Remi/Zeke chain follow-up shortcuts.";
-    var flowH = document.querySelector("#mobileCombatFlowPanel h2"); if (flowH) flowH.textContent = "V2.3H Tablet live combat flow";
-    var badge = document.querySelector("#mobileCombatFlowPanel .cockpit-badge"); if (badge) badge.textContent = "V2.3H Auto-calc";
-    var pwaSummary = document.querySelector(".v22c-pwa-panel summary"); if (pwaSummary) pwaSummary.textContent = "V2.3H hosted / installable web app";
+    if (sub) sub.textContent = "V2.3I Remi/Zeke chain flow fix: Chain Pick Command FU opens the spell-like tray, Whirlwind uses the selected Remi attack profile, and Onslaught FU attacks reset dice/options without changing target.";
+    var flowH = document.querySelector("#mobileCombatFlowPanel h2"); if (flowH) flowH.textContent = "V2.3I Tablet live combat flow";
+    var badge = document.querySelector("#mobileCombatFlowPanel .cockpit-badge"); if (badge) badge.textContent = "V2.3I Auto-calc";
+    var pwaSummary = document.querySelector(".v22c-pwa-panel summary"); if (pwaSummary) pwaSummary.textContent = "V2.3I hosted / installable web app";
     setTimeout(function(){ paint(); autoCalcAttack(); }, 350);
   }
   if (document.readyState === "loading") document.addEventListener("DOMContentLoaded", install);
@@ -17563,7 +17563,7 @@ else {
 </style>
 <script id="v23a-rook-defense-spell-empower-script">
 (function(){
-  var VERSION = "V2.3H";
+  var VERSION = "V2.3I";
   function byId(id){ return document.getElementById(id); }
   function setVal(id, value){ var el = byId(id); if (el) el.value = value; }
   function setChecked(id, value){ var el = byId(id); if (el) el.checked = !!value; }
@@ -17646,12 +17646,12 @@ else {
     box.innerHTML = html;
   }
   function updateVersionChrome(){
-    document.title = "Middara Combat Helper - V2.3H Remi / Zeke Chain Polish";
-    var sub = document.querySelector("header .subtitle"); if (sub) sub.textContent = "V2.3H Remi/Zeke chain polish: live combat flow keeps the tablet 2x2 layout, universal defense trays, and adds Remi/Zeke chain follow-up shortcuts.";
-    var flowH = document.querySelector("#mobileCombatFlowPanel h2"); if (flowH) flowH.textContent = "V2.3H Tablet live combat flow";
-    var badge = document.querySelector("#mobileCombatFlowPanel .cockpit-badge"); if (badge) badge.textContent = "V2.3H";
-    var pwaSummary = document.querySelector(".v22c-pwa-panel summary"); if (pwaSummary) pwaSummary.textContent = "V2.3H hosted / installable web app";
-    var dataH = document.querySelector("#v22iDataStatusPanel h3"); if (dataH) dataH.textContent = "V2.3H save / update status";
+    document.title = "Middara Combat Helper - V2.3I Remi / Zeke Chain Flow Fix";
+    var sub = document.querySelector("header .subtitle"); if (sub) sub.textContent = "V2.3I Remi/Zeke chain flow fix: Chain Pick Command FU opens the spell-like tray, Whirlwind uses the selected Remi attack profile, and Onslaught FU attacks reset dice/options without changing target.";
+    var flowH = document.querySelector("#mobileCombatFlowPanel h2"); if (flowH) flowH.textContent = "V2.3I Tablet live combat flow";
+    var badge = document.querySelector("#mobileCombatFlowPanel .cockpit-badge"); if (badge) badge.textContent = "V2.3I";
+    var pwaSummary = document.querySelector(".v22c-pwa-panel summary"); if (pwaSummary) pwaSummary.textContent = "V2.3I hosted / installable web app";
+    var dataH = document.querySelector("#v22iDataStatusPanel h3"); if (dataH) dataH.textContent = "V2.3I save / update status";
     var v = byId("v22iVersionValue"); if (v) v.textContent = VERSION;
   }
   function syncRookPanelEmpowerToSpell(){
@@ -17679,19 +17679,19 @@ else {
 <script>
 (function () {
   "use strict";
-  var TITLE = "Middara Combat Helper - V2.3H Remi / Zeke Chain Polish";
-  var SUBTITLE = "V2.3H Remi/Zeke chain polish: live combat flow keeps the tablet 2x2 layout, universal defense trays, and adds Remi/Zeke chain follow-up shortcuts.";
+  var TITLE = "Middara Combat Helper - V2.3I Remi / Zeke Chain Flow Fix";
+  var SUBTITLE = "V2.3I Remi/Zeke chain flow fix: Chain Pick Command FU opens the spell-like tray, Whirlwind uses the selected Remi attack profile, and Onslaught FU attacks reset dice/options without changing target.";
   function stabilizeHeader() {
     try {
       if (document.title !== TITLE) document.title = TITLE;
       var sub = document.querySelector("header .subtitle");
       if (sub && sub.textContent !== SUBTITLE) sub.textContent = SUBTITLE;
       var flowH = document.querySelector("#mobileCombatFlowPanel h2");
-      if (flowH && flowH.textContent.indexOf("V2.3H") < 0) flowH.textContent = "V2.3H Tablet live combat flow";
+      if (flowH && flowH.textContent.indexOf("V2.3I") < 0) flowH.textContent = "V2.3I Tablet live combat flow";
       var badge = document.querySelector("#mobileCombatFlowPanel .cockpit-badge");
-      if (badge && badge.textContent.indexOf("V2.3H") < 0) badge.textContent = "V2.3H";
+      if (badge && badge.textContent.indexOf("V2.3I") < 0) badge.textContent = "V2.3I";
       var pwaSummary = document.querySelector(".v22c-pwa-panel summary");
-      if (pwaSummary && pwaSummary.textContent.indexOf("V2.3H") < 0) pwaSummary.textContent = "V2.3H hosted / installable web app";
+      if (pwaSummary && pwaSummary.textContent.indexOf("V2.3I") < 0) pwaSummary.textContent = "V2.3I hosted / installable web app";
     } catch (err) {}
   }
   if (document.readyState === "loading") document.addEventListener("DOMContentLoaded", stabilizeHeader);
@@ -17705,7 +17705,7 @@ else {
 
 
 <style id="v23c-in-context-defense-style">
-  /* V2.3H in-context defense and Play-only live flow guard */
+  /* V2.3I in-context defense and Play-only live flow guard */
   body[data-v17-current-mode]:not([data-v17-current-mode="play"]):not([data-v17-current-mode="all"]) #mobileCombatFlowPanel {
     display: none !important;
   }
@@ -17817,7 +17817,7 @@ else {
 <script id="v23c-in-context-defense-script">
 (function () {
   "use strict";
-  var VERSION = "V2.3H";
+  var VERSION = "V2.3I";
   var lastMode = "";
   function ready(fn) { if (document.readyState === "loading") document.addEventListener("DOMContentLoaded", fn); else setTimeout(fn, 0); }
   function byId(id) { return document.getElementById(id); }
@@ -18085,7 +18085,7 @@ else {
 <script>
 (function () {
   "use strict";
-  var VERSION = "V2.3H";
+  var VERSION = "V2.3I";
   var MOBILE_FLOW_STORAGE_KEY = "middaraCombatHelperV22BMobileFlow";
   function ready(fn) { if (document.readyState === "loading") document.addEventListener("DOMContentLoaded", fn); else setTimeout(fn, 0); }
   function byId(id) { return document.getElementById(id); }
@@ -18314,7 +18314,7 @@ else {
 
 
 <style id="v23e-universal-counter-style">
-  /* V2.3H universal defense trays */
+  /* V2.3I universal defense trays */
   #v23cRookCounterBox { display: none !important; }
   .v23e-counter-tray {
     border: 1px solid rgba(251,191,36,.46);
@@ -18389,7 +18389,7 @@ else {
 <script id="v23e-universal-counter-script">
 (function () {
   "use strict";
-  var VERSION = "V2.3H";
+  var VERSION = "V2.3I";
   var MOBILE_FLOW_STORAGE_KEY = "middaraCombatHelperV22BMobileFlow";
   var ADVENTURERS = {
     rook: { name:"Rook", profile:"rook_loche_svalinn" },
@@ -18626,14 +18626,14 @@ else {
     var calc = byId("calculateEnemyAttackButton"); if (calc) calc.addEventListener("click", function () { setTimeout(renderUniversalCounterTray, 60); }, true);
   }
   function patchChromeAndSnapshot() {
-    document.title = "Middara Combat Helper - V2.3H Remi / Zeke Chain Polish";
+    document.title = "Middara Combat Helper - V2.3I Remi / Zeke Chain Flow Fix";
     var sub = document.querySelector("header .subtitle");
-    if (sub) sub.textContent = "V2.3H Remi/Zeke chain polish: live combat flow keeps the tablet 2x2 layout, universal defense trays, and adds Remi/Zeke chain follow-up shortcuts.";
-    var h = document.querySelector("#mobileCombatFlowPanel h2"); if (h) h.textContent = "V2.3H Tablet live combat flow";
-    var badge = document.querySelector("#mobileCombatFlowPanel .cockpit-badge"); if (badge) badge.textContent = "V2.3H Flow";
+    if (sub) sub.textContent = "V2.3I Remi/Zeke chain flow fix: Chain Pick Command FU opens the spell-like tray, Whirlwind uses the selected Remi attack profile, and Onslaught FU attacks reset dice/options without changing target.";
+    var h = document.querySelector("#mobileCombatFlowPanel h2"); if (h) h.textContent = "V2.3I Tablet live combat flow";
+    var badge = document.querySelector("#mobileCombatFlowPanel .cockpit-badge"); if (badge) badge.textContent = "V2.3I Flow";
     var pwa = byId("pwaVersionText"); if (pwa) pwa.textContent = VERSION;
-    var pwaSummary = document.querySelector(".v22c-pwa-panel summary"); if (pwaSummary) pwaSummary.textContent = "V2.3H hosted / installable web app";
-    var dataH = document.querySelector("#v22iDataStatusPanel h3"); if (dataH) dataH.textContent = "V2.3H save / update status";
+    var pwaSummary = document.querySelector(".v22c-pwa-panel summary"); if (pwaSummary) pwaSummary.textContent = "V2.3I hosted / installable web app";
+    var dataH = document.querySelector("#v22iDataStatusPanel h3"); if (dataH) dataH.textContent = "V2.3I save / update status";
     try {
       if (window.middaraDataManagerApi && !window.__v23eSnapshotPatch) {
         window.__v23eSnapshotPatch = true;
@@ -18663,7 +18663,7 @@ else {
 
 
 <style id="v23f-universal-defense-tray-style">
-  /* V2.3H universal defensive reaction trays */
+  /* V2.3I universal defensive reaction trays */
   #v23cRookDefenseTray { display: none !important; }
   .v23f-defense-tray {
     border: 1px solid rgba(56,189,248,.46);
@@ -18767,7 +18767,7 @@ else {
 <script id="v23f-universal-defense-trays-script">
 (function () {
   "use strict";
-  var VERSION = "V2.3H";
+  var VERSION = "V2.3I";
   var ADVENTURERS = {
     rook: "Rook",
     remi: "Remi",
@@ -18923,7 +18923,7 @@ else {
     try {
       if (typeof window.addPartyTokenToMember === "function") {
         if (typeof window.pushPartyHistory === "function") window.pushPartyHistory();
-        var ok = window.addPartyTokenToMember(id, token, "V2.3H defense tray");
+        var ok = window.addPartyTokenToMember(id, token, "V2.3I defense tray");
         if (typeof window.savePartyState === "function") window.savePartyState();
         if (typeof window.renderParty === "function") window.renderParty();
         if (typeof window.renderDataJson === "function") window.renderDataJson();
@@ -19002,7 +19002,7 @@ else {
     if (action === "remi_mantle_heal") {
       applySp("remi", -1, "Mantle of Inner Peace");
       applyDamage("remi", -2, "Mantle of Inner Peace miss heal");
-      addWorkflow("Remi - Mantle of Inner Peace", "Attack missed. Spent 1 SP and healed Remi 2 from the V2.3H defense tray.");
+      addWorkflow("Remi - Mantle of Inner Peace", "Attack missed. Spent 1 SP and healed Remi 2 from the V2.3I defense tray.");
       setStatus("Applied Remi Mantle miss heal: -1 SP, heal 2.", "ok");
       return true;
     }
@@ -19093,7 +19093,7 @@ else {
       if (snap.intents.zeke_morbid_dodge) { changes.push({ id:"zeke_morbid_dodge", state:"exhausted" }); notes.push("Zeke Morbid Leather Dodge reroll exhausted"); }
       if (snap.intents.zeke_nimble) notes.push("Zeke Nimble Fighter Dodge reroll noted");
     }
-    if (changes.length) setManyCards(changes, "V2.3H enemy-attack defensive reactions applied: " + notes.join(", ") + ".");
+    if (changes.length) setManyCards(changes, "V2.3I enemy-attack defensive reactions applied: " + notes.join(", ") + ".");
     if (notes.length) addWorkflow("Defensive reactions", "After Enemy Attack Apply: " + notes.join(", ") + ".");
     if (notes.length) setStatus("Defensive state updated: " + notes.join(", ") + ".", "ok");
     state.intents = {};
@@ -19125,14 +19125,14 @@ else {
     var calc = byId("calculateEnemyAttackButton"); if (calc) calc.addEventListener("click", function () { setTimeout(function(){ renderDefenseTray(lastEnemyAttack()); }, 80); }, true);
   }
   function patchChromeAndSnapshots() {
-    document.title = "Middara Combat Helper - V2.3H Remi / Zeke Chain Polish";
+    document.title = "Middara Combat Helper - V2.3I Remi / Zeke Chain Flow Fix";
     var sub = document.querySelector("header .subtitle");
-    if (sub) sub.textContent = "V2.3H Remi/Zeke chain polish: live combat flow keeps the tablet 2x2 layout, universal defense trays, and adds Remi/Zeke chain follow-up shortcuts.";
-    var h = document.querySelector("#mobileCombatFlowPanel h2"); if (h) h.textContent = "V2.3H Tablet live combat flow";
-    var badge = document.querySelector("#mobileCombatFlowPanel .cockpit-badge"); if (badge) badge.textContent = "V2.3H Flow";
+    if (sub) sub.textContent = "V2.3I Remi/Zeke chain flow fix: Chain Pick Command FU opens the spell-like tray, Whirlwind uses the selected Remi attack profile, and Onslaught FU attacks reset dice/options without changing target.";
+    var h = document.querySelector("#mobileCombatFlowPanel h2"); if (h) h.textContent = "V2.3I Tablet live combat flow";
+    var badge = document.querySelector("#mobileCombatFlowPanel .cockpit-badge"); if (badge) badge.textContent = "V2.3I Flow";
     var pwa = byId("pwaVersionText"); if (pwa) pwa.textContent = VERSION;
-    var pwaSummary = document.querySelector(".v22c-pwa-panel summary"); if (pwaSummary) pwaSummary.textContent = "V2.3H hosted / installable web app";
-    var dataH = document.querySelector("#v22iDataStatusPanel h3"); if (dataH) dataH.textContent = "V2.3H save / update status";
+    var pwaSummary = document.querySelector(".v22c-pwa-panel summary"); if (pwaSummary) pwaSummary.textContent = "V2.3I hosted / installable web app";
+    var dataH = document.querySelector("#v22iDataStatusPanel h3"); if (dataH) dataH.textContent = "V2.3I save / update status";
     try {
       if (window.middaraDataManagerApi && !window.__v23fSnapshotPatch) {
         window.__v23fSnapshotPatch = true;
@@ -19164,9 +19164,9 @@ else {
 <script>
 (function () {
   "use strict";
-  var VERSION = "V2.3H";
-  var TITLE = "Middara Combat Helper - V2.3H Remi / Zeke Chain Polish";
-  var SUBTITLE = "V2.3H Remi/Zeke chain polish: live combat flow keeps the tablet 2x2 layout, universal defense trays, and adds Remi/Zeke chain follow-up shortcuts.";
+  var VERSION = "V2.3I";
+  var TITLE = "Middara Combat Helper - V2.3I Remi / Zeke Chain Flow Fix";
+  var SUBTITLE = "V2.3I Remi/Zeke chain flow fix: Chain Pick Command FU opens the spell-like tray, Whirlwind uses the selected Remi attack profile, and Onslaught FU attacks reset dice/options without changing target.";
   var KEY = "middara_v23g_live_flow_layout_mode";
   function ready(fn) { if (document.readyState === "loading") document.addEventListener("DOMContentLoaded", fn); else fn(); }
   function byId(id) { return document.getElementById(id); }
@@ -19186,11 +19186,11 @@ else {
   function patchChrome() {
     document.title = TITLE;
     var sub = document.querySelector("header .subtitle"); if (sub) sub.textContent = SUBTITLE;
-    var h = document.querySelector("#mobileCombatFlowPanel h2"); if (h) h.textContent = "V2.3H Tablet live combat flow";
-    var badge = document.querySelector("#mobileCombatFlowPanel .cockpit-badge"); if (badge) badge.textContent = "V2.3H Flow";
+    var h = document.querySelector("#mobileCombatFlowPanel h2"); if (h) h.textContent = "V2.3I Tablet live combat flow";
+    var badge = document.querySelector("#mobileCombatFlowPanel .cockpit-badge"); if (badge) badge.textContent = "V2.3I Flow";
     var pwa = byId("pwaVersionText"); if (pwa) pwa.textContent = VERSION;
-    var pwaSummary = document.querySelector(".v22c-pwa-panel summary"); if (pwaSummary) pwaSummary.textContent = "V2.3H hosted / installable web app";
-    var dataH = document.querySelector("#v22iDataStatusPanel h3"); if (dataH) dataH.textContent = "V2.3H save / update status";
+    var pwaSummary = document.querySelector(".v22c-pwa-panel summary"); if (pwaSummary) pwaSummary.textContent = "V2.3I hosted / installable web app";
+    var dataH = document.querySelector("#v22iDataStatusPanel h3"); if (dataH) dataH.textContent = "V2.3I save / update status";
     document.querySelectorAll('[data-v22b-action="calculateCurrent"]').forEach(function (b) { b.style.display = "none"; });
   }
   function patchSnapshots() {
@@ -19224,7 +19224,7 @@ else {
 <script>
 (function () {
   "use strict";
-  var VERSION = "V2.3H";
+  var VERSION = "V2.3I";
   var STORAGE_KEY = "middaraCombatHelperV23HChainPolish";
   var state = { onslaughtRemaining: 0, onslaughtStartedAt: 0, whirlwindActive: false, whirlwindCount: 0, lastMessage: "Remi/Zeke chain helper ready." };
   var renderTimer = null;
@@ -19245,8 +19245,8 @@ else {
   function now() { return Date.now ? Date.now() : new Date().getTime(); }
   function save() { try { localStorage.setItem(STORAGE_KEY, JSON.stringify(state)); } catch (err) {} }
   function load() { try { var raw = localStorage.getItem(STORAGE_KEY); if (raw) state = Object.assign(state, JSON.parse(raw) || {}); } catch (err) {} }
-  function status(message, kind) { state.lastMessage = message || state.lastMessage || "Ready."; save(); var box = byId("v23hStatus"); if (box) { box.className = (kind === "warn" ? "warning-box" : kind === "danger" ? "danger-box" : "ok-box") + " note"; box.textContent = state.lastMessage; } try { if (window.middaraWorkflowApi && middaraWorkflowApi.addLog) middaraWorkflowApi.addLog("V2.3H chain", state.lastMessage); } catch (err) {} scheduleRender(); }
-  function logOnly(message) { try { if (window.middaraWorkflowApi && middaraWorkflowApi.addLog) middaraWorkflowApi.addLog("V2.3H chain", message); } catch (err) {} }
+  function status(message, kind) { state.lastMessage = message || state.lastMessage || "Ready."; save(); var box = byId("v23hStatus"); if (box) { box.className = (kind === "warn" ? "warning-box" : kind === "danger" ? "danger-box" : "ok-box") + " note"; box.textContent = state.lastMessage; } try { if (window.middaraWorkflowApi && middaraWorkflowApi.addLog) middaraWorkflowApi.addLog("V2.3I chain", state.lastMessage); } catch (err) {} scheduleRender(); }
+  function logOnly(message) { try { if (window.middaraWorkflowApi && middaraWorkflowApi.addLog) middaraWorkflowApi.addLog("V2.3I chain", message); } catch (err) {} }
   function scheduleRender() { if (renderTimer) clearTimeout(renderTimer); renderTimer = setTimeout(render, 90); }
 
   function currentCharacterId() { return val("characterSelect") || (window.lastResult && lastResult.characterId) || ""; }
@@ -19458,7 +19458,7 @@ else {
     section.id = "v23hChainPolishPanel";
     section.className = "panel";
     section.setAttribute("data-v17-mode", "play");
-    section.innerHTML = '<details open><summary>V2.3H Remi / Zeke chain shortcuts</summary>' +
+    section.innerHTML = '<details open><summary>V2.3I Remi / Zeke chain shortcuts</summary>' +
       '<div class="note" style="margin-top:10px">Contextual follow-up shortcuts for Remi Chain Pick / Scimitar / Whirlwind and Zeke Onslaught / Blade Works. Resolve the attack math normally, then use these buttons for the next action or reminder.</div>' +
       '<div id="v23hStatus" class="ok-box note" style="margin-top:10px">Remi/Zeke chain helper ready.</div>' +
       '<div id="v23hContext" class="pillbox" style="margin-top:10px"></div>' +
@@ -19525,9 +19525,9 @@ else {
     window.__middaraV23HCalcCapture = true;
   }
   function patchChromeAndSnapshots() {
-    document.title = "Middara Combat Helper - V2.3H Remi / Zeke Chain Polish";
+    document.title = "Middara Combat Helper - V2.3I Remi / Zeke Chain Flow Fix";
     var sub = document.querySelector("header .subtitle");
-    if (sub) sub.textContent = "V2.3H Remi/Zeke chain polish: tablet 2x2 live flow, universal defense trays, Remi follow-ups, Zeke Onslaught and Blade Works shortcuts.";
+    if (sub) sub.textContent = "V2.3I Remi/Zeke chain flow fix: Chain Pick Command FU opens the spell-like tray, Whirlwind uses the selected Remi attack profile, and Onslaught FU attacks reset dice/options without changing target.";
     try {
       if (window.middaraDataManagerApi && !window.__middaraV23HSnapshotPatch) {
         var api = window.middaraDataManagerApi;
@@ -19557,10 +19557,211 @@ else {
     load(); injectStyles(); injectPanel(); bind(); patchCalculateCapture(); patchChromeAndSnapshots(); render();
     setTimeout(function () { patchCalculateCapture(); patchChromeAndSnapshots(); render(); }, 800);
     setInterval(function () { patchChromeAndSnapshots(); decorateMobileActionCards(); }, 1600);
-    status("V2.3H Remi/Zeke chain helper loaded. Use normal attack math, then use contextual follow-up buttons.", "ok");
+    status("V2.3I Remi/Zeke chain helper loaded. Use normal attack math, then use contextual follow-up buttons.", "ok");
   }
   ready(init);
   window.middaraV23HChainApi = { render: render, getState: function () { return JSON.parse(JSON.stringify(state)); }, startOnslaught: startOnslaught, nextOnslaught: nextOnslaught, startWhirlwind: startWhirlwind };
+})();
+</script>
+
+
+
+<script id="v23i-remi-zeke-chain-flow-fix">
+(function () {
+  "use strict";
+  var VERSION = "V2.3I";
+  var TITLE = "Middara Combat Helper - V2.3I Remi / Zeke Chain Flow Fix";
+  var SUBTITLE = "V2.3I Remi/Zeke chain flow fix: Chain Pick Command FU opens the spell-like tray, Whirlwind uses the chosen Remi attack profile, and Onslaught FU attacks reset dice/options without changing target.";
+  var timer = null;
+
+  function ready(fn) { if (document.readyState === "loading") document.addEventListener("DOMContentLoaded", fn); else setTimeout(fn, 0); }
+  function byId(id) { return document.getElementById(id); }
+  function val(id) { var el = byId(id); return el ? el.value : ""; }
+  function text(id) { var el = byId(id); return el ? String(el.textContent || el.value || "").trim() : ""; }
+  function fire(elOrId, type) { var el = typeof elOrId === "string" ? byId(elOrId) : elOrId; if (!el) return; try { el.dispatchEvent(new Event(type || "change", { bubbles:true })); } catch (err) { var ev = document.createEvent("Event"); ev.initEvent(type || "change", true, true); el.dispatchEvent(ev); } }
+  function setVal(id, value) { var el = byId(id); if (el) { el.value = String(value == null ? "" : value); fire(el, "input"); fire(el, "change"); } }
+  function setChecked(id, value) { var el = byId(id); if (el) { el.checked = !!value; fire(el, "change"); } }
+  function checked(id) { var el = byId(id); return !!(el && el.checked); }
+  function click(idOrEl) { var el = typeof idOrEl === "string" ? byId(idOrEl) : idOrEl; if (el && typeof el.click === "function") { try { el.click(); return true; } catch (err) {} } return false; }
+  function selectedText(id) { var el = byId(id); return el && el.options && el.selectedIndex >= 0 ? String(el.options[el.selectedIndex].textContent || el.value || "") : val(id); }
+  function optionExists(sel, value) { if (!sel || !sel.options) return false; for (var i = 0; i < sel.options.length; i++) if (sel.options[i].value === value) return true; return false; }
+  function setSelect(id, value) { var el = byId(id); if (!el) return false; var str = String(value == null ? "" : value); if (optionExists(el, str)) { el.value = str; fire(el, "change"); return true; } return false; }
+  function esc(v) { return String(v == null ? "" : v).replace(/[&<>\"']/g, function (c) { return {"&":"&amp;","<":"&lt;",">":"&gt;","\"":"&quot;","'":"&#39;"}[c]; }); }
+  function schedule() { if (timer) clearTimeout(timer); timer = setTimeout(function () { decorate(); refreshChrome(); }, 120); }
+  function status(msg, kind) {
+    var box = byId("v23hStatus") || byId("v22bFlowStatus");
+    if (box) { box.className = (kind === "warn" ? "warning-box" : kind === "danger" ? "danger-box" : "ok-box") + " note"; box.textContent = msg; }
+    try { if (window.middaraWorkflowApi && middaraWorkflowApi.addLog) middaraWorkflowApi.addLog("V2.3I chain", msg); } catch (err) {}
+  }
+  function routePlay(panelId, mode) {
+    var btn = document.querySelector('[data-v17-mode-button="play"]'); if (btn) click(btn);
+    document.body.classList.toggle("v22b-show-spell", mode === "spell");
+    document.body.classList.toggle("v22b-show-attack", mode !== "spell");
+    setTimeout(function () { var el = byId(panelId || "mobileCombatFlowPanel"); if (el && el.scrollIntoView) { try { el.scrollIntoView({ behavior:"smooth", block:"start" }); } catch (err) { el.scrollIntoView(true); } } }, 140);
+  }
+  function targetLabel() {
+    try {
+      var fs = window.middaraMobileFlowV22BApi && window.middaraMobileFlowV22BApi.getState ? window.middaraMobileFlowV22BApi.getState() : null;
+      if (fs && fs.target) {
+        var parts = String(fs.target).split(":"), kind = parts[0], id = parts.slice(1).join(":");
+        if (kind === "enemy" && window.trackerState && Array.isArray(trackerState.enemies)) {
+          var e = trackerState.enemies.filter(function (x) { return String(x.id) === id; })[0];
+          if (e) return e.label || e.name || id;
+        }
+      }
+    } catch (err) {}
+    try {
+      if (window.trackerState && trackerState.selectedId && Array.isArray(trackerState.enemies)) {
+        var t = trackerState.enemies.filter(function (e) { return e.id === trackerState.selectedId; })[0];
+        if (t) return t.label || t.name || "target";
+      }
+    } catch (err2) {}
+    return selectedText("targetSelect") || "target";
+  }
+  function differenceHit() { return window.lastResult ? Number(lastResult.difference || 0) : 0; }
+  function currentCharacterId() { return val("characterSelect") || (window.lastResult && lastResult.characterId) || ""; }
+  function currentProfileId() { return val("profileSelect") || (window.lastResult && lastResult.profileId) || ""; }
+
+  function resetAttackDiceAndOptions() {
+    try { document.querySelectorAll(".die-face").forEach(function (sel) { sel.selectedIndex = 0; fire(sel, "change"); }); } catch (err) {}
+    setVal("blackFace", "0");
+    ["useMasterWork", "useMotV", "useChallengeSupreme", "useMorbidEnvy", "reserveChainMeleeFU", "reserveChainRangedFU", "reserveCriticalDefense", "reserveSvalinn", "empowered"].forEach(function (id) { setChecked(id, false); });
+    ["challengeSupremeSp", "attackMod", "physMod", "magicMod", "apMod", "adjacentArmor"].forEach(function (id) { var el = byId(id); if (el) { el.value = "0"; fire(el, "input"); fire(el, "change"); } });
+    try { if (typeof window.calculate === "function") window.calculate(); } catch (err2) {}
+    try { if (window.middaraMobileFlowV22BApi && middaraMobileFlowV22BApi.render) middaraMobileFlowV22BApi.render(); } catch (err3) {}
+  }
+  function loadAttackNoTargetChange(characterId, profileId, msg) {
+    setSelect("characterSelect", characterId);
+    try { if (typeof window.syncProfiles === "function") window.syncProfiles(); } catch (err) {}
+    setTimeout(function () {
+      setSelect("profileSelect", profileId);
+      try { if (typeof window.syncProfileControls === "function") window.syncProfileControls(); } catch (err2) {}
+      resetAttackDiceAndOptions();
+      routePlay("attackDicePanel", "attack");
+      status(msg || "Attack roll reset. Target stayed as " + targetLabel() + ".", "ok");
+    }, 90);
+  }
+  function loadRemiCommandFu() {
+    var diff = differenceHit();
+    setChecked("reserveChainRangedFU", true);
+    setSelect("spellSelect", "remi_command_fu");
+    setVal("spellLikeDifference", diff);
+    var st = byId("spellTargetName"); if (st) st.value = targetLabel();
+    document.body.classList.remove("v22b-show-attack");
+    document.body.classList.add("v22b-show-spell");
+    try { if (window.middaraTurnApi && middaraTurnApi.setCardState) middaraTurnApi.setCardState("remi_chain_pick", "exhausted", "Remi Chain Pick ranged FU used for Command 2.", "ok"); } catch (err) {}
+    setTimeout(function () {
+      try { if (typeof window.calculateSpell === "function") window.calculateSpell(); } catch (err2) {}
+      try { if (window.middaraMobileFlowV22BApi && middaraMobileFlowV22BApi.render) middaraMobileFlowV22BApi.render(); } catch (err3) {}
+      routePlay("spellPanel", "spell");
+      var warning = (!checked("reserveChainRangedFU") ? " Confirm a Burst was available/spent." : "");
+      status("Loaded Remi Chain Pick ranged FU as Command 2: Force " + (9 + diff) + " vs " + targetLabel() + "." + warning, warning ? "warn" : "ok");
+    }, 120);
+  }
+  function selectedWhirlwindProfile() {
+    var sel = byId("v23iWhirlwindProfile");
+    var chosen = sel ? sel.value : "current";
+    if (chosen === "current") {
+      return (currentCharacterId() === "remi" && currentProfileId()) ? currentProfileId() : "remi_gigas_melee";
+    }
+    return chosen || "remi_gigas_melee";
+  }
+  function selectedWhirlwindProfileName() {
+    var id = selectedWhirlwindProfile();
+    var names = { remi_gigas_melee:"Gigas Grip / Chain Pick melee side", remi_chain_ranged:"Chain Pick ranged side", remi_scimitar:"Scimitar Swallow" };
+    return names[id] || selectedText("profileSelect") || id;
+  }
+  function overrideWhirlwindStart() {
+    setTimeout(function () {
+      loadAttackNoTargetChange("remi", selectedWhirlwindProfile(), "Whirlwind started using " + selectedWhirlwindProfileName() + ". Choose/confirm each legal target manually and resolve one separate attack at a time.");
+    }, 220);
+  }
+  function overrideWhirlwindNext() {
+    setTimeout(function () {
+      loadAttackNoTargetChange("remi", selectedWhirlwindProfile(), "Loaded next Whirlwind attack using " + selectedWhirlwindProfileName() + ". Choose/confirm the next legal target manually.");
+    }, 220);
+  }
+  function overrideOnslaughtStart() {
+    setTimeout(function () {
+      loadAttackNoTargetChange("zeke", "zeke_dual_short_swords", "Onslaught attack 1 loaded. Target stays as " + targetLabel() + "; dice and optional attack checkboxes were reset.");
+    }, 240);
+  }
+  function overrideOnslaughtNext() {
+    setTimeout(function () {
+      loadAttackNoTargetChange("zeke", "zeke_dual_short_swords", "Next Onslaught follow-up attack loaded against " + targetLabel() + ". Dice and optional attack checkboxes were reset; target was not changed.");
+    }, 240);
+  }
+
+  function ensureWhirlwindSelector() {
+    var actions = byId("v23hActions");
+    if (!actions || byId("v23iWhirlwindWrap")) return;
+    var wrap = document.createElement("div");
+    wrap.id = "v23iWhirlwindWrap";
+    wrap.className = "v23i-whirlwind-wrap";
+    wrap.innerHTML = '<label for="v23iWhirlwindProfile">Whirlwind attack profile</label>' +
+      '<select id="v23iWhirlwindProfile">' +
+      '<option value="current">Use current Remi profile</option>' +
+      '<option value="remi_gigas_melee">Gigas Grip / Chain Pick melee side</option>' +
+      '<option value="remi_chain_ranged">Chain Pick ranged side</option>' +
+      '<option value="remi_scimitar">Scimitar Swallow</option>' +
+      '</select>' +
+      '<div class="tiny">Whirlwind no longer forces the helper to melee. Pick the Remi profile to reuse for each separate target; board legality and target order remain manual.</div>';
+    actions.parentNode.insertBefore(wrap, actions);
+  }
+  function decorate() {
+    ensureWhirlwindSelector();
+    var panel = byId("v23hChainPolishPanel");
+    if (panel) {
+      var summary = panel.querySelector("summary"); if (summary) summary.textContent = "V2.3I Remi / Zeke chain flow shortcuts";
+      var note = panel.querySelector(".note"); if (note && note.textContent.indexOf("V2.3I") < 0) note.textContent = "V2.3I fixes: Chain Pick ranged FU opens the Command 2 spell-like resolver, Whirlwind uses the selected Remi profile, and Onslaught FU attacks reset dice/options while preserving the target.";
+    }
+    var box = byId("v22bActionCards");
+    if (box) {
+      Array.prototype.forEach.call(box.querySelectorAll("button"), function (btn) {
+        var label = (btn.querySelector("strong") ? btn.querySelector("strong").textContent : btn.textContent || "").trim().toLowerCase();
+        var span = btn.querySelector("span");
+        if (label === "whirlwind" && span) span.textContent = "Start Whirlwind with the selected Remi profile; resolve each target separately.";
+        if (label === "onslaught" && span) span.textContent = "Start a 3-attack chain; FU buttons reset dice/options and keep the same target.";
+      });
+    }
+  }
+  function refreshChrome() {
+    document.title = TITLE;
+    var sub = document.querySelector("header .subtitle"); if (sub) sub.textContent = SUBTITLE;
+    var h = document.querySelector("#mobileCombatFlowPanel h2"); if (h) h.textContent = "V2.3I Tablet live combat flow";
+    var badge = document.querySelector("#mobileCombatFlowPanel .cockpit-badge"); if (badge) badge.textContent = "V2.3I Flow";
+    var pwa = byId("pwaVersionText"); if (pwa) pwa.textContent = VERSION;
+    var pwaSummary = document.querySelector(".v22c-pwa-panel summary"); if (pwaSummary) pwaSummary.textContent = "V2.3I hosted / installable web app";
+    var dataH = document.querySelector("#v22iDataStatusPanel h3"); if (dataH) dataH.textContent = "V2.3I save / update status";
+  }
+  function bind() {
+    document.addEventListener("click", function (ev) {
+      var node = ev.target && ev.target.closest ? ev.target.closest("[data-v23h-action]") : null;
+      if (!node) return;
+      var action = node.getAttribute("data-v23h-action");
+      if (action === "remi-chain-ranged") setTimeout(loadRemiCommandFu, 180);
+      else if (action === "remi-start-whirlwind") overrideWhirlwindStart();
+      else if (action === "remi-next-whirlwind") overrideWhirlwindNext();
+      else if (action === "zeke-start-onslaught") overrideOnslaughtStart();
+      else if (action === "zeke-next-onslaught") overrideOnslaughtNext();
+    }, true);
+    document.addEventListener("change", function (ev) { if (ev.target && ev.target.id === "v23iWhirlwindProfile") status("Whirlwind profile set to " + selectedWhirlwindProfileName() + ".", "ok"); schedule(); }, true);
+    var mo = new MutationObserver(schedule);
+    mo.observe(document.body, { childList:true, subtree:true });
+  }
+  function injectStyles() {
+    if (byId("v23iStyles")) return;
+    var style = document.createElement("style");
+    style.id = "v23iStyles";
+    style.textContent = '.v23i-whirlwind-wrap{border:1px solid rgba(56,189,248,.26);border-radius:12px;padding:10px;margin:10px 0;background:rgba(56,189,248,.07)}.v23i-whirlwind-wrap label{font-weight:800;color:var(--accent2)}.v23i-whirlwind-wrap select{margin-top:5px}.v23i-whirlwind-wrap .tiny{margin-top:6px}';
+    document.head.appendChild(style);
+  }
+  function init() {
+    injectStyles(); bind(); decorate(); refreshChrome();
+    setTimeout(function () { decorate(); refreshChrome(); status("V2.3I chain-flow fixes loaded.", "ok"); }, 650);
+    setInterval(function () { decorate(); refreshChrome(); }, 1700);
+  }
+  ready(init);
 })();
 </script>
 

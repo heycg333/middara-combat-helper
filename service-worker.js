@@ -1,6 +1,6 @@
-// Middara Combat Helper V2.3H Remi / Zeke chain polish service worker
+// Middara Combat Helper V2.3I Remi / Zeke chain flow fix service worker
 // Network-first for the app shell so GitHub Pages updates are picked up, with cache fallback for table use.
-const CACHE_VERSION = "v2-3h-remi-zeke-chain-polish-2026-06-09";
+const CACHE_VERSION = "v2-3i-remi-zeke-chain-flow-fix-2026-06-09";
 const CACHE_NAME = `middara-helper-${CACHE_VERSION}`;
 const CORE_ASSETS = [
   "./",
