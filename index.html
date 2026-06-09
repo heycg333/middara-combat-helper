@@ -3,7 +3,7 @@
 <head>
   <meta charset="utf-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1" />
-  <title>Middara Combat Helper - V2.3F Universal Defense Trays</title>
+  <title>Middara Combat Helper - V2.3H Remi / Zeke Chain Polish</title>
   <style>
     :root {
       --bg: #101827;
@@ -650,7 +650,7 @@
     }
 
 
-    /* V2.3F Live-play readiness / in-app guide sync */
+    /* V2.3H Live-play readiness / in-app guide sync */
     .v22i-help-panel {
       border-color: rgba(163,230,53,.32);
       background: linear-gradient(180deg, rgba(163,230,53,.08), rgba(255,255,255,.012)), var(--panel);
@@ -684,11 +684,54 @@
     @media (max-width: 620px) { .v22i-recipe-grid, .v22i-check-grid, .v22i-status-grid { grid-template-columns:1fr; } .v22i-actions button { width:100%; } }
 
 
-    /* V2.3F counter flow / dodge preserve: prevent subtitle line-count changes from moving the page. */
+    /* V2.3H counter flow / dodge preserve: prevent subtitle line-count changes from moving the page. */
     header .subtitle { min-height: 1.35em; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
     @media (max-width: 720px) { header .subtitle { white-space: normal; min-height: 2.7em; } }
 
-  </style>
+  
+
+    /* V2.3H Tablet grid layout restore / responsive density */
+    @media (min-width: 700px) {
+      body:not(.v23g-layout-stack) #mobileCombatFlowPanel .v22b-flow-grid {
+        grid-template-columns: repeat(2, minmax(0, 1fr)) !important;
+        align-items: stretch;
+      }
+      body:not(.v23g-layout-stack) #mobileCombatFlowPanel .v22b-action-deck,
+      body:not(.v23g-layout-stack) #mobileCombatFlowPanel .v22b-primary-actions {
+        grid-template-columns: repeat(2, minmax(0, 1fr)) !important;
+      }
+      body:not(.v23g-layout-stack) #mobileCombatFlowPanel .v22b-step-card { min-height: 100%; }
+      body:not(.v23g-layout-stack) #mobileCombatFlowPanel .v22b-target-cards { max-height: 360px; }
+    }
+    @media (min-width: 700px) and (max-width: 980px) {
+      body:not(.v23g-layout-stack) #mobileCombatFlowPanel .v22b-flow-grid { gap: 10px; }
+      body:not(.v23g-layout-stack) #mobileCombatFlowPanel .v22b-step-card { padding: 12px; }
+      body:not(.v23g-layout-stack) #mobileCombatFlowPanel .v22b-action-card { min-height: 62px; }
+      body:not(.v23g-layout-stack) #mobileCombatFlowPanel .v22b-target-cards { grid-template-columns: 1fr; max-height: 330px; }
+    }
+    body.v23g-layout-grid #mobileCombatFlowPanel .v22b-flow-grid {
+      grid-template-columns: repeat(2, minmax(0, 1fr)) !important;
+      align-items: stretch;
+    }
+    body.v23g-layout-grid #mobileCombatFlowPanel .v22b-action-deck,
+    body.v23g-layout-grid #mobileCombatFlowPanel .v22b-primary-actions {
+      grid-template-columns: repeat(2, minmax(0, 1fr)) !important;
+    }
+    body.v23g-layout-stack #mobileCombatFlowPanel .v22b-flow-grid,
+    body.v23g-layout-stack #mobileCombatFlowPanel .v22b-action-deck,
+    body.v23g-layout-stack #mobileCombatFlowPanel .v22b-primary-actions {
+      grid-template-columns: 1fr !important;
+    }
+    @media (max-width: 699px) {
+      body:not(.v23g-layout-grid) #mobileCombatFlowPanel .v22b-flow-grid,
+      body:not(.v23g-layout-grid) #mobileCombatFlowPanel .v22b-action-deck,
+      body:not(.v23g-layout-grid) #mobileCombatFlowPanel .v22b-primary-actions {
+        grid-template-columns: 1fr !important;
+      }
+    }
+    .v23g-layout-toggle { border-color: rgba(56,189,248,.42); background: rgba(56,189,248,.10); }
+
+</style>
 
   <!-- V2.2C hosted/PWA metadata -->
   <meta name="application-name" content="Middara Helper" />
@@ -705,7 +748,7 @@
   <link rel="apple-touch-icon" sizes="180x180" href="./icons/apple-touch-icon.png" />
 
 <style id="v22g-table-session-style">
-  /* V2.3F live-play readiness / one-tablet live-play safety layer */
+  /* V2.3H live-play readiness / one-tablet live-play safety layer */
   .v22g-session-hub {
     margin-top: 12px;
     border: 1px solid rgba(163,230,53,.28);
@@ -791,7 +834,7 @@
 <body>
   <header>
     <h1>Middara Combat Helper</h1>
-    <div class="subtitle">V2.3F universal defense trays: enemy attacks show target-specific defensive reactions inline, then Counter follow-ups reverse actor and target.</div>
+    <div class="subtitle">V2.3H Remi/Zeke chain polish: live combat flow keeps the tablet 2x2 layout, universal defense trays, and adds Remi/Zeke chain follow-up shortcuts.</div>
   </header>
 
   <main>
@@ -878,13 +921,14 @@
     <section class="panel v22b-flow-panel" id="mobileCombatFlowPanel" data-v17-mode="play">
       <div class="cockpit-header">
         <div>
-          <h2>V2.3F Tablet / mobile live combat flow</h2>
-          <div class="note">Live table mode: choose Actor, Target, Action, then Resolve. This is now the primary tablet/phone workflow; the older Play cockpit is hidden in focused mode but still available with Show full play panels.</div>
+          <h2>V2.3H Tablet / mobile live combat flow</h2>
+          <div class="note">Live table mode: choose Actor, Target, Action, then Resolve. Tablets use a 2x2 grid by default; phones stack the cards. Use the Layout toggle to force grid or stack if needed.</div>
         </div>
-        <div class="cockpit-badge">V2.3F Flow</div>
+        <div class="cockpit-badge">V2.3H Flow</div>
       </div>
       <div class="v22b-toolbar">
         <button type="button" id="v22bFocusToggle" class="v22b-focus-toggle">Focused phone mode: on</button>
+        <button type="button" id="v23gLayoutToggle" class="v23g-layout-toggle">Layout: Auto grid</button>
         <button type="button" data-v22b-action="loadCurrentTurn">Load actor from current turn</button>
         <button type="button" data-v22b-action="refresh">Refresh flow</button>
         <button type="button" data-v22b-action="showAllPlay">Show full play panels</button>
@@ -963,7 +1007,7 @@
 
     <section class="panel v23a-rook-defense-panel" id="rookDefensePanel" data-v17-mode="play">
       <details>
-        <summary>V2.3F Rook defensive / counter shortcuts</summary>
+        <summary>V2.3H Rook defensive / counter shortcuts</summary>
         <div class="note" style="margin-top:10px">Use these when Rook is targeted by an Attack, fails a Conviction check, or is about to Counter. The buttons route into existing enemy attack, enemy spell, card-state, workflow, and chain tools; board legality remains manual.</div>
         <div class="v23a-rook-defense-grid" style="margin-top:12px">
           <div class="soft-card">
@@ -2171,7 +2215,7 @@
     </section>
 
     <section class="panel rewards-panel" id="rewardsLootPanel" data-v17-mode="rewards encounter">
-      <!-- V2.3F: intentionally not shown in Data tab; Data is for backups, QA, and deployment. -->
+      <!-- V2.3H: intentionally not shown in Data tab; Data is for backups, QA, and deployment. -->
       <h2>8. Rewards / loot tracker</h2>
       <div class="note">Track combatant loot draws, loot-token outcomes, party gold, XP, and item notes. This does not replace the physical decks; it keeps the bookkeeping and session history clean.</div>
       <div class="rewards-metrics">
@@ -11954,7 +11998,7 @@ else {
     var h = document.querySelector("#enemyAiAssistantPanel h2");
     if (h) h.textContent = "6. Enemy AI preset library";
     var subtitle = document.querySelector("header .subtitle");
-    if (subtitle) subtitle.textContent = "V2.3F universal defense trays: enemy attacks show target-specific defensive reactions inline, then Counter follow-ups reverse actor and target.";
+    if (subtitle) subtitle.textContent = "V2.3H Remi/Zeke chain polish: live combat flow keeps the tablet 2x2 layout, universal defense trays, and adds Remi/Zeke chain follow-up shortcuts.";
   }
 
   function installPresetOptions() {
@@ -14620,9 +14664,9 @@ else {
     document.head.appendChild(style);
   }
   function updateChrome() {
-    document.title = "Middara Combat Helper - V2.3F Universal Defense Trays";
+    document.title = "Middara Combat Helper - V2.3H Remi / Zeke Chain Polish";
     var subtitle = document.querySelector("header .subtitle");
-    if (subtitle) subtitle.textContent = "V2.3F universal defense trays: enemy attacks show target-specific defensive reactions inline, then Counter follow-ups reverse actor and target.";
+    if (subtitle) subtitle.textContent = "V2.3H Remi/Zeke chain polish: live combat flow keeps the tablet 2x2 layout, universal defense trays, and adds Remi/Zeke chain follow-up shortcuts.";
     var h = byId("commandCombatantPanel") && byId("commandCombatantPanel").querySelector("h2");
     if (h) h.textContent = "V2.1E Command Combatant / Loyal Esper tracker";
     var badge = byId("commandCombatantPanel") && byId("commandCombatantPanel").querySelector(".cockpit-badge");
@@ -15094,7 +15138,7 @@ else {
   }
   function updateChrome() {
     var title = document.querySelector("header .subtitle");
-    if (title && title.textContent.indexOf("V2.1F") < 0) title.textContent = "V2.3F universal defense trays: enemy attacks show target-specific defensive reactions inline, then Counter follow-ups reverse actor and target.";
+    if (title && title.textContent.indexOf("V2.1F") < 0) title.textContent = "V2.3H Remi/Zeke chain polish: live combat flow keeps the tablet 2x2 layout, universal defense trays, and adds Remi/Zeke chain follow-up shortcuts.";
   }
   installRestoreWrapper();
   ready(function () {
@@ -15557,7 +15601,7 @@ else {
   function updateChrome() {
     try {
       var sub = document.querySelector("header .subtitle");
-      if (sub) sub.textContent = "V2.3F universal defense trays: enemy attacks show target-specific defensive reactions inline, then Counter follow-ups reverse actor and target.";
+      if (sub) sub.textContent = "V2.3H Remi/Zeke chain polish: live combat flow keeps the tablet 2x2 layout, universal defense trays, and adds Remi/Zeke chain follow-up shortcuts.";
     } catch (err) { }
   }
 
@@ -15592,7 +15636,7 @@ else {
 <script>
 (function () {
   "use strict";
-  var VERSION = "V2.3F";
+  var VERSION = "V2.3H";
   var STORAGE_KEY = "middaraCombatHelperV22BMobileFlow";
   var FOCUS_KEY = "middaraCombatHelperV22BPhoneFocus";
   var renderTimer = null;
@@ -15993,7 +16037,7 @@ else {
 
   function calculateCurrent() {
     var type = state.pendingType || "attack";
-    // V2.3F: if the attack tray/action is active, never let stale spell state steal the Apply button.
+    // V2.3H: if the attack tray/action is active, never let stale spell state steal the Apply button.
     if (document.body.classList.contains("v22b-show-attack")) type = "attack";
     if (document.body.classList.contains("v22b-show-spell") && type !== "attack") type = "spell";
     clearApplied();
@@ -16209,7 +16253,7 @@ else {
   function patchSnapshots() {
     if (window.__middaraV22BSnapshotPatch) return;
     window.__middaraV22BSnapshotPatch = true;
-    function addFlow(snap) { try { snap.version = "V2.3F"; snap.pwaDeploymentVersion = "V2.3F"; snap.mobileFlowState = JSON.parse(JSON.stringify(state)); } catch (err) {} return snap; }
+    function addFlow(snap) { try { snap.version = "V2.3H"; snap.pwaDeploymentVersion = "V2.3H"; snap.mobileFlowState = JSON.parse(JSON.stringify(state)); } catch (err) {} return snap; }
     if (window.middaraDataManagerApi) {
       var api = window.middaraDataManagerApi;
       var oldFull = api.exportFullSnapshot;
@@ -16222,9 +16266,9 @@ else {
   }
 
   function updateChrome() {
-    document.title = "Middara Combat Helper - V2.3F Universal Defense Trays";
+    document.title = "Middara Combat Helper - V2.3H Remi / Zeke Chain Polish";
     var sub = document.querySelector("header .subtitle");
-    if (sub) sub.textContent = "V2.3F universal defense trays: enemy attacks show target-specific defensive reactions inline, then Counter follow-ups reverse actor and target.";
+    if (sub) sub.textContent = "V2.3H Remi/Zeke chain polish: live combat flow keeps the tablet 2x2 layout, universal defense trays, and adds Remi/Zeke chain follow-up shortcuts.";
   }
 
   function init() {
@@ -16237,7 +16281,7 @@ else {
     render();
     setTimeout(function () { patchSnapshots(); updateChrome(); render(); }, 700);
     setInterval(function () { updateFooter(); }, 1200);
-    setStatus("V2.3F live flow ready. Choose Actor -> Target -> Action -> Dice -> Apply; Dodge toggles preserve enemy rolls.", "ok");
+    setStatus("V2.3H live flow ready. Choose Actor -> Target -> Action -> Dice -> Apply; Dodge toggles preserve enemy rolls.", "ok");
   }
 
   ready(init);
@@ -16249,7 +16293,7 @@ else {
 <script>
 (function () {
   "use strict";
-  var VERSION = "V2.3F";
+  var VERSION = "V2.3H";
   function ready(fn) { if (document.readyState === "loading") document.addEventListener("DOMContentLoaded", fn); else setTimeout(fn, 0); }
   function byId(id) { return document.getElementById(id); }
   function esc(v) { return String(v == null ? "" : v).replace(/[&<>"']/g, function (c) { return {"&":"&amp;","<":"&lt;",">":"&gt;","\"":"&quot;","'":"&#39;"}[c]; }); }
@@ -16376,11 +16420,11 @@ else {
     }, true);
   }
   function updateChrome() {
-    document.title = "Middara Combat Helper - V2.3F Universal Defense Trays";
+    document.title = "Middara Combat Helper - V2.3H Remi / Zeke Chain Polish";
     var sub = document.querySelector("header .subtitle");
-    if (sub) sub.textContent = "V2.3F universal defense trays: enemy attacks show target-specific defensive reactions inline, then Counter follow-ups reverse actor and target.";
-    var h = document.querySelector("#mobileCombatFlowPanel h2"); if (h) h.textContent = "V2.3F Tablet / mobile live combat flow";
-    var badge = document.querySelector("#mobileCombatFlowPanel .cockpit-badge"); if (badge) badge.textContent = "V2.3F Flow";
+    if (sub) sub.textContent = "V2.3H Remi/Zeke chain polish: live combat flow keeps the tablet 2x2 layout, universal defense trays, and adds Remi/Zeke chain follow-up shortcuts.";
+    var h = document.querySelector("#mobileCombatFlowPanel h2"); if (h) h.textContent = "V2.3H Tablet / mobile live combat flow";
+    var badge = document.querySelector("#mobileCombatFlowPanel .cockpit-badge"); if (badge) badge.textContent = "V2.3H Flow";
     var pwa = byId("pwaVersionText"); if (pwa) pwa.textContent = VERSION;
   }
   function tick() {
@@ -16405,7 +16449,7 @@ else {
 <script>
 (function () {
   "use strict";
-  var VERSION = "V2.3F";
+  var VERSION = "V2.3H";
   var CACHE_PREFIX = "middara-helper-";
   function ready(fn) { if (document.readyState === "loading") document.addEventListener("DOMContentLoaded", fn); else fn(); }
   function byId(id) { return document.getElementById(id); }
@@ -16553,11 +16597,11 @@ else {
     });
   }
   function updateChrome() {
-    document.title = "Middara Combat Helper - V2.3F Universal Defense Trays";
+    document.title = "Middara Combat Helper - V2.3H Remi / Zeke Chain Polish";
     var sub = document.querySelector("header .subtitle");
-    if (sub) sub.textContent = "V2.3F universal defense trays: enemy attacks show target-specific defensive reactions inline, then Counter follow-ups reverse actor and target.";
+    if (sub) sub.textContent = "V2.3H Remi/Zeke chain polish: live combat flow keeps the tablet 2x2 layout, universal defense trays, and adds Remi/Zeke chain follow-up shortcuts.";
     var pwa = byId("pwaVersionText"); if (pwa) pwa.textContent = "V2.2E";
-    var h = document.querySelector("#mobileCombatFlowPanel h2"); if (h) h.textContent = "V2.3F Tablet / mobile live combat flow";
+    var h = document.querySelector("#mobileCombatFlowPanel h2"); if (h) h.textContent = "V2.3H Tablet / mobile live combat flow";
   }
   function bindMobileHelp() {
     var flow = byId("mobileCombatFlowPanel");
@@ -16587,7 +16631,7 @@ else {
 <script id="v22g-table-session-script">
 (function(){
   "use strict";
-  var VERSION = "V2.3F";
+  var VERSION = "V2.3H";
   var CHECK_KEY = "middaraCombatHelperV22GSessionChecklist";
   var RECENT_KEY = "middaraCombatHelperV22GRecentActions";
   function byId(id){ return document.getElementById(id); }
@@ -16700,7 +16744,7 @@ else {
     hub.id = "v22gSessionHub";
     hub.className = "v22g-session-hub";
     hub.innerHTML = '' +
-      '<div class="v22g-session-head"><div><h3>V2.3F live-play readiness</h3><div class="tiny">One-tablet controls for setup, backup, quick undo, and end-of-encounter cleanup. Use this as a safety rail around the main live combat flow.</div></div><div class="v22g-session-badge">Table-ready pass</div></div>' +
+      '<div class="v22g-session-head"><div><h3>V2.3H live-play readiness</h3><div class="tiny">One-tablet controls for setup, backup, quick undo, and end-of-encounter cleanup. Use this as a safety rail around the main live combat flow.</div></div><div class="v22g-session-badge">Table-ready pass</div></div>' +
       '<div id="v22gStatusStrip" class="v22g-status-strip"></div>' +
       '<div id="v22gChecklist" class="v22g-checklist"></div>' +
       '<div class="v22g-session-grid">' +
@@ -16754,11 +16798,11 @@ else {
     else if (action === "rewards") route("rewards", "rewardsLootPanel");
   }
   function init(){
-    document.title = "Middara Combat Helper - V2.3F Universal Defense Trays";
+    document.title = "Middara Combat Helper - V2.3H Remi / Zeke Chain Polish";
     var h = document.querySelector("header h1"); if (h) h.textContent = "Middara Combat Helper";
-    var sub = document.querySelector("header .subtitle"); if (sub) sub.textContent = "V2.3F universal defense trays: enemy attacks show target-specific defensive reactions inline, then Counter follow-ups reverse actor and target.";
-    var flowH = document.querySelector("#mobileCombatFlowPanel h2"); if (flowH) flowH.textContent = "V2.3F Tablet / mobile live combat flow";
-    var badge = document.querySelector("#mobileCombatFlowPanel .cockpit-badge"); if (badge) badge.textContent = "V2.3F Flow";
+    var sub = document.querySelector("header .subtitle"); if (sub) sub.textContent = "V2.3H Remi/Zeke chain polish: live combat flow keeps the tablet 2x2 layout, universal defense trays, and adds Remi/Zeke chain follow-up shortcuts.";
+    var flowH = document.querySelector("#mobileCombatFlowPanel h2"); if (flowH) flowH.textContent = "V2.3H Tablet / mobile live combat flow";
+    var badge = document.querySelector("#mobileCombatFlowPanel .cockpit-badge"); if (badge) badge.textContent = "V2.3H Flow";
     injectHub(); addFooterUndo();
     document.addEventListener("click", function(ev){
       var node = ev.target && ev.target.closest ? ev.target.closest("[data-v22g-action]") : null;
@@ -16771,7 +16815,7 @@ else {
     }, true);
     document.addEventListener("click", function(){ setTimeout(function(){ addFooterUndo(); renderStatus(); }, 240); }, true);
     setInterval(renderStatus, 4000);
-    setStatus("V2.3F session hub ready. Rewards are kept on the Rewards/Encounter views; the Data tab is reserved for backups, QA, and deployment tools.", "ok");
+    setStatus("V2.3H session hub ready. Rewards are kept on the Rewards/Encounter views; the Data tab is reserved for backups, QA, and deployment tools.", "ok");
   }
   if (document.readyState === "loading") document.addEventListener("DOMContentLoaded", init);
   else setTimeout(init, 0);
@@ -16782,7 +16826,7 @@ else {
 <script>
 (function(){
   "use strict";
-  var VERSION = "V2.3F";
+  var VERSION = "V2.3H";
   var CHECK_KEY = "middara_v22i_live_checklist";
   var EXPORT_KEY = "middara_v22i_last_snapshot_export";
   var TEST_KEY = "middara_v22i_last_self_test";
@@ -16930,7 +16974,7 @@ else {
     panel.className = "panel v22i-help-panel";
     panel.setAttribute("data-v17-mode", "play");
     panel.innerHTML = '' +
-      '<div class="v22i-help-head"><div><h3>V2.3F live-play guide</h3><div class="note">Use this as the tablet workflow reference during a session. It summarizes the intended route without opening the external guide.</div></div><div class="v22i-badge">Table workflow</div></div>' +
+      '<div class="v22i-help-head"><div><h3>V2.3H live-play guide</h3><div class="note">Use this as the tablet workflow reference during a session. It summarizes the intended route without opening the external guide.</div></div><div class="v22i-badge">Table workflow</div></div>' +
       '<div class="v22i-recipe-grid">' +
         '<div class="v22i-recipe"><strong>Adventurer attack</strong><div><code>Actor -> Target + Attack -> Dice auto-calc -> Apply -> Chain/Next</code></div></div>' +
         '<div class="v22i-recipe"><strong>Adventurer / Esper spell</strong><div><code>Actor -> target -> spell action -> Force/Conviction auto-calc -> Apply</code></div></div>' +
@@ -16968,7 +17012,7 @@ else {
         '<button type="button" data-v22i-action="openData">Open backup / update tools</button>' +
       '</div>' +
       '<div id="v22iSelfTestOutput" class="tiny" style="margin-top:10px">Run the table workflow test to verify the main live-use hooks loaded.</div>' +
-      '<div id="v22iStatus" class="ok-box note" style="margin-top:10px">V2.3F guide ready.</div>';
+      '<div id="v22iStatus" class="ok-box note" style="margin-top:10px">V2.3H guide ready.</div>';
     anchor.insertAdjacentElement("afterend", panel);
     renderChecklist();
   }
@@ -16983,7 +17027,7 @@ else {
     wrap.style.borderRadius = "14px";
     wrap.style.padding = "12px";
     wrap.innerHTML = '' +
-      '<h3 style="margin-top:0">V2.3F save / update status</h3>' +
+      '<h3 style="margin-top:0">V2.3H save / update status</h3>' +
       '<div class="note">Save state is local to this browser and this hosted URL. Use full snapshot export before changing devices, hosts, or GitHub builds.</div>' +
       '<div class="v22i-status-grid">' +
         '<div class="v22i-status-card"><div class="label">Version</div><div class="value" id="v22iVersionValue">-</div></div>' +
@@ -17021,14 +17065,14 @@ else {
     });
   }
   function patchTitles(){
-    document.title = "Middara Combat Helper - V2.3F Universal Defense Trays";
+    document.title = "Middara Combat Helper - V2.3H Remi / Zeke Chain Polish";
     var sub = document.querySelector("header .subtitle");
-    if (sub) sub.textContent = "V2.3F universal defense trays: enemy attacks show target-specific defensive reactions inline, then Counter follow-ups reverse actor and target.";
-    var flowH = document.querySelector("#mobileCombatFlowPanel h2"); if (flowH) flowH.textContent = "V2.3F Tablet live combat flow";
-    var badge = document.querySelector("#mobileCombatFlowPanel .cockpit-badge"); if (badge) badge.textContent = "V2.3F Flow";
-    var hubH = document.querySelector("#v22gSessionHub h3"); if (hubH) hubH.textContent = "V2.3F table session hub";
+    if (sub) sub.textContent = "V2.3H Remi/Zeke chain polish: live combat flow keeps the tablet 2x2 layout, universal defense trays, and adds Remi/Zeke chain follow-up shortcuts.";
+    var flowH = document.querySelector("#mobileCombatFlowPanel h2"); if (flowH) flowH.textContent = "V2.3H Tablet live combat flow";
+    var badge = document.querySelector("#mobileCombatFlowPanel .cockpit-badge"); if (badge) badge.textContent = "V2.3H Flow";
+    var hubH = document.querySelector("#v22gSessionHub h3"); if (hubH) hubH.textContent = "V2.3H table session hub";
     var hubTiny = document.querySelector("#v22gSessionHub .v22g-session-head .tiny"); if (hubTiny) hubTiny.textContent = "One-tablet controls for setup, backup, quick undo, end-of-encounter cleanup, and live-play readiness.";
-    var pwaSummary = document.querySelector(".v22c-pwa-panel summary"); if (pwaSummary) pwaSummary.textContent = "V2.3F hosted / installable web app";
+    var pwaSummary = document.querySelector(".v22c-pwa-panel summary"); if (pwaSummary) pwaSummary.textContent = "V2.3H hosted / installable web app";
     var pwa = byId("pwaVersionText"); if (pwa) pwa.textContent = VERSION;
   }
   function init(){
@@ -17052,7 +17096,7 @@ else {
 
 
 <style id="v22jLiveFlowPriorityStyles">
-  /* V2.3F Live-flow priority / collapsible session tools */
+  /* V2.3H Live-flow priority / collapsible session tools */
   #mobileCombatFlowPanel.v22j-flow-priority {
     border-color: rgba(163,230,53,.42);
     background: linear-gradient(180deg, rgba(163,230,53,.07), rgba(56,189,248,.035), rgba(255,255,255,.012)), var(--panel);
@@ -17163,7 +17207,7 @@ else {
 <script id="v22jLiveFlowPriorityScript">
 (function(){
   "use strict";
-  var VERSION = "V2.3F";
+  var VERSION = "V2.3H";
   function byId(id){ return document.getElementById(id); }
   function text(el, value){ if (el) el.textContent = value; }
   function hasClass(el, cls){ return el && (" " + el.className + " ").indexOf(" " + cls + " ") >= 0; }
@@ -17178,16 +17222,16 @@ else {
     if (flow && flow.scrollIntoView) flow.scrollIntoView({behavior:"smooth", block:"start"});
   }
   function patchTitles(){
-    document.title = "Middara Combat Helper - V2.3F Universal Defense Trays";
+    document.title = "Middara Combat Helper - V2.3H Remi / Zeke Chain Polish";
     var sub = document.querySelector("header .subtitle");
-    if (sub) sub.textContent = "V2.3F universal defense trays: enemy attacks show target-specific defensive reactions inline, then Counter follow-ups reverse actor and target.";
+    if (sub) sub.textContent = "V2.3H Remi/Zeke chain polish: live combat flow keeps the tablet 2x2 layout, universal defense trays, and adds Remi/Zeke chain follow-up shortcuts.";
     var flowH = document.querySelector("#mobileCombatFlowPanel h2");
-    if (flowH) flowH.textContent = "V2.3F Tablet live combat flow";
+    if (flowH) flowH.textContent = "V2.3H Tablet live combat flow";
     var badge = document.querySelector("#mobileCombatFlowPanel .cockpit-badge");
-    if (badge) badge.textContent = "V2.3F Flow";
+    if (badge) badge.textContent = "V2.3H Flow";
     var pwa = byId("pwaVersionText"); if (pwa) pwa.textContent = VERSION;
-    var pwaSummary = document.querySelector(".v22c-pwa-panel summary"); if (pwaSummary) pwaSummary.textContent = "V2.3F hosted / installable web app";
-    var dataH = document.querySelector("#v22iDataStatusPanel h3"); if (dataH) dataH.textContent = "V2.3F save / update status";
+    var pwaSummary = document.querySelector(".v22c-pwa-panel summary"); if (pwaSummary) pwaSummary.textContent = "V2.3H hosted / installable web app";
+    var dataH = document.querySelector("#v22iDataStatusPanel h3"); if (dataH) dataH.textContent = "V2.3H save / update status";
     var hubTitle = document.querySelector("#v22gSessionHub h3"); if (hubTitle) hubTitle.textContent = "Table session hub";
     var guideTitle = document.querySelector("#v22iGuidePanel h3"); if (guideTitle) guideTitle.textContent = "Live-play guide";
   }
@@ -17291,7 +17335,7 @@ else {
 
 
 <style id="v22k-auto-calc-style">
-  /* V2.3F auto-calc streamlined flow */
+  /* V2.3H auto-calc streamlined flow */
   #v22bFooterCalc,
   #mobileCombatFlowPanel .v22b-primary-actions [data-v22b-action="calculateCurrent"] {
     display: none !important;
@@ -17322,7 +17366,7 @@ else {
 <script id="v22k-auto-calc-script">
 (function(){
   "use strict";
-  var VERSION = "V2.3F";
+  var VERSION = "V2.3H";
   var appliedKey = "";
   var appliedLabel = "";
   var autoTimer = null;
@@ -17492,12 +17536,12 @@ else {
     var mo = new MutationObserver(function(){ schedulePaint(); });
     mo.observe(document.body, { childList:true, subtree:true, characterData:true });
     setInterval(paint, 1000);
-    document.title = "Middara Combat Helper - V2.3F Universal Defense Trays";
+    document.title = "Middara Combat Helper - V2.3H Remi / Zeke Chain Polish";
     var sub = document.querySelector("header .subtitle");
-    if (sub) sub.textContent = "V2.3F universal defense trays: enemy attacks show target-specific defensive reactions inline, then Counter follow-ups reverse actor and target.";
-    var flowH = document.querySelector("#mobileCombatFlowPanel h2"); if (flowH) flowH.textContent = "V2.3F Tablet live combat flow";
-    var badge = document.querySelector("#mobileCombatFlowPanel .cockpit-badge"); if (badge) badge.textContent = "V2.3F Auto-calc";
-    var pwaSummary = document.querySelector(".v22c-pwa-panel summary"); if (pwaSummary) pwaSummary.textContent = "V2.3F hosted / installable web app";
+    if (sub) sub.textContent = "V2.3H Remi/Zeke chain polish: live combat flow keeps the tablet 2x2 layout, universal defense trays, and adds Remi/Zeke chain follow-up shortcuts.";
+    var flowH = document.querySelector("#mobileCombatFlowPanel h2"); if (flowH) flowH.textContent = "V2.3H Tablet live combat flow";
+    var badge = document.querySelector("#mobileCombatFlowPanel .cockpit-badge"); if (badge) badge.textContent = "V2.3H Auto-calc";
+    var pwaSummary = document.querySelector(".v22c-pwa-panel summary"); if (pwaSummary) pwaSummary.textContent = "V2.3H hosted / installable web app";
     setTimeout(function(){ paint(); autoCalcAttack(); }, 350);
   }
   if (document.readyState === "loading") document.addEventListener("DOMContentLoaded", install);
@@ -17519,7 +17563,7 @@ else {
 </style>
 <script id="v23a-rook-defense-spell-empower-script">
 (function(){
-  var VERSION = "V2.3F";
+  var VERSION = "V2.3H";
   function byId(id){ return document.getElementById(id); }
   function setVal(id, value){ var el = byId(id); if (el) el.value = value; }
   function setChecked(id, value){ var el = byId(id); if (el) el.checked = !!value; }
@@ -17602,12 +17646,12 @@ else {
     box.innerHTML = html;
   }
   function updateVersionChrome(){
-    document.title = "Middara Combat Helper - V2.3F Universal Defense Trays";
-    var sub = document.querySelector("header .subtitle"); if (sub) sub.textContent = "V2.3F universal defense trays: enemy attacks show target-specific defensive reactions inline, then Counter follow-ups reverse actor and target.";
-    var flowH = document.querySelector("#mobileCombatFlowPanel h2"); if (flowH) flowH.textContent = "V2.3F Tablet live combat flow";
-    var badge = document.querySelector("#mobileCombatFlowPanel .cockpit-badge"); if (badge) badge.textContent = "V2.3F";
-    var pwaSummary = document.querySelector(".v22c-pwa-panel summary"); if (pwaSummary) pwaSummary.textContent = "V2.3F hosted / installable web app";
-    var dataH = document.querySelector("#v22iDataStatusPanel h3"); if (dataH) dataH.textContent = "V2.3F save / update status";
+    document.title = "Middara Combat Helper - V2.3H Remi / Zeke Chain Polish";
+    var sub = document.querySelector("header .subtitle"); if (sub) sub.textContent = "V2.3H Remi/Zeke chain polish: live combat flow keeps the tablet 2x2 layout, universal defense trays, and adds Remi/Zeke chain follow-up shortcuts.";
+    var flowH = document.querySelector("#mobileCombatFlowPanel h2"); if (flowH) flowH.textContent = "V2.3H Tablet live combat flow";
+    var badge = document.querySelector("#mobileCombatFlowPanel .cockpit-badge"); if (badge) badge.textContent = "V2.3H";
+    var pwaSummary = document.querySelector(".v22c-pwa-panel summary"); if (pwaSummary) pwaSummary.textContent = "V2.3H hosted / installable web app";
+    var dataH = document.querySelector("#v22iDataStatusPanel h3"); if (dataH) dataH.textContent = "V2.3H save / update status";
     var v = byId("v22iVersionValue"); if (v) v.textContent = VERSION;
   }
   function syncRookPanelEmpowerToSpell(){
@@ -17635,19 +17679,19 @@ else {
 <script>
 (function () {
   "use strict";
-  var TITLE = "Middara Combat Helper - V2.3F Universal Defense Trays";
-  var SUBTITLE = "V2.3F universal defense trays: enemy attacks show target-specific defensive reactions inline, then Counter follow-ups reverse actor and target.";
+  var TITLE = "Middara Combat Helper - V2.3H Remi / Zeke Chain Polish";
+  var SUBTITLE = "V2.3H Remi/Zeke chain polish: live combat flow keeps the tablet 2x2 layout, universal defense trays, and adds Remi/Zeke chain follow-up shortcuts.";
   function stabilizeHeader() {
     try {
       if (document.title !== TITLE) document.title = TITLE;
       var sub = document.querySelector("header .subtitle");
       if (sub && sub.textContent !== SUBTITLE) sub.textContent = SUBTITLE;
       var flowH = document.querySelector("#mobileCombatFlowPanel h2");
-      if (flowH && flowH.textContent.indexOf("V2.3F") < 0) flowH.textContent = "V2.3F Tablet live combat flow";
+      if (flowH && flowH.textContent.indexOf("V2.3H") < 0) flowH.textContent = "V2.3H Tablet live combat flow";
       var badge = document.querySelector("#mobileCombatFlowPanel .cockpit-badge");
-      if (badge && badge.textContent.indexOf("V2.3F") < 0) badge.textContent = "V2.3F";
+      if (badge && badge.textContent.indexOf("V2.3H") < 0) badge.textContent = "V2.3H";
       var pwaSummary = document.querySelector(".v22c-pwa-panel summary");
-      if (pwaSummary && pwaSummary.textContent.indexOf("V2.3F") < 0) pwaSummary.textContent = "V2.3F hosted / installable web app";
+      if (pwaSummary && pwaSummary.textContent.indexOf("V2.3H") < 0) pwaSummary.textContent = "V2.3H hosted / installable web app";
     } catch (err) {}
   }
   if (document.readyState === "loading") document.addEventListener("DOMContentLoaded", stabilizeHeader);
@@ -17661,7 +17705,7 @@ else {
 
 
 <style id="v23c-in-context-defense-style">
-  /* V2.3F in-context defense and Play-only live flow guard */
+  /* V2.3H in-context defense and Play-only live flow guard */
   body[data-v17-current-mode]:not([data-v17-current-mode="play"]):not([data-v17-current-mode="all"]) #mobileCombatFlowPanel {
     display: none !important;
   }
@@ -17773,7 +17817,7 @@ else {
 <script id="v23c-in-context-defense-script">
 (function () {
   "use strict";
-  var VERSION = "V2.3F";
+  var VERSION = "V2.3H";
   var lastMode = "";
   function ready(fn) { if (document.readyState === "loading") document.addEventListener("DOMContentLoaded", fn); else setTimeout(fn, 0); }
   function byId(id) { return document.getElementById(id); }
@@ -18041,7 +18085,7 @@ else {
 <script>
 (function () {
   "use strict";
-  var VERSION = "V2.3F";
+  var VERSION = "V2.3H";
   var MOBILE_FLOW_STORAGE_KEY = "middaraCombatHelperV22BMobileFlow";
   function ready(fn) { if (document.readyState === "loading") document.addEventListener("DOMContentLoaded", fn); else setTimeout(fn, 0); }
   function byId(id) { return document.getElementById(id); }
@@ -18270,7 +18314,7 @@ else {
 
 
 <style id="v23e-universal-counter-style">
-  /* V2.3F universal defense trays */
+  /* V2.3H universal defense trays */
   #v23cRookCounterBox { display: none !important; }
   .v23e-counter-tray {
     border: 1px solid rgba(251,191,36,.46);
@@ -18345,7 +18389,7 @@ else {
 <script id="v23e-universal-counter-script">
 (function () {
   "use strict";
-  var VERSION = "V2.3F";
+  var VERSION = "V2.3H";
   var MOBILE_FLOW_STORAGE_KEY = "middaraCombatHelperV22BMobileFlow";
   var ADVENTURERS = {
     rook: { name:"Rook", profile:"rook_loche_svalinn" },
@@ -18582,14 +18626,14 @@ else {
     var calc = byId("calculateEnemyAttackButton"); if (calc) calc.addEventListener("click", function () { setTimeout(renderUniversalCounterTray, 60); }, true);
   }
   function patchChromeAndSnapshot() {
-    document.title = "Middara Combat Helper - V2.3F Universal Defense Trays";
+    document.title = "Middara Combat Helper - V2.3H Remi / Zeke Chain Polish";
     var sub = document.querySelector("header .subtitle");
-    if (sub) sub.textContent = "V2.3F universal defense trays: enemy attacks show target-specific defensive reactions inline, then Counter follow-ups reverse actor and target.";
-    var h = document.querySelector("#mobileCombatFlowPanel h2"); if (h) h.textContent = "V2.3F Tablet live combat flow";
-    var badge = document.querySelector("#mobileCombatFlowPanel .cockpit-badge"); if (badge) badge.textContent = "V2.3F Flow";
+    if (sub) sub.textContent = "V2.3H Remi/Zeke chain polish: live combat flow keeps the tablet 2x2 layout, universal defense trays, and adds Remi/Zeke chain follow-up shortcuts.";
+    var h = document.querySelector("#mobileCombatFlowPanel h2"); if (h) h.textContent = "V2.3H Tablet live combat flow";
+    var badge = document.querySelector("#mobileCombatFlowPanel .cockpit-badge"); if (badge) badge.textContent = "V2.3H Flow";
     var pwa = byId("pwaVersionText"); if (pwa) pwa.textContent = VERSION;
-    var pwaSummary = document.querySelector(".v22c-pwa-panel summary"); if (pwaSummary) pwaSummary.textContent = "V2.3F hosted / installable web app";
-    var dataH = document.querySelector("#v22iDataStatusPanel h3"); if (dataH) dataH.textContent = "V2.3F save / update status";
+    var pwaSummary = document.querySelector(".v22c-pwa-panel summary"); if (pwaSummary) pwaSummary.textContent = "V2.3H hosted / installable web app";
+    var dataH = document.querySelector("#v22iDataStatusPanel h3"); if (dataH) dataH.textContent = "V2.3H save / update status";
     try {
       if (window.middaraDataManagerApi && !window.__v23eSnapshotPatch) {
         window.__v23eSnapshotPatch = true;
@@ -18619,7 +18663,7 @@ else {
 
 
 <style id="v23f-universal-defense-tray-style">
-  /* V2.3F universal defensive reaction trays */
+  /* V2.3H universal defensive reaction trays */
   #v23cRookDefenseTray { display: none !important; }
   .v23f-defense-tray {
     border: 1px solid rgba(56,189,248,.46);
@@ -18723,7 +18767,7 @@ else {
 <script id="v23f-universal-defense-trays-script">
 (function () {
   "use strict";
-  var VERSION = "V2.3F";
+  var VERSION = "V2.3H";
   var ADVENTURERS = {
     rook: "Rook",
     remi: "Remi",
@@ -18879,7 +18923,7 @@ else {
     try {
       if (typeof window.addPartyTokenToMember === "function") {
         if (typeof window.pushPartyHistory === "function") window.pushPartyHistory();
-        var ok = window.addPartyTokenToMember(id, token, "V2.3F defense tray");
+        var ok = window.addPartyTokenToMember(id, token, "V2.3H defense tray");
         if (typeof window.savePartyState === "function") window.savePartyState();
         if (typeof window.renderParty === "function") window.renderParty();
         if (typeof window.renderDataJson === "function") window.renderDataJson();
@@ -18958,7 +19002,7 @@ else {
     if (action === "remi_mantle_heal") {
       applySp("remi", -1, "Mantle of Inner Peace");
       applyDamage("remi", -2, "Mantle of Inner Peace miss heal");
-      addWorkflow("Remi - Mantle of Inner Peace", "Attack missed. Spent 1 SP and healed Remi 2 from the V2.3F defense tray.");
+      addWorkflow("Remi - Mantle of Inner Peace", "Attack missed. Spent 1 SP and healed Remi 2 from the V2.3H defense tray.");
       setStatus("Applied Remi Mantle miss heal: -1 SP, heal 2.", "ok");
       return true;
     }
@@ -19049,7 +19093,7 @@ else {
       if (snap.intents.zeke_morbid_dodge) { changes.push({ id:"zeke_morbid_dodge", state:"exhausted" }); notes.push("Zeke Morbid Leather Dodge reroll exhausted"); }
       if (snap.intents.zeke_nimble) notes.push("Zeke Nimble Fighter Dodge reroll noted");
     }
-    if (changes.length) setManyCards(changes, "V2.3F enemy-attack defensive reactions applied: " + notes.join(", ") + ".");
+    if (changes.length) setManyCards(changes, "V2.3H enemy-attack defensive reactions applied: " + notes.join(", ") + ".");
     if (notes.length) addWorkflow("Defensive reactions", "After Enemy Attack Apply: " + notes.join(", ") + ".");
     if (notes.length) setStatus("Defensive state updated: " + notes.join(", ") + ".", "ok");
     state.intents = {};
@@ -19081,14 +19125,14 @@ else {
     var calc = byId("calculateEnemyAttackButton"); if (calc) calc.addEventListener("click", function () { setTimeout(function(){ renderDefenseTray(lastEnemyAttack()); }, 80); }, true);
   }
   function patchChromeAndSnapshots() {
-    document.title = "Middara Combat Helper - V2.3F Universal Defense Trays";
+    document.title = "Middara Combat Helper - V2.3H Remi / Zeke Chain Polish";
     var sub = document.querySelector("header .subtitle");
-    if (sub) sub.textContent = "V2.3F universal defense trays: target-specific defensive reactions live inside Enemy Attack, with Counter follow-ups after the result.";
-    var h = document.querySelector("#mobileCombatFlowPanel h2"); if (h) h.textContent = "V2.3F Tablet live combat flow";
-    var badge = document.querySelector("#mobileCombatFlowPanel .cockpit-badge"); if (badge) badge.textContent = "V2.3F Flow";
+    if (sub) sub.textContent = "V2.3H Remi/Zeke chain polish: live combat flow keeps the tablet 2x2 layout, universal defense trays, and adds Remi/Zeke chain follow-up shortcuts.";
+    var h = document.querySelector("#mobileCombatFlowPanel h2"); if (h) h.textContent = "V2.3H Tablet live combat flow";
+    var badge = document.querySelector("#mobileCombatFlowPanel .cockpit-badge"); if (badge) badge.textContent = "V2.3H Flow";
     var pwa = byId("pwaVersionText"); if (pwa) pwa.textContent = VERSION;
-    var pwaSummary = document.querySelector(".v22c-pwa-panel summary"); if (pwaSummary) pwaSummary.textContent = "V2.3F hosted / installable web app";
-    var dataH = document.querySelector("#v22iDataStatusPanel h3"); if (dataH) dataH.textContent = "V2.3F save / update status";
+    var pwaSummary = document.querySelector(".v22c-pwa-panel summary"); if (pwaSummary) pwaSummary.textContent = "V2.3H hosted / installable web app";
+    var dataH = document.querySelector("#v22iDataStatusPanel h3"); if (dataH) dataH.textContent = "V2.3H save / update status";
     try {
       if (window.middaraDataManagerApi && !window.__v23fSnapshotPatch) {
         window.__v23fSnapshotPatch = true;
@@ -19113,6 +19157,410 @@ else {
   }
   ready(init);
   window.middaraV23FApi = { renderDefenseTray: renderDefenseTray, refreshDefenseTray: refreshEverything };
+})();
+</script>
+
+
+<script>
+(function () {
+  "use strict";
+  var VERSION = "V2.3H";
+  var TITLE = "Middara Combat Helper - V2.3H Remi / Zeke Chain Polish";
+  var SUBTITLE = "V2.3H Remi/Zeke chain polish: live combat flow keeps the tablet 2x2 layout, universal defense trays, and adds Remi/Zeke chain follow-up shortcuts.";
+  var KEY = "middara_v23g_live_flow_layout_mode";
+  function ready(fn) { if (document.readyState === "loading") document.addEventListener("DOMContentLoaded", fn); else fn(); }
+  function byId(id) { return document.getElementById(id); }
+  function getMode() { try { return localStorage.getItem(KEY) || "auto"; } catch (err) { return "auto"; } }
+  function applyMode(mode) {
+    if (!["auto", "grid", "stack"].includes(mode)) mode = "auto";
+    document.body.classList.remove("v23g-layout-auto", "v23g-layout-grid", "v23g-layout-stack");
+    document.body.classList.add("v23g-layout-" + mode);
+    var btn = byId("v23gLayoutToggle");
+    if (btn) {
+      btn.textContent = mode === "grid" ? "Layout: Force 2x2" : mode === "stack" ? "Layout: Force stack" : "Layout: Auto grid";
+      btn.title = "Auto uses 2x2 on tablets and stacked cards on narrow phones. Tap to cycle Auto, Force 2x2, Force stack.";
+    }
+  }
+  function setMode(mode) { try { localStorage.setItem(KEY, mode); } catch (err) {} applyMode(mode); }
+  function cycleMode() { var mode = getMode(); setMode(mode === "auto" ? "grid" : mode === "grid" ? "stack" : "auto"); }
+  function patchChrome() {
+    document.title = TITLE;
+    var sub = document.querySelector("header .subtitle"); if (sub) sub.textContent = SUBTITLE;
+    var h = document.querySelector("#mobileCombatFlowPanel h2"); if (h) h.textContent = "V2.3H Tablet live combat flow";
+    var badge = document.querySelector("#mobileCombatFlowPanel .cockpit-badge"); if (badge) badge.textContent = "V2.3H Flow";
+    var pwa = byId("pwaVersionText"); if (pwa) pwa.textContent = VERSION;
+    var pwaSummary = document.querySelector(".v22c-pwa-panel summary"); if (pwaSummary) pwaSummary.textContent = "V2.3H hosted / installable web app";
+    var dataH = document.querySelector("#v22iDataStatusPanel h3"); if (dataH) dataH.textContent = "V2.3H save / update status";
+    document.querySelectorAll('[data-v22b-action="calculateCurrent"]').forEach(function (b) { b.style.display = "none"; });
+  }
+  function patchSnapshots() {
+    try {
+      if (!window.middaraDataManagerApi || window.__v23gSnapshotPatch) return;
+      window.__v23gSnapshotPatch = true;
+      var api = window.middaraDataManagerApi;
+      var oldFull = api.exportFullSnapshot;
+      var oldApp = api.exportAppData;
+      function addVersion(snap) {
+        try { snap.version = VERSION; snap.pwaDeploymentVersion = VERSION; snap.v23g = { tabletGridLayout:true, layoutMode:getMode(), breakpointPx:700 }; } catch (err) {}
+        return snap;
+      }
+      if (typeof oldFull === "function") api.exportFullSnapshot = function () { return addVersion(oldFull.apply(this, arguments)); };
+      if (typeof oldApp === "function") api.exportAppData = function () { return addVersion(oldApp.apply(this, arguments)); };
+    } catch (err) {}
+  }
+  ready(function () {
+    applyMode(getMode());
+    var btn = byId("v23gLayoutToggle");
+    if (btn && !btn.__v23gBound) { btn.__v23gBound = true; btn.addEventListener("click", cycleMode); }
+    patchChrome(); patchSnapshots();
+    setTimeout(function () { applyMode(getMode()); patchChrome(); patchSnapshots(); }, 400);
+    setInterval(function () { applyMode(getMode()); patchChrome(); patchSnapshots(); }, 1600);
+  });
+})();
+</script>
+
+
+
+<script>
+(function () {
+  "use strict";
+  var VERSION = "V2.3H";
+  var STORAGE_KEY = "middaraCombatHelperV23HChainPolish";
+  var state = { onslaughtRemaining: 0, onslaughtStartedAt: 0, whirlwindActive: false, whirlwindCount: 0, lastMessage: "Remi/Zeke chain helper ready." };
+  var renderTimer = null;
+
+  function ready(fn) { if (document.readyState === "loading") document.addEventListener("DOMContentLoaded", fn); else setTimeout(fn, 0); }
+  function byId(id) { return document.getElementById(id); }
+  function val(id) { var el = byId(id); return el ? el.value : ""; }
+  function setVal(id, value) { var el = byId(id); if (el) el.value = String(value == null ? "" : value); }
+  function checked(id) { var el = byId(id); return !!(el && el.checked); }
+  function setChecked(id, value) { var el = byId(id); if (el) el.checked = !!value; }
+  function click(id) { var el = byId(id); if (el && typeof el.click === "function") el.click(); }
+  function num(v, fallback) { var n = Number(v); return isFinite(n) ? n : (fallback || 0); }
+  function esc(v) { return String(v == null ? "" : v).replace(/[&<>"']/g, function (c) { return {"&":"&amp;","<":"&lt;",">":"&gt;","\"":"&quot;","'":"&#39;"}[c]; }); }
+  function text(id) { var el = byId(id); return el ? String(el.textContent || el.value || "").trim() : ""; }
+  function selectedText(id) { var el = byId(id); return el && el.options && el.selectedIndex >= 0 ? String(el.options[el.selectedIndex].textContent || "") : ""; }
+  function fire(elOrId, type) { var el = typeof elOrId === "string" ? byId(elOrId) : elOrId; if (!el) return; try { el.dispatchEvent(new Event(type || "change", { bubbles:true })); } catch (err) { var ev = document.createEvent("Event"); ev.initEvent(type || "change", true, true); el.dispatchEvent(ev); } }
+  function setSelect(id, value) { var el = byId(id); if (!el) return false; var str = String(value == null ? "" : value); for (var i = 0; i < el.options.length; i++) { if (el.options[i].value === str) { el.value = str; fire(el, "change"); return true; } } return false; }
+  function now() { return Date.now ? Date.now() : new Date().getTime(); }
+  function save() { try { localStorage.setItem(STORAGE_KEY, JSON.stringify(state)); } catch (err) {} }
+  function load() { try { var raw = localStorage.getItem(STORAGE_KEY); if (raw) state = Object.assign(state, JSON.parse(raw) || {}); } catch (err) {} }
+  function status(message, kind) { state.lastMessage = message || state.lastMessage || "Ready."; save(); var box = byId("v23hStatus"); if (box) { box.className = (kind === "warn" ? "warning-box" : kind === "danger" ? "danger-box" : "ok-box") + " note"; box.textContent = state.lastMessage; } try { if (window.middaraWorkflowApi && middaraWorkflowApi.addLog) middaraWorkflowApi.addLog("V2.3H chain", state.lastMessage); } catch (err) {} scheduleRender(); }
+  function logOnly(message) { try { if (window.middaraWorkflowApi && middaraWorkflowApi.addLog) middaraWorkflowApi.addLog("V2.3H chain", message); } catch (err) {} }
+  function scheduleRender() { if (renderTimer) clearTimeout(renderTimer); renderTimer = setTimeout(render, 90); }
+
+  function currentCharacterId() { return val("characterSelect") || (window.lastResult && lastResult.characterId) || ""; }
+  function currentProfileId() { return val("profileSelect") || (window.lastResult && lastResult.profileId) || ""; }
+  function currentTargetLabel() {
+    try {
+      if (window.trackerState && trackerState.selectedId && trackerState.enemies) {
+        for (var i = 0; i < trackerState.enemies.length; i++) if (trackerState.enemies[i].id === trackerState.selectedId) return trackerState.enemies[i].label || trackerState.enemies[i].name || "target";
+      }
+    } catch (err) {}
+    return selectedText("targetSelect") || "target";
+  }
+  function currentEnemyDamageSummary() { return "Result " + (text("hitText") || "-") + " | damage " + (text("finalDamage") || "0") + " | target " + currentTargetLabel(); }
+  function hasAttackResult() { return !!(window.lastResult && text("hitText") && text("hitText") !== "-"); }
+  function attackHit() { return !!(window.lastResult && lastResult.hit && !lastResult.skullMiss); }
+  function attackDealtDamage() { return !!(window.lastResult && Number(lastResult.finalDamage || 0) > 0); }
+  function attackDefeatedTarget() { return !!(window.lastResult && lastResult.hit && Number(lastResult.hpAfter || 9999) <= 0); }
+  function differenceHit() { return window.lastResult ? Number(lastResult.difference || 0) : 0; }
+
+  function getCurrentSymbols() {
+    var result = { value:0, book:0, shield:0, burst:0, skull:false, faces:[] };
+    try {
+      var defs = window.activeDieDefs || [];
+      var dice = window.DICE || DICE;
+      var selects = document.querySelectorAll(".die-face");
+      for (var i = 0; i < selects.length; i++) {
+        var def = defs[Number(selects[i].dataset.dieIndex)];
+        if (!def || !dice[def.color]) continue;
+        var face = dice[def.color][Number(selects[i].value)] || {};
+        addFace(result, face, def.color, false);
+      }
+      var profile = getProfileSafe();
+      var includeBlack = (profile && profile.forcedBlack) || checked("empowered");
+      if (includeBlack && dice.black) addFace(result, dice.black[Number(val("blackFace") || 0)] || {}, "black", true);
+      if (profile && profile.supports && profile.supports.motv && checked("useMotV")) result.burst += 1;
+    } catch (err) {}
+    return result;
+  }
+  function addFace(total, face, color, black) {
+    total.faces.push({ color:color, value: black ? 0 : num(face.value, 0), book:num(face.book, 0), shield:num(face.shield, 0), burst:num(face.burst, 0), skull:!!face.skull });
+    if (!black) total.value += num(face.value, 0);
+    total.book += num(face.book, 0); total.shield += num(face.shield, 0); total.burst += num(face.burst, 0); total.skull = total.skull || !!face.skull;
+  }
+  function getProfileSafe() { try { if (typeof window.getProfile === "function") return window.getProfile(); } catch (err) {} try { return getProfile(); } catch (err2) { return null; } }
+  function burstAvailable() { return getCurrentSymbols().burst > 0; }
+
+  function markCard(id, stateValue, message) { try { if (window.middaraTurnApi && middaraTurnApi.setCardState) { middaraTurnApi.setCardState(id, stateValue || "exhausted", message || (id + " updated."), "ok"); return true; } } catch (err) {} return false; }
+  function markMany(changes, message) { try { if (window.middaraTurnApi && middaraTurnApi.setManyCardStates) { middaraTurnApi.setManyCardStates(changes || [], message || "Updated card states.", "ok"); return true; } } catch (err) {} (changes || []).forEach(function (c) { markCard(c.id, c.state, message); }); return false; }
+  function addPartyToken(memberId, token) {
+    try {
+      if (!window.partyState || !partyState.members) return false;
+      var m = partyState.members.filter(function (x) { return x.id === memberId; })[0];
+      if (!m) return false;
+      if (typeof window.pushPartyHistory === "function") pushPartyHistory();
+      if (!Array.isArray(m.tokens)) m.tokens = [];
+      m.tokens.push(token);
+      if (typeof window.savePartyState === "function") savePartyState();
+      if (typeof window.renderParty === "function") renderParty();
+      return true;
+    } catch (err) { return false; }
+  }
+
+  function routePlay(panelId) {
+    var btn = document.querySelector('[data-v17-mode-button="play"]'); if (btn) btn.click();
+    setTimeout(function () { var el = byId(panelId || "mobileCombatFlowPanel"); if (el && el.scrollIntoView) { try { el.scrollIntoView({ behavior:"smooth", block:"start" }); } catch (err) { el.scrollIntoView(true); } } }, 80);
+  }
+  function loadAttack(characterId, profileId, message, clearRolls) {
+    setSelect("characterSelect", characterId);
+    try { if (typeof window.syncProfiles === "function") window.syncProfiles(); } catch (err) {}
+    setTimeout(function () {
+      setSelect("profileSelect", profileId);
+      try { if (typeof window.syncProfileControls === "function") window.syncProfileControls(); } catch (err2) {}
+      if (clearRolls !== false) resetAttackDice();
+      ["reserveChainMeleeFU", "reserveChainRangedFU", "reserveCriticalDefense", "reserveSvalinn"].forEach(function (id) { setChecked(id, false); });
+      if (profileId === "remi_chain_ranged") setChecked("flanking", false);
+      try { if (typeof window.calculate === "function") window.calculate(); } catch (err3) {}
+      try { if (window.middaraMobileFlowV22BApi && middaraMobileFlowV22BApi.render) middaraMobileFlowV22BApi.render(); } catch (err4) {}
+      routePlay("attackDicePanel");
+      status(message || (selectedText("characterSelect") + " attack loaded. Choose target/enter dice."), "ok");
+    }, 40);
+  }
+  function resetAttackDice() {
+    try { document.querySelectorAll(".die-face").forEach(function (sel) { sel.selectedIndex = 0; fire(sel, "change"); }); } catch (err) {}
+    setVal("blackFace", "0"); fire("blackFace", "change");
+  }
+  function loadSpell(spellId, difference, previousDamage, message) {
+    setSelect("spellSelect", spellId);
+    if (difference != null) setVal("spellLikeDifference", difference);
+    if (previousDamage != null) setVal("abbadonPreviousDamage", previousDamage);
+    try { if (typeof window.calculateSpell === "function") window.calculateSpell(); } catch (err) {}
+    routePlay("spellPanel");
+    status(message || (selectedText("spellSelect") + " loaded."), "ok");
+  }
+
+  function startWhirlwind() {
+    state.whirlwindActive = true; state.whirlwindCount = 0; save();
+    loadAttack("remi", "remi_gigas_melee", "Whirlwind started. Choose the first adjacent legal target manually, resolve one separate melee attack, then use Next Whirlwind target if needed.", true);
+  }
+  function nextWhirlwind() {
+    state.whirlwindActive = true; state.whirlwindCount = Number(state.whirlwindCount || 0) + 1; save();
+    loadAttack("remi", "remi_gigas_melee", "Whirlwind next attack loaded. Choose the next adjacent legal target manually. Resolved Whirlwind attacks tracked: " + state.whirlwindCount + ".", true);
+  }
+  function clearWhirlwind() { state.whirlwindActive = false; state.whirlwindCount = 0; save(); status("Whirlwind helper cleared.", "ok"); }
+
+  function useRemiChainMeleeFU() {
+    if (!attackHit()) { status("Chain Pick melee FU is normally considered after a hit. Confirm timing manually if using anyway.", "warn"); }
+    if (!burstAvailable() && !checked("reserveChainMeleeFU")) { status("No Burst appears available for Chain Pick melee FU. Check the dice/symbols or reserve the Burst manually.", "warn"); return; }
+    setChecked("reserveChainMeleeFU", true); fire("reserveChainMeleeFU", "change");
+    markMany([{ id:"remi_chain_pick", state:"exhausted" }, { id:"remi_chain_side", state:"ranged" }], "Remi Chain Pick melee FU used: exhaust/flip to ranged side.");
+    loadAttack("remi", "remi_chain_ranged", "Chain Pick melee FU loaded: move 2 without provoking, flip to ranged side, then make the ranged attack. Choose the legal target manually.", true);
+  }
+  function useRemiChainRangedFU() {
+    if (!attackHit()) { status("Chain Pick ranged Command FU is normally considered after a hit. Confirm timing manually if using anyway.", "warn"); }
+    if (!burstAvailable() && !checked("reserveChainRangedFU")) { status("No Burst appears available for Chain Pick ranged FU. Check the dice/symbols or reserve the Burst manually.", "warn"); return; }
+    setChecked("reserveChainRangedFU", true); fire("reserveChainRangedFU", "change");
+    markCard("remi_chain_pick", "exhausted", "Remi Chain Pick ranged FU used.");
+    loadSpell("remi_command_fu", differenceHit(), null, "Remi Chain Pick ranged FU loaded: Command 2, Force 9 + difference hit (" + differenceHit() + ").");
+  }
+  function useRemiCriticalDefense() {
+    if (!burstAvailable() && !checked("reserveCriticalDefense")) { status("No Burst appears available for Critical Defense FU. Check the dice/symbols or reserve the Burst manually.", "warn"); return; }
+    setChecked("reserveCriticalDefense", true); fire("reserveCriticalDefense", "change");
+    if (addPartyToken("remi", "Dodge token")) status("Critical Defense resolved: added a Dodge token to Remi.", "ok"); else status("Could not add Dodge token to Remi; use Party tracker manually.", "warn");
+  }
+  function useRemiScimitarExhaust() {
+    markCard("remi_scimitar", "exhausted", "Remi Scimitar Swallow exhausted for follow-up attack.");
+    loadAttack("remi", "remi_scimitar", "Scimitar Swallow follow-up loaded. Choose a different legal target manually before rolling.", true);
+  }
+  function useRemiScimitarDefeat() {
+    loadAttack("remi", "remi_scimitar", "Scimitar Swallow defeat trigger loaded. Spend 1 SP, end current action/abilities, move up to 3 spaces, then choose a legal melee target.", true);
+  }
+
+  function startOnslaught() {
+    state.onslaughtRemaining = 2; state.onslaughtStartedAt = now(); save();
+    loadAttack("zeke", "zeke_dual_short_swords", "Onslaught started: resolve the first Zeke melee attack. After resolving/applying, use Next Onslaught FU for the second and third attacks.", true);
+  }
+  function nextOnslaught() {
+    if (Number(state.onslaughtRemaining || 0) <= 0) { status("No Onslaught follow-up attacks remain. Start Onslaught again if this is a new action.", "warn"); return; }
+    state.onslaughtRemaining = Math.max(0, Number(state.onslaughtRemaining || 0) - 1); save();
+    loadAttack("zeke", "zeke_dual_short_swords", "Loaded next Onslaught follow-up attack. Remaining Onslaught follow-ups after this load: " + state.onslaughtRemaining + ". Choose target manually if it changes.", true);
+  }
+  function clearOnslaught() { state.onslaughtRemaining = 0; state.onslaughtStartedAt = 0; save(); status("Onslaught helper cleared.", "ok"); }
+  function startBladeWorks() {
+    markCard("zeke_blade_works", "exhausted", "Zeke Blade Works exhausted to make a melee attack.");
+    loadAttack("zeke", "zeke_dual_short_swords", "Blade Works attack loaded. Resolve as Zeke's normal dual-short-sword melee attack.", true);
+  }
+  function useZekeDarknessFU() {
+    if (!attackHit()) { status("Dweller's Darkness FU is normally considered after a hit. Confirm timing manually if using anyway.", "warn"); }
+    if (!burstAvailable()) { status("No Burst appears available for Dweller's Darkness FU. Check the dice/symbols.", "warn"); return; }
+    loadSpell("zeke_darkness_fu", differenceHit(), null, "Zeke Dweller's Short Sword FU loaded: Inflict Darkness, Force 9 + difference hit (" + differenceHit() + ").");
+  }
+
+  function addToChainReminder(title, detail) {
+    try {
+      if (!window.middaraChainApi || !middaraChainApi.getState) { status("Chain Assistant API unavailable; reminder logged only.", "warn"); return; }
+      var s = middaraChainApi.getState();
+      if (!s.steps) s.steps = [];
+      s.steps.push({ id:"v23h_" + now() + "_" + Math.floor(Math.random()*10000), title:title, detail:detail, source:"v23h", badges:["Remi/Zeke", "manual"], actions:[{ label:"Log resolved", kind:"log", data:{ message:detail }, primary:true }], done:false, created:now() });
+      try { if (middaraChainApi.render) middaraChainApi.render(); } catch (err) {}
+      status("Added Chain Assistant reminder: " + title + ".", "ok");
+    } catch (err2) { status("Could not add Chain Assistant reminder: " + (err2 && err2.message ? err2.message : err2), "warn"); }
+  }
+
+  function buildContextLines() {
+    var charId = currentCharacterId();
+    var profileId = currentProfileId();
+    var sy = getCurrentSymbols();
+    var lines = [];
+    lines.push("Actor: " + (selectedText("characterSelect") || "-") + " | Profile: " + (selectedText("profileSelect") || "-"));
+    lines.push("Current result: " + (hasAttackResult() ? currentEnemyDamageSummary() : "No attack result yet."));
+    if (charId === "remi" || charId === "zeke") lines.push("Current symbols: Book " + sy.book + ", Shield " + sy.shield + ", Burst " + sy.burst + (sy.skull ? ", Skull" : ""));
+    if (charId === "zeke" && state.onslaughtRemaining > 0) lines.push("Onslaught chain active: " + state.onslaughtRemaining + " follow-up attack" + (state.onslaughtRemaining === 1 ? "" : "s") + " not yet loaded.");
+    if (charId === "remi" && state.whirlwindActive) lines.push("Whirlwind helper active: " + (state.whirlwindCount || 0) + " next-target load" + ((state.whirlwindCount || 0) === 1 ? "" : "s") + " used.");
+    return lines;
+  }
+  function button(label, action, cls, disabled) { return '<button type="button" class="' + (cls || '') + '" data-v23h-action="' + esc(action) + '"' + (disabled ? ' disabled' : '') + '>' + esc(label) + '</button>'; }
+  function renderActions() {
+    var charId = currentCharacterId(), profileId = currentProfileId();
+    var actions = [];
+    if (charId === "remi") {
+      actions.push('<div class="v23h-action-group"><h4>Remi follow-ups</h4><div class="v23h-actions">');
+      if (profileId === "remi_gigas_melee") actions.push(button("Use Chain Pick melee FU → ranged attack", "remi-chain-melee", "primary", false));
+      if (profileId === "remi_chain_ranged") actions.push(button("Use Chain Pick ranged FU → Command 2", "remi-chain-ranged", "primary", false));
+      actions.push(button("Critical Defense FU: gain Dodge token", "remi-critical", "", false));
+      actions.push(button("Scimitar exhaust attack", "remi-scimitar-exhaust", "", false));
+      actions.push(button("Scimitar defeat trigger attack", "remi-scimitar-defeat", attackDefeatedTarget() ? "primary" : "", false));
+      actions.push(button("Start Whirlwind", "remi-start-whirlwind", "", false));
+      if (state.whirlwindActive) { actions.push(button("Next Whirlwind target", "remi-next-whirlwind", "primary", false)); actions.push(button("Clear Whirlwind", "remi-clear-whirlwind", "", false)); }
+      actions.push(button("Add manual Remi chain reminder", "remi-add-manual", "", false));
+      actions.push('</div><div class="tiny">Board state stays manual: choose targets, adjacency, movement, and whether the Follow Up is legal at the table.</div></div>');
+    } else if (charId === "zeke") {
+      actions.push('<div class="v23h-action-group"><h4>Zeke Onslaught / Blade Works</h4><div class="v23h-actions">');
+      actions.push(button("Start Onslaught", "zeke-start-onslaught", "primary", false));
+      if (state.onslaughtRemaining > 0) { actions.push(button("Next Onslaught FU attack", "zeke-next-onslaught", "primary", false)); actions.push(button("Clear Onslaught", "zeke-clear-onslaught", "", false)); }
+      actions.push(button("Start Blade Works attack", "zeke-blade-works", "", false));
+      actions.push(button("Dweller Darkness FU", "zeke-darkness", "", false));
+      actions.push(button("Add manual Zeke chain reminder", "zeke-add-manual", "", false));
+      actions.push('</div><div class="tiny">Onslaught follow-ups are loaded one attack at a time. Apply/log each result before loading the next attack if damage/effects need bookkeeping.</div></div>');
+    } else {
+      actions.push('<div class="v17-empty">Select Remi or Zeke as the current actor to see character-specific chain shortcuts.</div>');
+    }
+    return actions.join("");
+  }
+
+  function injectPanel() {
+    if (byId("v23hChainPolishPanel")) return;
+    var flow = byId("mobileCombatFlowPanel") || byId("combatCockpitPanel");
+    if (!flow || !flow.parentNode) return;
+    var section = document.createElement("section");
+    section.id = "v23hChainPolishPanel";
+    section.className = "panel";
+    section.setAttribute("data-v17-mode", "play");
+    section.innerHTML = '<details open><summary>V2.3H Remi / Zeke chain shortcuts</summary>' +
+      '<div class="note" style="margin-top:10px">Contextual follow-up shortcuts for Remi Chain Pick / Scimitar / Whirlwind and Zeke Onslaught / Blade Works. Resolve the attack math normally, then use these buttons for the next action or reminder.</div>' +
+      '<div id="v23hStatus" class="ok-box note" style="margin-top:10px">Remi/Zeke chain helper ready.</div>' +
+      '<div id="v23hContext" class="pillbox" style="margin-top:10px"></div>' +
+      '<div id="v23hActions" style="margin-top:10px"></div>' +
+      '</details>';
+    flow.parentNode.insertBefore(section, flow.nextSibling);
+  }
+  function injectStyles() {
+    if (byId("v23hStyles")) return;
+    var style = document.createElement("style");
+    style.id = "v23hStyles";
+    style.textContent = '.v23h-action-group{border:1px solid rgba(148,163,184,.24);border-radius:14px;padding:12px;background:rgba(15,23,42,.44);margin-top:10px}.v23h-action-group h4{margin:0 0 8px;color:var(--accent2)}.v23h-actions{display:flex;flex-wrap:wrap;gap:8px}.v23h-actions button{width:auto;min-width:150px}.v23h-actions button.primary{background:linear-gradient(180deg,#22c55e,#15803d);border-color:rgba(34,197,94,.45)}@media(max-width:640px){.v23h-actions button{width:100%;min-width:0}}';
+    document.head.appendChild(style);
+  }
+  function render() {
+    injectPanel(); injectStyles(); decorateMobileActionCards();
+    var ctx = byId("v23hContext");
+    if (ctx) ctx.innerHTML = buildContextLines().map(function (line) { return '<span class="pill"><strong>' + esc(line) + '</strong></span>'; }).join("");
+    var actions = byId("v23hActions"); if (actions) actions.innerHTML = renderActions();
+    var st = byId("v23hStatus"); if (st && state.lastMessage) st.textContent = state.lastMessage;
+  }
+
+  function decorateMobileActionCards() {
+    var box = byId("v22bActionCards"); if (!box) return;
+    var charId = currentCharacterId();
+    Array.prototype.forEach.call(box.querySelectorAll("button"), function (btn) {
+      var label = (btn.querySelector("strong") ? btn.querySelector("strong").textContent : btn.textContent || "").trim().toLowerCase();
+      if (charId === "remi" && label === "whirlwind") { btn.setAttribute("data-v22b-action", "v23hNoop"); btn.setAttribute("data-v23h-action", "remi-start-whirlwind"); btn.querySelector("span") && (btn.querySelector("span").textContent = "Start Whirlwind helper; resolve each target one at a time."); }
+      if (charId === "zeke" && label === "onslaught") { btn.setAttribute("data-v22b-action", "v23hNoop"); btn.setAttribute("data-v23h-action", "zeke-start-onslaught"); btn.querySelector("span") && (btn.querySelector("span").textContent = "Start a 3-attack Onslaught chain helper."); }
+      if (charId === "zeke" && label === "blade works") { btn.setAttribute("data-v22b-action", "v23hNoop"); btn.setAttribute("data-v23h-action", "zeke-blade-works"); btn.querySelector("span") && (btn.querySelector("span").textContent = "Exhaust Blade Works and load Zeke melee attack."); }
+    });
+  }
+
+  function handleAction(action) {
+    if (action === "remi-chain-melee") useRemiChainMeleeFU();
+    else if (action === "remi-chain-ranged") useRemiChainRangedFU();
+    else if (action === "remi-critical") useRemiCriticalDefense();
+    else if (action === "remi-scimitar-exhaust") useRemiScimitarExhaust();
+    else if (action === "remi-scimitar-defeat") useRemiScimitarDefeat();
+    else if (action === "remi-start-whirlwind") startWhirlwind();
+    else if (action === "remi-next-whirlwind") nextWhirlwind();
+    else if (action === "remi-clear-whirlwind") clearWhirlwind();
+    else if (action === "remi-add-manual") addToChainReminder("Remi manual follow-up", "Resolve Remi's next legal chain/follow-up target manually. Current result: " + currentEnemyDamageSummary());
+    else if (action === "zeke-start-onslaught") startOnslaught();
+    else if (action === "zeke-next-onslaught") nextOnslaught();
+    else if (action === "zeke-clear-onslaught") clearOnslaught();
+    else if (action === "zeke-blade-works") startBladeWorks();
+    else if (action === "zeke-darkness") useZekeDarknessFU();
+    else if (action === "zeke-add-manual") addToChainReminder("Zeke manual follow-up", "Resolve Zeke's next legal chain/follow-up manually. Current result: " + currentEnemyDamageSummary());
+    scheduleRender();
+  }
+
+  function patchCalculateCapture() {
+    if (window.__middaraV23HCalcCapture) return;
+    if (typeof window.calculate !== "function") { setTimeout(patchCalculateCapture, 120); return; }
+    var old = window.calculate;
+    window.calculate = function () {
+      var r = old.apply(this, arguments);
+      try { window.v23hLastAttackSymbols = getCurrentSymbols(); } catch (err) {}
+      scheduleRender();
+      return r;
+    };
+    try { calculate = window.calculate; } catch (err2) {}
+    window.__middaraV23HCalcCapture = true;
+  }
+  function patchChromeAndSnapshots() {
+    document.title = "Middara Combat Helper - V2.3H Remi / Zeke Chain Polish";
+    var sub = document.querySelector("header .subtitle");
+    if (sub) sub.textContent = "V2.3H Remi/Zeke chain polish: tablet 2x2 live flow, universal defense trays, Remi follow-ups, Zeke Onslaught and Blade Works shortcuts.";
+    try {
+      if (window.middaraDataManagerApi && !window.__middaraV23HSnapshotPatch) {
+        var api = window.middaraDataManagerApi;
+        var oldFull = api.exportFullSnapshot, oldApp = api.exportAppData, oldApply = api.applyPayload;
+        function add(snap) { try { snap.version = VERSION; snap.pwaDeploymentVersion = VERSION; snap.remiZekeChainState = JSON.parse(JSON.stringify(state)); } catch (err) {} return snap; }
+        if (typeof oldFull === "function") api.exportFullSnapshot = function () { return add(oldFull.apply(this, arguments)); };
+        if (typeof oldApp === "function") api.exportAppData = function () { return add(oldApp.apply(this, arguments)); };
+        if (typeof oldApply === "function") api.applyPayload = function (payload, includeState) { var result = oldApply.apply(this, arguments); if (payload && payload.remiZekeChainState) { state = Object.assign(state, payload.remiZekeChainState); save(); scheduleRender(); } return result; };
+        window.__middaraV23HSnapshotPatch = true;
+      }
+    } catch (err3) {}
+  }
+  function bind() {
+    document.addEventListener("click", function (ev) {
+      var node = ev.target;
+      while (node && node !== document) {
+        if (node.getAttribute) {
+          var action = node.getAttribute("data-v23h-action");
+          if (action) { ev.preventDefault(); handleAction(action); return; }
+        }
+        node = node.parentNode;
+      }
+    }, true);
+    ["change", "input", "click"].forEach(function (evt) { document.addEventListener(evt, function () { scheduleRender(); }, true); });
+  }
+  function init() {
+    load(); injectStyles(); injectPanel(); bind(); patchCalculateCapture(); patchChromeAndSnapshots(); render();
+    setTimeout(function () { patchCalculateCapture(); patchChromeAndSnapshots(); render(); }, 800);
+    setInterval(function () { patchChromeAndSnapshots(); decorateMobileActionCards(); }, 1600);
+    status("V2.3H Remi/Zeke chain helper loaded. Use normal attack math, then use contextual follow-up buttons.", "ok");
+  }
+  ready(init);
+  window.middaraV23HChainApi = { render: render, getState: function () { return JSON.parse(JSON.stringify(state)); }, startOnslaught: startOnslaught, nextOnslaught: nextOnslaught, startWhirlwind: startWhirlwind };
 })();
 </script>
 

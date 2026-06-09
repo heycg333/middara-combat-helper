@@ -1,9 +1,9 @@
 {
   "name": "Middara Combat Helper",
   "short_name": "Middara",
-  "description": "Middara Combat Helper V2.3F: universal in-context defensive reaction trays and counter flow.",
+  "description": "Middara Combat Helper V2.3H Remi/Zeke chain polish, tablet 2x2 live flow, universal defense trays, and hosted PWA helper.",
   "id": "./?app=middara-combat-helper",
-  "start_url": "./index.html?v=2.3f",
+  "start_url": "./index.html?v=2.3h",
   "scope": "./",
   "display": "standalone",
   "display_override": [
