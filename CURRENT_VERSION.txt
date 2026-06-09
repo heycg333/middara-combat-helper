@@ -1,3 +1,3 @@
-Middara Combat Helper V2.3I - Remi / Zeke Chain Flow Fix
+Middara Combat Helper V2.3K - Chain / Live-Flow QA Polish
 
-Fixes Remi Chain Pick ranged FU routing to the spell-like Command 2 tray, lets Whirlwind use a selected Remi attack profile instead of forcing melee, and keeps Zeke Onslaught FU attacks in the attack roll flow with dice/options reset and target preserved.
+Stabilizes Remi/Zeke chain follow-ups, Whirlwind target flow, Onslaught same-target fresh-roll flow, universal Counter routing, sticky Apply state, and contextual panel visibility.
