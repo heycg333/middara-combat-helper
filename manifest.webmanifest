@@ -1,7 +1,7 @@
 {
   "name": "Middara Combat Helper",
   "short_name": "Middara",
-  "description": "Middara Combat Helper V2.4D Nightingale chain polish: Abbadon previous-damage capture, post-damage heal/Trophy shortcuts, and stable spell footer state.",
+  "description": "Middara Combat Helper V2.4F - Nightingale and Loyal Esper bridge.",
   "id": "./?app=middara-combat-helper",
   "start_url": "./index.html?v=2.4d",
   "scope": "./",
@@ -48,5 +48,6 @@
       "type": "image/png",
       "purpose": "any"
     }
-  ]
+  ],
+  "version": "V2.4F"
 }
