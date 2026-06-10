@@ -1,30 +1,12 @@
-# Middara Combat Helper V2.4F Nightingale Abbadon Chain
+# Middara Combat Helper V2.4H - GitHub Pages deployment
 
-GitHub Pages root package. Upload the extracted contents of this ZIP to the repository root.
+Upload the extracted contents of this folder to the root of the GitHub Pages repository. This build fixes Nightingale Summon Esper routing to the Loyal Esper bridge and active Loyal Esper Load actor behavior.
 
-V2.4F changes:
-- Nightingale action tile simplified: Spell / Force opens the dedicated Nightingale spell/familiar helper.
-- Enemy tracker spawn labels now use the lowest available alive group number.
-- Sticky footer/apply state is stabilized after Nightstalker's Trophy, Ring of Blood, Yuxa, Blood Toll, The Infection, and Life Grasp support actions.
+After GitHub Pages deploys, open the app on the tablet, use Data -> hosted / installable web app -> Update app cache, then reload/reopen the Home Screen app.
 
-After uploading, open the hosted app, use Data -> hosted / installable web app -> Update app cache, then reload/reopen the Home Screen app.
+Do not upload campaign snapshot JSON files to GitHub. Keep snapshots local.
 
 
-## V2.4F notes
-- Adds Nightingale Abbadon previous-damage capture and load flow.
-- Adds post-damage shortcuts for Trophy, Ring of Blood, and Yuxa inside the Nightingale helper.
-- Keeps V2.4F resolver-state anti-flicker behavior.
-
-
-## V2.4F notes
-
-- Abbadon capture now uses the current Nightingale result only instead of taking stale Life Grasp totals.
-- Nightstalker's Trophy requires an explicit black die result before applying an effect.
-- Sticky footer and Resolve / Apply mirrors use fixed-size V2.4F display to prevent flicker.
-
-
-## V2.4F notes
-
-- Adds a Nightingale / Loyal Esper bridge inside the Nightingale spell/familiar panel.
-- Summon Esper from the live Action tile now opens the bridge instead of sending you away from the Play flow.
-- Adds quick Summon Agares / Summon Eliphie controls, Summon-token summary, active Esper cards, and incoming-damage routing to the Command tracker.
+## V2.4H notes
+- Fixes the Nightingale Summon Esper action so it opens the Loyal Esper bridge.
+- Fixes Load actor from the bridge/Command cards so Agares or Eliphie becomes the current live-flow actor.

@@ -1,6 +1,6 @@
-// Middara Combat Helper V2.4F Abbadon / Trophy / Footer Stability service worker
+// Middara Combat Helper V2.4H service worker
 // Network-first for the app shell so GitHub Pages updates are picked up, with cache fallback for table use.
-const CACHE_VERSION = "v2-4e-abbadon-trophy-footer-stability-2026-06-10";
+const CACHE_VERSION = "v2-4h-esper-bridge-routing-2026-06-10";
 const CACHE_NAME = `middara-helper-${CACHE_VERSION}`;
 const CORE_ASSETS = [
   "./",

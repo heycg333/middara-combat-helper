@@ -3,7 +3,7 @@
 <head>
   <meta charset="utf-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1" />
-  <title>Middara Combat Helper - V2.4F Nightingale / Loyal Esper Bridge</title>
+  <title>Middara Combat Helper - V2.4H Esper Bridge / Actor Fix</title>
   <style>
     :root {
       --bg: #101827;
@@ -834,7 +834,7 @@
 <body>
   <header>
     <h1>Middara Combat Helper</h1>
-    <div class="subtitle">V2.4F Nightingale / Loyal Esper bridge: quick Summoning controls, active Command Combatant summary, Summon-token status, and table-rule settings.</div>
+    <div class="subtitle">V2.4G turn actor / Onslaught flow: quick Summoning controls, active Command Combatant summary, Summon-token status, and table-rule settings.</div>
   </header>
 
   <main>
@@ -11998,7 +11998,7 @@ else {
     var h = document.querySelector("#enemyAiAssistantPanel h2");
     if (h) h.textContent = "6. Enemy AI preset library";
     var subtitle = document.querySelector("header .subtitle");
-    if (subtitle) subtitle.textContent = "V2.4F Nightingale / Loyal Esper bridge: quick Summoning controls, active Command Combatant summary, Summon-token status, and table-rule settings.";
+    if (subtitle) subtitle.textContent = "V2.4G turn actor / Onslaught flow: quick Summoning controls, active Command Combatant summary, Summon-token status, and table-rule settings.";
   }
 
   function installPresetOptions() {
@@ -14664,9 +14664,9 @@ else {
     document.head.appendChild(style);
   }
   function updateChrome() {
-    document.title = "Middara Combat Helper - V2.4F Nightingale / Loyal Esper Bridge";
+    document.title = "Middara Combat Helper - V2.4H Esper Bridge / Actor Fix";
     var subtitle = document.querySelector("header .subtitle");
-    if (subtitle) subtitle.textContent = "V2.4F Nightingale / Loyal Esper bridge: quick Summoning controls, active Command Combatant summary, Summon-token status, and table-rule settings.";
+    if (subtitle) subtitle.textContent = "V2.4G turn actor / Onslaught flow: quick Summoning controls, active Command Combatant summary, Summon-token status, and table-rule settings.";
     var h = byId("commandCombatantPanel") && byId("commandCombatantPanel").querySelector("h2");
     if (h) h.textContent = "V2.1E Command Combatant / Loyal Esper tracker";
     var badge = byId("commandCombatantPanel") && byId("commandCombatantPanel").querySelector(".cockpit-badge");
@@ -15138,7 +15138,7 @@ else {
   }
   function updateChrome() {
     var title = document.querySelector("header .subtitle");
-    if (title && title.textContent.indexOf("V2.1F") < 0) title.textContent = "V2.4F Nightingale / Loyal Esper bridge: quick Summoning controls, active Command Combatant summary, Summon-token status, and table-rule settings.";
+    if (title && title.textContent.indexOf("V2.1F") < 0) title.textContent = "V2.4G turn actor / Onslaught flow: quick Summoning controls, active Command Combatant summary, Summon-token status, and table-rule settings.";
   }
   installRestoreWrapper();
   ready(function () {
@@ -15601,7 +15601,7 @@ else {
   function updateChrome() {
     try {
       var sub = document.querySelector("header .subtitle");
-      if (sub) sub.textContent = "V2.4F Nightingale / Loyal Esper bridge: quick Summoning controls, active Command Combatant summary, Summon-token status, and table-rule settings.";
+      if (sub) sub.textContent = "V2.4G turn actor / Onslaught flow: quick Summoning controls, active Command Combatant summary, Summon-token status, and table-rule settings.";
     } catch (err) { }
   }
 
@@ -16266,9 +16266,9 @@ else {
   }
 
   function updateChrome() {
-    document.title = "Middara Combat Helper - V2.4F Nightingale / Loyal Esper Bridge";
+    document.title = "Middara Combat Helper - V2.4H Esper Bridge / Actor Fix";
     var sub = document.querySelector("header .subtitle");
-    if (sub) sub.textContent = "V2.4F Nightingale / Loyal Esper bridge: quick Summoning controls, active Command Combatant summary, Summon-token status, and table-rule settings.";
+    if (sub) sub.textContent = "V2.4G turn actor / Onslaught flow: quick Summoning controls, active Command Combatant summary, Summon-token status, and table-rule settings.";
   }
 
   function init() {
@@ -16420,9 +16420,9 @@ else {
     }, true);
   }
   function updateChrome() {
-    document.title = "Middara Combat Helper - V2.4F Nightingale / Loyal Esper Bridge";
+    document.title = "Middara Combat Helper - V2.4H Esper Bridge / Actor Fix";
     var sub = document.querySelector("header .subtitle");
-    if (sub) sub.textContent = "V2.4F Nightingale / Loyal Esper bridge: quick Summoning controls, active Command Combatant summary, Summon-token status, and table-rule settings.";
+    if (sub) sub.textContent = "V2.4G turn actor / Onslaught flow: quick Summoning controls, active Command Combatant summary, Summon-token status, and table-rule settings.";
     var h = document.querySelector("#mobileCombatFlowPanel h2"); if (h) h.textContent = "V2.4F Tablet / mobile live combat flow";
     var badge = document.querySelector("#mobileCombatFlowPanel .cockpit-badge"); if (badge) badge.textContent = "V2.4F Flow";
     var pwa = byId("pwaVersionText"); if (pwa) pwa.textContent = VERSION;
@@ -16597,9 +16597,9 @@ else {
     });
   }
   function updateChrome() {
-    document.title = "Middara Combat Helper - V2.4F Nightingale / Loyal Esper Bridge";
+    document.title = "Middara Combat Helper - V2.4H Esper Bridge / Actor Fix";
     var sub = document.querySelector("header .subtitle");
-    if (sub) sub.textContent = "V2.4F Nightingale / Loyal Esper bridge: quick Summoning controls, active Command Combatant summary, Summon-token status, and table-rule settings.";
+    if (sub) sub.textContent = "V2.4G turn actor / Onslaught flow: quick Summoning controls, active Command Combatant summary, Summon-token status, and table-rule settings.";
     var pwa = byId("pwaVersionText"); if (pwa) pwa.textContent = "V2.2E";
     var h = document.querySelector("#mobileCombatFlowPanel h2"); if (h) h.textContent = "V2.4F Tablet / mobile live combat flow";
   }
@@ -16798,9 +16798,9 @@ else {
     else if (action === "rewards") route("rewards", "rewardsLootPanel");
   }
   function init(){
-    document.title = "Middara Combat Helper - V2.4F Nightingale / Loyal Esper Bridge";
+    document.title = "Middara Combat Helper - V2.4H Esper Bridge / Actor Fix";
     var h = document.querySelector("header h1"); if (h) h.textContent = "Middara Combat Helper";
-    var sub = document.querySelector("header .subtitle"); if (sub) sub.textContent = "V2.4F Nightingale / Loyal Esper bridge: quick Summoning controls, active Command Combatant summary, Summon-token status, and table-rule settings.";
+    var sub = document.querySelector("header .subtitle"); if (sub) sub.textContent = "V2.4G turn actor / Onslaught flow: quick Summoning controls, active Command Combatant summary, Summon-token status, and table-rule settings.";
     var flowH = document.querySelector("#mobileCombatFlowPanel h2"); if (flowH) flowH.textContent = "V2.4F Tablet / mobile live combat flow";
     var badge = document.querySelector("#mobileCombatFlowPanel .cockpit-badge"); if (badge) badge.textContent = "V2.4F Flow";
     injectHub(); addFooterUndo();
@@ -17065,9 +17065,9 @@ else {
     });
   }
   function patchTitles(){
-    document.title = "Middara Combat Helper - V2.4F Nightingale / Loyal Esper Bridge";
+    document.title = "Middara Combat Helper - V2.4H Esper Bridge / Actor Fix";
     var sub = document.querySelector("header .subtitle");
-    if (sub) sub.textContent = "V2.4F Nightingale / Loyal Esper bridge: quick Summoning controls, active Command Combatant summary, Summon-token status, and table-rule settings.";
+    if (sub) sub.textContent = "V2.4G turn actor / Onslaught flow: quick Summoning controls, active Command Combatant summary, Summon-token status, and table-rule settings.";
     var flowH = document.querySelector("#mobileCombatFlowPanel h2"); if (flowH) flowH.textContent = "V2.4F Tablet live combat flow";
     var badge = document.querySelector("#mobileCombatFlowPanel .cockpit-badge"); if (badge) badge.textContent = "V2.4F Flow";
     var hubH = document.querySelector("#v22gSessionHub h3"); if (hubH) hubH.textContent = "V2.3I table session hub";
@@ -17222,9 +17222,9 @@ else {
     if (flow && flow.scrollIntoView) flow.scrollIntoView({behavior:"smooth", block:"start"});
   }
   function patchTitles(){
-    document.title = "Middara Combat Helper - V2.4F Nightingale / Loyal Esper Bridge";
+    document.title = "Middara Combat Helper - V2.4H Esper Bridge / Actor Fix";
     var sub = document.querySelector("header .subtitle");
-    if (sub) sub.textContent = "V2.4F Nightingale / Loyal Esper bridge: quick Summoning controls, active Command Combatant summary, Summon-token status, and table-rule settings.";
+    if (sub) sub.textContent = "V2.4G turn actor / Onslaught flow: quick Summoning controls, active Command Combatant summary, Summon-token status, and table-rule settings.";
     var flowH = document.querySelector("#mobileCombatFlowPanel h2");
     if (flowH) flowH.textContent = "V2.4F Tablet live combat flow";
     var badge = document.querySelector("#mobileCombatFlowPanel .cockpit-badge");
@@ -17536,9 +17536,9 @@ else {
     var mo = new MutationObserver(function(){ schedulePaint(); });
     mo.observe(document.body, { childList:true, subtree:true, characterData:true });
     setInterval(paint, 1000);
-    document.title = "Middara Combat Helper - V2.4F Nightingale / Loyal Esper Bridge";
+    document.title = "Middara Combat Helper - V2.4H Esper Bridge / Actor Fix";
     var sub = document.querySelector("header .subtitle");
-    if (sub) sub.textContent = "V2.4F Nightingale / Loyal Esper bridge: quick Summoning controls, active Command Combatant summary, Summon-token status, and table-rule settings.";
+    if (sub) sub.textContent = "V2.4G turn actor / Onslaught flow: quick Summoning controls, active Command Combatant summary, Summon-token status, and table-rule settings.";
     var flowH = document.querySelector("#mobileCombatFlowPanel h2"); if (flowH) flowH.textContent = "V2.4F Tablet live combat flow";
     var badge = document.querySelector("#mobileCombatFlowPanel .cockpit-badge"); if (badge) badge.textContent = "V2.3I Auto-calc";
     var pwaSummary = document.querySelector(".v22c-pwa-panel summary"); if (pwaSummary) pwaSummary.textContent = "V2.4F hosted / installable web app";
@@ -17646,8 +17646,8 @@ else {
     box.innerHTML = html;
   }
   function updateVersionChrome(){
-    document.title = "Middara Combat Helper - V2.4F Nightingale / Loyal Esper Bridge";
-    var sub = document.querySelector("header .subtitle"); if (sub) sub.textContent = "V2.4F Nightingale / Loyal Esper bridge: quick Summoning controls, active Command Combatant summary, Summon-token status, and table-rule settings.";
+    document.title = "Middara Combat Helper - V2.4H Esper Bridge / Actor Fix";
+    var sub = document.querySelector("header .subtitle"); if (sub) sub.textContent = "V2.4G turn actor / Onslaught flow: quick Summoning controls, active Command Combatant summary, Summon-token status, and table-rule settings.";
     var flowH = document.querySelector("#mobileCombatFlowPanel h2"); if (flowH) flowH.textContent = "V2.4F Tablet live combat flow";
     var badge = document.querySelector("#mobileCombatFlowPanel .cockpit-badge"); if (badge) badge.textContent = "V2.4F";
     var pwaSummary = document.querySelector(".v22c-pwa-panel summary"); if (pwaSummary) pwaSummary.textContent = "V2.4F hosted / installable web app";
@@ -17679,8 +17679,8 @@ else {
 <script>
 (function () {
   "use strict";
-  var TITLE = "Middara Combat Helper - V2.4F Nightingale / Loyal Esper Bridge";
-  var SUBTITLE = "V2.4F Nightingale / Loyal Esper bridge: quick Summoning controls, active Command Combatant summary, Summon-token status, and table-rule settings.";
+  var TITLE = "Middara Combat Helper - V2.4H Esper Bridge / Actor Fix";
+  var SUBTITLE = "V2.4G turn actor / Onslaught flow: quick Summoning controls, active Command Combatant summary, Summon-token status, and table-rule settings.";
   function stabilizeHeader() {
     try {
       if (document.title !== TITLE) document.title = TITLE;
@@ -18626,9 +18626,9 @@ else {
     var calc = byId("calculateEnemyAttackButton"); if (calc) calc.addEventListener("click", function () { setTimeout(renderUniversalCounterTray, 60); }, true);
   }
   function patchChromeAndSnapshot() {
-    document.title = "Middara Combat Helper - V2.4F Nightingale / Loyal Esper Bridge";
+    document.title = "Middara Combat Helper - V2.4H Esper Bridge / Actor Fix";
     var sub = document.querySelector("header .subtitle");
-    if (sub) sub.textContent = "V2.4F Nightingale / Loyal Esper bridge: quick Summoning controls, active Command Combatant summary, Summon-token status, and table-rule settings.";
+    if (sub) sub.textContent = "V2.4G turn actor / Onslaught flow: quick Summoning controls, active Command Combatant summary, Summon-token status, and table-rule settings.";
     var h = document.querySelector("#mobileCombatFlowPanel h2"); if (h) h.textContent = "V2.4F Tablet live combat flow";
     var badge = document.querySelector("#mobileCombatFlowPanel .cockpit-badge"); if (badge) badge.textContent = "V2.4F Flow";
     var pwa = byId("pwaVersionText"); if (pwa) pwa.textContent = VERSION;
@@ -19125,9 +19125,9 @@ else {
     var calc = byId("calculateEnemyAttackButton"); if (calc) calc.addEventListener("click", function () { setTimeout(function(){ renderDefenseTray(lastEnemyAttack()); }, 80); }, true);
   }
   function patchChromeAndSnapshots() {
-    document.title = "Middara Combat Helper - V2.4F Nightingale / Loyal Esper Bridge";
+    document.title = "Middara Combat Helper - V2.4H Esper Bridge / Actor Fix";
     var sub = document.querySelector("header .subtitle");
-    if (sub) sub.textContent = "V2.4F Nightingale / Loyal Esper bridge: quick Summoning controls, active Command Combatant summary, Summon-token status, and table-rule settings.";
+    if (sub) sub.textContent = "V2.4G turn actor / Onslaught flow: quick Summoning controls, active Command Combatant summary, Summon-token status, and table-rule settings.";
     var h = document.querySelector("#mobileCombatFlowPanel h2"); if (h) h.textContent = "V2.4F Tablet live combat flow";
     var badge = document.querySelector("#mobileCombatFlowPanel .cockpit-badge"); if (badge) badge.textContent = "V2.4F Flow";
     var pwa = byId("pwaVersionText"); if (pwa) pwa.textContent = VERSION;
@@ -19165,8 +19165,8 @@ else {
 (function () {
   "use strict";
   var VERSION = "V2.4F";
-  var TITLE = "Middara Combat Helper - V2.4F Nightingale / Loyal Esper Bridge";
-  var SUBTITLE = "V2.4F Nightingale / Loyal Esper bridge: quick Summoning controls, active Command Combatant summary, Summon-token status, and table-rule settings.";
+  var TITLE = "Middara Combat Helper - V2.4H Esper Bridge / Actor Fix";
+  var SUBTITLE = "V2.4G turn actor / Onslaught flow: quick Summoning controls, active Command Combatant summary, Summon-token status, and table-rule settings.";
   var KEY = "middara_v23g_live_flow_layout_mode";
   function ready(fn) { if (document.readyState === "loading") document.addEventListener("DOMContentLoaded", fn); else fn(); }
   function byId(id) { return document.getElementById(id); }
@@ -19525,9 +19525,9 @@ else {
     window.__middaraV23HCalcCapture = true;
   }
   function patchChromeAndSnapshots() {
-    document.title = "Middara Combat Helper - V2.4F Nightingale / Loyal Esper Bridge";
+    document.title = "Middara Combat Helper - V2.4H Esper Bridge / Actor Fix";
     var sub = document.querySelector("header .subtitle");
-    if (sub) sub.textContent = "V2.4F Nightingale / Loyal Esper bridge: quick Summoning controls, active Command Combatant summary, Summon-token status, and table-rule settings.";
+    if (sub) sub.textContent = "V2.4G turn actor / Onslaught flow: quick Summoning controls, active Command Combatant summary, Summon-token status, and table-rule settings.";
     try {
       if (window.middaraDataManagerApi && !window.__middaraV23HSnapshotPatch) {
         var api = window.middaraDataManagerApi;
@@ -19570,8 +19570,8 @@ else {
 (function () {
   "use strict";
   var VERSION = "V2.4F";
-  var TITLE = "Middara Combat Helper - V2.4F Nightingale / Loyal Esper Bridge";
-  var SUBTITLE = "V2.4F Nightingale / Loyal Esper bridge: quick Summoning controls, active Command Combatant summary, Summon-token status, and table-rule settings.";
+  var TITLE = "Middara Combat Helper - V2.4H Esper Bridge / Actor Fix";
+  var SUBTITLE = "V2.4G turn actor / Onslaught flow: quick Summoning controls, active Command Combatant summary, Summon-token status, and table-rule settings.";
   var timer = null;
 
   function ready(fn) { if (document.readyState === "loading") document.addEventListener("DOMContentLoaded", fn); else setTimeout(fn, 0); }
@@ -19770,8 +19770,8 @@ else {
 (function(){
   "use strict";
   var VERSION = "V2.4F";
-  var TITLE = "Middara Combat Helper - V2.4F Nightingale / Loyal Esper Bridge";
-  var SUBTITLE = "V2.4F Nightingale / Loyal Esper bridge: quick Summoning controls, active Command Combatant summary, Summon-token status, and table-rule settings.";
+  var TITLE = "Middara Combat Helper - V2.4H Esper Bridge / Actor Fix";
+  var SUBTITLE = "V2.4G turn actor / Onslaught flow: quick Summoning controls, active Command Combatant summary, Summon-token status, and table-rule settings.";
   var awaitingWhirlwindTarget = false;
   var targetChosenAt = 0;
   function ready(fn){ if(document.readyState === "loading") document.addEventListener("DOMContentLoaded", fn); else setTimeout(fn, 0); }
@@ -19935,8 +19935,8 @@ else {
 (function(){
   "use strict";
   var VERSION = "V2.4F";
-  var TITLE = "Middara Combat Helper - V2.4F Nightingale / Loyal Esper Bridge";
-  var SUBTITLE = "V2.4F Nightingale / Loyal Esper bridge: quick Summoning controls, active Command Combatant summary, Summon-token status, and table-rule settings.";
+  var TITLE = "Middara Combat Helper - V2.4H Esper Bridge / Actor Fix";
+  var SUBTITLE = "V2.4G turn actor / Onslaught flow: quick Summoning controls, active Command Combatant summary, Summon-token status, and table-rule settings.";
   var FLOW_KEY = "middaraCombatHelperV22BMobileFlow";
   var QA_KEY = "middaraCombatHelperV23KQaState";
   var pendingWhirlwindTarget = false;
@@ -20533,7 +20533,7 @@ else {
 (function(){
   "use strict";
   var VERSION = "V2.4F";
-  var TITLE = "Middara Combat Helper - V2.4F Nightingale / Loyal Esper Bridge";
+  var TITLE = "Middara Combat Helper - V2.4H Esper Bridge / Actor Fix";
   var SUBTITLE = "V2.4F Nightingale spell and familiar polish: Life Grasp multi-target helper, explicit Force math, one-time self-damage, Trophy effects, Blood Toll, Infection, Ring of Blood, and Yuxa shortcuts.";
   var KEY = "middara_v24a_nightingale_state";
   function byId(id){ return document.getElementById(id); }
@@ -20709,8 +20709,8 @@ else {
 (function(){
   "use strict";
   var VERSION = "V2.4F";
-  var TITLE = "Middara Combat Helper - V2.4F Nightingale / Loyal Esper Bridge";
-  var SUBTITLE = "V2.4F Nightingale / Loyal Esper bridge: quick Summoning controls, active Command Combatant summary, Summon-token status, and table-rule settings.";
+  var TITLE = "Middara Combat Helper - V2.4H Esper Bridge / Actor Fix";
+  var SUBTITLE = "V2.4G turn actor / Onslaught flow: quick Summoning controls, active Command Combatant summary, Summon-token status, and table-rule settings.";
   var FLOW_KEY = "middaraCombatHelperV22BMobileFlow";
   var supportLock = { active:false, label:"" };
 
@@ -20946,7 +20946,7 @@ else {
 (function(){
   "use strict";
   var VERSION = "V2.4F";
-  var TITLE = "Middara Combat Helper - V2.4F Nightingale / Loyal Esper Bridge";
+  var TITLE = "Middara Combat Helper - V2.4H Esper Bridge / Actor Fix";
   var SUBTITLE = "V2.4F resolver-state patch: Nightingale Spell / Force stays in her dedicated panel, and the Resolve/Apply tile plus sticky footer use one stable attack/spell/support state.";
   var FLOW_KEY = "middaraCombatHelperV22BMobileFlow";
   var MODE_KEY = "middara_v24c_resolver_mode";
@@ -21217,8 +21217,8 @@ else {
 (function(){
   "use strict";
   var VERSION = "V2.4F";
-  var TITLE = "Middara Combat Helper - V2.4F Nightingale / Loyal Esper Bridge";
-  var SUBTITLE = "V2.4F Nightingale / Loyal Esper bridge: quick Summoning controls, active Command Combatant summary, Summon-token status, and table-rule settings.";
+  var TITLE = "Middara Combat Helper - V2.4H Esper Bridge / Actor Fix";
+  var SUBTITLE = "V2.4G turn actor / Onslaught flow: quick Summoning controls, active Command Combatant summary, Summon-token status, and table-rule settings.";
   var FLOW_KEY = "middaraCombatHelperV22BMobileFlow";
   var STORE_KEY = "middaraV24DAbbadonChainState";
   var state = loadState();
@@ -21487,8 +21487,8 @@ else {
 (function(){
   "use strict";
   var VERSION = "V2.4F";
-  var TITLE = "Middara Combat Helper - V2.4F Nightingale / Loyal Esper Bridge";
-  var SUBTITLE = "V2.4F Nightingale / Loyal Esper bridge: quick Summoning controls, active Command Combatant summary, Summon-token status, and table-rule settings.";
+  var TITLE = "Middara Combat Helper - V2.4H Esper Bridge / Actor Fix";
+  var SUBTITLE = "V2.4G turn actor / Onslaught flow: quick Summoning controls, active Command Combatant summary, Summon-token status, and table-rule settings.";
   var FLOW_KEY = "middaraCombatHelperV22BMobileFlow";
   var TROPHY_KEY = "middara_v24e_trophy_roll";
   var last = { title:"", detail:"", resolve:"", label:"", disabled:null, mode:"" };
@@ -21572,7 +21572,7 @@ else {
 
 
 <style id="v24f-nightingale-command-bridge-style">
-  /* V2.4F Nightingale / Loyal Esper bridge */
+  /* V2.4G turn actor / Onslaught flow */
   #mobileCombatFlowPanel h2::after { content: "V2.4F Tablet live combat flow" !important; }
   #v24fCommandBridgeCard { border-color: rgba(34,197,94,.42); background: linear-gradient(180deg, rgba(34,197,94,.10), rgba(15,23,42,.40)); }
   #v24fCommandBridgeCard h3 { color: #86efac; }
@@ -21596,8 +21596,8 @@ else {
 (function(){
   "use strict";
   var VERSION = "V2.4F";
-  var TITLE = "Middara Combat Helper - V2.4F Nightingale / Loyal Esper Bridge";
-  var SUBTITLE = "V2.4F Nightingale / Loyal Esper bridge: quick Summoning controls, active Command Combatant summary, Summon-token status, and table-rule settings.";
+  var TITLE = "Middara Combat Helper - V2.4H Esper Bridge / Actor Fix";
+  var SUBTITLE = "V2.4G turn actor / Onslaught flow: quick Summoning controls, active Command Combatant summary, Summon-token status, and table-rule settings.";
   var FLOW_KEY = "middaraCombatHelperV22BMobileFlow";
   var SNAP_KEY = "middara_v24f_bridge_state";
   var lastMsg = "";
@@ -21659,6 +21659,506 @@ else {
   function init(){ patchChrome(); ensureBridge(); decorateActionCards(); patchSnapshots(); setInterval(function(){ patchChrome(); ensureBridge(); decorateActionCards(); renderBridge(); }, 800); setStatus("V2.4F loaded. Nightingale Summon Esper now opens the Loyal Esper bridge, with Summon-token and Command-state shortcuts.", "ok"); }
   ready(init);
   window.middaraV24FCommandBridgeApi = { render:renderBridge, open:openNightingalePanel, summon:summon, addSummonToken:addSummonToken, applyIncoming:applyIncoming };
+})();
+</script>
+
+
+
+<style id="v24g-turn-actor-onslaught-style">
+  /* V2.4G Turn actor / Onslaught flow fix */
+  #mobileCombatFlowPanel h2::after { content: "V2.4G Tablet live combat flow" !important; }
+  body[data-v17-current-mode="turn"] #rookDisciplinePanel { display: none !important; }
+  body.v24g-onslaught-lock #attackDicePanel {
+    outline: 2px solid rgba(56,189,248,.78);
+    box-shadow: 0 0 0 4px rgba(56,189,248,.12);
+  }
+  .v24g-current-turn-chip {
+    display: inline-flex;
+    align-items: center;
+    gap: 6px;
+    border: 1px solid rgba(56,189,248,.45);
+    background: rgba(56,189,248,.10);
+    border-radius: 999px;
+    padding: 5px 9px;
+    color: #bae6fd;
+    font-size: .78rem;
+    font-weight: 800;
+    margin-left: 6px;
+  }
+</style>
+<script id="v24g-turn-actor-onslaught-script">
+(function(){
+  "use strict";
+  var VERSION = "V2.4G";
+  var FLOW_KEY = "middaraCombatHelperV22BMobileFlow";
+  var lastSyncedTurnKey = "";
+  var savedOnslaughtTarget = null;
+  var onslaughtLockUntil = 0;
+
+  function ready(fn){ if(document.readyState === "loading") document.addEventListener("DOMContentLoaded", fn); else setTimeout(fn, 0); }
+  function byId(id){ return document.getElementById(id); }
+  function fire(elOrId, type){ var el = typeof elOrId === "string" ? byId(elOrId) : elOrId; if(!el) return; try{ el.dispatchEvent(new Event(type || "change", {bubbles:true})); }catch(err){ try{ var ev=document.createEvent("Event"); ev.initEvent(type || "change", true, true); el.dispatchEvent(ev); }catch(e){} } }
+  function val(id){ var el=byId(id); return el ? String(el.value || "") : ""; }
+  function txt(id){ var el=byId(id); return el ? String(el.textContent || el.value || "").trim() : ""; }
+  function selectedText(id){ var el=byId(id); return el && el.options && el.selectedIndex >= 0 ? String(el.options[el.selectedIndex].textContent || el.value || "") : val(id); }
+  function setSelect(id, value){ var el=byId(id); if(!el || !el.options) return false; var v=String(value || ""); for(var i=0;i<el.options.length;i++){ if(el.options[i].value === v){ if(el.value !== v){ el.value = v; fire(el,"change"); } return true; } } return false; }
+  function setVal(id, value){ var el=byId(id); if(!el) return; if(String(el.value) !== String(value == null ? "" : value)){ el.value = String(value == null ? "" : value); fire(el,"input"); fire(el,"change"); } }
+  function setChecked(id, value){ var el=byId(id); if(!el) return; var b=!!value; if(el.checked !== b){ el.checked=b; fire(el,"change"); } }
+  function readFlow(){ try{ return JSON.parse(localStorage.getItem(FLOW_KEY) || "{}"); }catch(err){ return {}; } }
+  function writeFlow(s){ try{ localStorage.setItem(FLOW_KEY, JSON.stringify(s || {})); }catch(err){} }
+  function mobileRender(){ try{ if(window.middaraMobileFlowV22BApi && middaraMobileFlowV22BApi.render) middaraMobileFlowV22BApi.render(); }catch(err){} }
+  function setFlowStatus(message, kind){
+    var cls = (kind === "warn" ? "warning-box" : kind === "danger" ? "danger-box" : "ok-box") + " note v22b-flow-status";
+    ["v22bFlowStatus", "v23kQaStatus"].forEach(function(id){ var el=byId(id); if(el){ el.className=cls; el.textContent=message; } });
+  }
+
+  function patchChrome(){
+    document.title = "Middara Combat Helper - V2.4H Esper Bridge / Actor Fix";
+    var sub = document.querySelector("header .subtitle");
+    if(sub) sub.textContent = "V2.4G turn actor / Onslaught flow: current initiative defaults the live actor, Rook support stays off Turn/State, and Zeke Onslaught stays in the attack roll tray.";
+    var pwa = byId("pwaVersionText"); if(pwa) pwa.textContent = VERSION;
+    var pwaSummary = document.querySelector(".v22c-pwa-panel summary"); if(pwaSummary) pwaSummary.textContent = "V2.4G hosted / installable web app";
+    var dataH = document.querySelector("#v22iDataStatusPanel h3"); if(dataH) dataH.textContent = "V2.4G save / update status";
+    var badge = document.querySelector("#mobileCombatFlowPanel .cockpit-badge"); if(badge) badge.textContent = "V2.4G Flow";
+  }
+
+  function hideRookSupportFromTurn(){
+    var p = byId("rookDisciplinePanel");
+    if(p && p.getAttribute("data-v17-mode") !== "play party probability") p.setAttribute("data-v17-mode", "play party probability");
+  }
+
+  function currentInitiativeCard(){
+    try{
+      if(window.turnState && Array.isArray(turnState.initiativeCards) && turnState.initiativeCards.length){
+        return turnState.initiativeCards[Math.max(0, Math.min(turnState.activeIndex || 0, turnState.initiativeCards.length - 1))] || null;
+      }
+    }catch(err){}
+    var text = txt("turnCurrentText");
+    if(text && text !== "-") return { label:text, ownerId:"", type:"" };
+    return null;
+  }
+  function normalize(s){ return String(s || "").toLowerCase().replace(/[^a-z0-9]+/g, " ").trim(); }
+  function actorOptionExists(value){ var sel=byId("v22bActorSelect"); if(!sel || !sel.options) return false; for(var i=0;i<sel.options.length;i++){ if(sel.options[i].value === value) return true; } return false; }
+  function findTrackerEnemyForInitiative(card){
+    var enemies = [];
+    try{ enemies = (window.trackerState && Array.isArray(trackerState.enemies)) ? trackerState.enemies.slice() : []; }catch(err){ enemies = []; }
+    if(!enemies.length) return null;
+    var owner = String(card && card.ownerId || "");
+    var source = String(card && card.source || "");
+    var label = String(card && card.label || "");
+    var typeId = owner.indexOf("enemy:") === 0 ? owner.slice(6) : source;
+    function alive(e){ return !e.defeated && Number(e.damage || 0) < Number(e.hp || e.maxHp || 0); }
+    function value(e){ return "enemy:" + e.id; }
+    var aliveEnemies = enemies.filter(alive);
+    var list = aliveEnemies.length ? aliveEnemies : enemies;
+    if(typeId){
+      var exact = list.filter(function(e){ return String(e.presetId || e.typeId || e.enemyId || "") === typeId; })[0];
+      if(exact) return value(exact);
+    }
+    var nLabel = normalize(label).replace(/\b\d+\s*[-–]\s*\d+\b/g, "").replace(/\b\d+\b/g, "").trim();
+    if(nLabel){
+      var match = list.filter(function(e){
+        var n = normalize((e.name || "") + " " + (e.label || ""));
+        return n.indexOf(nLabel) >= 0 || nLabel.indexOf(normalize(e.name || "")) >= 0;
+      })[0];
+      if(match) return value(match);
+    }
+    return null;
+  }
+  function actorValueForInitiative(card){
+    if(!card) return "";
+    var owner = String(card.ownerId || "");
+    var source = String(card.source || "");
+    var label = String(card.label || "");
+    var partyIds = ["rook","remi","nightingale","zeke"];
+    var candidate = "";
+    if(partyIds.indexOf(owner) >= 0) candidate = "party:" + owner;
+    else if(partyIds.indexOf(source) >= 0) candidate = "party:" + source;
+    else {
+      var n = normalize(label);
+      partyIds.forEach(function(id){ if(!candidate && n.indexOf(id) >= 0) candidate = "party:" + id; });
+    }
+    if(candidate && actorOptionExists(candidate)) return candidate;
+    if(owner.indexOf("command:") === 0 && actorOptionExists(owner)) return owner;
+    var enemy = findTrackerEnemyForInitiative(card);
+    if(enemy && actorOptionExists(enemy)) return enemy;
+    return "";
+  }
+  function setActorFromInitiative(reason){
+    var card = currentInitiativeCard();
+    var actor = actorValueForInitiative(card);
+    if(!actor) return false;
+    var key = (card.id || card.label || "") + "|" + actor + "|" + (reason || "");
+    var sel = byId("v22bActorSelect");
+    var flow = readFlow();
+    var changed = false;
+    if(sel && sel.value !== actor){ sel.value = actor; fire(sel,"change"); changed = true; }
+    if(flow.actor !== actor){ flow.actor = actor; flow.awaitingTargetFor = ""; flow.appliedKey = ""; flow.appliedLabel = ""; writeFlow(flow); changed = true; }
+    if(actor.indexOf("party:") === 0){ var cid = actor.slice(6); setSelect("characterSelect", cid); }
+    else if(actor.indexOf("enemy:") === 0){
+      var id = actor.slice(6);
+      try{ if(typeof window.useTrackerEnemyAsTarget === "function") window.useTrackerEnemyAsTarget(id, false); }catch(err){}
+    }
+    if(changed || key !== lastSyncedTurnKey){
+      lastSyncedTurnKey = key;
+      mobileRender();
+      setFlowStatus("Actor defaulted to current initiative turn: " + (card.label || selectedText("v22bActorSelect") || "current actor") + ".", "ok");
+    }
+    return true;
+  }
+  function bindInitiativeActorSync(){
+    ["initiativeShuffleButton", "initiativePrevButton", "initiativeNextButton", "initiativeEndRoundButton", "initiativeRefreshButton", "initiativeResetButton"].forEach(function(id){
+      var el = byId(id); if(el && !el.getAttribute("data-v24g-sync")){ el.setAttribute("data-v24g-sync", "1"); el.addEventListener("click", function(){ setTimeout(function(){ setActorFromInitiative("initiative-button"); }, 160); setTimeout(function(){ setActorFromInitiative("initiative-button-late"); }, 600); }, false); }
+    });
+    document.addEventListener("click", function(ev){
+      var b = ev.target && ev.target.closest ? ev.target.closest(".init-action") : null;
+      if(b){ setTimeout(function(){ setActorFromInitiative("initiative-row"); }, 180); setTimeout(function(){ setActorFromInitiative("initiative-row-late"); }, 620); }
+      var play = ev.target && ev.target.closest ? ev.target.closest('[data-v17-mode-button="play"]') : null;
+      if(play){ setTimeout(function(){ setActorFromInitiative("play-open"); }, 180); }
+    }, true);
+  }
+
+  function flowTargetName(flowTarget){
+    var parts = String(flowTarget || "").split(":"), kind=parts[0], id=parts.slice(1).join(":");
+    try{
+      if(kind === "enemy" && window.trackerState && Array.isArray(trackerState.enemies)){ var e=trackerState.enemies.filter(function(x){ return String(x.id) === id; })[0]; if(e) return e.label || e.name || id; }
+      if(kind === "party" && window.partyState && Array.isArray(partyState.members)){ var p=partyState.members.filter(function(x){ return String(x.id) === id; })[0]; if(p) return p.name || p.id || id; }
+    }catch(err){}
+    return selectedText("targetSelect") || selectedText("enemyAttackTarget") || "target";
+  }
+  function currentTargetSnapshot(){
+    var flow = readFlow();
+    var snap = { flowTarget: flow.target || "", trackerId: "", label: "" };
+    try{ if(window.trackerState && trackerState.selectedId) snap.trackerId = String(trackerState.selectedId); }catch(err){}
+    if(!snap.flowTarget && snap.trackerId) snap.flowTarget = "enemy:" + snap.trackerId;
+    snap.label = flowTargetName(snap.flowTarget);
+    return snap;
+  }
+  function restoreTargetSnapshot(snap){
+    snap = snap || savedOnslaughtTarget || currentTargetSnapshot();
+    var flow = readFlow();
+    flow.actor = "party:zeke";
+    flow.pendingType = "attack";
+    flow.awaitingTargetFor = "";
+    flow.appliedKey = "";
+    flow.appliedLabel = "";
+    if(snap.flowTarget){ flow.target = snap.flowTarget; if(snap.flowTarget.indexOf("enemy:") === 0) flow.targetFilter = "enemy"; flow.targetRole = ""; }
+    writeFlow(flow);
+    if(snap.flowTarget && snap.flowTarget.indexOf("enemy:") === 0){
+      var id = snap.flowTarget.slice(6);
+      try{ if(typeof window.useTrackerEnemyAsTarget === "function") window.useTrackerEnemyAsTarget(id, false); }
+      catch(err){ try{ if(window.trackerState) trackerState.selectedId = id; if(typeof window.renderTracker === "function") renderTracker(); }catch(e){} }
+    }
+  }
+  function resetAttackControls(){
+    try{ document.querySelectorAll(".die-face").forEach(function(sel){ if(sel.options && sel.options.length){ sel.selectedIndex = 0; fire(sel,"change"); } }); }catch(err){}
+    setVal("blackFace", "0");
+    ["useMasterWork","useMotV","useChallengeSupreme","useMorbidEnvy","reserveChainMeleeFU","reserveChainRangedFU","reserveCriticalDefense","reserveSvalinn","empowered","flanking"].forEach(function(id){ setChecked(id, false); });
+    ["challengeSupremeSp","attackMod","physMod","magicMod","apMod","adjacentArmor","targetDodge"].forEach(function(id){ setVal(id, "0"); });
+  }
+  function setAttackMode(){
+    try{ document.body.classList.remove("v22b-show-spell", "v22b-show-rook"); document.body.classList.add("v22b-show-attack"); }catch(err){}
+    var flow = readFlow(); flow.actor = "party:zeke"; flow.pendingType = "attack"; flow.awaitingTargetFor = ""; flow.appliedKey = ""; flow.appliedLabel = ""; writeFlow(flow);
+  }
+  function routeToAttackRoll(){
+    try{ var play = document.querySelector('[data-v17-mode-button="play"]'); if(play && typeof play.click === "function") play.click(); }catch(err){}
+    setTimeout(function(){
+      var el = byId("attackDicePanel") || byId("profileSelect");
+      if(el && el.scrollIntoView){ try{ el.scrollIntoView({behavior:"smooth", block:"start"}); }catch(err){ el.scrollIntoView(true); } }
+    }, 35);
+  }
+  function forceOnslaughtAttackRoll(label, snap){
+    snap = snap || savedOnslaughtTarget || currentTargetSnapshot();
+    restoreTargetSnapshot(snap);
+    setAttackMode();
+    setSelect("characterSelect", "zeke");
+    try{ if(typeof window.syncProfiles === "function") window.syncProfiles(); }catch(err){}
+    setTimeout(function(){
+      setSelect("profileSelect", "zeke_dual_short_swords");
+      try{ if(typeof window.syncProfileControls === "function") window.syncProfileControls(); }catch(err2){}
+      resetAttackControls();
+      restoreTargetSnapshot(snap);
+      setAttackMode();
+      try{ if(typeof window.calculate === "function") window.calculate(); }catch(err3){}
+      mobileRender();
+      document.body.classList.add("v24g-onslaught-lock");
+      setTimeout(function(){ document.body.classList.remove("v24g-onslaught-lock"); }, 2600);
+      setFlowStatus((label || "Onslaught follow-up") + ": Zeke remains actor, target is preserved as " + (snap.label || flowTargetName(snap.flowTarget)) + ", and the fresh attack roll is ready.", "ok");
+      routeToAttackRoll();
+    }, 20);
+  }
+  function hardCorrectOnslaught(label, snap){
+    onslaughtLockUntil = Date.now() + 2800;
+    [0, 40, 120, 260, 520, 900, 1450, 2200].forEach(function(ms){ setTimeout(function(){ forceOnslaughtAttackRoll(label, snap); }, ms); });
+  }
+  function callOldOnslaught(action){
+    try{
+      var api = window.middaraV23HChainApi;
+      if(api){
+        if(action === "zeke-start-onslaught" && typeof api.startOnslaught === "function") api.startOnslaught();
+        else if(action === "zeke-next-onslaught" && typeof api.nextOnslaught === "function") api.nextOnslaught();
+      }
+    }catch(err){}
+  }
+  function bindStableOnslaught(){
+    ["pointerdown","touchstart","mousedown"].forEach(function(evt){
+      document.addEventListener(evt, function(ev){
+        var node = ev.target && ev.target.closest ? ev.target.closest('[data-v23h-action="zeke-next-onslaught"], [data-v23h-action="zeke-start-onslaught"]') : null;
+        if(node) savedOnslaughtTarget = currentTargetSnapshot();
+      }, true);
+    });
+    document.addEventListener("click", function(ev){
+      var node = ev.target && ev.target.closest ? ev.target.closest('[data-v23h-action="zeke-next-onslaught"], [data-v23h-action="zeke-start-onslaught"]') : null;
+      if(!node) return;
+      var action = node.getAttribute("data-v23h-action") || "";
+      var snap = savedOnslaughtTarget || currentTargetSnapshot();
+      try{ ev.preventDefault(); ev.stopImmediatePropagation(); ev.stopPropagation(); }catch(err){}
+      callOldOnslaught(action);
+      hardCorrectOnslaught(action === "zeke-start-onslaught" ? "Onslaught started" : "Onslaught follow-up", snap);
+    }, true);
+    setInterval(function(){ if(Date.now() < onslaughtLockUntil) forceOnslaughtAttackRoll("Onslaught route guard", savedOnslaughtTarget || currentTargetSnapshot()); }, 500);
+    try{
+      window.middaraV24GOnslaughtApi = { force:forceOnslaughtAttackRoll, syncActorToTurn:setActorFromInitiative };
+      if(window.middaraV23LStableApi) window.middaraV23LStableApi.forceOnslaughtAttackRoll = forceOnslaughtAttackRoll;
+    }catch(err){}
+  }
+
+  function patchSnapshots(){
+    try{
+      if(!window.middaraDataManagerApi || window.__middaraV24GSnapshotPatch) return;
+      window.__middaraV24GSnapshotPatch = true;
+      var api = window.middaraDataManagerApi;
+      var oldFull = api.exportFullSnapshot, oldApp = api.exportAppData;
+      function add(snap){ try{ snap.version = VERSION; snap.pwaDeploymentVersion = VERSION; snap.v24g = { turnActorDefault:true, rookSupportHiddenOnTurn:true, stableOnslaughtClickCapture:true }; }catch(err){} return snap; }
+      if(typeof oldFull === "function") api.exportFullSnapshot = function(){ return add(oldFull.apply(this, arguments)); };
+      if(typeof oldApp === "function") api.exportAppData = function(){ return add(oldApp.apply(this, arguments)); };
+    }catch(err){}
+  }
+
+  function init(){
+    patchChrome(); hideRookSupportFromTurn(); bindInitiativeActorSync(); bindStableOnslaught(); patchSnapshots();
+    setTimeout(function(){ hideRookSupportFromTurn(); setActorFromInitiative("initial"); mobileRender(); }, 700);
+    setInterval(function(){ patchChrome(); hideRookSupportFromTurn(); patchSnapshots(); }, 1000);
+  }
+  ready(init);
+})();
+</script>
+
+
+
+<style id="v24h-esper-bridge-actor-fix-style">
+  /* V2.4H Esper bridge / Command actor routing fix */
+  #mobileCombatFlowPanel h2::after { content: "V2.4H Tablet live combat flow" !important; }
+  #v24fCommandBridgeCard { scroll-margin-top: 96px; }
+  #v24fCommandBridgeCard.v24h-bridge-focus {
+    outline: 2px solid rgba(34,197,94,.62);
+    box-shadow: 0 0 0 4px rgba(34,197,94,.12);
+  }
+  header .subtitle.v24h-subtitle-lock {
+    position: relative !important;
+    color: transparent !important;
+    min-height: 2.8em;
+  }
+  header .subtitle.v24h-subtitle-lock::after {
+    content: attr(data-v24h-subtitle);
+    position: absolute;
+    left: 0;
+    right: 0;
+    top: 0;
+    color: var(--muted);
+    pointer-events: none;
+  }
+  #mobileCombatFlowPanel .cockpit-badge.v24h-badge-lock {
+    position: relative !important;
+    color: transparent !important;
+  }
+  #mobileCombatFlowPanel .cockpit-badge.v24h-badge-lock::after {
+    content: "V2.4H Flow";
+    position: absolute;
+    inset: 0;
+    display: grid;
+    place-items: center;
+    color: #06121f;
+    pointer-events: none;
+  }
+</style>
+<script id="v24h-esper-bridge-actor-fix-script">
+(function(){
+  "use strict";
+  var VERSION = "V2.4H";
+  var TITLE = "Middara Combat Helper - V2.4H Esper Bridge / Actor Fix";
+  var SUBTITLE = "V2.4H Esper bridge / actor fix: Summon Esper opens Nightingale's Loyal Esper bridge, and Load actor reliably selects Agares or Eliphie in the live combat flow.";
+  var FLOW_KEY = "middaraCombatHelperV22BMobileFlow";
+  var MODE_KEY = "middara_v24c_resolver_mode";
+
+  function ready(fn){ if(document.readyState === "loading") document.addEventListener("DOMContentLoaded", fn); else setTimeout(fn, 0); }
+  function byId(id){ return document.getElementById(id); }
+  function esc(v){ return String(v == null ? "" : v).replace(/[&<>\"']/g, function(ch){ return ({"&":"&amp;","<":"&lt;",">":"&gt;","\"":"&quot;","'":"&#039;"})[ch]; }); }
+  function fire(elOrId, type){ var el = typeof elOrId === "string" ? byId(elOrId) : elOrId; if(!el) return; try{ el.dispatchEvent(new Event(type || "change", {bubbles:true})); }catch(err){ try{ var ev=document.createEvent("Event"); ev.initEvent(type || "change", true, true); el.dispatchEvent(ev); }catch(e){} } }
+  function clickEl(el){ if(el && typeof el.click === "function"){ try{ el.click(); return true; }catch(err){} } return false; }
+  function clickId(id){ return clickEl(byId(id)); }
+  function readFlow(){ try{ return JSON.parse(localStorage.getItem(FLOW_KEY) || "{}"); }catch(err){ return {}; } }
+  function writeFlow(s){ try{ localStorage.setItem(FLOW_KEY, JSON.stringify(s || {})); }catch(err){} }
+  function writeMode(mode, reason){ try{ localStorage.setItem(MODE_KEY, JSON.stringify({ mode:mode || "nightPanel", reason:reason || "", until: Date.now() + 2600, keepApplied:false })); }catch(err){} }
+  function setSelect(id, value){ var el=byId(id); if(!el || !el.options) return false; var v=String(value || ""); for(var i=0;i<el.options.length;i++){ if(el.options[i].value === v){ if(el.value !== v){ el.value=v; fire(el,"change"); } return true; } } return false; }
+  function optionExists(el, value){ if(!el || !el.options) return false; var v=String(value || ""); for(var i=0;i<el.options.length;i++){ if(el.options[i].value === v) return true; } return false; }
+  function addOption(el, value, label){ if(!el || optionExists(el, value)) return; try{ var opt=document.createElement("option"); opt.value=String(value); opt.textContent=String(label || value); el.appendChild(opt); }catch(err){} }
+  function setFlowStatus(message, kind){
+    var cls = (kind === "warn" ? "warning-box" : kind === "danger" ? "danger-box" : "ok-box") + " note v22b-flow-status";
+    ["v22bFlowStatus", "v24fStatus", "v21bStatus"].forEach(function(id){ var el=byId(id); if(el){ el.className = cls; el.textContent = message || ""; } });
+  }
+  function commandApi(){ return window.middaraCommandCombatantApi || null; }
+  function commandState(){ try{ var api=commandApi(); return api && api.getState ? api.getState() : (window.commandCombatantState || {combatants:[], selectedId:null, settings:{}}); }catch(err){ return {combatants:[], selectedId:null, settings:{}}; } }
+  function commandList(){ var s=commandState(); return Array.isArray(s.combatants) ? s.combatants : []; }
+  function commandById(id){ id=String(id || ""); for(var i=0;i<commandList().length;i++){ if(String(commandList()[i].id) === id) return commandList()[i]; } return null; }
+  function activeCommandByDef(defId){ var list=commandList(); for(var i=list.length-1;i>=0;i--){ var c=list[i]; if(c && c.status === "summoned" && String(c.definitionId || "") === String(defId || "")) return c; } return null; }
+  function commandLabel(c){ return c ? (c.label || c.name || c.id || "Command Combatant") : "Command Combatant"; }
+  function openPlay(){ var btn=document.querySelector('[data-v17-mode-button="play"]'); if(btn) clickEl(btn); }
+  function renderMobile(){ try{ if(window.middaraMobileFlowV22BApi && middaraMobileFlowV22BApi.render) middaraMobileFlowV22BApi.render(); }catch(err){} }
+  function renderCommand(){ try{ var api=commandApi(); if(api && api.render) api.render(); }catch(err){} try{ if(window.middaraV24FCommandBridgeApi && middaraV24FCommandBridgeApi.render) middaraV24FCommandBridgeApi.render(); }catch(err2){} }
+  function selectNightingaleActor(){
+    setSelect("characterSelect", "nightingale");
+    setSelect("v22bActorSelect", "party:nightingale");
+    var f=readFlow(); f.actor="party:nightingale"; f.pendingType="support"; f.awaitingTargetFor=""; f.appliedKey=""; f.appliedLabel=""; writeFlow(f);
+    document.body.classList.add("v24a-actor-nightingale", "v24b-actor-nightingale", "v24f-actor-nightingale", "v24c-mode-nightPanel");
+    writeMode("nightPanel", "Nightingale Loyal Esper bridge opened.");
+  }
+  function openNightDetails(){
+    var panel=byId("v24aNightingalePanel");
+    if(panel){ panel.setAttribute("data-v17-mode", "play"); var d=panel.querySelector("details"); if(d) d.open=true; }
+    var bridge=byId("v24fCommandBridgeCard");
+    if(bridge){ bridge.classList.add("v24h-bridge-focus"); setTimeout(function(){ bridge.classList.remove("v24h-bridge-focus"); }, 1800); }
+  }
+  function scrollBridge(){
+    openNightDetails();
+    var bridge=byId("v24fCommandBridgeCard") || byId("v24aNightingalePanel") || byId("mobileCombatFlowPanel");
+    if(bridge && bridge.scrollIntoView){ try{ bridge.scrollIntoView({behavior:"smooth", block:"start"}); }catch(err){ try{ bridge.scrollIntoView(true); }catch(e){} } }
+  }
+  function openEsperBridge(){
+    selectNightingaleActor();
+    openPlay();
+    try{ if(window.middaraV24FCommandBridgeApi && middaraV24FCommandBridgeApi.open) middaraV24FCommandBridgeApi.open(); }catch(err){}
+    renderCommand();
+    renderMobile();
+    setFlowStatus("Nightingale Summon Esper opened. Use the Loyal Esper bridge to summon Agares or Eliphie.", "ok");
+    [20,120,320,700,1200].forEach(function(ms){ setTimeout(scrollBridge, ms); });
+  }
+  function selectCommand(id){
+    id=String(id || "");
+    if(!id) return null;
+    setSelect("v21bSelectedCommand", id);
+    var api=commandApi();
+    try{
+      if(api && api.getState && api.importState){
+        var s=api.getState() || {};
+        api.importState({ combatants: Array.isArray(s.combatants) ? s.combatants : [], selectedId:id, settings:s.settings || {} });
+      } else if(window.commandCombatantState) {
+        window.commandCombatantState.selectedId = id;
+      }
+    }catch(err){}
+    renderCommand();
+    return commandById(id);
+  }
+  function ensureCommandActorOptions(id, label){
+    var value="command:" + String(id || "");
+    var text=String(label || "Command Combatant") + " - Command";
+    var charSel=byId("characterSelect");
+    addOption(charSel, value, text);
+    var actorSel=byId("v22bActorSelect");
+    addOption(actorSel, value, String(label || "Command Combatant") + " - Command");
+  }
+  function loadEsperActor(id){
+    var c=selectCommand(id);
+    if(!c){ setFlowStatus("Could not find that summoned Loyal Esper. Try Refresh bridge or open the Command tracker.", "warn"); openEsperBridge(); return; }
+    var value="command:" + c.id;
+    ensureCommandActorOptions(c.id, commandLabel(c));
+    // Let the existing Command actor override build the attack profiles, but do not rely on it as the only state change.
+    try{ clickId("v21bSelectAsActor"); }catch(err){}
+    setSelect("characterSelect", value);
+    try{ if(typeof window.syncProfiles === "function") window.syncProfiles(); }catch(err2){}
+    setSelect("v22bActorSelect", value);
+    var f=readFlow(); f.actor=value; f.pendingType="attack"; f.awaitingTargetFor=""; f.appliedKey=""; f.appliedLabel=""; writeFlow(f);
+    document.body.classList.remove("v24a-actor-nightingale", "v24b-actor-nightingale", "v24f-actor-nightingale", "v24c-mode-nightPanel");
+    document.body.classList.add("v22b-show-attack");
+    document.body.classList.remove("v22b-show-spell");
+    renderMobile();
+    setFlowStatus("Loaded " + commandLabel(c) + " as the current actor. Choose a target and action normally.", "ok");
+    openPlay();
+    [40,180,450,900].forEach(function(ms){ setTimeout(function(){
+      ensureCommandActorOptions(c.id, commandLabel(c));
+      setSelect("v22bActorSelect", value);
+      setSelect("characterSelect", value);
+      renderMobile();
+      var step=byId("v22bActionStep") || byId("mobileCombatFlowPanel");
+      if(step && step.scrollIntoView){ try{ step.scrollIntoView({behavior:"smooth", block:"start"}); }catch(err){ step.scrollIntoView(true); } }
+    }, ms); });
+  }
+  function handleSummon(defId){
+    openEsperBridge();
+    // Let the existing bridge perform the summon. After it completes, refresh and keep the bridge visible.
+    var before = commandList().length;
+    setTimeout(function(){
+      var button = document.querySelector('[data-v24f-summon="' + String(defId || "").replace(/"/g, "\\\"") + '"]');
+      // Avoid clicking ourselves recursively by using the legacy Command panel button if possible.
+      var preset=byId("v21bSummonPreset"); if(preset){ preset.value=defId; fire(preset,"change"); }
+      var addInit=byId("v21bAddInitiative"); if(addInit && !addInit.checked){ addInit.checked=true; fire(addInit,"change"); }
+      var addToken=byId("v21bAddSummonToken"); if(addToken && !addToken.checked){ addToken.checked=true; fire(addToken,"change"); }
+      if(!clickId("v21bSummonButton") && button){ setFlowStatus("Could not reach the Command summon button. Open the Command tracker and summon manually.", "warn"); return; }
+      setTimeout(function(){ renderCommand(); renderMobile(); var c=activeCommandByDef(defId); setFlowStatus((c ? ("Summoned " + commandLabel(c) + ". Use Load actor when ready.") : "Summon command sent. Refresh bridge if the Esper card does not appear."), c ? "ok" : "warn"); scrollBridge(); }, 220);
+    }, 20);
+  }
+  function captureClicks(){
+    window.addEventListener("click", function(ev){
+      var node = ev.target && ev.target.closest ? ev.target.closest('[data-v22b-action="openCommand"], [data-v24f-load], [data-v21b-command-load], [data-v24f-summon]') : null;
+      if(!node) return;
+      var summon = node.getAttribute("data-v24f-summon");
+      if(summon){ ev.preventDefault(); ev.stopPropagation(); if(ev.stopImmediatePropagation) ev.stopImmediatePropagation(); handleSummon(summon); return; }
+      var load = node.getAttribute("data-v24f-load") || node.getAttribute("data-v21b-command-load");
+      if(load){ ev.preventDefault(); ev.stopPropagation(); if(ev.stopImmediatePropagation) ev.stopImmediatePropagation(); loadEsperActor(load); return; }
+      var action = node.getAttribute("data-v22b-action");
+      if(action === "openCommand"){
+        var strong=node.querySelector("strong"); var label=strong ? String(strong.textContent || "").trim() : "";
+        var actor=byId("v22bActorSelect"); var actorVal=actor ? String(actor.value || "") : "";
+        var char=byId("characterSelect"); var charVal=char ? String(char.value || "") : "";
+        if(label === "Summon Esper" && (actorVal === "party:nightingale" || charVal === "nightingale" || document.body.classList.contains("v24a-actor-nightingale"))){
+          ev.preventDefault(); ev.stopPropagation(); if(ev.stopImmediatePropagation) ev.stopImmediatePropagation(); openEsperBridge(); return;
+        }
+      }
+    }, true);
+  }
+  function decorateSummonCard(){
+    try{
+      var box=byId("v22bActionCards"); if(!box) return;
+      Array.prototype.slice.call(box.querySelectorAll('button[data-v22b-action="openCommand"]')).forEach(function(btn){
+        var strong=btn.querySelector("strong"); var label=strong ? String(strong.textContent || "").trim() : "";
+        if(label === "Summon Esper"){
+          btn.setAttribute("data-v24h-summon-bridge", "1");
+          var span=btn.querySelector("span"); if(span) span.textContent="Open Nightingale's Loyal Esper bridge.";
+        }
+      });
+    }catch(err){}
+  }
+  function patchChrome(){
+    document.title = TITLE;
+    var sub=document.querySelector("header .subtitle"); if(sub){ sub.classList.add("v24h-subtitle-lock"); sub.setAttribute("data-v24h-subtitle", SUBTITLE); }
+    var badge=document.querySelector("#mobileCombatFlowPanel .cockpit-badge"); if(badge){ badge.classList.add("v24h-badge-lock"); }
+    var pwa=byId("pwaVersionText"); if(pwa) pwa.textContent=VERSION;
+    var pwaSummary=document.querySelector(".v22c-pwa-panel summary"); if(pwaSummary) pwaSummary.textContent="V2.4H hosted / installable web app";
+    var dataH=document.querySelector("#v22iDataStatusPanel h3"); if(dataH) dataH.textContent="V2.4H save / update status";
+  }
+  function patchSnapshots(){
+    try{
+      if(!window.middaraDataManagerApi || window.__middaraV24HSnapshotPatch) return;
+      window.__middaraV24HSnapshotPatch = true;
+      var api=window.middaraDataManagerApi; var oldFull=api.exportFullSnapshot; var oldApp=api.exportAppData;
+      function add(snap){ try{ snap.version=VERSION; snap.pwaDeploymentVersion=VERSION; snap.v24hEsperBridgeActorFix={ selectedCommand:(commandState().selectedId || null), activeCommandCount: commandList().filter(function(c){ return c.status === "summoned"; }).length }; }catch(err){} return snap; }
+      if(typeof oldFull === "function") api.exportFullSnapshot=function(){ return add(oldFull.apply(this, arguments)); };
+      if(typeof oldApp === "function") api.exportAppData=function(){ return add(oldApp.apply(this, arguments)); };
+    }catch(err){}
+  }
+  function init(){ captureClicks(); patchSnapshots(); patchChrome(); decorateSummonCard(); setInterval(function(){ patchChrome(); decorateSummonCard(); }, 700); setTimeout(function(){ setFlowStatus("V2.4H loaded. Summon Esper routes to the bridge, and Load actor selects active Loyal Espers directly in the live combat flow.", "ok"); }, 900); }
+  ready(init);
+  window.middaraV24HEsperBridgeFixApi = { openBridge:openEsperBridge, loadActor:loadEsperActor, summon:handleSummon };
 })();
 </script>
 
