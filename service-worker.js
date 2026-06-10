@@ -1,6 +1,6 @@
-// Middara Combat Helper V2.4I service worker
+// Middara Combat Helper V2.5A service worker
 // Network-first for the app shell so GitHub Pages updates are picked up, with cache fallback for table use.
-const CACHE_VERSION = "v2-4i-live-encounter-readiness-2026-06-10";
+const CACHE_VERSION = "v2-5a-effect-status-assistant-2026-06-10";
 const CACHE_NAME = `middara-helper-${CACHE_VERSION}`;
 const CORE_ASSETS = [
   "./",

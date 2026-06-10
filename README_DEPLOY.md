@@ -1,12 +1,9 @@
-# Middara Combat Helper V2.4I - Live Encounter Readiness / Guide Sync
+# Middara Combat Helper V2.5A
 
-Upload the extracted contents of this folder to the root of the GitHub Pages repository. This build fixes Nightingale Summon Esper routing to the Loyal Esper bridge and active Loyal Esper Load actor behavior.
+Upload all extracted files in this folder to the root of the GitHub Pages repository.
 
-After GitHub Pages deploys, open the app on the tablet, use Data -> hosted / installable web app -> Update app cache, then reload/reopen the Home Screen app.
+Do not upload save snapshots or ZIP files to the repository. Keep JSON snapshots locally.
 
-Do not upload campaign snapshot JSON files to GitHub. Keep snapshots local.
+After GitHub Pages deploys, open the app on the tablet, use **Data -> hosted / installable web app -> Update app cache**, then reload/reopen the Home Screen app.
 
-
-## V2.4I - Live Encounter Readiness / Guide Sync
-- Fixes the Nightingale Summon Esper action so it opens the Loyal Esper bridge.
-- Fixes Load actor from the bridge/Command cards so Agares or Eliphie becomes the current live-flow actor.
+V2.5A adds a guided Status Phase / effect assistant for Poison, Condemn, Haste, Paralyze cleanup, and effect reminders.

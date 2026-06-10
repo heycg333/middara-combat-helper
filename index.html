@@ -3,7 +3,7 @@
 <head>
   <meta charset="utf-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1" />
-  <title>Middara Combat Helper - V2.4I Live Encounter Readiness</title>
+  <title>Middara Combat Helper - V2.5A Esper Route / Play Cleanup</title>
   <style>
     :root {
       --bg: #101827;
@@ -731,7 +731,28 @@
     }
     .v23g-layout-toggle { border-color: rgba(56,189,248,.42); background: rgba(56,189,248,.10); }
 
-</style>
+
+
+/* V2.5A Effect status assistant */
+.v25a-status-panel { border-color: rgba(168,85,247,.30); background: linear-gradient(180deg, rgba(168,85,247,.075), rgba(255,255,255,.012)), var(--panel); }
+.v25a-status-grid { display:grid; grid-template-columns: minmax(0, .9fr) minmax(0, 1.1fr); gap:12px; align-items:start; }
+.v25a-status-list { display:grid; gap:10px; margin-top:12px; }
+.v25a-status-row { border:1px solid rgba(148,163,184,.22); border-radius:14px; padding:11px; background:rgba(15,23,42,.46); display:grid; gap:8px; }
+.v25a-status-row.actionable { border-color:rgba(251,191,36,.42); background:rgba(251,191,36,.055); }
+.v25a-status-row.done { border-color:rgba(52,211,153,.35); background:rgba(52,211,153,.06); }
+.v25a-status-head { display:flex; flex-wrap:wrap; justify-content:space-between; gap:8px; align-items:flex-start; }
+.v25a-status-head strong { overflow-wrap:anywhere; }
+.v25a-status-meta { color:var(--dim); font-size:.8rem; line-height:1.35; }
+.v25a-status-actions { display:flex; flex-wrap:wrap; gap:7px; align-items:end; }
+.v25a-status-actions select, .v25a-status-actions input { width:auto; min-width:210px; }
+.v25a-status-actions button { width:auto; min-width:auto; padding:7px 10px; font-size:.82rem; }
+.v25a-status-pill { display:inline-flex; align-items:center; gap:4px; border:1px solid rgba(148,163,184,.26); border-radius:999px; padding:3px 8px; background:rgba(2,6,23,.30); color:var(--muted); font-size:.78rem; }
+.v25a-status-pill.negative { border-color:rgba(248,113,113,.38); color:#fecaca; background:rgba(248,113,113,.08); }
+.v25a-status-pill.positive { border-color:rgba(52,211,153,.35); color:#bbf7d0; background:rgba(52,211,153,.075); }
+.v25a-status-pill.special { border-color:rgba(168,85,247,.38); color:#ddd6fe; background:rgba(168,85,247,.075); }
+@media (max-width: 860px) { .v25a-status-grid { grid-template-columns:1fr; } .v25a-status-actions select, .v25a-status-actions input { width:100%; min-width:0; } .v25a-status-actions button { width:100%; } }
+
+  </style>
 
   <!-- V2.2C hosted/PWA metadata -->
   <meta name="application-name" content="Middara Helper" />
@@ -921,10 +942,10 @@
     <section class="panel v22b-flow-panel" id="mobileCombatFlowPanel" data-v17-mode="play">
       <div class="cockpit-header">
         <div>
-          <h2>V2.4F Tablet / mobile live combat flow</h2>
+          <h2>V2.5A Tablet / mobile live combat flow</h2>
           <div class="note">Live table mode: choose Actor, Target, Action, then Resolve. Tablets use a 2x2 grid by default; phones stack the cards. Use the Layout toggle to force grid or stack if needed.</div>
         </div>
-        <div class="cockpit-badge">V2.4F Flow</div>
+        <div class="cockpit-badge">V2.5A Flow</div>
       </div>
       <div class="v22b-toolbar">
         <button type="button" id="v22bFocusToggle" class="v22b-focus-toggle">Focused phone mode: on</button>
@@ -1006,10 +1027,57 @@
     </section>
 
 
+    <section class="panel v25a-status-panel" id="v25aStatusPhasePanel" data-v17-mode="play">
+      <details>
+        <summary>V2.5A status / effect phase assistant</summary>
+        <div class="note" style="margin-top:10px">Use this during Status Phase or when an effect needs cleanup. It scans Party, Enemy, and Command trackers for status-timed effects, then gives guided apply buttons. Board timing and target legality remain manual.</div>
+        <div class="v25a-status-grid" style="margin-top:12px">
+          <div class="soft-card">
+            <h3 style="margin-top:0">Status controls</h3>
+            <div class="field-grid">
+              <div>
+                <label for="v25aStatusFilter">Show effects on</label>
+                <select id="v25aStatusFilter">
+                  <option value="all">All tracked figures</option>
+                  <option value="party">Party only</option>
+                  <option value="enemy">Enemies only</option>
+                  <option value="command">Command only</option>
+                  <option value="actionable">Actionable status effects only</option>
+                </select>
+              </div>
+              <div>
+                <label for="v25aStatusSearch">Search figure/effect</label>
+                <input id="v25aStatusSearch" type="text" placeholder="Poison, Rook, Adlet..." />
+              </div>
+            </div>
+            <div class="btn-row" style="margin-top:10px">
+              <button id="v25aRefreshStatus" type="button">Refresh status list</button>
+              <button id="v25aApplyAllHaste" type="button">Apply all Haste +1 SP</button>
+              <button id="v25aOpenPartyTracker" type="button">Open Party</button>
+              <button id="v25aOpenEnemyTracker" type="button">Open Enemies</button>
+            </div>
+            <div id="v25aStatusSummary" class="ok-box note" style="margin-top:10px">Status assistant ready.</div>
+          </div>
+          <div class="soft-card">
+            <h3 style="margin-top:0">What this handles</h3>
+            <div class="pillbox">
+              <span class="v25a-status-pill negative"><strong>Poison</strong> purple die Irreducible Damage</span>
+              <span class="v25a-status-pill negative"><strong>Condemn</strong> black Skull defeat check</span>
+              <span class="v25a-status-pill positive"><strong>Haste</strong> +1 SP</span>
+              <span class="v25a-status-pill negative"><strong>Paralyze</strong> end-of-turn cleanup reminder</span>
+              <span class="v25a-status-pill special"><strong>Tether / Nemesis</strong> reminder rows</span>
+            </div>
+            <div class="tiny" style="margin-top:8px">The assistant changes tracker state only when you click an Apply/Resolve button. It does not automatically remove effects, pick targets, or run board-state checks.</div>
+          </div>
+        </div>
+        <div id="v25aStatusList" class="v25a-status-list"></div>
+      </details>
+    </section>
+
 
     <section class="panel v24i-readiness-panel" id="v24iLiveEncounterReadinessPanel" data-v17-mode="play">
       <details>
-        <summary>V2.4I live encounter readiness / guide sync</summary>
+        <summary>V2.5A effect status assistant / guide sync</summary>
         <div class="note" style="margin-top:10px">Use this before a real table session or after a GitHub Pages update. It does not resolve rules or change board state; it checks that the core tablet workflow is present, gives quick recovery buttons, and keeps the current live-play recipe close at hand.</div>
         <div class="v24i-readiness-grid" style="margin-top:12px">
           <div class="soft-card">
@@ -16464,8 +16532,8 @@ else {
     document.title = "Middara Combat Helper - V2.4I Live Encounter Readiness";
     var sub = document.querySelector("header .subtitle");
     if (sub) sub.textContent = "V2.4G turn actor / Onslaught flow: quick Summoning controls, active Command Combatant summary, Summon-token status, and table-rule settings.";
-    var h = document.querySelector("#mobileCombatFlowPanel h2"); if (h) h.textContent = "V2.4F Tablet / mobile live combat flow";
-    var badge = document.querySelector("#mobileCombatFlowPanel .cockpit-badge"); if (badge) badge.textContent = "V2.4F Flow";
+    var h = document.querySelector("#mobileCombatFlowPanel h2"); if (h) h.textContent = "V2.5A Tablet / mobile live combat flow";
+    var badge = document.querySelector("#mobileCombatFlowPanel .cockpit-badge"); if (badge) badge.textContent = "V2.5A Flow";
     var pwa = byId("pwaVersionText"); if (pwa) pwa.textContent = VERSION;
   }
   function tick() {
@@ -16642,7 +16710,7 @@ else {
     var sub = document.querySelector("header .subtitle");
     if (sub) sub.textContent = "V2.4G turn actor / Onslaught flow: quick Summoning controls, active Command Combatant summary, Summon-token status, and table-rule settings.";
     var pwa = byId("pwaVersionText"); if (pwa) pwa.textContent = "V2.2E";
-    var h = document.querySelector("#mobileCombatFlowPanel h2"); if (h) h.textContent = "V2.4F Tablet / mobile live combat flow";
+    var h = document.querySelector("#mobileCombatFlowPanel h2"); if (h) h.textContent = "V2.5A Tablet / mobile live combat flow";
   }
   function bindMobileHelp() {
     var flow = byId("mobileCombatFlowPanel");
@@ -16842,8 +16910,8 @@ else {
     document.title = "Middara Combat Helper - V2.4I Live Encounter Readiness";
     var h = document.querySelector("header h1"); if (h) h.textContent = "Middara Combat Helper";
     var sub = document.querySelector("header .subtitle"); if (sub) sub.textContent = "V2.4G turn actor / Onslaught flow: quick Summoning controls, active Command Combatant summary, Summon-token status, and table-rule settings.";
-    var flowH = document.querySelector("#mobileCombatFlowPanel h2"); if (flowH) flowH.textContent = "V2.4F Tablet / mobile live combat flow";
-    var badge = document.querySelector("#mobileCombatFlowPanel .cockpit-badge"); if (badge) badge.textContent = "V2.4F Flow";
+    var flowH = document.querySelector("#mobileCombatFlowPanel h2"); if (flowH) flowH.textContent = "V2.5A Tablet / mobile live combat flow";
+    var badge = document.querySelector("#mobileCombatFlowPanel .cockpit-badge"); if (badge) badge.textContent = "V2.5A Flow";
     injectHub(); addFooterUndo();
     document.addEventListener("click", function(ev){
       var node = ev.target && ev.target.closest ? ev.target.closest("[data-v22g-action]") : null;
@@ -17110,7 +17178,7 @@ else {
     var sub = document.querySelector("header .subtitle");
     if (sub) sub.textContent = "V2.4G turn actor / Onslaught flow: quick Summoning controls, active Command Combatant summary, Summon-token status, and table-rule settings.";
     var flowH = document.querySelector("#mobileCombatFlowPanel h2"); if (flowH) flowH.textContent = "V2.4F Tablet live combat flow";
-    var badge = document.querySelector("#mobileCombatFlowPanel .cockpit-badge"); if (badge) badge.textContent = "V2.4F Flow";
+    var badge = document.querySelector("#mobileCombatFlowPanel .cockpit-badge"); if (badge) badge.textContent = "V2.5A Flow";
     var hubH = document.querySelector("#v22gSessionHub h3"); if (hubH) hubH.textContent = "V2.3I table session hub";
     var hubTiny = document.querySelector("#v22gSessionHub .v22g-session-head .tiny"); if (hubTiny) hubTiny.textContent = "One-tablet controls for setup, backup, quick undo, end-of-encounter cleanup, and live-play readiness.";
     var pwaSummary = document.querySelector(".v22c-pwa-panel summary"); if (pwaSummary) pwaSummary.textContent = "V2.4F hosted / installable web app";
@@ -17269,7 +17337,7 @@ else {
     var flowH = document.querySelector("#mobileCombatFlowPanel h2");
     if (flowH) flowH.textContent = "V2.4F Tablet live combat flow";
     var badge = document.querySelector("#mobileCombatFlowPanel .cockpit-badge");
-    if (badge) badge.textContent = "V2.4F Flow";
+    if (badge) badge.textContent = "V2.5A Flow";
     var pwa = byId("pwaVersionText"); if (pwa) pwa.textContent = VERSION;
     var pwaSummary = document.querySelector(".v22c-pwa-panel summary"); if (pwaSummary) pwaSummary.textContent = "V2.4F hosted / installable web app";
     var dataH = document.querySelector("#v22iDataStatusPanel h3"); if (dataH) dataH.textContent = "V2.4F save / update status";
@@ -18671,7 +18739,7 @@ else {
     var sub = document.querySelector("header .subtitle");
     if (sub) sub.textContent = "V2.4G turn actor / Onslaught flow: quick Summoning controls, active Command Combatant summary, Summon-token status, and table-rule settings.";
     var h = document.querySelector("#mobileCombatFlowPanel h2"); if (h) h.textContent = "V2.4F Tablet live combat flow";
-    var badge = document.querySelector("#mobileCombatFlowPanel .cockpit-badge"); if (badge) badge.textContent = "V2.4F Flow";
+    var badge = document.querySelector("#mobileCombatFlowPanel .cockpit-badge"); if (badge) badge.textContent = "V2.5A Flow";
     var pwa = byId("pwaVersionText"); if (pwa) pwa.textContent = VERSION;
     var pwaSummary = document.querySelector(".v22c-pwa-panel summary"); if (pwaSummary) pwaSummary.textContent = "V2.4F hosted / installable web app";
     var dataH = document.querySelector("#v22iDataStatusPanel h3"); if (dataH) dataH.textContent = "V2.4F save / update status";
@@ -19170,7 +19238,7 @@ else {
     var sub = document.querySelector("header .subtitle");
     if (sub) sub.textContent = "V2.4G turn actor / Onslaught flow: quick Summoning controls, active Command Combatant summary, Summon-token status, and table-rule settings.";
     var h = document.querySelector("#mobileCombatFlowPanel h2"); if (h) h.textContent = "V2.4F Tablet live combat flow";
-    var badge = document.querySelector("#mobileCombatFlowPanel .cockpit-badge"); if (badge) badge.textContent = "V2.4F Flow";
+    var badge = document.querySelector("#mobileCombatFlowPanel .cockpit-badge"); if (badge) badge.textContent = "V2.5A Flow";
     var pwa = byId("pwaVersionText"); if (pwa) pwa.textContent = VERSION;
     var pwaSummary = document.querySelector(".v22c-pwa-panel summary"); if (pwaSummary) pwaSummary.textContent = "V2.4F hosted / installable web app";
     var dataH = document.querySelector("#v22iDataStatusPanel h3"); if (dataH) dataH.textContent = "V2.4F save / update status";
@@ -19228,7 +19296,7 @@ else {
     document.title = TITLE;
     var sub = document.querySelector("header .subtitle"); if (sub) sub.textContent = SUBTITLE;
     var h = document.querySelector("#mobileCombatFlowPanel h2"); if (h) h.textContent = "V2.4F Tablet live combat flow";
-    var badge = document.querySelector("#mobileCombatFlowPanel .cockpit-badge"); if (badge) badge.textContent = "V2.4F Flow";
+    var badge = document.querySelector("#mobileCombatFlowPanel .cockpit-badge"); if (badge) badge.textContent = "V2.5A Flow";
     var pwa = byId("pwaVersionText"); if (pwa) pwa.textContent = VERSION;
     var pwaSummary = document.querySelector(".v22c-pwa-panel summary"); if (pwaSummary) pwaSummary.textContent = "V2.4F hosted / installable web app";
     var dataH = document.querySelector("#v22iDataStatusPanel h3"); if (dataH) dataH.textContent = "V2.4F save / update status";
@@ -19770,7 +19838,7 @@ else {
     document.title = TITLE;
     var sub = document.querySelector("header .subtitle"); if (sub) sub.textContent = SUBTITLE;
     var h = document.querySelector("#mobileCombatFlowPanel h2"); if (h) h.textContent = "V2.4F Tablet live combat flow";
-    var badge = document.querySelector("#mobileCombatFlowPanel .cockpit-badge"); if (badge) badge.textContent = "V2.4F Flow";
+    var badge = document.querySelector("#mobileCombatFlowPanel .cockpit-badge"); if (badge) badge.textContent = "V2.5A Flow";
     var pwa = byId("pwaVersionText"); if (pwa) pwa.textContent = VERSION;
     var pwaSummary = document.querySelector(".v22c-pwa-panel summary"); if (pwaSummary) pwaSummary.textContent = "V2.4F hosted / installable web app";
     var dataH = document.querySelector("#v22iDataStatusPanel h3"); if (dataH) dataH.textContent = "V2.4F save / update status";
@@ -19849,8 +19917,8 @@ else {
   function updateChrome(){
     document.title = TITLE;
     var sub = document.querySelector("header .subtitle"); if(sub) sub.textContent = SUBTITLE;
-    var h = document.querySelector("#mobileCombatFlowPanel h2"); if(h) h.textContent = "V2.4F Tablet / mobile live combat flow";
-    var badge = document.querySelector("#mobileCombatFlowPanel .cockpit-badge"); if(badge) badge.textContent = "V2.4F Flow";
+    var h = document.querySelector("#mobileCombatFlowPanel h2"); if(h) h.textContent = "V2.5A Tablet / mobile live combat flow";
+    var badge = document.querySelector("#mobileCombatFlowPanel .cockpit-badge"); if(badge) badge.textContent = "V2.5A Flow";
     var pwa = byId("pwaVersionText"); if(pwa) pwa.textContent = VERSION;
     var pwaSummary = document.querySelector(".v22c-pwa-panel summary"); if(pwaSummary) pwaSummary.textContent = "V2.4F hosted / installable web app";
     var dataH = document.querySelector("#v22iDataStatusPanel h3"); if(dataH) dataH.textContent = "V2.4F save / update status";
@@ -20139,8 +20207,8 @@ else {
   function paintChrome(){
     document.title = TITLE;
     var sub = document.querySelector("header .subtitle"); if(sub) sub.textContent = SUBTITLE;
-    var h = document.querySelector("#mobileCombatFlowPanel h2"); if(h) h.textContent = "V2.4F Tablet / mobile live combat flow";
-    var badge = document.querySelector("#mobileCombatFlowPanel .cockpit-badge"); if(badge) badge.textContent = "V2.4F Flow";
+    var h = document.querySelector("#mobileCombatFlowPanel h2"); if(h) h.textContent = "V2.5A Tablet / mobile live combat flow";
+    var badge = document.querySelector("#mobileCombatFlowPanel .cockpit-badge"); if(badge) badge.textContent = "V2.5A Flow";
     var pwa = byId("pwaVersionText"); if(pwa) pwa.textContent = VERSION;
     var pwaSummary = document.querySelector(".v22c-pwa-panel summary"); if(pwaSummary) pwaSummary.textContent = "V2.4F hosted / installable web app";
     var dataH = document.querySelector("#v22iDataStatusPanel h3"); if(dataH) dataH.textContent = "V2.4F save / update status";
@@ -20509,7 +20577,7 @@ else {
   function patchChrome(){
     document.title = TITLE;
     var sub = document.querySelector("header .subtitle"); if(sub) sub.textContent = SUBTITLE;
-    var badge = document.querySelector("#mobileCombatFlowPanel .cockpit-badge"); if(badge) badge.textContent = "V2.4F Flow";
+    var badge = document.querySelector("#mobileCombatFlowPanel .cockpit-badge"); if(badge) badge.textContent = "V2.5A Flow";
     var pwa = byId("pwaVersionText"); if(pwa) pwa.textContent = VERSION;
     var pwaSummary = document.querySelector(".v22c-pwa-panel summary"); if(pwaSummary) pwaSummary.textContent = "V2.4F hosted / installable web app";
     var dataH = document.querySelector("#v22iDataStatusPanel h3"); if(dataH) dataH.textContent = "V2.4F save / update status";
@@ -20701,7 +20769,7 @@ else {
     var exists = function(label){ return buttons.some(function(btn){ var s=btn.querySelector("strong"); return s && String(s.textContent || "").trim() === label; }); };
     function card(label, note, action){ return '<button type="button" class="v22b-action-card" data-v24a-action="' + esc(action) + '"><strong>' + esc(label) + '</strong><span>' + esc(note) + '</span></button>'; }
     var add = ""; if(!exists("Corrosive Ideal")) add += card("Corrosive Ideal", "Spell 6; Poison on failed Conviction.", "loadCorrosive"); if(!exists("Abbadon's Subtlety")) add += card("Abbadon's Subtlety", "After Nightingale damage: Spell 6 for previous damage.", "loadAbbadon"); if(!exists("Blood Toll")) add += card("Blood Toll", "+2 SP and 2 self Irreducible Damage.", "bloodToll"); if(!exists("The Infection")) add += card("The Infection", "Take 1 self Irreducible Damage to reduce SP cost by 1.", "infection"); if(add) box.insertAdjacentHTML("beforeend", add); }
-  function patchChrome(){ document.title = TITLE; var sub = document.querySelector("header .subtitle"); if(sub) sub.textContent = SUBTITLE; var badge = document.querySelector("#mobileCombatFlowPanel .cockpit-badge"); if(badge) badge.textContent = "V2.4F Flow"; var pwa = byId("pwaVersionText"); if(pwa) pwa.textContent = VERSION; var pwaSummary = document.querySelector(".v22c-pwa-panel summary"); if(pwaSummary) pwaSummary.textContent = "V2.4F hosted / installable web app"; var dataH = document.querySelector("#v22iDataStatusPanel h3"); if(dataH) dataH.textContent = "V2.4F save / update status"; var qa = byId("v23kQaStatus"); if(qa && qa.textContent.indexOf("V2.4F") < 0) qa.textContent = qa.textContent.replace(/V2\.3[A-Z]/g, "V2.4F"); }
+  function patchChrome(){ document.title = TITLE; var sub = document.querySelector("header .subtitle"); if(sub) sub.textContent = SUBTITLE; var badge = document.querySelector("#mobileCombatFlowPanel .cockpit-badge"); if(badge) badge.textContent = "V2.5A Flow"; var pwa = byId("pwaVersionText"); if(pwa) pwa.textContent = VERSION; var pwaSummary = document.querySelector(".v22c-pwa-panel summary"); if(pwaSummary) pwaSummary.textContent = "V2.4F hosted / installable web app"; var dataH = document.querySelector("#v22iDataStatusPanel h3"); if(dataH) dataH.textContent = "V2.4F save / update status"; var qa = byId("v23kQaStatus"); if(qa && qa.textContent.indexOf("V2.4F") < 0) qa.textContent = qa.textContent.replace(/V2\.3[A-Z]/g, "V2.4F"); }
   function patchSnapshots(){ try{ if(!window.middaraDataManagerApi || window.__middaraV24ASnapshotPatch) return; window.__middaraV24ASnapshotPatch = true; var api = window.middaraDataManagerApi; var oldFull = api.exportFullSnapshot; var oldApp = api.exportAppData; var oldApply = api.applyPayload; function add(snap){ try{ snap.version = VERSION; snap.pwaDeploymentVersion = VERSION; snap.v24aNightingaleState = JSON.parse(JSON.stringify(state)); }catch(err){} return snap; } if(typeof oldFull === "function") api.exportFullSnapshot = function(){ return add(oldFull.apply(this, arguments)); }; if(typeof oldApp === "function") api.exportAppData = function(){ return add(oldApp.apply(this, arguments)); }; if(typeof oldApply === "function") api.applyPayload = function(payload, includeState){ var r = oldApply.apply(this, arguments); if(payload && payload.v24aNightingaleState){ state = Object.assign(defaultState(), payload.v24aNightingaleState); save(); fillStaticControls(); renderTargets(); paint(); } return r; }; }catch(err){} }
   function paint(){ installPanel(); fillStaticControls(); renderLifeResults(); decorateActionCards(); patchChrome(); patchSnapshots(); }
   function init(){ installPanel(); patchChrome(); patchSnapshots(); paint(); setInterval(function(){ decorateActionCards(); patchChrome(); renderLifeResults(); }, 700); setTimeout(function(){ status("V2.4F Nightingale helper loaded. Life Grasp now supports one Force roll against up to three separate target Conviction checks.", "ok"); }, 900); }
@@ -20903,7 +20971,7 @@ else {
   function patchChrome(){
     document.title = TITLE;
     var sub = document.querySelector("header .subtitle"); if(sub) sub.textContent = SUBTITLE;
-    var badge = document.querySelector("#mobileCombatFlowPanel .cockpit-badge"); if(badge) badge.textContent = "V2.4F Flow";
+    var badge = document.querySelector("#mobileCombatFlowPanel .cockpit-badge"); if(badge) badge.textContent = "V2.5A Flow";
     var pwa = byId("pwaVersionText"); if(pwa) pwa.textContent = VERSION;
     var pwaSummary = document.querySelector(".v22c-pwa-panel summary"); if(pwaSummary) pwaSummary.textContent = "V2.4F hosted / installable web app";
     var dataH = document.querySelector("#v22iDataStatusPanel h3"); if(dataH) dataH.textContent = "V2.4F save / update status";
@@ -21150,7 +21218,7 @@ else {
   function patchChrome(){
     document.title = TITLE;
     var sub = document.querySelector("header .subtitle"); if(sub) sub.textContent = SUBTITLE;
-    var badge = document.querySelector("#mobileCombatFlowPanel .cockpit-badge"); if(badge) badge.textContent = "V2.4F Flow";
+    var badge = document.querySelector("#mobileCombatFlowPanel .cockpit-badge"); if(badge) badge.textContent = "V2.5A Flow";
     var pwa = byId("pwaVersionText"); if(pwa) pwa.textContent = VERSION;
     var pwaSummary = document.querySelector(".v22c-pwa-panel summary"); if(pwaSummary) pwaSummary.textContent = "V2.4F hosted / installable web app";
     var dataH = document.querySelector("#v22iDataStatusPanel h3"); if(dataH) dataH.textContent = "V2.4F save / update status";
@@ -21426,7 +21494,7 @@ else {
   function patchChrome(){
     document.title = TITLE;
     var sub = document.querySelector("header .subtitle"); if(sub) sub.textContent = SUBTITLE;
-    var badge = document.querySelector("#mobileCombatFlowPanel .cockpit-badge"); if(badge) badge.textContent = "V2.4F Flow";
+    var badge = document.querySelector("#mobileCombatFlowPanel .cockpit-badge"); if(badge) badge.textContent = "V2.5A Flow";
     var pwa = byId("pwaVersionText"); if(pwa) pwa.textContent = VERSION;
     var pwaSummary = document.querySelector(".v22c-pwa-panel summary"); if(pwaSummary) pwaSummary.textContent = "V2.4F hosted / installable web app";
     var dataH = document.querySelector("#v22iDataStatusPanel h3"); if(dataH) dataH.textContent = "V2.4F save / update status";
@@ -21573,7 +21641,7 @@ else {
     var btn=byId("v22bFooterApply") || document.querySelector('#v17StickyFooter [data-v22b-action="applyPending"]'); if(btn){ btn.classList.add("v24e-apply-owned"); btn.classList.toggle("v24e-applied", !!mode.applied); var label=mode.applied?"Applied ✓":(info.ready?info.label:"No result"); if(label!==last.label){ btn.setAttribute("data-v24e-label", label); last.label=label; } var disabled=!info.ready || mode.applied || info.mode==="support" || info.mode==="nightPanel"; if(btn.disabled!==disabled){ btn.disabled=disabled; last.disabled=disabled; } }
   }
   function schedulePaint(){ if(paintTimer) clearTimeout(paintTimer); paintTimer=setTimeout(paint, 60); }
-  function patchChrome(){ document.title=TITLE; var sub=document.querySelector("header .subtitle"); if(sub && sub.textContent!==SUBTITLE) sub.textContent=SUBTITLE; var badge=document.querySelector("#mobileCombatFlowPanel .cockpit-badge"); if(badge) badge.textContent="V2.4F Flow"; var pwa=byId("pwaVersionText"); if(pwa) pwa.textContent=VERSION; var pwaSummary=document.querySelector(".v22c-pwa-panel summary"); if(pwaSummary) pwaSummary.textContent="V2.4F hosted / installable web app"; var dataH=document.querySelector("#v22iDataStatusPanel h3"); if(dataH) dataH.textContent="V2.4F save / update status"; }
+  function patchChrome(){ document.title=TITLE; var sub=document.querySelector("header .subtitle"); if(sub && sub.textContent!==SUBTITLE) sub.textContent=SUBTITLE; var badge=document.querySelector("#mobileCombatFlowPanel .cockpit-badge"); if(badge) badge.textContent="V2.5A Flow"; var pwa=byId("pwaVersionText"); if(pwa) pwa.textContent=VERSION; var pwaSummary=document.querySelector(".v22c-pwa-panel summary"); if(pwaSummary) pwaSummary.textContent="V2.4F hosted / installable web app"; var dataH=document.querySelector("#v22iDataStatusPanel h3"); if(dataH) dataH.textContent="V2.4F save / update status"; }
 
   function enhanceTrophySelect(){ var s=trophyState(); ["v24aTrophyBlackFace","v24eTrophyBlackFace"].forEach(function(id){ var el=byId(id); if(!el) return; var prior = s.explicit ? String(s.index) : ""; var needs = !el.options.length || el.options[0].value !== ""; if(needs) el.innerHTML = blackOptions(prior, true); if(!s.explicit){ if(el.value !== "") el.value = ""; el.classList.add("v24e-placeholder-active"); } else { if(el.value !== String(s.index)) el.value = String(s.index); el.classList.remove("v24e-placeholder-active"); } }); }
   function ensureTrophyCard(){ var host=byId("v24dAbbadonCard") || byId("v24aNightingalePanel"); if(!host || byId("v24eTrophyCard")) return; var card=document.createElement("div"); card.id="v24eTrophyCard"; card.className="v24a-card"; card.innerHTML='<h3>Nightstalker\'s Trophy roll</h3><div class="note">Roll the black die for Trophy here, then apply the matching effect to the selected tracked enemy. This no longer defaults to a hidden black result.</div><div class="v24e-action-row"><div><label for="v24eTrophyBlackFace">Trophy black die result</label><select id="v24eTrophyBlackFace"></select></div><button type="button" data-v24e-action="applyTrophy"><strong>Apply Trophy effect</strong></button></div><div id="v24eStatus" class="ok-box note v24e-status">Choose a Trophy black die result before applying.</div>'; if(host.id==="v24dAbbadonCard") host.appendChild(card); else host.appendChild(card); enhanceTrophySelect(); }
@@ -21695,7 +21763,7 @@ else {
   }
   function isNightingaleSelected(){ var a=byId("v22bActorSelect"); if(a && a.value === "party:nightingale") return true; var c=byId("characterSelect"); return !!(c && c.value === "nightingale"); }
   function decorateActionCards(){ var night=isNightingaleSelected(); document.body.classList.toggle("v24f-actor-nightingale", night); if(!night) return; var box=byId("v22bActionCards"); if(!box) return; Array.prototype.slice.call(box.querySelectorAll('button[data-v22b-action="openCommand"]')).forEach(function(btn){ var strong=btn.querySelector("strong"); var label=strong ? String(strong.textContent || "").trim() : ""; if(label === "Summon Esper"){ btn.setAttribute("data-v24f-night-summon-route", "1"); var span=btn.querySelector("span"); if(span) span.textContent="Open Nightingale's Loyal Esper bridge."; } }); }
-  function patchChrome(){ document.title=TITLE; var sub=document.querySelector("header .subtitle"); if(sub) sub.textContent=SUBTITLE; var badge=document.querySelector("#mobileCombatFlowPanel .cockpit-badge"); if(badge) badge.textContent="V2.4F Flow"; var pwa=byId("pwaVersionText"); if(pwa) pwa.textContent=VERSION; var pwaSummary=document.querySelector(".v22c-pwa-panel summary"); if(pwaSummary) pwaSummary.textContent="V2.4F hosted / installable web app"; var dataH=document.querySelector("#v22iDataStatusPanel h3"); if(dataH) dataH.textContent="V2.4F save / update status"; }
+  function patchChrome(){ document.title=TITLE; var sub=document.querySelector("header .subtitle"); if(sub) sub.textContent=SUBTITLE; var badge=document.querySelector("#mobileCombatFlowPanel .cockpit-badge"); if(badge) badge.textContent="V2.5A Flow"; var pwa=byId("pwaVersionText"); if(pwa) pwa.textContent=VERSION; var pwaSummary=document.querySelector(".v22c-pwa-panel summary"); if(pwaSummary) pwaSummary.textContent="V2.4F hosted / installable web app"; var dataH=document.querySelector("#v22iDataStatusPanel h3"); if(dataH) dataH.textContent="V2.4F save / update status"; }
   function patchSnapshots(){ try{ if(!window.middaraDataManagerApi || window.__middaraV24FSnapshotPatch) return; window.__middaraV24FSnapshotPatch=true; var api=window.middaraDataManagerApi; var oldFull=api.exportFullSnapshot; var oldApp=api.exportAppData; function add(snap){ try{ snap.version=VERSION; snap.pwaDeploymentVersion=VERSION; snap.v24fNightingaleCommandBridge={ summonTokens:summonTokenCount(), selectedCommand:(commandState().selectedId || null), activeCommandCount:activeCommandList().length, settings:(commandState().settings || {}), lastMessage:lastMsg }; }catch(err){} return snap; } if(typeof oldFull === "function") api.exportFullSnapshot=function(){ return add(oldFull.apply(this, arguments)); }; if(typeof oldApp === "function") api.exportAppData=function(){ return add(oldApp.apply(this, arguments)); }; }catch(err){} }
   function init(){ patchChrome(); ensureBridge(); decorateActionCards(); patchSnapshots(); setInterval(function(){ patchChrome(); ensureBridge(); decorateActionCards(); renderBridge(); }, 800); setStatus("V2.4F loaded. Nightingale Summon Esper now opens the Loyal Esper bridge, with Summon-token and Command-state shortcuts.", "ok"); }
   ready(init);
@@ -22028,7 +22096,7 @@ else {
   "use strict";
   var VERSION = "V2.4H";
   var TITLE = "Middara Combat Helper - V2.4I Live Encounter Readiness";
-  var SUBTITLE = "V2.4I live encounter readiness: Summon Esper opens Nightingale's Loyal Esper bridge, and Load actor reliably selects Agares or Eliphie in the live combat flow.";
+  var SUBTITLE = "V2.5A effect status assistant: Summon Esper opens Nightingale's Loyal Esper bridge, and Load actor reliably selects Agares or Eliphie in the live combat flow.";
   var FLOW_KEY = "middaraCombatHelperV22BMobileFlow";
   var MODE_KEY = "middara_v24c_resolver_mode";
 
@@ -22206,9 +22274,9 @@ else {
 
 
 <style id="v24i-live-encounter-readiness-style">
-  /* V2.4I live encounter readiness / guide sync */
+  /* V2.5A effect status assistant / guide sync */
   header .subtitle.v24h-subtitle-lock::after {
-    content: "V2.4I live encounter readiness: tablet workflow QA, snapshot helper, stale-state recovery, and a compact table-use checklist for the current Nightingale/Loyal Esper build." !important;
+    content: "V2.5A effect status assistant: tablet workflow QA, snapshot helper, stale-state recovery, and a compact table-use checklist for the current Nightingale/Loyal Esper build." !important;
   }
   #mobileCombatFlowPanel h2 {
     position: relative !important;
@@ -22259,7 +22327,7 @@ else {
   "use strict";
   var VERSION = "V2.4I";
   var TITLE = "Middara Combat Helper - V2.4I Live Encounter Readiness";
-  var SUBTITLE = "V2.4I live encounter readiness: tablet workflow QA, snapshot helper, stale-state recovery, and a compact table-use checklist for the current Nightingale/Loyal Esper build.";
+  var SUBTITLE = "V2.5A effect status assistant: tablet workflow QA, snapshot helper, stale-state recovery, and a compact table-use checklist for the current Nightingale/Loyal Esper build.";
   var FLOW_KEY = "middaraCombatHelperV22BMobileFlow";
   var MODE_KEY = "middara_v24c_resolver_mode";
   var SNAP_KEY = "middara_v24i_readiness_state";
@@ -22405,6 +22473,233 @@ else {
   function init(){ patchChrome(); patchSnapshots(); bind(); renderSummary(); setTimeout(runCheck, 1000); setInterval(function(){ patchChrome(); renderSummary(); }, 1200); }
   ready(init);
   window.middaraV24ILiveReadinessApi = { runCheck: runCheck, clearVolatile: clearVolatile, exportSnapshot: exportSnapshot, checklist: tabletChecklist };
+})();
+</script>
+
+
+
+<style id="v24j-esper-route-play-cleanup-style">
+  /* V2.5A Esper route / Play cleanup */
+  header .subtitle.v24h-subtitle-lock::after {
+    content: "V2.5A Esper route and Play cleanup: Summon Esper stays on Nightingale's Loyal Esper bridge, and the old Rook defense reference is removed from Play." !important;
+  }
+  #mobileCombatFlowPanel h2::after { content: "V2.5A Tablet live combat flow" !important; }
+  #mobileCombatFlowPanel .cockpit-badge.v24h-badge-lock::after { content: "V2.5A Flow" !important; }
+  #rookDefensePanel,
+  .v23a-rook-defense-panel,
+  #v23aRookDefenseStatus {
+    display: none !important;
+  }
+  body.v24j-esper-route-active #v24fCommandBridgeCard {
+    outline: 2px solid rgba(34,197,94,.85);
+    box-shadow: 0 0 0 5px rgba(34,197,94,.14);
+  }
+</style>
+<script id="v24j-esper-route-play-cleanup-script">
+(function(){
+  "use strict";
+  var VERSION = "V2.5A";
+  var TITLE = "Middara Combat Helper - V2.5A Esper Route / Play Cleanup";
+  var SUBTITLE = "V2.5A Esper route and Play cleanup: Summon Esper stays on Nightingale's Loyal Esper bridge, and the old Rook defense reference is removed from Play.";
+  var FLOW_KEY = "middaraCombatHelperV22BMobileFlow";
+  var routeLockUntil = 0;
+
+  function ready(fn){ if(document.readyState === "loading") document.addEventListener("DOMContentLoaded", fn); else setTimeout(fn,0); }
+  function byId(id){ return document.getElementById(id); }
+  function readJson(key){ try{ return JSON.parse(localStorage.getItem(key) || "{}"); }catch(err){ return {}; } }
+  function writeJson(key, obj){ try{ localStorage.setItem(key, JSON.stringify(obj || {})); }catch(err){} }
+  function fire(elOrId, type){ var el = typeof elOrId === "string" ? byId(elOrId) : elOrId; if(!el) return; try{ el.dispatchEvent(new Event(type || "change", {bubbles:true})); }catch(err){ try{ var ev=document.createEvent("Event"); ev.initEvent(type || "change", true, true); el.dispatchEvent(ev); }catch(e){} } }
+  function clickEl(el){ if(el && typeof el.click === "function"){ try{ el.click(); return true; }catch(err){} } return false; }
+  function clickId(id){ return clickEl(byId(id)); }
+  function selectValue(id, value){ var el=byId(id); if(!el) return false; var old=el.value; el.value=value; if(el.value !== value){ for(var i=0;i<(el.options||[]).length;i++){ if(el.options[i].value === value){ el.selectedIndex=i; break; } } }
+    if(el.value === value && old !== value) fire(el,"change"); return el.value === value; }
+  function hasOption(id, value){ var el=byId(id); if(!el || !el.options) return false; for(var i=0;i<el.options.length;i++){ if(el.options[i].value === value) return true; } return false; }
+  function openPlay(){ var b=document.querySelector('[data-v17-mode-button="play"]'); if(b) clickEl(b); }
+  function setFlowStatus(msg, kind){ var cls=(kind === "warn" ? "warning-box" : kind === "bad" || kind === "danger" ? "danger-box" : "ok-box") + " note v22b-flow-status"; var el=byId("v22bFlowStatus"); if(el){ el.className=cls; el.textContent=msg; } var el2=byId("v24fStatus"); if(el2){ el2.className=cls.replace(" v22b-flow-status", ""); el2.textContent=msg; } }
+  function renderMobile(){ try{ if(window.middaraMobileFlowV22BApi && middaraMobileFlowV22BApi.render) middaraMobileFlowV22BApi.render(); }catch(err){} }
+  function commandRender(){ try{ if(window.middaraCommandCombatantApi && middaraCommandCombatantApi.render) middaraCommandCombatantApi.render(); }catch(err){} try{ if(window.middaraV24FCommandBridgeApi && middaraV24FCommandBridgeApi.render) middaraV24FCommandBridgeApi.render(); }catch(err2){} }
+  function openNightPanel(){ var panel=byId("v24aNightingalePanel"); if(panel){ panel.setAttribute("data-v17-mode", "play"); var d=panel.querySelector("details"); if(d) d.open=true; } try{ if(window.middaraV24FCommandBridgeApi && middaraV24FCommandBridgeApi.open) middaraV24FCommandBridgeApi.open(); }catch(err){} }
+  function bridgeEl(){ return byId("v24fCommandBridgeCard") || byId("v24aNightingalePanel") || byId("mobileCombatFlowPanel"); }
+  function scrollBridge(){ openNightPanel(); commandRender(); var el=bridgeEl(); if(el && el.scrollIntoView){ try{ el.scrollIntoView({behavior:"smooth", block:"start"}); }catch(err){ try{ el.scrollIntoView(true); }catch(e){} } } }
+  function setNightingaleActor(){
+    routeLockUntil = Math.max(routeLockUntil, Date.now() + 3200);
+    window.__middaraV24JEsperRouteLockUntil = routeLockUntil;
+    // Keep both the legacy resolver and the tablet flow actor aligned with Nightingale.
+    selectValue("characterSelect", "nightingale");
+    if(hasOption("v22bActorSelect", "party:nightingale")) selectValue("v22bActorSelect", "party:nightingale");
+    var f=readJson(FLOW_KEY);
+    f.actor="party:nightingale";
+    f.pendingType="support";
+    f.awaitingTargetFor="";
+    f.appliedKey="";
+    f.appliedLabel="";
+    writeJson(FLOW_KEY, f);
+    document.body.classList.add("v24a-actor-nightingale", "v24b-actor-nightingale", "v24f-actor-nightingale", "v24c-mode-nightPanel", "v24j-esper-route-active");
+    document.body.classList.remove("v22b-show-attack", "v22b-show-spell");
+    renderMobile();
+  }
+  function reinforceNightingale(ms){ setTimeout(function(){ if(Date.now() <= routeLockUntil + 800) setNightingaleActor(); }, ms); }
+  function openEsperBridge(){
+    routeLockUntil = Date.now() + 3600;
+    window.__middaraV24JEsperRouteLockUntil = routeLockUntil;
+    openPlay();
+    setNightingaleActor();
+    openNightPanel();
+    commandRender();
+    setFlowStatus("Nightingale Summon Esper opened. Use the Loyal Esper bridge to summon Agares or Eliphie, then confirm placement manually.", "ok");
+    [20,80,180,360,700,1100,1600,2300,3100].forEach(function(ms){ reinforceNightingale(ms); setTimeout(scrollBridge, ms + 20); });
+    setTimeout(function(){ document.body.classList.remove("v24j-esper-route-active"); }, 3800);
+  }
+  function isSummonEsperButton(btn){
+    if(!btn) return false;
+    if(btn.getAttribute("data-v24j-open-esper-bridge") === "1") return true;
+    if(btn.getAttribute("data-v24f-night-summon-route") === "1" || btn.getAttribute("data-v24h-summon-bridge") === "1") return true;
+    var strong=btn.querySelector && btn.querySelector("strong");
+    var label=strong ? String(strong.textContent || "").trim() : String(btn.textContent || "").trim();
+    return label === "Summon Esper";
+  }
+  function decorateSummonCard(){
+    var box=byId("v22bActionCards"); if(!box) return;
+    var buttons=Array.prototype.slice.call(box.querySelectorAll("button"));
+    buttons.forEach(function(btn){
+      if(isSummonEsperButton(btn)){
+        btn.setAttribute("data-v24j-open-esper-bridge", "1");
+        btn.removeAttribute("data-v22b-action");
+        btn.removeAttribute("data-v24f-night-summon-route");
+        btn.removeAttribute("data-v24h-summon-bridge");
+        var span=btn.querySelector("span"); if(span) span.textContent="Open Nightingale's Loyal Esper bridge.";
+      }
+    });
+  }
+  function captureSummonClicks(){
+    function handler(ev){
+      var btn=ev.target && ev.target.closest ? ev.target.closest("button") : null;
+      if(!btn || !isSummonEsperButton(btn)) return;
+      ev.preventDefault(); ev.stopPropagation(); if(ev.stopImmediatePropagation) ev.stopImmediatePropagation();
+      openEsperBridge();
+    }
+    window.addEventListener("pointerdown", handler, true);
+    window.addEventListener("mousedown", handler, true);
+    window.addEventListener("touchstart", handler, true);
+    window.addEventListener("click", handler, true);
+  }
+  function removeRookDefenseReference(){
+    var p=byId("rookDefensePanel");
+    if(p){ p.setAttribute("data-v17-mode", "none"); p.setAttribute("aria-hidden", "true"); p.style.display="none"; }
+  }
+  function patchChrome(){
+    document.title = TITLE;
+    var sub=document.querySelector("header .subtitle"); if(sub){ sub.classList.add("v24h-subtitle-lock"); sub.setAttribute("data-v24h-subtitle", SUBTITLE); }
+    var badge=document.querySelector("#mobileCombatFlowPanel .cockpit-badge"); if(badge){ badge.classList.add("v24h-badge-lock"); badge.textContent="V2.5A Flow"; }
+    var pwa=byId("pwaVersionText"); if(pwa) pwa.textContent=VERSION;
+    var pwaSummary=document.querySelector(".v22c-pwa-panel summary"); if(pwaSummary) pwaSummary.textContent="V2.5A hosted / installable web app";
+    var dataH=document.querySelector("#v22iDataStatusPanel h3"); if(dataH) dataH.textContent="V2.5A save / update status";
+    var cur=byId("currentVersionText"); if(cur) cur.textContent=VERSION;
+  }
+  function patchSnapshots(){
+    try{
+      if(!window.middaraDataManagerApi || window.__middaraV24JSnapshotPatch) return;
+      window.__middaraV24JSnapshotPatch = true;
+      var api=window.middaraDataManagerApi; var oldFull=api.exportFullSnapshot; var oldApp=api.exportAppData;
+      function add(snap){ try{ snap.version=VERSION; snap.pwaDeploymentVersion=VERSION; snap.v24jEsperRoutePlayCleanup={ rookDefenseReferenceHidden:true, lastEsperRouteLockUntil:window.__middaraV24JEsperRouteLockUntil || null }; }catch(err){} return snap; }
+      if(typeof oldFull === "function") api.exportFullSnapshot=function(){ return add(oldFull.apply(this, arguments)); };
+      if(typeof oldApp === "function") api.exportAppData=function(){ return add(oldApp.apply(this, arguments)); };
+    }catch(err){}
+  }
+  function init(){
+    captureSummonClicks(); patchSnapshots(); patchChrome(); removeRookDefenseReference(); decorateSummonCard();
+    setInterval(function(){ patchChrome(); removeRookDefenseReference(); decorateSummonCard(); }, 500);
+    setTimeout(function(){ setFlowStatus("V2.5A loaded. Summon Esper stays on Nightingale's Loyal Esper bridge; Rook defense reference was removed from Play.", "ok"); }, 900);
+  }
+  ready(init);
+  window.middaraV24JEsperRouteApi = { openBridge:openEsperBridge, setNightingaleActor:setNightingaleActor, hideRookDefenseReference:removeRookDefenseReference };
+})();
+</script>
+
+
+<script>
+(function(){
+  "use strict";
+  var VERSION = "V2.5A - Effect Status Assistant";
+  var STORE = "middaraCombatHelperV25AStatusAssistant";
+  var state = { filter:"all", search:"", lastMessage:"Status assistant ready.", lastRunAt:null, applied:{} };
+  function byId(id){ return document.getElementById(id); }
+  function esc(v){ return String(v == null ? "" : v).replace(/[&<>"']/g,function(c){ return {"&":"&amp;","<":"&lt;",">":"&gt;","\"":"&quot;","'":"&#39;"}[c]; }); }
+  function arr(v){ return Array.isArray(v) ? v : []; }
+  function num(v,d){ var n = Number(v); return Number.isFinite(n) ? n : (d||0); }
+  function clamp(n,min,max){ return Math.max(min, Math.min(max, n)); }
+  function cap(s){ s=String(s||""); return s ? s.charAt(0).toUpperCase()+s.slice(1) : s; }
+  function clone(v){ try { return JSON.parse(JSON.stringify(v)); } catch(err){ return v; } }
+  function load(){ try{ var raw=localStorage.getItem(STORE); if(raw) state = Object.assign(state, JSON.parse(raw)); }catch(err){} }
+  function save(){ try{ localStorage.setItem(STORE, JSON.stringify(state)); }catch(err){} }
+  function setSummary(msg, kind){ state.lastMessage = msg || state.lastMessage; save(); var el=byId("v25aStatusSummary"); if(el){ el.className = (kind === "warn" ? "warning-box" : kind === "danger" ? "danger-box" : "ok-box") + " note"; el.textContent = msg || "Status assistant ready."; } }
+  function partyMembers(){ try{ return arr(window.partyState && partyState.members); }catch(err){ return []; } }
+  function trackerEnemies(){ try{ return arr(window.trackerState && trackerState.enemies); }catch(err){ return []; } }
+  function commandState(){ try{ var api=window.middaraCommandCombatantApi; if(api && api.getState) return api.getState(); return window.commandCombatantState || {combatants:[]}; }catch(err){ return {combatants:[]}; } }
+  function commandCombatants(){ return arr(commandState().combatants).filter(function(c){ return (c.status || "summoned") === "summoned"; }); }
+  function effectDefs(){ return (window.DATA && DATA.effectDefinitions) || {}; }
+  function normEffectName(x){ var s=String(x && (x.name || x.label || x.effect || x) || "").trim(); return s; }
+  function effectDef(name){ var n=String(name||"").toLowerCase().replace(/ token$/,'').replace(/[^a-z0-9]+/g,'_').replace(/^_|_$/g,''); var defs=effectDefs(); if(defs[n]) return defs[n]; var keys=Object.keys(defs || {}); for(var i=0;i<keys.length;i++){ var d=defs[keys[i]]; if(String(d.name || d.label || '').toLowerCase() === String(name||'').toLowerCase()) return d; } return { name:name, label:name, category:"unknown", timing:"Reminder", rules:[] }; }
+  function die(color, idx){ var faces=(window.DICE && DICE[color]) || []; var i=clamp(Math.trunc(num(idx,0)),0,Math.max(0,faces.length-1)); return faces[i] || {value:0, book:0, shield:0, burst:0, skull:false, label:"None"}; }
+  function dieLabel(color, face){ if(!face) return cap(color); if(face.skull) return cap(color)+" Skull"; var bits=[]; if(face.book) bits.push(face.book+" Book"); if(face.shield) bits.push(face.shield+" Shield"); if(face.burst) bits.push(face.burst+" Burst"); return cap(color)+" "+(face.value||0)+": "+(bits.length?bits.join(", "):"No symbols"); }
+  function dieOptions(color, selected, blank){ var faces=(window.DICE && DICE[color]) || []; var html=blank?'<option value="">Choose '+esc(color)+' result...</option>':""; faces.forEach(function(f,i){ html += '<option value="'+i+'"'+(String(i)===String(selected)?' selected':'')+'>'+esc(dieLabel(color,f))+'</option>'; }); return html; }
+  function currentRound(){ try{ return (window.middaraTurnApi && middaraTurnApi.getState && middaraTurnApi.getState().round) || 1; }catch(err){ return 1; } }
+  function collectFigures(){ var out=[]; partyMembers().forEach(function(m){ out.push({kind:"party", id:m.id, label:m.name || m.id, obj:m, effects:arr(m.effects)}); }); trackerEnemies().forEach(function(e){ out.push({kind:"enemy", id:e.id, label:e.label || e.name || e.id, obj:e, effects:arr(e.effects)}); }); commandCombatants().forEach(function(c){ out.push({kind:"command", id:c.id, label:c.label || c.name || c.id, obj:c, effects:arr(c.effects)}); }); return out; }
+  function statusItems(){ var items=[]; collectFigures().forEach(function(fig){ fig.effects.forEach(function(raw){ var name=normEffectName(raw); if(!name) return; var def=effectDef(name); var status = (def.statusPhase || null); var lower = name.toLowerCase(); var actionable = !!status || lower === "paralyze" || lower === "wilt" || lower === "tether" || lower === "nemesis" || lower === "disease" || lower === "darkness" || lower === "sedate" || lower === "barrier" || lower === "courage";
+      items.push({ id: fig.kind+":"+fig.id+":"+name, figure:fig, effect:name, def:def, status:status, actionable:actionable });
+    }); }); return items; }
+  function matchesFilter(item){ var f=state.filter || "all"; if(f === "actionable" && !item.status) return false; if(["party","enemy","command"].indexOf(f)>=0 && item.figure.kind !== f) return false; var q=String(state.search||"").trim().toLowerCase(); if(q){ var blob=(item.effect+" "+item.figure.label+" "+item.figure.kind).toLowerCase(); if(blob.indexOf(q)<0) return false; } return true; }
+  function itemKey(item, suffix){ return item.id + ":" + currentRound() + ":" + (suffix || ""); }
+  function pill(def){ var cat=(def.category || "unknown").toLowerCase(); return '<span class="v25a-status-pill '+esc(cat)+'"><strong>'+esc(def.name || def.label || 'Effect')+'</strong> '+esc(def.timing || '')+'</span>'; }
+  function rulesText(def){ var rules=arr(def.rules); if(!rules.length && def.notes) rules=[def.notes]; return rules.slice(0,3).map(esc).join(' '); }
+  function getFaceSelection(item, color){ var key=itemKey(item, color); return state.applied[key+":face"] || ""; }
+  function setFaceSelection(item, color, value){ var key=itemKey(item, color); state.applied[key+":face"] = value; save(); }
+  function isApplied(item, suffix){ return !!state.applied[itemKey(item, suffix)]; }
+  function markApplied(item, suffix, message){ state.applied[itemKey(item, suffix)] = { at:new Date().toISOString(), message:message || "applied" }; save(); }
+  function rowClass(item){ return item.status ? " actionable" : ""; }
+  function render(){ load(); var listEl=byId("v25aStatusList"); if(!listEl) return; var filter=byId("v25aStatusFilter"); if(filter) filter.value=state.filter || "all"; var search=byId("v25aStatusSearch"); if(search) search.value=state.search || ""; var all=statusItems(); var shown=all.filter(matchesFilter); var statusCount=all.filter(function(x){ return !!x.status; }).length; setSummary(all.length + " tracked effect(s), " + statusCount + " status-phase action(s).", "ok"); if(!shown.length){ listEl.innerHTML='<div class="v25a-status-row"><div class="note">No matching tracked effects. Add effects from Party, Enemies, Command, or clear the search/filter.</div></div>'; return; }
+    listEl.innerHTML = shown.map(renderItem).join(''); bindRowControls(); }
+  function renderItem(item){ var def=item.def || {}; var fig=item.figure; var status=item.status || null; var html='<div class="v25a-status-row'+rowClass(item)+'" data-v25a-item="'+esc(item.id)+'"><div class="v25a-status-head"><div><strong>'+esc(fig.label)+'</strong><div class="v25a-status-meta">'+esc(cap(fig.kind))+' tracker | '+pill(def)+'</div></div><span class="v25a-status-pill '+esc((def.category||'unknown').toLowerCase())+'">'+esc(item.effect)+'</span></div>'; html+='<div class="v25a-status-meta">'+(rulesText(def) || 'Reminder only; resolve manually if timing applies.')+'</div>';
+    if(status && status.die === "purple") html += renderPoison(item);
+    else if(status && status.die === "black" && status.skullDefeats) html += renderCondemn(item);
+    else if(status && status.spGain) html += renderHaste(item, status.spGain);
+    else if((item.effect || '').toLowerCase() === 'paralyze') html += renderParalyze(item);
+    else html += renderReminder(item);
+    html+='</div>'; return html; }
+  function renderPoison(item){ var selected=getFaceSelection(item,'purple'); var done=isApplied(item,'poisonDamage'); return '<div class="v25a-status-actions"><select data-v25a-die="purple" data-v25a-item="'+esc(item.id)+'">'+dieOptions('purple', selected, true)+'</select><button type="button" data-v25a-action="applyPoison" data-v25a-item="'+esc(item.id)+'"'+(done?' disabled':'')+'>'+(done?'Poison damage applied ✓':'Apply Poison damage')+'</button></div>'; }
+  function renderCondemn(item){ var selected=getFaceSelection(item,'black'); var done=isApplied(item,'condemnCheck'); return '<div class="v25a-status-actions"><select data-v25a-die="black" data-v25a-item="'+esc(item.id)+'">'+dieOptions('black', selected, true)+'</select><button type="button" data-v25a-action="resolveCondemn" data-v25a-item="'+esc(item.id)+'"'+(done?' disabled':'')+'>'+(done?'Condemn resolved ✓':'Resolve Condemn')+'</button></div>'; }
+  function renderHaste(item, amount){ var done=isApplied(item,'hasteSp'); return '<div class="v25a-status-actions"><button type="button" data-v25a-action="applyHaste" data-v25a-item="'+esc(item.id)+'"'+(done?' disabled':'')+'>'+(done?'Haste applied ✓':'Apply Haste +'+esc(amount||1)+' SP')+'</button></div>'; }
+  function renderParalyze(item){ return '<div class="v25a-status-actions"><button type="button" data-v25a-action="removeEffect" data-v25a-effect="'+esc(item.effect)+'" data-v25a-kind="'+esc(item.figure.kind)+'" data-v25a-id="'+esc(item.figure.id)+'">Remove Paralyze after end-of-turn</button><span class="tiny">Then add/remember Immunity: Paralyze until end of encounter if the card text requires it.</span></div>'; }
+  function renderReminder(item){ return '<div class="v25a-status-actions"><button type="button" data-v25a-action="logReminder" data-v25a-item="'+esc(item.id)+'">Log reminder</button></div>'; }
+  function findItem(id){ return statusItems().filter(function(x){ return x.id === id; })[0] || null; }
+  function pushHistory(kind){ try{ if(kind==='party' && typeof window.pushPartyHistory === 'function') pushPartyHistory(); }catch(err){} try{ if(kind==='enemy' && typeof window.pushTrackerHistory === 'function') pushTrackerHistory(); }catch(err2){} }
+  function commitFigure(kind){ try{ if(kind==='party'){ if(typeof window.savePartyState === 'function') savePartyState(); if(typeof window.renderParty === 'function') renderParty(); } }catch(err){} try{ if(kind==='enemy'){ if(typeof window.saveTrackerState === 'function') saveTrackerState(); if(typeof window.renderTracker === 'function') renderTracker(); } }catch(err2){} try{ if(kind==='command'){ var api=window.middaraCommandCombatantApi; var s=commandState(); if(api && api.importState) api.importState(s); } }catch(err3){} }
+  function damageFigure(fig, amount, source){ var obj=fig.obj; var amt=Math.max(0, Math.trunc(num(amount,0))); if(!obj || !amt) return false; if(fig.kind==='party'){ try{ if(typeof window.applyPartyDamage === 'function') return !!window.applyPartyDamage(fig.id, amt, source || 'Status effect'); }catch(err){} pushHistory('party'); obj.damage=clamp(num(obj.damage,0)+amt,0,num(obj.hp,0)); commitFigure('party'); return true; }
+    if(fig.kind==='enemy'){ pushHistory('enemy'); obj.damage=clamp(num(obj.damage,0)+amt,0,num(obj.hp,0)); commitFigure('enemy'); return true; }
+    if(fig.kind==='command'){ obj.damage=clamp(num(obj.damage,0)+amt,0,num(obj.maxHp||obj.hp,0)); if(obj.damage >= num(obj.maxHp||obj.hp,0)) obj.status='defeated'; commitFigure('command'); return true; }
+    return false; }
+  function addSp(fig, amount){ var obj=fig.obj; var amt=Math.trunc(num(amount,0)); if(!obj || !amt) return false; if(fig.kind==='party'){ try{ if(typeof window.applyPartySp === 'function') return !!window.applyPartySp(fig.id, amt); }catch(err){} pushHistory('party'); obj.sp=Math.max(0,num(obj.sp,0)+amt); commitFigure('party'); return true; }
+    if(fig.kind==='command'){ obj.sp=clamp(num(obj.sp,0)+amt,0,num(obj.spMax,99)); commitFigure('command'); return true; }
+    return false; }
+  function defeatFigure(fig, source){ var obj=fig.obj; if(!obj) return false; if(fig.kind==='party'){ pushHistory('party'); obj.damage=num(obj.hp,0); commitFigure('party'); return true; } if(fig.kind==='enemy'){ pushHistory('enemy'); obj.damage=num(obj.hp,0); commitFigure('enemy'); return true; } if(fig.kind==='command'){ obj.damage=num(obj.maxHp||obj.hp,0); obj.status='defeated'; commitFigure('command'); return true; } return false; }
+  function removeEffect(kind, id, effect){ var target=null; if(kind==='party') target=partyMembers().filter(function(x){return x.id===id;})[0]; if(kind==='enemy') target=trackerEnemies().filter(function(x){return x.id===id;})[0]; if(kind==='command') target=commandCombatants().filter(function(x){return x.id===id;})[0]; if(!target) return false; if(kind==='party') pushHistory('party'); if(kind==='enemy') pushHistory('enemy'); target.effects = arr(target.effects).filter(function(e){ return normEffectName(e).toLowerCase() !== String(effect||'').toLowerCase(); }); commitFigure(kind); return true; }
+  function rowAction(ev){ var btn=ev.target.closest('[data-v25a-action]'); if(!btn) return; var action=btn.getAttribute('data-v25a-action'); if(action==='removeEffect'){ if(removeEffect(btn.getAttribute('data-v25a-kind'), btn.getAttribute('data-v25a-id'), btn.getAttribute('data-v25a-effect'))) setSummary('Removed '+btn.getAttribute('data-v25a-effect')+'.', 'ok'); render(); return; }
+    var item=findItem(btn.getAttribute('data-v25a-item')); if(!item){ setSummary('Could not find that status item. Refresh the list.', 'warn'); return; }
+    if(action==='applyPoison'){ var faceIdx=getFaceSelection(item,'purple'); if(faceIdx === ''){ setSummary('Choose the purple die result before applying Poison damage.', 'warn'); return; } var face=die('purple',faceIdx); var dmg=num(face.value,0); if(damageFigure(item.figure,dmg,'Poison status')){ markApplied(item,'poisonDamage','Applied '+dmg+' Poison damage'); setSummary('Applied '+dmg+' Irreducible Poison damage to '+item.figure.label+'.', 'ok'); } render(); return; }
+    if(action==='resolveCondemn'){ var bIdx=getFaceSelection(item,'black'); if(bIdx === ''){ setSummary('Choose the black die result before resolving Condemn.', 'warn'); return; } var faceB=die('black', bIdx); if(faceB.skull){ if(defeatFigure(item.figure,'Condemn')) setSummary('Condemn rolled Skull: '+item.figure.label+' marked Defeated.', 'warn'); } else setSummary('Condemn did not roll Skull for '+item.figure.label+'.', 'ok'); markApplied(item,'condemnCheck','Resolved Condemn'); render(); return; }
+    if(action==='applyHaste'){ if(addSp(item.figure, (item.status && item.status.spGain) || 1)){ markApplied(item,'hasteSp','Applied Haste SP'); setSummary('Applied Haste +1 SP to '+item.figure.label+'.', 'ok'); } else { setSummary('Haste on '+item.figure.label+' is a reminder only here; this tracker has no SP field.', 'warn'); } render(); return; }
+    if(action==='logReminder'){ setSummary(item.effect+' reminder logged for '+item.figure.label+': '+rulesText(item.def), 'ok'); return; }
+  }
+  function bindRowControls(){ var listEl=byId('v25aStatusList'); if(!listEl || listEl.__v25aBound) return; listEl.__v25aBound=true; listEl.addEventListener('click', rowAction); listEl.addEventListener('change', function(ev){ var sel=ev.target.closest('[data-v25a-die]'); if(!sel) return; var item=findItem(sel.getAttribute('data-v25a-item')); if(!item) return; setFaceSelection(item, sel.getAttribute('data-v25a-die'), sel.value); render(); }); }
+  function applyAllHaste(){ var count=0; statusItems().forEach(function(item){ if(item.status && item.status.spGain && !isApplied(item,'hasteSp')){ if(addSp(item.figure,item.status.spGain||1)){ markApplied(item,'hasteSp','Applied Haste SP'); count++; } } }); setSummary(count ? 'Applied Haste +1 SP to '+count+' figure(s).' : 'No unapplied Haste SP actions were available.', count ? 'ok':'warn'); render(); }
+  function route(mode,id){ try{ if(typeof window.v17ShowMode === 'function') window.v17ShowMode(mode); else document.body.setAttribute('data-v17-current-mode', mode); }catch(err){} var el=id && byId(id); if(el) setTimeout(function(){ try{ el.scrollIntoView({behavior:'smooth', block:'start'}); }catch(err2){ el.scrollIntoView(); } }, 40); }
+  function bind(){ var filter=byId('v25aStatusFilter'); if(filter) filter.addEventListener('change', function(){ state.filter=filter.value || 'all'; save(); render(); }); var search=byId('v25aStatusSearch'); if(search) search.addEventListener('input', function(){ state.search=search.value || ''; save(); render(); }); var refresh=byId('v25aRefreshStatus'); if(refresh) refresh.addEventListener('click', function(){ state.lastRunAt=new Date().toISOString(); save(); render(); }); var haste=byId('v25aApplyAllHaste'); if(haste) haste.addEventListener('click', applyAllHaste); var openParty=byId('v25aOpenPartyTracker'); if(openParty) openParty.addEventListener('click', function(){ route('party','partyTable'); }); var openEnemy=byId('v25aOpenEnemyTracker'); if(openEnemy) openEnemy.addEventListener('click', function(){ route('enemies','trackerTable'); }); }
+  function patchRenders(){ try{ if(window.__middaraV25AStatusRenderPatch) return; window.__middaraV25AStatusRenderPatch=true; ['renderParty','renderTracker'].forEach(function(name){ var old=window[name]; if(typeof old==='function') window[name]=function(){ var r=old.apply(this, arguments); setTimeout(render,0); return r; }; }); var api=window.middaraCommandCombatantApi; if(api && api.render){ var oldRender=api.render; api.render=function(){ var r=oldRender.apply(this, arguments); setTimeout(render,0); return r; }; } }catch(err){} }
+  function patchSnapshots(){ try{ if(!window.middaraDataManagerApi || window.__middaraV25ASnapshotPatch) return; window.__middaraV25ASnapshotPatch=true; var api=window.middaraDataManagerApi; var oldFull=api.exportFullSnapshot, oldApp=api.exportAppData; function add(snap){ try{ snap.version=VERSION; snap.pwaDeploymentVersion=VERSION; snap.v25aStatusAssistant=clone(state); }catch(err){} return snap; } if(typeof oldFull==='function') api.exportFullSnapshot=function(){ return add(oldFull.apply(this, arguments)); }; if(typeof oldApp==='function') api.exportAppData=function(){ return add(oldApp.apply(this, arguments)); }; }catch(err){} }
+  function updateVersionLabels(){ try{ var h=byId('mobileCombatFlowPanel') && byId('mobileCombatFlowPanel').querySelector('h2'); if(h) h.textContent='V2.5A Tablet / mobile live combat flow'; var b=byId('mobileCombatFlowPanel') && byId('mobileCombatFlowPanel').querySelector('.cockpit-badge'); if(b) b.textContent='V2.5A Flow'; var title=document.querySelector('title'); if(title) title.textContent='Middara Combat Helper - V2.5A Effect Status Assistant'; }catch(err){} }
+  function init(){ load(); bind(); patchRenders(); patchSnapshots(); updateVersionLabels(); render(); }
+  if(document.readyState==='loading') document.addEventListener('DOMContentLoaded', init); else init();
+  window.middaraStatusAssistantV25A = { render:render, getState:function(){ return clone(state); }, applyAllHaste:applyAllHaste };
 })();
 </script>
 
