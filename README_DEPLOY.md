@@ -1,9 +1,7 @@
-# Middara Combat Helper V2.5A
+# Middara Combat Helper - V2.5C - Enemy AI / Effect Integration
 
-Upload all extracted files in this folder to the root of the GitHub Pages repository.
+Upload these extracted files to the root of the GitHub Pages repository. Do not upload the ZIP itself.
 
-Do not upload save snapshots or ZIP files to the repository. Keep JSON snapshots locally.
+After GitHub Pages updates, open the app on the tablet, use Data -> hosted / installable web app -> Update app cache, then reload/reopen the Home Screen app.
 
-After GitHub Pages deploys, open the app on the tablet, use **Data -> hosted / installable web app -> Update app cache**, then reload/reopen the Home Screen app.
-
-V2.5A adds a guided Status Phase / effect assistant for Poison, Condemn, Haste, Paralyze cleanup, and effect reminders.
+V2.5C - Enemy AI / Effect Integration

@@ -1,22 +1,53 @@
 {
   "name": "Middara Combat Helper",
   "short_name": "Middara",
-  "description": "Middara Combat Helper V2.5A - guided Status Phase and effect assistant for Poison, Condemn, Haste, Paralyze, and reminder effects.",
+  "description": "Middara Combat Helper V2.5C - enemy AI/effect integration with Adlet Shard helpers, enemy immunity audits, Fragor/Merk/Itlum reminders, and status-aware AI prep.",
   "id": "./?app=middara-combat-helper",
-  "start_url": "./index.html?v=2.5a",
+  "start_url": "./index.html?v=2.5c",
   "scope": "./",
   "display": "standalone",
-  "display_override": ["standalone", "browser"],
+  "display_override": [
+    "standalone",
+    "browser"
+  ],
   "orientation": "portrait",
   "background_color": "#101827",
   "theme_color": "#101827",
-  "categories": ["games", "utilities"],
-  "icons": [
-    { "src": "./icons/icon-192.png", "sizes": "192x192", "type": "image/png", "purpose": "any" },
-    { "src": "./icons/icon-512.png", "sizes": "512x512", "type": "image/png", "purpose": "any" },
-    { "src": "./icons/maskable-icon-192.png", "sizes": "192x192", "type": "image/png", "purpose": "maskable" },
-    { "src": "./icons/maskable-icon-512.png", "sizes": "512x512", "type": "image/png", "purpose": "maskable" },
-    { "src": "./icons/apple-touch-icon.png", "sizes": "180x180", "type": "image/png", "purpose": "any" }
+  "categories": [
+    "games",
+    "utilities"
   ],
-  "version": "V2.5A"
+  "icons": [
+    {
+      "src": "./icons/icon-192.png",
+      "sizes": "192x192",
+      "type": "image/png",
+      "purpose": "any"
+    },
+    {
+      "src": "./icons/icon-512.png",
+      "sizes": "512x512",
+      "type": "image/png",
+      "purpose": "any"
+    },
+    {
+      "src": "./icons/maskable-icon-192.png",
+      "sizes": "192x192",
+      "type": "image/png",
+      "purpose": "maskable"
+    },
+    {
+      "src": "./icons/maskable-icon-512.png",
+      "sizes": "512x512",
+      "type": "image/png",
+      "purpose": "maskable"
+    },
+    {
+      "src": "./icons/apple-touch-icon.png",
+      "sizes": "180x180",
+      "type": "image/png",
+      "purpose": "any"
+    }
+  ],
+  "version": "V2.5C"
 }
