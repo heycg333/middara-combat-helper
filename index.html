@@ -3,7 +3,7 @@
 <head>
   <meta charset="utf-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1" />
-  <title>Middara Combat Helper - V2.4H Esper Bridge / Actor Fix</title>
+  <title>Middara Combat Helper - V2.4I Live Encounter Readiness</title>
   <style>
     :root {
       --bg: #101827;
@@ -1003,6 +1003,47 @@
           </details>
         </div>
       </div>
+    </section>
+
+
+
+    <section class="panel v24i-readiness-panel" id="v24iLiveEncounterReadinessPanel" data-v17-mode="play">
+      <details>
+        <summary>V2.4I live encounter readiness / guide sync</summary>
+        <div class="note" style="margin-top:10px">Use this before a real table session or after a GitHub Pages update. It does not resolve rules or change board state; it checks that the core tablet workflow is present, gives quick recovery buttons, and keeps the current live-play recipe close at hand.</div>
+        <div class="v24i-readiness-grid" style="margin-top:12px">
+          <div class="soft-card">
+            <h3 style="margin-top:0">Session readiness</h3>
+            <div id="v24iReadinessSummary" class="v24i-readiness-summary">Readiness summary will appear here.</div>
+            <div class="btn-row" style="margin-top:10px">
+              <button id="v24iRunReadinessCheck" type="button">Run live encounter check</button>
+              <button id="v24iOpenLiveFlow" type="button">Open live flow</button>
+              <button id="v24iClearVolatileState" type="button">Clear stale UI state</button>
+            </div>
+          </div>
+          <div class="soft-card">
+            <h3 style="margin-top:0">Snapshot / update safety</h3>
+            <div class="note">For testing builds, snapshots are optional. For a real session, export before updating and after the session.</div>
+            <div class="btn-row" style="margin-top:10px">
+              <button id="v24iExportSnapshot" type="button">Export full snapshot</button>
+              <button id="v24iOpenData" type="button">Open Data</button>
+              <button id="v24iCopyTabletChecklist" type="button">Copy tablet checklist</button>
+            </div>
+            <div id="v24iSnapshotStatus" class="tiny" style="margin-top:8px">No V2.4I snapshot action yet.</div>
+          </div>
+          <div class="soft-card">
+            <h3 style="margin-top:0">Current tablet recipe</h3>
+            <ol class="compact">
+              <li><strong>Adventurer attack:</strong> Actor &rarr; Target + Attack &rarr; dice auto-calc &rarr; Apply &rarr; Chain/Next.</li>
+              <li><strong>Enemy attack:</strong> enemy actor &rarr; Enemy Attack &rarr; target &rarr; defensive tray &rarr; Apply &rarr; Counter if offered.</li>
+              <li><strong>Nightingale:</strong> Spell / Force opens her spell/familiar panel; Life Grasp and Abbadon use their dedicated helpers.</li>
+              <li><strong>Loyal Esper:</strong> Nightingale &rarr; Summon Esper &rarr; bridge &rarr; summon &rarr; Load actor.</li>
+            </ol>
+          </div>
+        </div>
+        <div id="v24iReadinessStatus" class="ok-box note" style="margin-top:12px">V2.4I readiness panel loaded.</div>
+        <div id="v24iReadinessResults" class="v24i-check-list" style="margin-top:10px"></div>
+      </details>
     </section>
 
     <section class="panel v23a-rook-defense-panel" id="rookDefensePanel" data-v17-mode="play">
@@ -14664,7 +14705,7 @@ else {
     document.head.appendChild(style);
   }
   function updateChrome() {
-    document.title = "Middara Combat Helper - V2.4H Esper Bridge / Actor Fix";
+    document.title = "Middara Combat Helper - V2.4I Live Encounter Readiness";
     var subtitle = document.querySelector("header .subtitle");
     if (subtitle) subtitle.textContent = "V2.4G turn actor / Onslaught flow: quick Summoning controls, active Command Combatant summary, Summon-token status, and table-rule settings.";
     var h = byId("commandCombatantPanel") && byId("commandCombatantPanel").querySelector("h2");
@@ -16266,7 +16307,7 @@ else {
   }
 
   function updateChrome() {
-    document.title = "Middara Combat Helper - V2.4H Esper Bridge / Actor Fix";
+    document.title = "Middara Combat Helper - V2.4I Live Encounter Readiness";
     var sub = document.querySelector("header .subtitle");
     if (sub) sub.textContent = "V2.4G turn actor / Onslaught flow: quick Summoning controls, active Command Combatant summary, Summon-token status, and table-rule settings.";
   }
@@ -16420,7 +16461,7 @@ else {
     }, true);
   }
   function updateChrome() {
-    document.title = "Middara Combat Helper - V2.4H Esper Bridge / Actor Fix";
+    document.title = "Middara Combat Helper - V2.4I Live Encounter Readiness";
     var sub = document.querySelector("header .subtitle");
     if (sub) sub.textContent = "V2.4G turn actor / Onslaught flow: quick Summoning controls, active Command Combatant summary, Summon-token status, and table-rule settings.";
     var h = document.querySelector("#mobileCombatFlowPanel h2"); if (h) h.textContent = "V2.4F Tablet / mobile live combat flow";
@@ -16597,7 +16638,7 @@ else {
     });
   }
   function updateChrome() {
-    document.title = "Middara Combat Helper - V2.4H Esper Bridge / Actor Fix";
+    document.title = "Middara Combat Helper - V2.4I Live Encounter Readiness";
     var sub = document.querySelector("header .subtitle");
     if (sub) sub.textContent = "V2.4G turn actor / Onslaught flow: quick Summoning controls, active Command Combatant summary, Summon-token status, and table-rule settings.";
     var pwa = byId("pwaVersionText"); if (pwa) pwa.textContent = "V2.2E";
@@ -16798,7 +16839,7 @@ else {
     else if (action === "rewards") route("rewards", "rewardsLootPanel");
   }
   function init(){
-    document.title = "Middara Combat Helper - V2.4H Esper Bridge / Actor Fix";
+    document.title = "Middara Combat Helper - V2.4I Live Encounter Readiness";
     var h = document.querySelector("header h1"); if (h) h.textContent = "Middara Combat Helper";
     var sub = document.querySelector("header .subtitle"); if (sub) sub.textContent = "V2.4G turn actor / Onslaught flow: quick Summoning controls, active Command Combatant summary, Summon-token status, and table-rule settings.";
     var flowH = document.querySelector("#mobileCombatFlowPanel h2"); if (flowH) flowH.textContent = "V2.4F Tablet / mobile live combat flow";
@@ -17065,7 +17106,7 @@ else {
     });
   }
   function patchTitles(){
-    document.title = "Middara Combat Helper - V2.4H Esper Bridge / Actor Fix";
+    document.title = "Middara Combat Helper - V2.4I Live Encounter Readiness";
     var sub = document.querySelector("header .subtitle");
     if (sub) sub.textContent = "V2.4G turn actor / Onslaught flow: quick Summoning controls, active Command Combatant summary, Summon-token status, and table-rule settings.";
     var flowH = document.querySelector("#mobileCombatFlowPanel h2"); if (flowH) flowH.textContent = "V2.4F Tablet live combat flow";
@@ -17222,7 +17263,7 @@ else {
     if (flow && flow.scrollIntoView) flow.scrollIntoView({behavior:"smooth", block:"start"});
   }
   function patchTitles(){
-    document.title = "Middara Combat Helper - V2.4H Esper Bridge / Actor Fix";
+    document.title = "Middara Combat Helper - V2.4I Live Encounter Readiness";
     var sub = document.querySelector("header .subtitle");
     if (sub) sub.textContent = "V2.4G turn actor / Onslaught flow: quick Summoning controls, active Command Combatant summary, Summon-token status, and table-rule settings.";
     var flowH = document.querySelector("#mobileCombatFlowPanel h2");
@@ -17536,7 +17577,7 @@ else {
     var mo = new MutationObserver(function(){ schedulePaint(); });
     mo.observe(document.body, { childList:true, subtree:true, characterData:true });
     setInterval(paint, 1000);
-    document.title = "Middara Combat Helper - V2.4H Esper Bridge / Actor Fix";
+    document.title = "Middara Combat Helper - V2.4I Live Encounter Readiness";
     var sub = document.querySelector("header .subtitle");
     if (sub) sub.textContent = "V2.4G turn actor / Onslaught flow: quick Summoning controls, active Command Combatant summary, Summon-token status, and table-rule settings.";
     var flowH = document.querySelector("#mobileCombatFlowPanel h2"); if (flowH) flowH.textContent = "V2.4F Tablet live combat flow";
@@ -17646,7 +17687,7 @@ else {
     box.innerHTML = html;
   }
   function updateVersionChrome(){
-    document.title = "Middara Combat Helper - V2.4H Esper Bridge / Actor Fix";
+    document.title = "Middara Combat Helper - V2.4I Live Encounter Readiness";
     var sub = document.querySelector("header .subtitle"); if (sub) sub.textContent = "V2.4G turn actor / Onslaught flow: quick Summoning controls, active Command Combatant summary, Summon-token status, and table-rule settings.";
     var flowH = document.querySelector("#mobileCombatFlowPanel h2"); if (flowH) flowH.textContent = "V2.4F Tablet live combat flow";
     var badge = document.querySelector("#mobileCombatFlowPanel .cockpit-badge"); if (badge) badge.textContent = "V2.4F";
@@ -17679,7 +17720,7 @@ else {
 <script>
 (function () {
   "use strict";
-  var TITLE = "Middara Combat Helper - V2.4H Esper Bridge / Actor Fix";
+  var TITLE = "Middara Combat Helper - V2.4I Live Encounter Readiness";
   var SUBTITLE = "V2.4G turn actor / Onslaught flow: quick Summoning controls, active Command Combatant summary, Summon-token status, and table-rule settings.";
   function stabilizeHeader() {
     try {
@@ -18626,7 +18667,7 @@ else {
     var calc = byId("calculateEnemyAttackButton"); if (calc) calc.addEventListener("click", function () { setTimeout(renderUniversalCounterTray, 60); }, true);
   }
   function patchChromeAndSnapshot() {
-    document.title = "Middara Combat Helper - V2.4H Esper Bridge / Actor Fix";
+    document.title = "Middara Combat Helper - V2.4I Live Encounter Readiness";
     var sub = document.querySelector("header .subtitle");
     if (sub) sub.textContent = "V2.4G turn actor / Onslaught flow: quick Summoning controls, active Command Combatant summary, Summon-token status, and table-rule settings.";
     var h = document.querySelector("#mobileCombatFlowPanel h2"); if (h) h.textContent = "V2.4F Tablet live combat flow";
@@ -19125,7 +19166,7 @@ else {
     var calc = byId("calculateEnemyAttackButton"); if (calc) calc.addEventListener("click", function () { setTimeout(function(){ renderDefenseTray(lastEnemyAttack()); }, 80); }, true);
   }
   function patchChromeAndSnapshots() {
-    document.title = "Middara Combat Helper - V2.4H Esper Bridge / Actor Fix";
+    document.title = "Middara Combat Helper - V2.4I Live Encounter Readiness";
     var sub = document.querySelector("header .subtitle");
     if (sub) sub.textContent = "V2.4G turn actor / Onslaught flow: quick Summoning controls, active Command Combatant summary, Summon-token status, and table-rule settings.";
     var h = document.querySelector("#mobileCombatFlowPanel h2"); if (h) h.textContent = "V2.4F Tablet live combat flow";
@@ -19165,7 +19206,7 @@ else {
 (function () {
   "use strict";
   var VERSION = "V2.4F";
-  var TITLE = "Middara Combat Helper - V2.4H Esper Bridge / Actor Fix";
+  var TITLE = "Middara Combat Helper - V2.4I Live Encounter Readiness";
   var SUBTITLE = "V2.4G turn actor / Onslaught flow: quick Summoning controls, active Command Combatant summary, Summon-token status, and table-rule settings.";
   var KEY = "middara_v23g_live_flow_layout_mode";
   function ready(fn) { if (document.readyState === "loading") document.addEventListener("DOMContentLoaded", fn); else fn(); }
@@ -19525,7 +19566,7 @@ else {
     window.__middaraV23HCalcCapture = true;
   }
   function patchChromeAndSnapshots() {
-    document.title = "Middara Combat Helper - V2.4H Esper Bridge / Actor Fix";
+    document.title = "Middara Combat Helper - V2.4I Live Encounter Readiness";
     var sub = document.querySelector("header .subtitle");
     if (sub) sub.textContent = "V2.4G turn actor / Onslaught flow: quick Summoning controls, active Command Combatant summary, Summon-token status, and table-rule settings.";
     try {
@@ -19570,7 +19611,7 @@ else {
 (function () {
   "use strict";
   var VERSION = "V2.4F";
-  var TITLE = "Middara Combat Helper - V2.4H Esper Bridge / Actor Fix";
+  var TITLE = "Middara Combat Helper - V2.4I Live Encounter Readiness";
   var SUBTITLE = "V2.4G turn actor / Onslaught flow: quick Summoning controls, active Command Combatant summary, Summon-token status, and table-rule settings.";
   var timer = null;
 
@@ -19770,7 +19811,7 @@ else {
 (function(){
   "use strict";
   var VERSION = "V2.4F";
-  var TITLE = "Middara Combat Helper - V2.4H Esper Bridge / Actor Fix";
+  var TITLE = "Middara Combat Helper - V2.4I Live Encounter Readiness";
   var SUBTITLE = "V2.4G turn actor / Onslaught flow: quick Summoning controls, active Command Combatant summary, Summon-token status, and table-rule settings.";
   var awaitingWhirlwindTarget = false;
   var targetChosenAt = 0;
@@ -19935,7 +19976,7 @@ else {
 (function(){
   "use strict";
   var VERSION = "V2.4F";
-  var TITLE = "Middara Combat Helper - V2.4H Esper Bridge / Actor Fix";
+  var TITLE = "Middara Combat Helper - V2.4I Live Encounter Readiness";
   var SUBTITLE = "V2.4G turn actor / Onslaught flow: quick Summoning controls, active Command Combatant summary, Summon-token status, and table-rule settings.";
   var FLOW_KEY = "middaraCombatHelperV22BMobileFlow";
   var QA_KEY = "middaraCombatHelperV23KQaState";
@@ -20533,7 +20574,7 @@ else {
 (function(){
   "use strict";
   var VERSION = "V2.4F";
-  var TITLE = "Middara Combat Helper - V2.4H Esper Bridge / Actor Fix";
+  var TITLE = "Middara Combat Helper - V2.4I Live Encounter Readiness";
   var SUBTITLE = "V2.4F Nightingale spell and familiar polish: Life Grasp multi-target helper, explicit Force math, one-time self-damage, Trophy effects, Blood Toll, Infection, Ring of Blood, and Yuxa shortcuts.";
   var KEY = "middara_v24a_nightingale_state";
   function byId(id){ return document.getElementById(id); }
@@ -20709,7 +20750,7 @@ else {
 (function(){
   "use strict";
   var VERSION = "V2.4F";
-  var TITLE = "Middara Combat Helper - V2.4H Esper Bridge / Actor Fix";
+  var TITLE = "Middara Combat Helper - V2.4I Live Encounter Readiness";
   var SUBTITLE = "V2.4G turn actor / Onslaught flow: quick Summoning controls, active Command Combatant summary, Summon-token status, and table-rule settings.";
   var FLOW_KEY = "middaraCombatHelperV22BMobileFlow";
   var supportLock = { active:false, label:"" };
@@ -20946,7 +20987,7 @@ else {
 (function(){
   "use strict";
   var VERSION = "V2.4F";
-  var TITLE = "Middara Combat Helper - V2.4H Esper Bridge / Actor Fix";
+  var TITLE = "Middara Combat Helper - V2.4I Live Encounter Readiness";
   var SUBTITLE = "V2.4F resolver-state patch: Nightingale Spell / Force stays in her dedicated panel, and the Resolve/Apply tile plus sticky footer use one stable attack/spell/support state.";
   var FLOW_KEY = "middaraCombatHelperV22BMobileFlow";
   var MODE_KEY = "middara_v24c_resolver_mode";
@@ -21217,7 +21258,7 @@ else {
 (function(){
   "use strict";
   var VERSION = "V2.4F";
-  var TITLE = "Middara Combat Helper - V2.4H Esper Bridge / Actor Fix";
+  var TITLE = "Middara Combat Helper - V2.4I Live Encounter Readiness";
   var SUBTITLE = "V2.4G turn actor / Onslaught flow: quick Summoning controls, active Command Combatant summary, Summon-token status, and table-rule settings.";
   var FLOW_KEY = "middaraCombatHelperV22BMobileFlow";
   var STORE_KEY = "middaraV24DAbbadonChainState";
@@ -21487,7 +21528,7 @@ else {
 (function(){
   "use strict";
   var VERSION = "V2.4F";
-  var TITLE = "Middara Combat Helper - V2.4H Esper Bridge / Actor Fix";
+  var TITLE = "Middara Combat Helper - V2.4I Live Encounter Readiness";
   var SUBTITLE = "V2.4G turn actor / Onslaught flow: quick Summoning controls, active Command Combatant summary, Summon-token status, and table-rule settings.";
   var FLOW_KEY = "middaraCombatHelperV22BMobileFlow";
   var TROPHY_KEY = "middara_v24e_trophy_roll";
@@ -21596,7 +21637,7 @@ else {
 (function(){
   "use strict";
   var VERSION = "V2.4F";
-  var TITLE = "Middara Combat Helper - V2.4H Esper Bridge / Actor Fix";
+  var TITLE = "Middara Combat Helper - V2.4I Live Encounter Readiness";
   var SUBTITLE = "V2.4G turn actor / Onslaught flow: quick Summoning controls, active Command Combatant summary, Summon-token status, and table-rule settings.";
   var FLOW_KEY = "middaraCombatHelperV22BMobileFlow";
   var SNAP_KEY = "middara_v24f_bridge_state";
@@ -21713,7 +21754,7 @@ else {
   }
 
   function patchChrome(){
-    document.title = "Middara Combat Helper - V2.4H Esper Bridge / Actor Fix";
+    document.title = "Middara Combat Helper - V2.4I Live Encounter Readiness";
     var sub = document.querySelector("header .subtitle");
     if(sub) sub.textContent = "V2.4G turn actor / Onslaught flow: current initiative defaults the live actor, Rook support stays off Turn/State, and Zeke Onslaught stays in the attack roll tray.";
     var pwa = byId("pwaVersionText"); if(pwa) pwa.textContent = VERSION;
@@ -21986,8 +22027,8 @@ else {
 (function(){
   "use strict";
   var VERSION = "V2.4H";
-  var TITLE = "Middara Combat Helper - V2.4H Esper Bridge / Actor Fix";
-  var SUBTITLE = "V2.4H Esper bridge / actor fix: Summon Esper opens Nightingale's Loyal Esper bridge, and Load actor reliably selects Agares or Eliphie in the live combat flow.";
+  var TITLE = "Middara Combat Helper - V2.4I Live Encounter Readiness";
+  var SUBTITLE = "V2.4I live encounter readiness: Summon Esper opens Nightingale's Loyal Esper bridge, and Load actor reliably selects Agares or Eliphie in the live combat flow.";
   var FLOW_KEY = "middaraCombatHelperV22BMobileFlow";
   var MODE_KEY = "middara_v24c_resolver_mode";
 
@@ -22159,6 +22200,211 @@ else {
   function init(){ captureClicks(); patchSnapshots(); patchChrome(); decorateSummonCard(); setInterval(function(){ patchChrome(); decorateSummonCard(); }, 700); setTimeout(function(){ setFlowStatus("V2.4H loaded. Summon Esper routes to the bridge, and Load actor selects active Loyal Espers directly in the live combat flow.", "ok"); }, 900); }
   ready(init);
   window.middaraV24HEsperBridgeFixApi = { openBridge:openEsperBridge, loadActor:loadEsperActor, summon:handleSummon };
+})();
+</script>
+
+
+
+<style id="v24i-live-encounter-readiness-style">
+  /* V2.4I live encounter readiness / guide sync */
+  header .subtitle.v24h-subtitle-lock::after {
+    content: "V2.4I live encounter readiness: tablet workflow QA, snapshot helper, stale-state recovery, and a compact table-use checklist for the current Nightingale/Loyal Esper build." !important;
+  }
+  #mobileCombatFlowPanel h2 {
+    position: relative !important;
+    color: transparent !important;
+    min-height: 1.35em;
+  }
+  #mobileCombatFlowPanel h2::after {
+    content: "V2.4I Tablet live combat flow" !important;
+    position: absolute;
+    left: 0;
+    top: 0;
+    color: var(--text);
+    pointer-events: none;
+  }
+  #mobileCombatFlowPanel .cockpit-badge.v24h-badge-lock::after { content: "V2.4I Flow" !important; }
+  #mobileCombatFlowPanel .cockpit-badge:not(.v24h-badge-lock) {
+    position: relative !important;
+    color: transparent !important;
+  }
+  #mobileCombatFlowPanel .cockpit-badge:not(.v24h-badge-lock)::after {
+    content: "V2.4I Flow" !important;
+    position: absolute;
+    inset: 0;
+    display: grid;
+    place-items: center;
+    color: #06121f;
+    pointer-events: none;
+  }
+  .v24i-readiness-panel { border-color: rgba(34,197,94,.32); background: linear-gradient(180deg, rgba(34,197,94,.06), rgba(255,255,255,.012)), var(--panel); }
+  .v24i-readiness-panel details { background: rgba(15,23,42,.34); }
+  .v24i-readiness-grid { display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); gap: 12px; align-items: start; }
+  .v24i-readiness-summary { display: grid; gap: 6px; }
+  .v24i-metric-line { display: flex; justify-content: space-between; gap: 10px; border: 1px solid rgba(148,163,184,.18); border-radius: 10px; padding: 7px 9px; background: rgba(2,6,23,.26); }
+  .v24i-metric-line strong { color: var(--text); }
+  .v24i-metric-line span { color: var(--muted); text-align: right; }
+  .v24i-check-list { display: grid; gap: 7px; }
+  .v24i-check-row { border: 1px solid rgba(148,163,184,.22); border-radius: 11px; padding: 8px 10px; background: rgba(2,6,23,.26); display: grid; grid-template-columns: auto minmax(0, 1fr); gap: 8px; align-items: start; }
+  .v24i-check-row .mark { font-weight: 900; }
+  .v24i-check-row.ok .mark { color: var(--ok); }
+  .v24i-check-row.warn .mark { color: var(--warn); }
+  .v24i-check-row.bad .mark { color: var(--danger); }
+  .v24i-check-row strong { display:block; }
+  .v24i-check-row span.note-line { display:block; color: var(--dim); font-size: .82rem; margin-top: 2px; }
+  @media (max-width: 1000px) { .v24i-readiness-grid { grid-template-columns: 1fr; } }
+</style>
+<script id="v24i-live-encounter-readiness-script">
+(function(){
+  "use strict";
+  var VERSION = "V2.4I";
+  var TITLE = "Middara Combat Helper - V2.4I Live Encounter Readiness";
+  var SUBTITLE = "V2.4I live encounter readiness: tablet workflow QA, snapshot helper, stale-state recovery, and a compact table-use checklist for the current Nightingale/Loyal Esper build.";
+  var FLOW_KEY = "middaraCombatHelperV22BMobileFlow";
+  var MODE_KEY = "middara_v24c_resolver_mode";
+  var SNAP_KEY = "middara_v24i_readiness_state";
+
+  function ready(fn){ if(document.readyState === "loading") document.addEventListener("DOMContentLoaded", fn); else setTimeout(fn,0); }
+  function byId(id){ return document.getElementById(id); }
+  function esc(v){ return String(v == null ? "" : v).replace(/[&<>\"']/g, function(ch){ return ({"&":"&amp;","<":"&lt;",">":"&gt;","\"":"&quot;","'":"&#039;"})[ch]; }); }
+  function fire(elOrId, type){ var el = typeof elOrId === "string" ? byId(elOrId) : elOrId; if(!el) return; try{ el.dispatchEvent(new Event(type || "change", {bubbles:true})); }catch(err){ try{ var ev=document.createEvent("Event"); ev.initEvent(type || "change", true, true); el.dispatchEvent(ev); }catch(e){} } }
+  function clickEl(el){ if(el && typeof el.click === "function"){ try{ el.click(); return true; }catch(err){} } return false; }
+  function clickId(id){ return clickEl(byId(id)); }
+  function readJson(key){ try{ return JSON.parse(localStorage.getItem(key) || "{}"); }catch(err){ return {}; } }
+  function writeJson(key, obj){ try{ localStorage.setItem(key, JSON.stringify(obj || {})); }catch(err){} }
+  function nowText(){ try{ return new Date().toLocaleString(); }catch(err){ return String(Date.now()); } }
+  function setStatus(msg, kind){
+    var cls = (kind === "warn" ? "warning-box" : kind === "bad" || kind === "danger" ? "danger-box" : "ok-box") + " note";
+    ["v24iReadinessStatus", "v22bFlowStatus"].forEach(function(id){ var el=byId(id); if(el){ el.className=cls; el.textContent=msg; } });
+  }
+  function currentMode(){ var btn=document.querySelector('#v17Nav [data-v17-mode-button].active'); return btn ? String(btn.getAttribute('data-v17-mode-button') || '') : ''; }
+  function openTab(mode){ var b=document.querySelector('[data-v17-mode-button="' + mode + '"]'); if(b) clickEl(b); }
+  function scrollTo(id){ var el=byId(id); if(el && el.scrollIntoView){ try{ el.scrollIntoView({behavior:"smooth", block:"start"}); }catch(err){ try{ el.scrollIntoView(true); }catch(e){} } } }
+  function readFlow(){ return readJson(FLOW_KEY); }
+  function writeFlow(f){ writeJson(FLOW_KEY, f || {}); }
+  function trackerEnemies(){ try{ return (window.trackerState && Array.isArray(trackerState.enemies)) ? trackerState.enemies : []; }catch(err){ return []; } }
+  function partyMembers(){ try{ return (window.partyState && Array.isArray(partyState.members)) ? partyState.members : []; }catch(err){ return []; } }
+  function commandState(){ try{ var api=window.middaraCommandCombatantApi; return api && api.getState ? api.getState() : (window.commandCombatantState || {combatants:[]}); }catch(err){ return {combatants:[]}; } }
+  function activeCommands(){ var s=commandState(); return (Array.isArray(s.combatants) ? s.combatants : []).filter(function(c){ return c && c.status === "summoned"; }); }
+  function initiativeCount(){ try{ return (window.turnState && Array.isArray(turnState.initiative)) ? turnState.initiative.length : 0; }catch(err){ return 0; } }
+  function selectedText(id){ var el=byId(id); return el && el.options && el.selectedIndex >= 0 ? String(el.options[el.selectedIndex].textContent || el.value || "") : (el ? String(el.value || "") : ""); }
+  function metric(label, value){ return '<div class="v24i-metric-line"><strong>' + esc(label) + '</strong><span>' + esc(value) + '</span></div>'; }
+  function renderSummary(){
+    var enemies = trackerEnemies();
+    var defeated = enemies.filter(function(e){ return e && (e.defeated || Number(e.damage || 0) >= Number(e.hp || 0)); }).length;
+    var partyDamage = partyMembers().reduce(function(sum,p){ return sum + Number(p.damage || 0); }, 0);
+    var flow = readFlow();
+    var actor = selectedText("v22bActorSelect") || selectedText("characterSelect") || flow.actor || "-";
+    var target = flow.target || selectedText("targetSelect") || selectedText("enemyAttackTarget") || "-";
+    var snap = readJson(SNAP_KEY);
+    var html = "";
+    html += metric("Actor", actor);
+    html += metric("Target / context", target);
+    html += metric("Enemies", enemies.length + " tracked / " + defeated + " defeated");
+    html += metric("Party damage", partyDamage);
+    html += metric("Command", activeCommands().length + " active");
+    html += metric("Initiative", initiativeCount() + " cards");
+    html += metric("Last V2.4I snapshot", snap.lastSnapshot || "not recorded");
+    var host=byId("v24iReadinessSummary"); if(host) host.innerHTML = html;
+  }
+  function addCheck(lines, ok, label, note, warnOnly){ lines.push({ok:!!ok, warnOnly:!!warnOnly, label:label, note:note || ""}); }
+  function runCheck(){
+    var lines=[];
+    addCheck(lines, !!byId("mobileCombatFlowPanel"), "Tablet/mobile live combat flow exists", "Main Actor -> Target -> Action -> Resolve flow is present.");
+    addCheck(lines, !!byId("v22bActorSelect"), "Actor selector exists", "Required for current-turn defaulting and command actor routing.");
+    addCheck(lines, !!byId("v22bTargetCards"), "Target drawer exists", "Required for enemy, party, and Command target selection.");
+    addCheck(lines, !!byId("v22bActionCards"), "Action cards exist", "Required for tablet flow shortcuts.");
+    addCheck(lines, !!byId("v22bPendingSummary"), "Resolve / Apply card exists", "Required for auto-calc result visibility.");
+    addCheck(lines, !!byId("v22bFooterApply"), "Sticky Apply button exists", "Required for no-scroll damage/effect application.");
+    addCheck(lines, !!window.middaraDataManagerApi && typeof middaraDataManagerApi.exportFullSnapshot === "function", "Full snapshot export API exists", "Required for update safety and device migration.");
+    addCheck(lines, !!byId("enemyAttackEnemy") && !!byId("enemyAttackTarget"), "Enemy Attack resolver exists", "Required for defensive trays and universal Counter routing.");
+    addCheck(lines, !!byId("v23fUniversalDefenseTray") || !!document.querySelector("#enemyAttackResultText"), "Enemy attack defense area exists", "Target-specific defense trays are expected in enemy attack flow.", !byId("v23fUniversalDefenseTray"));
+    addCheck(lines, !!byId("v24aNightingalePanel"), "Nightingale spell/familiar panel exists", "Required for Gore Shot, Life Grasp, Abbadon, Trophy, Ring, and Yuxa.");
+    addCheck(lines, !!byId("v24fCommandBridgeCard"), "Nightingale / Loyal Esper bridge exists", "Required for Agares/Eliphie summon and Load actor flow.");
+    addCheck(lines, !!window.middaraV24HEsperBridgeFixApi, "Esper bridge actor fix API loaded", "Required for Load actor reliability after summoning.");
+    addCheck(lines, !!byId("v23hRemiZekeChainPanel") || !!document.querySelector('[data-v23h-chain-action]'), "Remi/Zeke chain tools loaded", "Required for Chain Pick, Whirlwind, Onslaught, and Blade Works.", !byId("v23hRemiZekeChainPanel"));
+    addCheck(lines, currentMode() !== "enemies" || !byId("mobileCombatFlowPanel") || byId("mobileCombatFlowPanel").offsetParent === null, "Live combat flow is Play-only", "If you are on Enemies, the live flow should not be visible there.", true);
+    var okCount = lines.filter(function(x){ return x.ok || x.warnOnly; }).length;
+    var badCount = lines.filter(function(x){ return !x.ok && !x.warnOnly; }).length;
+    var warnCount = lines.filter(function(x){ return !x.ok && x.warnOnly; }).length;
+    var html = lines.map(function(x){ var cls=x.ok ? "ok" : x.warnOnly ? "warn" : "bad"; var mark=x.ok ? "✓" : x.warnOnly ? "!" : "×"; return '<div class="v24i-check-row ' + cls + '"><div class="mark">' + mark + '</div><div><strong>' + esc(x.label) + '</strong><span class="note-line">' + esc(x.note) + '</span></div></div>'; }).join("");
+    var host=byId("v24iReadinessResults"); if(host) host.innerHTML=html;
+    var state=readJson(SNAP_KEY); state.lastCheck=nowText(); state.badCount=badCount; state.warnCount=warnCount; writeJson(SNAP_KEY,state);
+    setStatus(badCount ? ("Live encounter check found " + badCount + " issue(s) and " + warnCount + " warning(s).") : (warnCount ? ("Live encounter check passed with " + warnCount + " warning(s).") : "Live encounter check passed."), badCount ? "bad" : warnCount ? "warn" : "ok");
+    renderSummary();
+  }
+  function clearVolatile(){
+    try{ localStorage.removeItem(MODE_KEY); }catch(err){}
+    var f=readFlow();
+    f.appliedKey=""; f.appliedLabel=""; f.awaitingTargetFor=""; f.pendingType=f.pendingType || "attack";
+    writeFlow(f);
+    document.body.classList.remove("v24c-mode-nightPanel", "v24c-mode-support", "v24c-mode-enemyAttack", "v24c-mode-enemySpell");
+    var btn=byId("v22bFooterApply"); if(btn){ btn.classList.remove("v24c-applied-state"); btn.removeAttribute("data-v24c-label"); }
+    try{ if(window.middaraMobileFlowV22BApi && middaraMobileFlowV22BApi.render) middaraMobileFlowV22BApi.render(); }catch(err2){}
+    setStatus("Cleared stale live-flow UI state. Choose actor/target/action again if the footer looks stale.", "ok");
+    renderSummary();
+  }
+  function exportSnapshot(){
+    var snap = null;
+    try{ snap = window.middaraDataManagerApi && middaraDataManagerApi.exportFullSnapshot ? middaraDataManagerApi.exportFullSnapshot() : null; }catch(err){ snap = null; }
+    if(!snap){ setStatus("Could not reach the Data Manager snapshot API. Open Data and use Export full snapshot manually.", "bad"); return; }
+    try{ var area=byId("dmJsonText"); if(area) area.value = JSON.stringify(snap, null, 2); }catch(err2){}
+    var s=readJson(SNAP_KEY); s.lastSnapshot = nowText(); writeJson(SNAP_KEY, s);
+    var el=byId("v24iSnapshotStatus"); if(el) el.textContent = "Full snapshot exported to the Data Manager JSON box at " + s.lastSnapshot + ". Use Download JSON or Copy JSON from Data when ready.";
+    setStatus("Full snapshot exported to the Data Manager JSON box. Open Data, then Download JSON or Copy JSON.", "ok");
+    renderSummary();
+  }
+  function tabletChecklist(){
+    return [
+      "Middara Combat Helper V2.4I tablet check",
+      "1. Open from Home Screen and confirm the version/cache shows V2.4I.",
+      "2. Play: confirm live flow is in the tablet grid and run the V2.4I live encounter check.",
+      "3. Turn / State: shuffle or choose initiative; return to Play and confirm Actor defaults to current turn.",
+      "4. Adventurer attack: Actor -> Target + Attack -> enter dice -> Apply -> Undo if needed.",
+      "5. Enemy attack: enemy actor -> Enemy Attack -> target adventurer -> defensive tray -> Apply -> Counter if offered.",
+      "6. Remi/Zeke: test one Chain Pick/Whirlwind or Onslaught follow-up if relevant.",
+      "7. Nightingale: Spell / Force -> Gore Shot or Life Grasp -> Apply -> Trophy/Ring/Yuxa if used.",
+      "8. Loyal Esper: Nightingale -> Summon Esper -> bridge -> summon -> Load actor.",
+      "9. End: scan loot/rewards, Prepare or Full Restore as instructed, then export a full snapshot."
+    ].join("\n");
+  }
+  function copyChecklist(){
+    var text=tabletChecklist();
+    function fallback(){ var area=byId("dmJsonText"); if(area){ area.value = text; openTab("data"); setStatus("Copied checklist into the Data JSON/text box because clipboard access was unavailable.", "warn"); } }
+    if(navigator.clipboard && navigator.clipboard.writeText){ navigator.clipboard.writeText(text).then(function(){ setStatus("Tablet checklist copied to clipboard.", "ok"); }, fallback); }
+    else fallback();
+  }
+  function patchChrome(){
+    document.title = TITLE;
+    var sub=document.querySelector("header .subtitle"); if(sub){ sub.classList.add("v24h-subtitle-lock"); sub.setAttribute("data-v24h-subtitle", SUBTITLE); }
+    var badge=document.querySelector("#mobileCombatFlowPanel .cockpit-badge"); if(badge){ badge.classList.add("v24h-badge-lock"); badge.textContent="V2.4I Flow"; }
+    var pwa=byId("pwaVersionText"); if(pwa) pwa.textContent=VERSION;
+    var pwaSummary=document.querySelector(".v22c-pwa-panel summary"); if(pwaSummary) pwaSummary.textContent="V2.4I hosted / installable web app";
+    var dataH=document.querySelector("#v22iDataStatusPanel h3"); if(dataH) dataH.textContent="V2.4I save / update status";
+    var cur=byId("currentVersionText"); if(cur) cur.textContent=VERSION;
+  }
+  function patchSnapshots(){
+    try{
+      if(!window.middaraDataManagerApi || window.__middaraV24ISnapshotPatch) return;
+      window.__middaraV24ISnapshotPatch = true;
+      var api=window.middaraDataManagerApi; var oldFull=api.exportFullSnapshot; var oldApp=api.exportAppData;
+      function add(snap){ try{ var s=readJson(SNAP_KEY); snap.version=VERSION; snap.pwaDeploymentVersion=VERSION; snap.v24iLiveEncounterReadiness={ lastCheck:s.lastCheck || null, lastSnapshot:s.lastSnapshot || null, badCount:s.badCount || 0, warnCount:s.warnCount || 0, activeCommandCount:activeCommands().length, trackedEnemyCount:trackerEnemies().length, initiativeCount:initiativeCount() }; }catch(err){} return snap; }
+      if(typeof oldFull === "function") api.exportFullSnapshot=function(){ return add(oldFull.apply(this, arguments)); };
+      if(typeof oldApp === "function") api.exportAppData=function(){ return add(oldApp.apply(this, arguments)); };
+    }catch(err){}
+  }
+  function bind(){
+    var b;
+    b=byId("v24iRunReadinessCheck"); if(b) b.addEventListener("click", runCheck);
+    b=byId("v24iOpenLiveFlow"); if(b) b.addEventListener("click", function(){ openTab("play"); setTimeout(function(){ scrollTo("mobileCombatFlowPanel"); }, 40); });
+    b=byId("v24iClearVolatileState"); if(b) b.addEventListener("click", clearVolatile);
+    b=byId("v24iExportSnapshot"); if(b) b.addEventListener("click", exportSnapshot);
+    b=byId("v24iOpenData"); if(b) b.addEventListener("click", function(){ openTab("data"); setTimeout(function(){ scrollTo("dataManagerPanel"); }, 40); });
+    b=byId("v24iCopyTabletChecklist"); if(b) b.addEventListener("click", copyChecklist);
+  }
+  function init(){ patchChrome(); patchSnapshots(); bind(); renderSummary(); setTimeout(runCheck, 1000); setInterval(function(){ patchChrome(); renderSummary(); }, 1200); }
+  ready(init);
+  window.middaraV24ILiveReadinessApi = { runCheck: runCheck, clearVolatile: clearVolatile, exportSnapshot: exportSnapshot, checklist: tabletChecklist };
 })();
 </script>
 

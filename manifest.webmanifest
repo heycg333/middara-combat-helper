@@ -1,9 +1,9 @@
 {
   "name": "Middara Combat Helper",
   "short_name": "Middara",
-  "description": "Middara Combat Helper V2.4H - fixes Nightingale Loyal Esper bridge routing and Command Combatant actor loading.",
+  "description": "Middara Combat Helper V2.4I - live encounter readiness, tablet workflow QA, snapshot helper, and stale-state recovery.",
   "id": "./?app=middara-combat-helper",
-  "start_url": "./index.html?v=2.4h",
+  "start_url": "./index.html?v=2.4i",
   "scope": "./",
   "display": "standalone",
   "display_override": [
@@ -49,5 +49,5 @@
       "purpose": "any"
     }
   ],
-  "version": "V2.4H"
+  "version": "V2.4I"
 }
