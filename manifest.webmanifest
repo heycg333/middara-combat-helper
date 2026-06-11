@@ -1,7 +1,7 @@
 {
   "name": "Middara Combat Helper",
   "short_name": "Middara",
-  "description": "Middara Combat Helper V2.5C - enemy AI/effect integration with Adlet Shard helpers, enemy immunity audits, Fragor/Merk/Itlum reminders, and status-aware AI prep.",
+  "description": "Middara Combat Helper V2.5D - Scope Reset / Turn Effect Fix",
   "id": "./?app=middara-combat-helper",
   "start_url": "./index.html?v=2.5c",
   "scope": "./",
@@ -49,5 +49,5 @@
       "purpose": "any"
     }
   ],
-  "version": "V2.5C"
+  "version": "2.5.13"
 }

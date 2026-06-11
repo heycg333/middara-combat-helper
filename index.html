@@ -3,7 +3,7 @@
 <head>
   <meta charset="utf-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1" />
-  <title>Middara Combat Helper - V2.5C Enemy AI / Effect Integration</title>
+  <title>Middara Combat Helper - V2.5D Scope Reset / Turn Effect Fix</title>
   <style>
     :root {
       --bg: #101827;
@@ -22784,7 +22784,7 @@ else {
 <script id="v25b-turn-phase-status-script">
 (function(){
   "use strict";
-  var VERSION = "V2.5C - Enemy AI / Effect Integration";
+  var VERSION = "V2.5D - Scope Reset / Turn Effect Fix";
   var STORE = "middaraCombatHelperV25BTurnPhase";
   var state = { phase:"action", lastMessage:"Turn phase helper ready.", lastPhaseAt:null, lastSnapshotAt:null };
   function byId(id){ return document.getElementById(id); }
@@ -22816,7 +22816,7 @@ else {
   function setPhase(phase){ load(); state.phase=phase || "action"; state.lastPhaseAt=new Date().toISOString(); save(); if(phase==="status"){ setStatusAssistantCurrentOnly(true); setStatus("Status Phase: showing current actor effects first. Use All status effects if you need the full table.", "ok"); } else if(phase==="action"){ routePlay(); try{ var f=byId("mobileCombatFlowPanel"); if(f) f.scrollIntoView({behavior:"smooth", block:"start"}); }catch(err){} setStatus("Action Phase: use the live combat flow. Dice and results auto-update; Apply books the result.", "ok"); } else if(phase==="refresh"){ setStatus("Refresh Phase selected. Use the prompt button if this actor should recover SP and refresh cards. Remember first-turn SP recovery is skipped during the first turn of an encounter.", "warn"); } else if(phase==="end"){ setStatus("End Turn selected. Resolve end-of-turn effects/reminders, then advance initiative when ready.", "ok"); } else { setStatus("Start Phase selected. Resolve any start-of-turn abilities/effects printed on cards or encounter rules.", "ok"); }
     render(); }
   function updateChrome(){
-    document.title = "Middara Combat Helper - V2.5C Enemy AI / Effect Integration";
+    document.title = "Middara Combat Helper - V2.5D Scope Reset / Turn Effect Fix";
     var sub=document.querySelector("header .subtitle"); if(sub){ sub.classList.add("v24h-subtitle-lock"); sub.setAttribute("data-v24h-subtitle", "V2.5B turn phase / status flow: current initiative phase strip, status-phase focus, end-turn reminders, ability-token quick use, and safer status bookkeeping."); }
     var h=byId("mobileCombatFlowPanel") && byId("mobileCombatFlowPanel").querySelector("h2"); if(h) h.textContent="V2.5B Tablet / mobile live combat flow";
     var b=byId("mobileCombatFlowPanel") && byId("mobileCombatFlowPanel").querySelector(".cockpit-badge"); if(b){ b.classList.add("v24h-badge-lock"); b.textContent="V2.5B Flow"; }
@@ -22846,7 +22846,7 @@ else {
     else if(ph==="refresh"){ html.push('<button type="button" class="primary-action" id="v25bDoRefreshCurrent">Apply Refresh to current actor</button>'); html.push('<button type="button" id="v25bOpenTurnState">Open Turn / State</button>'); }
     else if(ph==="end"){ var m=currentPartyMember(); if(m && num(m.sp,0)===0) html.push('<button type="button" class="primary-action" id="v25bDoInspiration">Rook Inspiration: +1 SP</button>'); var hasParalyze=figureEffectsForActor().some(function(f){ return arr(f.effects).some(function(e){ return lower(e)==="paralyze"; }); }); if(hasParalyze) html.push('<button type="button" class="warn-action" id="v25bDoRemoveParalyze">Remove Paralyze</button>'); html.push('<button type="button" id="v25bDoNextTurn">Advance initiative</button>'); }
     else if(ph==="action"){ html.push('<button type="button" class="primary-action" id="v25bDoOpenFlow">Open live combat flow</button>'); html.push('<button type="button" id="v25bDoOpenChains">Open Chain Assistant</button>'); }
-    else { html.push('<button type="button" id="v25bDoOpenTurnState">Open Turn / State</button>'); html.push('<button type="button" id="v25bDoCurrentStatus">Check current actor effects</button>'); }
+    else { html.push('<button type="button" id="v25bDoOpenTurnState">Open Turn / State</button>'); html.push('<button type="button" id="v25bCheckCurrentStatus">Check current actor effects</button>'); }
     actions.innerHTML=html.join(''); }
   function renderStatusSummary(){ var el=byId("v25bActorStatusSummary"); if(!el) return; var figs=figureEffectsForActor(); var effectCount=0, actionable=0; figs.forEach(function(f){ effectCount += arr(f.effects).length; actionable += actionableEffects(f.effects).length; }); if(!figs.length) el.textContent="No tracked Party/Enemy/Command figure matched the current actor. Use All status effects if needed."; else el.innerHTML=esc(actorLabel())+": <strong>"+effectCount+"</strong> tracked effect(s), <strong>"+actionable+"</strong> status/actionable effect(s)."; }
   function render(){ load(); updateChrome(); var t=turnState(); var card=currentCard(); var round=t ? (t.round || 1) : "-"; var roundEl=byId("v25bRoundText"); if(roundEl) roundEl.textContent=round; var cur=byId("v25bCurrentTurnText"); if(cur) cur.textContent=card ? (card.label || "Current turn") : "-"; var act=byId("v25bActorText"); if(act) act.textContent=actorLabel(); var phText=byId("v25bPhaseText"); if(phText) phText.textContent=(state.phase||"action").replace(/^./, function(c){return c.toUpperCase();}); var prompt=byId("v25bPhasePrompt"); if(prompt) prompt.innerHTML=promptHtml(); document.querySelectorAll("[data-v25b-phase]").forEach(function(btn){ btn.classList.toggle("active", btn.getAttribute("data-v25b-phase") === (state.phase||"action")); }); renderActions(); renderStatusSummary(); renderTokens(); decorateStatusRows(); }
@@ -22867,7 +22867,7 @@ else {
 
 <style id="v25c-enemy-ai-effect-integration-style">
   header .subtitle.v24h-subtitle-lock::after {
-    content: "V2.5C enemy AI/effect integration: status-aware enemy AI prep, Adlet shard helpers, Fragor Bulb reminders, Merk Hound terrain reminders, Itlum Rich death trigger, and immunity audits." !important;
+    content: "V2.5D scope reset: lean enemy reminders, fixed status phase routing, spawn initiative insertion, party-only initiative reset, and Courage symbols in attack math." !important;
   }
   #mobileCombatFlowPanel h2::after { content: "V2.5C Tablet live combat flow" !important; }
   #mobileCombatFlowPanel .cockpit-badge.v24h-badge-lock::after { content: "V2.5C Flow" !important; }
@@ -22905,7 +22905,7 @@ else {
 (function(){
   "use strict";
   var VERSION = "V2.5C";
-  var TITLE = "Middara Combat Helper - V2.5C Enemy AI / Effect Integration";
+  var TITLE = "Middara Combat Helper - V2.5D Scope Reset / Turn Effect Fix";
   var SUBTITLE = "V2.5C enemy AI / effect integration: status-aware enemy AI prep, Adlet shard helpers, Fragor Bulb reminders, Merk Hound terrain reminders, Itlum Rich death trigger, and immunity audits.";
   var STORE = "middara_v25c_enemy_ai_effect_integration";
   var state = { selectedId:"", search:"", terrain:{}, lastCheckAt:null, lastMessage:"Ready." };
@@ -22986,6 +22986,163 @@ else {
   function init(){ readStore(); buildPanel(); bind(); patchChrome(); patchSnapshot(); render(); setInterval(function(){ patchChrome(); render(); }, 1800); setStatus("V2.5C loaded. Enemy AI/effect integration can audit tracked enemies, manage Adlet Shards, and surface board-state reminders.", "ok"); }
   ready(init);
   window.middaraV25CEnemyAiEffectApi = { render:render, auditAll:auditAll, setAiEnemy:setAiEnemy, targetEnemy:targetEnemy, getState:function(){ readStore(); return clone(state); } };
+})();
+</script>
+
+
+
+<style id="v25d-scope-reset-courage-style">
+  header .subtitle.v24h-subtitle-lock::after {
+    content: "V2.5D scope reset: lean enemy reminders, fixed status routing, spawn initiative insertion, party-only initiative reset, and Courage symbols in attack math." !important;
+  }
+  #mobileCombatFlowPanel h2::after { content: "V2.5D Tablet live combat flow" !important; }
+  #mobileCombatFlowPanel .cockpit-badge.v24h-badge-lock::after,
+  #mobileCombatFlowPanel .cockpit-badge:not(.v24h-badge-lock)::after { content: "V2.5D Flow" !important; }
+  body.v25d-actor-not-nightingale #v24aNightingalePanel { display: none !important; }
+  body.v25d-actor-nightingale #v24aNightingalePanel { display: block; }
+  #v25bTokenActions { display: none !important; }
+  #v25bTokenSummary.v25d-token-reminder { border:1px solid rgba(148,163,184,.22); border-radius:12px; padding:9px 10px; background:rgba(2,6,23,.26); }
+  #v25cEnemyAiEffectPanel.v25d-demoted { border-color: rgba(148,163,184,.24) !important; background: linear-gradient(180deg, rgba(148,163,184,.035), rgba(255,255,255,.012)), var(--panel) !important; }
+  #v25cEnemyAiEffectPanel.v25d-demoted summary { color: var(--muted); }
+  .v25d-scope-note { border:1px solid rgba(251,191,36,.35); background:rgba(251,191,36,.07); border-radius:12px; padding:10px 11px; color:var(--muted); margin-top:10px; }
+  .v25d-courage-note { color:#bbf7d0; }
+</style>
+<script id="v25d-scope-reset-turn-effect-courage-script">
+(function(){
+  "use strict";
+  var VERSION = "V2.5D - Scope Reset / Turn Effect Fix";
+  var TURN_KEY = "middaraCombatHelperV09TurnCards";
+  var STATUS_KEY = "middaraCombatHelperV25AStatusAssistant";
+  var PHASE_KEY = "middaraCombatHelperV25BTurnPhase";
+  var FLOW_KEY = "middaraCombatHelperV22BMobileFlow";
+  var INIT_OPTIONS = {
+    rook: { label:"Rook", ownerId:"rook", type:"adventurer" },
+    remi: { label:"Remi", ownerId:"remi", type:"adventurer" },
+    nightingale: { label:"Nightingale", ownerId:"nightingale", type:"adventurer" },
+    zeke: { label:"Zeke", ownerId:"zeke", type:"adventurer" },
+    animate: { label:"Animate group", ownerId:"enemy:animate", type:"enemy" },
+    merk_hound: { label:"Merk Hound group", ownerId:"enemy:merk_hound", type:"enemy" },
+    fragor: { label:"Fragor group", ownerId:"enemy:fragor", type:"enemy" },
+    adlet_drudge: { label:"Adlet Drudge group", ownerId:"enemy:adlet_drudge", type:"enemy" },
+    earth_loa_itlum_rich: { label:"Earth Loa - Itlum Rich", ownerId:"enemy:earth_loa_itlum_rich", type:"enemy" },
+    custom: { label:"Custom / objective", ownerId:"custom", type:"custom" }
+  };
+  function ready(fn){ if(document.readyState === "loading") document.addEventListener("DOMContentLoaded", fn); else setTimeout(fn,0); }
+  function byId(id){ return document.getElementById(id); }
+  function arr(v){ return Array.isArray(v) ? v : []; }
+  function lower(v){ return String(v == null ? "" : v).trim().toLowerCase(); }
+  function esc(v){ return String(v == null ? "" : v).replace(/[&<>\"']/g, function(ch){ return ({"&":"&amp;","<":"&lt;",">":"&gt;","\"":"&quot;","'":"&#039;"})[ch]; }); }
+  function clone(v){ try{return JSON.parse(JSON.stringify(v));}catch(err){return v;} }
+  function fire(el, type){ if(!el) return; try{ el.dispatchEvent(new Event(type || "change", {bubbles:true})); }catch(err){ try{ var ev=document.createEvent("Event"); ev.initEvent(type || "change", true, true); el.dispatchEvent(ev); }catch(e){} } }
+  function val(id){ var el=byId(id); return el ? el.value : ""; }
+  function setStatus(msg, kind){
+    var ids=["v22bFlowStatus","v25bPhaseStatus","v24iReadinessStatus"];
+    ids.forEach(function(id){ var el=byId(id); if(el){ el.className=(kind==="warn"?"warning-box":kind==="danger"?"danger-box":"ok-box")+" note"+(id==="v22bFlowStatus"?" v22b-flow-status":""); el.textContent=msg; } });
+  }
+  function turn(){ try{ return window.middaraTurnApi && middaraTurnApi.getState ? middaraTurnApi.getState() : null; }catch(err){ return null; } }
+  function saveTurn(){ try{ localStorage.setItem(TURN_KEY, JSON.stringify(turn())); }catch(err){} try{ if(window.middaraTurnApi && middaraTurnApi.render) middaraTurnApi.render(); }catch(err){} }
+  function currentTurnCard(){ var t=turn(); if(!t || !arr(t.initiativeCards).length) return null; var idx=Math.max(0, Math.min(arr(t.initiativeCards).length-1, Number(t.activeIndex||0))); return t.initiativeCards[idx] || null; }
+  function currentInitiativeLabel(){ var c=currentTurnCard(); return c ? (c.label || c.name || c.id || "") : ""; }
+  function makeInitCard(source, label, ownerId, type){ return { id:"init_"+Date.now()+"_"+Math.floor(Math.random()*1000000), source:source, label:label, ownerId:ownerId, type:type }; }
+  function insertInitiativeAfterCurrent(card){ var t=turn(); if(!t || !card) return false; if(!Array.isArray(t.initiativeCards)) t.initiativeCards=[]; if(!Array.isArray(t.history)) t.history=[]; try{ t.history.push(JSON.stringify({ round:t.round, activeIndex:t.activeIndex, initiativeCards:clone(t.initiativeCards), cards:clone(t.cards), message:t.message, statusKind:t.statusKind })); if(t.history.length>40) t.history.shift(); }catch(err){}
+    var idx = (t.activeIndex == null || t.activeIndex < 0 || t.activeIndex >= t.initiativeCards.length) ? t.initiativeCards.length-1 : t.activeIndex;
+    var insertAt = Math.max(0, Math.min(t.initiativeCards.length, idx + 1));
+    t.initiativeCards.splice(insertAt, 0, card);
+    t.message = "Added " + (card.label || "initiative card") + " after the current turn.";
+    t.statusKind = "ok";
+    saveTurn();
+    return true;
+  }
+  function resetInitiativePartyOnly(){ var t=turn(); if(!t) return false; if(!Array.isArray(t.history)) t.history=[]; try{ t.history.push(JSON.stringify({ round:t.round, activeIndex:t.activeIndex, initiativeCards:clone(t.initiativeCards), cards:clone(t.cards), message:t.message, statusKind:t.statusKind })); if(t.history.length>40) t.history.shift(); }catch(err){}
+    t.round=1; t.activeIndex=0; t.initiativeCards=[
+      makeInitCard("rook","Rook","rook","adventurer"),
+      makeInitCard("remi","Remi","remi","adventurer"),
+      makeInitCard("nightingale","Nightingale","nightingale","adventurer"),
+      makeInitCard("zeke","Zeke","zeke","adventurer")
+    ];
+    t.message="Initiative reset to the four adventurers only. Add encounter enemies/spawns separately."; t.statusKind="ok"; saveTurn(); return true;
+  }
+  function addInitiativeFromControls(){ var sel=byId("initiativeAddType"), labelInput=byId("initiativeAddLabel"); if(!sel) return false; var src=sel.value || "custom"; var opt=INIT_OPTIONS[src] || { label:sel.options && sel.selectedIndex>=0 ? sel.options[sel.selectedIndex].textContent : src, ownerId: src==="custom" ? "custom" : "enemy:"+src, type: src==="custom" ? "custom" : "enemy" };
+    var label=(labelInput && labelInput.value) ? labelInput.value : opt.label;
+    return insertInitiativeAfterCurrent(makeInitCard(src, label, opt.ownerId, opt.type));
+  }
+  function presetFromEnemy(enemy){ if(!enemy) return ""; return String(enemy.presetId || enemy.typeId || enemy.id || enemy.name || "").toLowerCase().replace(/[^a-z0-9]+/g,"_").replace(/^_|_$/g,""); }
+  function enemyDisplayName(preset){ var map={ animate:"Animate group", merk_hound:"Merk Hound group", fragor:"Fragor group", adlet_drudge:"Adlet Drudge group", earth_loa_itlum_rich:"Earth Loa - Itlum Rich"}; return map[preset] || (preset ? preset.replace(/_/g," ").replace(/\b\w/g,function(c){return c.toUpperCase();}) : "Enemy group"); }
+  function ensureEnemyInitiative(enemy){ var preset=presetFromEnemy(enemy); if(!preset) return false; var owner="enemy:"+preset; var t=turn(); if(!t) return false; if(arr(t.initiativeCards).some(function(c){ return c.ownerId===owner || c.source===preset; })) return false; var opt=INIT_OPTIONS[preset] || {label:enemyDisplayName(preset), ownerId:owner, type:"enemy"}; return insertInitiativeAfterCurrent(makeInitCard(preset, opt.label, opt.ownerId, opt.type)); }
+  function trackedEnemies(){ try{ return window.trackerState && Array.isArray(trackerState.enemies) ? trackerState.enemies : []; }catch(err){ return []; } }
+  function ensureLastEnemyInitiative(){ var list=trackedEnemies(); if(!list.length) return; var e=list[list.length-1]; if(ensureEnemyInitiative(e)) setStatus("Added " + enemyDisplayName(presetFromEnemy(e)) + " initiative after the current turn.", "ok"); }
+  function patchInitiativeButtons(){
+    document.addEventListener("click", function(ev){ var b=ev.target && ev.target.closest ? ev.target.closest("button") : null; if(!b) return; if(b.id==="initiativeResetButton"){ ev.preventDefault(); ev.stopPropagation(); ev.stopImmediatePropagation(); resetInitiativePartyOnly(); setStatus("Initiative reset to the four adventurers only.", "ok"); return; } if(b.id==="initiativeAddButton"){ ev.preventDefault(); ev.stopPropagation(); ev.stopImmediatePropagation(); addInitiativeFromControls(); setStatus("Initiative card inserted after the current turn.", "ok"); return; } }, true);
+    ["addTrackerEnemy","addCurrentTargetAsEnemy","v22fAddEnemyBtn"].forEach(function(id){ document.addEventListener("click", function(ev){ var b=ev.target && ev.target.closest ? ev.target.closest("button") : null; if(!b || b.id!==id) return; setTimeout(ensureLastEnemyInitiative, 220); setTimeout(ensureLastEnemyInitiative, 520); }, false); });
+  }
+  function normalizeEffectName(e){ return String(e && (e.name || e.label || e.effect || e) || "").trim().toLowerCase().replace(/ token$/i,""); }
+  function hasEffect(obj, name){ var n=lower(name); return arr(obj && obj.effects).some(function(e){ return normalizeEffectName(e)===n; }); }
+  function partyMembers(){ try{ return window.partyState && Array.isArray(partyState.members) ? partyState.members : []; }catch(err){ return []; } }
+  function commandCombatants(){ try{ var api=window.middaraCommandCombatantApi; var s=api && api.getState ? api.getState() : window.commandCombatantState; return arr(s && s.combatants); }catch(err){ return []; } }
+  function currentAttackActorObj(){ var id=val("characterSelect"); if(id.indexOf("command:")===0) id=id.slice(8); var m=partyMembers().filter(function(x){ return String(x.id)===id || lower(x.name)===lower(id); })[0]; if(m) return m; var c=commandCombatants().filter(function(x){ return String(x.id)===id || lower(x.name)===lower(id) || lower(x.label)===lower(id); })[0]; if(c) return c; return null; }
+  function courageFace(){ return { value:0, book:1, shield:1, burst:0, skull:false, color:"courage", label:"Courage effect (+1 Book, +1 Shield)", black:false, courage:true }; }
+  function attackerHasCourage(){ return hasEffect(currentAttackActorObj(), "courage"); }
+  function selectedEnemyObj(){ try{ var sid=window.trackerState && trackerState.selectedId; if(sid){ var e=trackedEnemies().filter(function(x){ return String(x.id)===String(sid); })[0]; if(e) return e; } }catch(err){} try{ var flow=JSON.parse(localStorage.getItem(FLOW_KEY)||"{}"); if(flow && flow.target && String(flow.target).indexOf("enemy:")===0){ var id=String(flow.target).slice(6); var e2=trackedEnemies().filter(function(x){ return String(x.id)===id; })[0]; if(e2) return e2; } }catch(err2){} return null; }
+  function enemyAttackerHasCourage(){ var selected=selectedEnemyObj(); var preset=lower(val("enemyAttackEnemy")); if(selected && hasEffect(selected,"courage") && (!preset || presetFromEnemy(selected)===preset || lower(selected.name).indexOf(preset.replace(/_/g," "))>=0)) return true; var matches=trackedEnemies().filter(function(e){ return presetFromEnemy(e)===preset && hasEffect(e,"courage") && Number(e.damage||0) < Number(e.hp||999999); }); return matches.length===1; }
+  function patchCourageMath(){
+    if(!window.__middaraV25DCourageRollPatch && typeof window.getRoll === "function"){
+      window.__middaraV25DCourageRollPatch=true; var oldGetRoll=window.getRoll;
+      window.getRoll=function(profile){ var roll=oldGetRoll.apply(this, arguments); try{ if(attackerHasCourage() && roll && Array.isArray(roll.faces) && !roll.faces.some(function(f){ return f && f.courage; })){ roll.faces.push(courageFace()); roll.warnings = arr(roll.warnings); roll.warnings.push("Courage: +1 Book and +1 Shield added to this Attack's symbol pool."); } }catch(err){} return roll; };
+    }
+    if(!window.__middaraV25DCourageProbabilityPatch && typeof window.evaluateAttackOutcome === "function"){
+      window.__middaraV25DCourageProbabilityPatch=true; var oldEval=window.evaluateAttackOutcome;
+      window.evaluateAttackOutcome=function(character, profile, faces, hasBlack, reserves){ try{ if(attackerHasCourage() && Array.isArray(faces) && !faces.some(function(f){ return f && f.courage; })){ faces=faces.concat([courageFace()]); } }catch(err){} return oldEval.call(this, character, profile, faces, hasBlack, reserves); };
+    }
+    if(!window.__middaraV25DEnemyCourageRollPatch && typeof window.getEnemyAttackRoll === "function"){
+      window.__middaraV25DEnemyCourageRollPatch=true; var oldEnemyRoll=window.getEnemyAttackRoll;
+      window.getEnemyAttackRoll=function(enemy){ var roll=oldEnemyRoll.apply(this, arguments); try{ if(enemyAttackerHasCourage() && roll && Array.isArray(roll.faces) && !roll.faces.some(function(f){ return f && f.courage; })){ roll.faces.push(courageFace()); roll.warnings=arr(roll.warnings); roll.warnings.push("Courage: +1 Book and +1 Shield added to the enemy Attack symbol pool."); } }catch(err){} return roll; };
+    }
+  }
+  function ensureEffectDefinitions(){ try{ if(!window.DATA) return; if(!DATA.effectDefinitions) DATA.effectDefinitions={}; var defs=DATA.effectDefinitions;
+      defs.courage = Object.assign({ id:"courage", name:"Courage", label:"Courage", category:"positive", tokenClass:"effect" }, defs.courage || {});
+      defs.courage.modifiers = Object.assign({}, defs.courage.modifiers || {}, { symbolPool:{ book:1, shield:1 }, discardOnMissAttack:true });
+      defs.courage.statusPhase = null;
+      defs.courage.automationKeys = Array.from(new Set([].concat(defs.courage.automationKeys || [], ["attackSymbolMod","discardOnMiss"])));
+      defs.courage.rules = defs.courage.rules && defs.courage.rules.length ? defs.courage.rules : ["When making an Attack, gain +1 Shield and +1 Book.", "Discard this Effect if you miss an Attack."];
+      defs.haste = Object.assign({ id:"haste", name:"Haste", label:"Haste", category:"positive", tokenClass:"effect" }, defs.haste || {}, { timing:"Status", statusPhase:{ spGain:1 } });
+      defs.condemn = Object.assign({ id:"condemn", name:"Condemn", label:"Condemn", category:"negative", tokenClass:"effect" }, defs.condemn || {}, { timing:"Status", statusPhase:{ die:"black", skullDefeats:true } });
+      defs.poison = Object.assign({ id:"poison", name:"Poison", label:"Poison", category:"negative", tokenClass:"effect" }, defs.poison || {}, { timing:"Status", statusPhase:{ die:"purple", damageType:"irreducible" } });
+    }catch(err){} }
+  function actorOptionLabel(){ var sel=byId("v22bActorSelect"); if(sel && sel.selectedIndex>=0){ var txt=sel.options[sel.selectedIndex].textContent || ""; if(txt) return txt.replace(/\s*\([^)]*\)\s*$/g,"").trim(); } var id=val("characterSelect"); var m=partyMembers().filter(function(x){ return x.id===id; })[0]; if(m) return m.name || id; var c=currentTurnCard(); return c ? (c.label || "") : ""; }
+  function normalizeActorLabelForSearch(label){ label=String(label||"").trim(); if(!label) return ""; var known=["Rook","Remi","Nightingale","Zeke","Agares","Eliphie"]; for(var i=0;i<known.length;i++){ if(label.toLowerCase().indexOf(known[i].toLowerCase())>=0) return known[i]; } var parts=label.replace(/group$/i,"").trim().split(/\s+/); if(parts.length>2 && /^\d/.test(parts[parts.length-1])) parts.pop(); return parts.slice(0,3).join(" "); }
+  function setStatusAssistantFilter(currentOnly){ ensureEffectDefinitions(); var q=currentOnly ? normalizeActorLabelForSearch(actorOptionLabel() || currentInitiativeLabel()) : ""; try{ var raw=JSON.parse(localStorage.getItem(STATUS_KEY)||"{}"); raw.filter="all"; raw.search=q; localStorage.setItem(STATUS_KEY, JSON.stringify(raw)); }catch(err){}
+    var filter=byId("v25aStatusFilter"), search=byId("v25aStatusSearch"); if(filter){ filter.value="all"; fire(filter,"change"); } if(search){ search.value=q; fire(search,"input"); }
+    try{ if(window.middaraStatusAssistantV25A && middaraStatusAssistantV25A.render) middaraStatusAssistantV25A.render(); }catch(err2){}
+    var panel=byId("v25aStatusPhasePanel"); if(panel){ var d=panel.querySelector("details"); if(d) d.open=true; try{ panel.scrollIntoView({behavior:"smooth", block:"start"}); }catch(e){ panel.scrollIntoView(); } }
+    setTimeout(function(){ try{ if(window.middaraStatusAssistantV25A && middaraStatusAssistantV25A.render) middaraStatusAssistantV25A.render(); }catch(e){} }, 80);
+  }
+  function phaseStoreSet(phase){ try{ var s=JSON.parse(localStorage.getItem(PHASE_KEY)||"{}"); s.phase=phase; s.lastPhaseAt=new Date().toISOString(); localStorage.setItem(PHASE_KEY, JSON.stringify(s)); }catch(err){} }
+  function stayInPhaseAfterEndTurn(){ phaseStoreSet("start"); try{ if(window.middaraTurnPhaseStatusV25B && middaraTurnPhaseStatusV25B.setPhase) middaraTurnPhaseStatusV25B.setPhase("start"); }catch(err){} try{ if(window.v17ShowMode) v17ShowMode("play"); }catch(err2){} var p=byId("v25bTurnPhasePanel"); if(p){ setTimeout(function(){ try{ p.scrollIntoView({behavior:"smooth", block:"start"}); }catch(err3){ p.scrollIntoView(); } }, 40); } setStatus("Advanced initiative. Phase reset to Start; use Start / Status / Refresh before Action.", "ok"); }
+  function patchTurnPhaseClicks(){
+    document.addEventListener("click", function(ev){ var b=ev.target && ev.target.closest ? ev.target.closest("button") : null; if(!b) return; if(b.id==="v25bOpenCurrentStatus" || b.id==="v25bDoCurrentStatus" || b.id==="v25bCheckCurrentStatus"){ setTimeout(function(){ setStatusAssistantFilter(true); }, 30); }
+      if(b.id==="v25bOpenAllStatus" || b.id==="v25bDoAllStatus"){ setTimeout(function(){ setStatusAssistantFilter(false); }, 30); }
+      if(b.id==="v25bDoNextTurn"){ setTimeout(stayInPhaseAfterEndTurn, 90); setTimeout(stayInPhaseAfterEndTurn, 260); }
+      var phase=b.getAttribute("data-v25b-phase"); if(phase==="status"){ setTimeout(function(){ setStatusAssistantFilter(true); }, 70); }
+    }, true);
+  }
+  function renderTokenReminder(){ var summary=byId("v25bTokenSummary"); if(!summary) return; summary.classList.add("v25d-token-reminder"); var label=normalizeActorLabelForSearch(actorOptionLabel()); var actorId=lower(label); var obj=null; partyMembers().forEach(function(m){ if(lower(m.name).indexOf(actorId)>=0 || lower(m.id)===actorId) obj=m; }); if(!obj){ commandCombatants().forEach(function(c){ if(lower(c.label||c.name||c.id).indexOf(actorId)>=0) obj=c; }); }
+    var tokens=arr(obj && obj.tokens); var counts={}; tokens.forEach(function(t){ var key=String(t && (t.label||t.name||t) || "Token"); counts[key]=(counts[key]||0)+1; }); var bits=Object.keys(counts).map(function(k){ return esc(k)+" x"+counts[k]; }); summary.innerHTML = '<strong>Ability token reminders only.</strong><br>' + (obj ? esc(obj.name||obj.label||obj.id)+': '+(bits.length?bits.join(', '):'no tracked ability tokens') : 'Select a party or Command actor to see token counts.') + '<div class="tiny" style="margin-top:6px">Spend tokens in their real context: Dodge during enemy attack, Heal during a heal/support action, Vow after damage, Intervention after a roll, Summon when an Esper takes eligible damage.</div>'; }
+  function updateNightingaleVisibility(){ var label=lower(actorOptionLabel() || val("characterSelect") || currentInitiativeLabel()); var isNight=label.indexOf("nightingale")>=0 || val("characterSelect")==="nightingale"; document.body.classList.toggle("v25d-actor-nightingale", !!isNight); document.body.classList.toggle("v25d-actor-not-nightingale", !isNight); }
+  function demoteEnemyPanel(){ var p=byId("v25cEnemyAiEffectPanel"); if(!p) return; p.classList.add("v25d-demoted"); var s=p.querySelector("summary strong") || p.querySelector("summary"); if(s) s.textContent="Enemy reminders / advanced cleanup"; if(!p.querySelector(".v25d-scope-note")){ var d=p.querySelector("details"); if(d) d.insertAdjacentHTML("afterbegin", '<div class="v25d-scope-note"><strong>Scope reset:</strong> enemy quirks are reminders and cleanup aids. Normal play should use Target drawer, Enemy Attack, Enemy AI reminders, and tracker HP/effects. This panel is for odd cases, imported-state cleanup, and a few known counters.</div>'); } }
+  function updateStatusAssistantCopy(){ var panel=byId("v25aStatusPhasePanel"); if(!panel || panel.__v25dCopy) return; panel.__v25dCopy=true; var note=panel.querySelector("details > .note"); if(note) note.innerHTML='Use this during Status Phase to <strong>resolve effects already on figures</strong>. Add Effects in Party / Enemies / Command trackers; use this panel for Poison, Condemn, Haste, Paralyze cleanup, and reminders.'; }
+  function patchEarthLoaDeathDropdown(){ document.addEventListener("pointerdown", function(ev){ var t=ev.target; if(t && t.id && String(t.id).indexOf("v25cDeathDie_")===0){ ev.stopPropagation(); } }, true); document.addEventListener("click", function(ev){ var t=ev.target; if(t && t.id && String(t.id).indexOf("v25cDeathDie_")===0){ ev.stopPropagation(); } }, true); }
+  function updateChrome(){
+    document.title = "Middara Combat Helper - V2.5D Scope Reset / Turn Effect Fix";
+    var sub=document.querySelector("header .subtitle"); if(sub){ sub.classList.add("v24h-subtitle-lock"); sub.setAttribute("data-v24h-subtitle", "V2.5D scope reset: lean enemy reminders, fixed status routing, spawn initiative insertion, party-only initiative reset, and Courage symbols in attack math."); }
+    var pwa=byId("pwaVersionText"); if(pwa) pwa.textContent=VERSION; var cur=byId("currentVersionText"); if(cur) cur.textContent=VERSION;
+    var pwaSummary=document.querySelector(".v22c-pwa-panel summary"); if(pwaSummary) pwaSummary.textContent="V2.5D hosted / installable web app";
+    var dataH=document.querySelector("#v22iDataStatusPanel h3"); if(dataH) dataH.textContent="V2.5D save / update status";
+  }
+  function patchSnapshots(){ try{ if(!window.middaraDataManagerApi || window.__middaraV25DSnapshotPatch) return; window.__middaraV25DSnapshotPatch=true; var api=window.middaraDataManagerApi; var oldFull=api.exportFullSnapshot, oldApp=api.exportAppData; function add(snap){ try{ snap.version=VERSION; snap.pwaDeploymentVersion=VERSION; snap.v25dScopeReset={ enemyPanelDemoted:true, initiativeReset:"party-only", spawnInitiative:"after-current-if-missing", tokenQuickUse:"reminder-only", courageAttackSymbols:true }; }catch(err){} return snap; } if(typeof oldFull==="function") api.exportFullSnapshot=function(){ return add(oldFull.apply(this, arguments)); }; if(typeof oldApp==="function") api.exportAppData=function(){ return add(oldApp.apply(this, arguments)); }; }catch(err){} }
+  function periodic(){ ensureEffectDefinitions(); updateChrome(); updateNightingaleVisibility(); demoteEnemyPanel(); updateStatusAssistantCopy(); renderTokenReminder(); }
+  function init(){ ensureEffectDefinitions(); patchCourageMath(); patchInitiativeButtons(); patchTurnPhaseClicks(); patchEarthLoaDeathDropdown(); patchSnapshots(); periodic(); setInterval(periodic, 600); setTimeout(function(){ setStatus("V2.5D loaded: scope reset active, status routing repaired, initiative reset is party-only, spawned enemies add initiative after current turn, and Courage symbols are in attack math.", "ok"); }, 900); }
+  ready(init);
+  window.middaraV25DScopeResetApi = { ensureEffectDefinitions:ensureEffectDefinitions, setStatusAssistantFilter:setStatusAssistantFilter, resetInitiativePartyOnly:resetInitiativePartyOnly, ensureEnemyInitiative:ensureEnemyInitiative, updateNightingaleVisibility:updateNightingaleVisibility };
 })();
 </script>
 

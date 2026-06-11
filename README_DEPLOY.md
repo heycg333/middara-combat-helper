@@ -1,7 +1,5 @@
-# Middara Combat Helper - V2.5C - Enemy AI / Effect Integration
+# Middara Combat Helper - V2.5D
 
-Upload these extracted files to the root of the GitHub Pages repository. Do not upload the ZIP itself.
+Upload the extracted contents of this folder to the root of the GitHub Pages repository. Do not upload the ZIP itself.
 
-After GitHub Pages updates, open the app on the tablet, use Data -> hosted / installable web app -> Update app cache, then reload/reopen the Home Screen app.
-
-V2.5C - Enemy AI / Effect Integration
+After GitHub Pages deploys, open the hosted app and use Data -> hosted / installable web app -> Update app cache, then reload/reopen the Home Screen app.

@@ -1,1 +1,1 @@
-V2.5C - Enemy AI / Effect Integration
+V2.5D - Scope Reset / Turn Effect Fix
