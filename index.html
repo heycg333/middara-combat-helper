@@ -3,7 +3,7 @@
 <head>
   <meta charset="utf-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1" />
-  <title>Middara Combat Helper - V2.6C Stable Flow Ownership Cleanup</title>
+  <title>Middara Combat Helper - V2.6D Stable Render Owner</title>
   <style>
     :root {
       --bg: #101827;
@@ -23984,6 +23984,238 @@ else {
   }
   ready(init);
   window.middaraV26CStableFlowApi = { openNight:openNight, relocateBreakdown:relocateBreakdown, filterActorSelect:filterActorSelect, quickAttackFromStable:quickAttackFromStable };
+})();
+</script>
+
+
+
+<style id="v26dStableRenderOwnerCss">
+  /* V2.6D: stop visible churn by replacing the layered stable flow/footer with one owned view. */
+  #v26aStableFlowPanel,
+  #mobileCombatFlowPanel,
+  #v22bMobileCombatFlow,
+  #v26bAttackMirror {
+    display: none !important;
+  }
+  #v17StickyFooter {
+    display: none !important;
+  }
+  #v24eFooterMirror,
+  #v26aFooterMirror {
+    display: none !important;
+  }
+  header .subtitle {
+    font-size: 0 !important;
+    min-height: 2.45em !important;
+    line-height: 1.25 !important;
+    color: transparent !important;
+    position: relative !important;
+  }
+  header .subtitle::after {
+    content: "V2.6D stable render owner: one visible live-flow panel, one footer, no legacy text repainting. Use Data > Update app cache only after uploading a new build." !important;
+    display: block !important;
+    font-size: 1rem !important;
+    line-height: 1.25 !important;
+    color: var(--muted) !important;
+    max-width: 980px !important;
+  }
+  .v22c-pwa-panel summary {
+    font-size: 0 !important;
+  }
+  .v22c-pwa-panel summary::after {
+    content: "V2.6D hosted / installable web app" !important;
+    font-size: 1rem !important;
+    color: var(--accent2) !important;
+    font-weight: 800 !important;
+  }
+  #v22iDataStatusPanel [data-v22i-action="updateCache"],
+  #v22iDataStatusPanel [data-v22i-action="clearCache"] {
+    display: none !important;
+  }
+  #v22iDataStatusPanel .v26d-cache-note {
+    display: block !important;
+  }
+  #v26dStableFlowPanel {
+    border-color: rgba(52,211,153,.38);
+    background: linear-gradient(180deg, rgba(52,211,153,.075), rgba(255,255,255,.012)), var(--panel);
+  }
+  .v26d-head { display:flex; justify-content:space-between; gap:12px; align-items:flex-start; flex-wrap:wrap; }
+  .v26d-badge { border:1px solid rgba(52,211,153,.48); background:rgba(52,211,153,.10); color:#bbf7d0; border-radius:999px; padding:7px 10px; font-weight:900; font-size:.82rem; white-space:nowrap; }
+  .v26d-grid { display:grid; grid-template-columns:minmax(0,1fr) minmax(0,1fr); gap:12px; align-items:start; margin-top:12px; }
+  @media (max-width: 780px) { .v26d-grid { grid-template-columns:1fr; } }
+  .v26d-card { border:1px solid rgba(148,163,184,.24); border-radius:14px; padding:12px; background:rgba(15,23,42,.52); min-height: 124px; }
+  .v26d-card h3 { margin:0 0 8px; }
+  .v26d-card .note { min-height: 1.2em; }
+  .v26d-actions { display:grid; grid-template-columns:repeat(2,minmax(0,1fr)); gap:8px; }
+  @media (max-width:560px){ .v26d-actions { grid-template-columns:1fr; } }
+  .v26d-actions button { text-align:left; min-height:58px; }
+  .v26d-actions button strong { display:block; color:var(--text); }
+  .v26d-actions button span { display:block; color:var(--muted); font-size:.78rem; margin-top:3px; font-weight:500; }
+  .v26d-target-toolbar { display:flex; gap:7px; flex-wrap:wrap; margin:8px 0; }
+  .v26d-target-toolbar button { width:auto; min-width:auto; padding:7px 9px; font-size:.82rem; }
+  .v26d-target-toolbar button.active { background:linear-gradient(180deg, var(--accent2), #0ea5e9); color:#06121f; }
+  .v26d-target-list { display:grid; gap:8px; max-height:420px; overflow:auto; padding-right:3px; }
+  .v26d-target { border:1px solid rgba(148,163,184,.24); border-radius:12px; padding:9px; background:rgba(2,6,23,.28); }
+  .v26d-target.selected { border-color:rgba(56,189,248,.75); background:rgba(56,189,248,.12); }
+  .v26d-target .top { display:flex; justify-content:space-between; gap:8px; align-items:flex-start; }
+  .v26d-target .buttons { display:flex; gap:6px; flex-wrap:wrap; margin-top:8px; }
+  .v26d-target .buttons button { width:auto; min-width:auto; padding:6px 8px; font-size:.78rem; }
+  .v26d-status { margin-top:10px; min-height: 44px; }
+  .v26d-status strong { display:block; }
+  .v26d-remi-profile { margin-top:10px; }
+  #v26dFooter {
+    position: fixed;
+    left: max(10px, env(safe-area-inset-left));
+    right: max(10px, env(safe-area-inset-right));
+    bottom: max(10px, env(safe-area-inset-bottom));
+    z-index: 95;
+    max-width: 1220px;
+    margin: 0 auto;
+    border: 1px solid rgba(52,211,153,.42);
+    background: linear-gradient(180deg, rgba(30,41,59,.98), rgba(15,23,42,.985));
+    box-shadow: 0 18px 44px rgba(0,0,0,.48);
+    border-radius: 18px;
+    padding: 11px;
+    display: grid;
+    grid-template-columns: minmax(0,1fr) auto;
+    gap: 10px;
+    align-items: center;
+  }
+  #v26dFooterTitle { font-weight:900; color:var(--text); line-height:1.15; white-space:nowrap; overflow:hidden; text-overflow:ellipsis; min-height:1.15em; }
+  #v26dFooterDetail { color:var(--muted); font-size:.82rem; line-height:1.2; white-space:nowrap; overflow:hidden; text-overflow:ellipsis; min-height:1.2em; max-height:1.2em; margin-top:2px; }
+  .v26d-footer-actions { display:flex; gap:6px; flex-wrap:wrap; justify-content:flex-end; }
+  .v26d-footer-actions button { width:auto; min-width:auto; padding:7px 9px; font-size:.8rem; }
+  .v26d-footer-actions button.primary { background:linear-gradient(180deg,#22c55e,#15803d); border-color:rgba(34,197,94,.45); }
+  .v26d-footer-actions button.applied { background:rgba(52,211,153,.18); border-color:rgba(52,211,153,.55); color:#bbf7d0; }
+  body.v26d-footer-padding main { padding-bottom: 132px; }
+  @media (max-width:760px) { #v26dFooter { grid-template-columns:1fr; } .v26d-footer-actions { justify-content:flex-start; } body.v26d-footer-padding main { padding-bottom:178px; } }
+  body.v26d-night-active #v24aNightingalePanel { display: block !important; }
+  body:not(.v26d-night-active) #v24aNightingalePanel.v26d-hidden-night { display: none !important; }
+  #v24aNightingalePanel.v26d-unwrapped details > summary { display:none !important; }
+  #v24aNightingalePanel.v26d-unwrapped details:not([open]) > *:not(summary) { display:block !important; }
+  #v26cAttackBreakdownPanel { margin-top: 12px; }
+  #v26cAttackBreakdownPanel details { min-height: 54px; }
+</style>
+<script id="v26dStableRenderOwnerScript">
+(function(){
+  'use strict';
+  var VERSION='V2.6D';
+  var TITLE='Middara Combat Helper - V2.6D Stable Render Owner';
+  var STORE='middaraV26DStableState';
+  var state={actor:'',target:'',filter:'enemy',mode:'idle',status:'Stable live flow ready.',statusKind:'ok',appliedKey:'',remiProfile:'remi_gigas_melee',onslaughtRemaining:0,onslaughtTarget:''};
+  var lastFooter={title:'',detail:'',apply:''};
+  function ready(fn){ if(document.readyState==='loading') document.addEventListener('DOMContentLoaded', fn); else setTimeout(fn,0); }
+  function id(x){ return document.getElementById(x); }
+  function q(s,r){ return (r||document).querySelector(s); }
+  function qa(s,r){ return Array.prototype.slice.call((r||document).querySelectorAll(s)); }
+  function esc(v){ return String(v==null?'':v).replace(/[&<>"']/g,function(c){return {'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#039;'}[c];}); }
+  function num(v,d){ v=Number(v); return Number.isFinite(v)?v:(d||0); }
+  function lower(v){ return String(v||'').trim().toLowerCase(); }
+  function text(x){ var el=id(x); return el?String(el.textContent||el.value||'').trim():''; }
+  function val(x){ var el=id(x); return el?String(el.value||''):''; }
+  function setVal(x,v){ var el=id(x); if(!el) return; el.value=String(v==null?'':v); fire(el,'input'); fire(el,'change'); }
+  function setChecked(x,v){ var el=id(x); if(!el) return; el.checked=!!v; fire(el,'change'); }
+  function fire(elOrId,type){ var el=typeof elOrId==='string'?id(elOrId):elOrId; if(!el) return; try{ el.dispatchEvent(new Event(type||'change',{bubbles:true})); }catch(e){ try{ var ev=document.createEvent('Event'); ev.initEvent(type||'change',true,true); el.dispatchEvent(ev); }catch(_){}} }
+  function click(x){ var el=typeof x==='string'?id(x):x; if(!el) return false; try{ el.click(); return true; }catch(e){ return false; } }
+  function load(){ try{ var raw=localStorage.getItem(STORE); if(raw) Object.assign(state, JSON.parse(raw)||{}); }catch(e){} }
+  function save(){ try{ localStorage.setItem(STORE, JSON.stringify(state)); }catch(e){} }
+  function tracker(){ return (window.trackerState && Array.isArray(window.trackerState.enemies))?window.trackerState.enemies:[]; }
+  function party(){ return (window.partyState && Array.isArray(window.partyState.members))?window.partyState.members:[{id:'rook',name:'Rook'},{id:'remi',name:'Remi'},{id:'nightingale',name:'Nightingale'},{id:'zeke',name:'Zeke'}]; }
+  function commands(){ var s=null; try{ var api=window.middaraCommandCombatantApi; s=api&&api.getState?api.getState():window.commandCombatantState; }catch(e){ s=window.commandCombatantState; } return (s&&Array.isArray(s.combatants)?s.combatants:[]).filter(function(c){ return c && (c.status||'summoned')==='summoned'; }); }
+  function aliveEnemy(e){ return e && !e.defeated && num(e.damage,0) < num(e.hp,0); }
+  function enemyById(x){ return tracker().find(function(e){ return String(e.id)===String(x); }); }
+  function partyById(x){ return party().find(function(m){ return String(m.id)===String(x); }); }
+  function commandById(x){ return commands().find(function(c){ return String(c.id)===String(x); }); }
+  function currentTurnText(){ return text('turnCurrentText') || text('v25bCurrentTurnText') || ''; }
+  function initiativeText(){ return lower([text('turnCurrentText'), text('v25bCurrentTurnText'), text('initiativeCompact'), text('initiativeTable')].join(' ')); }
+  function baseName(label){ return lower(String(label||'').replace(/\s*\((Enemy|Command)\)\s*$/i,'').replace(/\s+#?\d+\s*$/g,'').replace(/\s+\d+\s*$/g,'').replace(/\s+/g,' ')); }
+  function inferEnemyPreset(e){ var p=String(e&&e.presetId||''); var n=lower((e&&(e.name||e.label))||''); if(p) return p; if(n.indexOf('adlet')>=0) return 'adlet_drudge'; if(n.indexOf('merk')>=0||n.indexOf('hound')>=0) return 'merk_hound'; if(n.indexOf('fragor')>=0) return 'fragor'; if(n.indexOf('itlum')>=0) return 'earth_loa_itlum_rich'; if(n.indexOf('animate')>=0) return 'animate'; if(n.indexOf('earth loa')>=0) return 'earth_loa'; if(n.indexOf('water loa')>=0) return 'water_loa'; return 'manual'; }
+  function actorKind(){ return (state.actor||'').split(':')[0]||''; }
+  function actorId(){ return (state.actor||'').split(':')[1]||''; }
+  function targetKind(){ return (state.target||'').split(':')[0]||''; }
+  function targetId(){ return (state.target||'').split(':')[1]||''; }
+  function actorLabel(){ var k=actorKind(), a=actorId(); if(k==='party'){ var m=partyById(a); return m?(m.name||a):cap(a); } if(k==='enemy'){ var e=enemyById(a); return e?(e.label||e.name||a):a; } if(k==='command'){ var c=commandById(a); return c?(c.label||c.name||a):a; } return 'No actor'; }
+  function targetLabel(){ var k=targetKind(), a=targetId(); if(k==='enemy'){ var e=enemyById(a); return e?(e.label||e.name||a):a; } if(k==='party'){ var m=partyById(a); return m?(m.name||a):cap(a); } if(k==='command'){ var c=commandById(a); return c?(c.label||c.name||a):a; } return 'No target'; }
+  function cap(s){ s=String(s||''); return s.charAt(0).toUpperCase()+s.slice(1); }
+  function setStatus(msg,kind){ state.status=msg; state.statusKind=kind||'ok'; save(); renderStatus(); renderResolve(); paintFooter(); }
+  function routePlay(){ try{ if(typeof window.v17ShowMode==='function') window.v17ShowMode('play'); else click(q('[data-v17-mode-button="play"]')); }catch(e){ click(q('[data-v17-mode-button="play"]')); } }
+  function scrollNow(elOrId){ var el=typeof elOrId==='string'?id(elOrId):elOrId; if(!el) return; try{ el.scrollIntoView({behavior:'auto',block:'start'}); }catch(e){ try{ el.scrollIntoView(true); }catch(_){}} }
+  function updateChrome(){ document.title=TITLE; var cur=id('currentVersionText'); if(cur) cur.textContent=VERSION; var pwa=id('pwaVersionText'); if(pwa) pwa.textContent=VERSION; var dataH=q('#v22iDataStatusPanel h3'); if(dataH) dataH.textContent='V2.6D save / update status'; var pwaSum=q('.v22c-pwa-panel summary'); if(pwaSum) pwaSum.setAttribute('data-v26d','1'); }
+  function consolidateCacheButtons(){ var panel=id('v22iDataStatusPanel'); if(panel && !q('.v26d-cache-note',panel)){ var note=document.createElement('div'); note.className='tiny v26d-cache-note'; note.style.marginTop='8px'; note.textContent='Cache controls are consolidated in the hosted / installable web app panel above. Use one Update app cache button after uploading a new build.'; panel.appendChild(note); } }
+  function renderPanel(){ if(id('v26dStableFlowPanel')) return; var ref=id('combatCockpitPanel') || q('main section'); if(!ref||!ref.parentNode) return; var sec=document.createElement('section'); sec.id='v26dStableFlowPanel'; sec.className='panel'; sec.setAttribute('data-v17-mode','play'); sec.innerHTML =
+    '<div class="v26d-head"><div><h2>V2.6D stable live flow</h2><div class="note">Owned tablet flow: Actor → Target → Action → Resolve / Apply. Legacy flow and footer repainting are hidden so text should stay calm.</div></div><div class="v26d-badge">Stable render owner</div></div>'+ 
+    '<div class="v26d-grid">'+
+      '<div class="v26d-card" id="v26dActorCard"><h3>1. Actor</h3><label for="v26dActorSelect">Current actor</label><select id="v26dActorSelect"></select><div class="btn-row" style="margin-top:8px"><button type="button" id="v26dSyncTurn">Sync from initiative</button><button type="button" id="v26dClearTransient">Clear stale UI</button></div><div class="tiny" style="margin-top:8px">Actor list is initiative-focused. Add enemies/Command actors to initiative when they should activate.</div></div>'+ 
+      '<div class="v26d-card" id="v26dTargetCard"><h3>2. Target drawer</h3><div class="v26d-target-toolbar"><button type="button" data-v26d-filter="enemy">Enemies</button><button type="button" data-v26d-filter="party">Party</button><button type="button" data-v26d-filter="command">Command</button></div><div id="v26dTargetList" class="v26d-target-list"></div></div>'+ 
+      '<div class="v26d-card" id="v26dActionCard"><h3>3. Action</h3><div id="v26dActionList" class="v26d-actions"></div><div id="v26dRemiProfileWrap" class="v26d-remi-profile hidden"><label for="v26dRemiProfile">Remi weapon / Chain Pick side</label><select id="v26dRemiProfile"><option value="remi_gigas_melee">Chain Pick melee / Gigas Grip</option><option value="remi_chain_ranged">Chain Pick ranged side</option><option value="remi_scimitar">Scimitar Swallow</option></select></div></div>'+ 
+      '<div class="v26d-card" id="v26dResolveCard"><h3>4. Resolve / Apply</h3><div id="v26dResolveText" class="note">Choose actor, target, and action.</div><div class="btn-row" style="margin-top:10px"><button type="button" id="v26dApplyBtn">No result</button><button type="button" id="v26dUndoBtn">Undo</button><button type="button" id="v26dToBreakdown">Attack breakdown</button></div><div id="v26dStatus" class="ok-box note v26d-status">Stable live flow ready.</div></div>'+ 
+    '</div>';
+    ref.parentNode.insertBefore(sec, ref);
+  }
+  function ensureFooter(){ if(id('v26dFooter')) return; var f=document.createElement('div'); f.id='v26dFooter'; f.innerHTML='<div><div id="v26dFooterTitle">Choose actor, target, and action</div><div id="v26dFooterDetail">Stable footer owned by V2.6D.</div></div><div class="v26d-footer-actions"><button type="button" id="v26dFooterApply" class="primary">No result</button><button type="button" id="v26dFooterUndo">Undo</button><button type="button" id="v26dFooterNext">End turn / next</button></div>'; document.body.appendChild(f); document.body.classList.add('v26d-footer-padding'); }
+  function unwrapNightPanel(){ var p=id('v24aNightingalePanel'); if(!p || p.classList.contains('v26d-unwrapped')) return; var d=p.querySelector('details'); if(d){ d.open=true; p.classList.add('v26d-unwrapped'); } }
+  function syncFromInitiative(){ var cur=lower(currentTurnText()); if(!cur || cur==='-') return false; var map={rook:'party:rook',remi:'party:remi',nightingale:'party:nightingale',zeke:'party:zeke'}; for(var k in map){ if(cur.indexOf(k)>=0){ setActor(map[k], false); return true; } }
+    var e=tracker().filter(aliveEnemy).find(function(row){ var b=baseName(row.label||row.name); return b && cur.indexOf(b)>=0; }); if(e){ setActor('enemy:'+e.id, false); return true; }
+    var c=commands().find(function(row){ var b=baseName(row.label||row.name); return b && cur.indexOf(b)>=0; }); if(c){ setActor('command:'+c.id, false); return true; }
+    return false;
+  }
+  function actorOptions(){ var opts=[]; var init=initiativeText(); party().forEach(function(m){ var idv=String(m.id||'').toLowerCase(); if(['rook','remi','nightingale','zeke'].indexOf(idv)>=0) opts.push({v:'party:'+idv,t:m.name||cap(idv)}); }); tracker().filter(aliveEnemy).forEach(function(e){ var b=baseName(e.label||e.name); if(b && init.indexOf(b)>=0) opts.push({v:'enemy:'+e.id,t:(e.label||e.name)+' (Enemy)'}); }); commands().forEach(function(c){ var b=baseName(c.label||c.name); if(b && init.indexOf(b)>=0) opts.push({v:'command:'+c.id,t:(c.label||c.name)+' (Command)'}); }); return opts; }
+  function renderActor(){ var sel=id('v26dActorSelect'); if(!sel) return; var opts=actorOptions(); if(!state.actor || !opts.some(function(o){return o.v===state.actor;})){ if(!syncFromInitiative()) state.actor=opts[0]?opts[0].v:'party:rook'; }
+    var html=opts.map(function(o){ return '<option value="'+esc(o.v)+'">'+esc(o.t)+'</option>'; }).join(''); if(sel.innerHTML!==html) sel.innerHTML=html; if(sel.value!==state.actor) sel.value=state.actor; var r=id('v26dRemiProfileWrap'); if(r) r.classList.toggle('hidden', state.actor!=='party:remi'); var rp=id('v26dRemiProfile'); if(rp && rp.value!==state.remiProfile) rp.value=state.remiProfile; }
+  function renderTargets(){ qa('[data-v26d-filter]').forEach(function(b){ b.classList.toggle('active', b.getAttribute('data-v26d-filter')===state.filter); }); var box=id('v26dTargetList'); if(!box) return; var rows=[];
+    if(state.filter==='enemy'){ tracker().filter(aliveEnemy).forEach(function(e){ var rem=Math.max(0,num(e.hp,0)-num(e.damage,0)); var val='enemy:'+e.id; rows.push('<div class="v26d-target '+(state.target===val?'selected':'')+'"><div class="top"><div><strong>'+esc(e.label||e.name||e.id)+'</strong><div class="tiny">HP '+rem+' / '+esc(e.hp)+' | Def '+esc(e.defense)+' | Armor '+esc(e.armor)+'</div></div><span class="state-pill '+(state.target===val?'ready':'')+'">'+(state.target===val?'SELECTED':'enemy')+'</span></div><div class="buttons"><button type="button" data-v26d-target="'+esc(val)+'">Target</button><button type="button" class="primary" data-v26d-target-attack="'+esc(val)+'">Target + Attack</button></div></div>'); }); }
+    else if(state.filter==='party'){ party().forEach(function(m){ var val='party:'+m.id; var hp=num(m.hp||m.maxHp,0), rem=Math.max(0,hp-num(m.damage,0)); rows.push('<div class="v26d-target '+(state.target===val?'selected':'')+'"><div class="top"><div><strong>'+esc(m.name||m.id)+'</strong><div class="tiny">HP '+rem+' / '+hp+' | SP '+esc(m.sp==null?'-':m.sp)+' | Effects '+esc((m.effects||[]).join(', ')||'none')+'</div></div><span class="state-pill '+(state.target===val?'ready':'')+'">'+(state.target===val?'SELECTED':'party')+'</span></div><div class="buttons"><button type="button" data-v26d-target="'+esc(val)+'">Use as target</button></div></div>'); }); }
+    else { commands().forEach(function(c){ var val='command:'+c.id; var hp=num(c.maxHp||c.hp,0), rem=Math.max(0,hp-num(c.damage,0)); rows.push('<div class="v26d-target '+(state.target===val?'selected':'')+'"><div class="top"><div><strong>'+esc(c.label||c.name||c.id)+'</strong><div class="tiny">HP '+rem+' / '+hp+' | SP '+esc(c.sp==null?'-':c.sp)+' | '+esc(c.status||'summoned')+'</div></div><span class="state-pill '+(state.target===val?'ready':'')+'">'+(state.target===val?'SELECTED':'Command')+'</span></div><div class="buttons"><button type="button" data-v26d-target="'+esc(val)+'">Use as target</button></div></div>'); }); }
+    box.innerHTML=rows.join('') || '<div class="v17-empty">No entries in this drawer.</div>'; }
+  function btn(label, sub, action, cls){ return '<button type="button" class="'+(cls||'')+'" data-v26d-action="'+esc(action)+'"><strong>'+esc(label)+'</strong><span>'+esc(sub||'')+'</span></button>'; }
+  function renderActions(){ var box=id('v26dActionList'); if(!box) return; var rows=[]; var k=actorKind(), a=actorId(); if(k==='party'){ rows.push(btn('Attack','Load attack roll tray','attack','primary')); if(a==='nightingale'){ rows.push(btn('Spell / Force','Open Nightingale spell tools','night-spell')); rows.push(btn('Summon Esper','Open Loyal Esper bridge','summon-esper')); } else { rows.push(btn('Spell / Force','Open spell resolver','spell')); } if(a==='remi'){ rows.push(btn('Whirlwind','Choose targets manually','whirlwind')); if(state.mode==='whirlwind') rows.push(btn('Next Whirlwind target','Return to target drawer','whirlwind-next','warn')); } if(a==='zeke'){ rows.push(btn('Start Onslaught','Load first Zeke attack','onslaught-start','primary')); if(state.onslaughtRemaining>0) rows.push(btn('Next Onslaught FU','Same target, fresh roll','onslaught-next','primary')); rows.push(btn('Blade Works','Load Zeke dual attack','blade-works')); } rows.push(btn('Enemy Attack','Resolve incoming enemy attack','enemy-attack')); }
+    else if(k==='enemy'){ rows.push(btn('Enemy Attack','Use this enemy as attacker','enemy-attack','primary')); rows.push(btn('Enemy AI','Open AI reminders','enemy-ai')); rows.push(btn('Enemy Spell','Open enemy spell resolver','enemy-spell')); }
+    else if(k==='command'){ rows.push(btn('Attack','Load Command attack','attack','primary')); rows.push(btn('Open Command','Detailed Command tracker','open-command')); rows.push(btn('Enemy Attack','Resolve incoming enemy attack','enemy-attack')); }
+    else rows.push('<div class="v17-empty">Choose an actor.</div>'); box.innerHTML=rows.join(''); }
+  function renderStatus(){ var el=id('v26dStatus'); if(!el) return; el.className=(state.statusKind==='warn'?'warning-box':state.statusKind==='danger'?'danger-box':'ok-box')+' note v26d-status'; el.textContent=state.status||'Stable live flow ready.'; }
+  function renderResolve(){ var el=id('v26dResolveText'); if(!el) return; var info=pending(); el.innerHTML='<strong>'+esc(info.title)+'</strong><br><span class="tiny">'+esc(info.detail)+'</span>'; var b=id('v26dApplyBtn'); if(b){ b.textContent=info.applied?'Applied ✓':(info.ready?info.apply:'No result'); b.classList.toggle('applied', !!info.applied); b.disabled=!info.ready||!!info.applied; } }
+  function render(){ updateChrome(); consolidateCacheButtons(); renderActor(); renderTargets(); renderActions(); renderStatus(); renderResolve(); paintFooter(); maybeHideNight(); }
+  function maybeHideNight(){ var p=id('v24aNightingalePanel'); if(!p) return; var active=(state.actor==='party:nightingale' && (state.mode==='night' || state.mode==='summon')); document.body.classList.toggle('v26d-night-active', active); p.classList.toggle('v26d-hidden-night', !active); }
+  function selectActorUnderlying(){ var k=actorKind(), a=actorId(); if(k==='party'){ setVal('characterSelect', a); try{ if(typeof window.syncProfiles==='function') window.syncProfiles(); }catch(e){} } else if(k==='enemy'){ var e=enemyById(a); if(e) setVal('enemyAttackEnemy', inferEnemyPreset(e)); } else if(k==='command'){ try{ var api=window.middaraCommandCombatantApi; var s=api&&api.getState?api.getState():(window.commandCombatantState||{}); s.selectedId=a; if(api&&api.importState) api.importState(s); else if(api&&api.render) api.render(); }catch(e){} } }
+  function selectTargetUnderlying(){ var k=targetKind(), a=targetId(); if(k==='enemy'){ var e=enemyById(a); if(e){ try{ if(window.trackerState){ trackerState.selectedId=a; if(typeof window.saveTrackerState==='function') saveTrackerState(); if(typeof window.renderTracker==='function') renderTracker(); } }catch(err){} setVal('targetHp',num(e.hp,0)); setVal('targetDefense',num(e.defense,0)); setVal('targetArmor',num(e.armor,0)); setVal('existingDamage',num(e.damage,0)); var st=id('spellTargetName'); if(st) st.value=e.label||e.name||a; } }
+    else if(k==='party'){ try{ if(window.partyState){ partyState.selectedId=a; if(typeof window.savePartyState==='function') savePartyState(); if(typeof window.renderParty==='function') renderParty(); } }catch(e){} setVal('enemyAttackTarget',a); }
+    else if(k==='command'){ setVal('enemyAttackTarget','command:'+a); try{ var api=window.middaraCommandCombatantApi; var s=api&&api.getState?api.getState():(window.commandCombatantState||{}); s.selectedId=a; if(api&&api.importState) api.importState(s); }catch(e){} } }
+  function setActor(v){ state.actor=v; state.appliedKey=''; save(); selectActorUnderlying(); render(); }
+  function setTarget(v){ state.target=v; state.appliedKey=''; save(); selectTargetUnderlying(); render(); }
+  function setProfile(profile){ try{ if(typeof window.syncProfiles==='function') window.syncProfiles(); }catch(e){} var sel=id('profileSelect'); if(sel){ for(var i=0;i<sel.options.length;i++){ if(sel.options[i].value===profile){ sel.value=profile; fire(sel,'change'); break; } } } try{ if(typeof window.syncProfileControls==='function') window.syncProfileControls(); }catch(e){} }
+  function defaultProfile(){ var a=actorId(); if(a==='rook') return 'rook_normal'; if(a==='nightingale') return 'nightingale_normal'; if(a==='zeke') return 'zeke_dual_short_swords'; if(a==='remi') return state.remiProfile || 'remi_gigas_melee'; return ''; }
+  function resetAttack(){ qa('.die-face').forEach(function(s){ s.selectedIndex=0; fire(s,'change'); }); ['blackFace','attackMod','physMod','magicMod','apMod','adjacentArmor','challengeSupremeSp'].forEach(function(x){ if(id(x)) setVal(x,'0'); }); ['useMasterWork','useMotV','useChallengeSupreme','useMorbidEnvy','reserveChainMeleeFU','reserveChainRangedFU','reserveCriticalDefense','reserveSvalinn','empowered','useOtherworldly','flanking'].forEach(function(x){ if(id(x)) setChecked(x,false); }); try{ if(typeof window.calculate==='function') window.calculate(); }catch(e){} }
+  function showAttack(reset){ state.mode='attack'; state.appliedKey=''; save(); selectActorUnderlying(); selectTargetUnderlying(); if(actorKind()==='party') setProfile(defaultProfile()); if(reset!==false) resetAttack(); document.body.classList.add('v22b-show-attack'); document.body.classList.remove('v22b-show-spell'); routePlay(); relocateBreakdown(); scrollNow('attackDicePanel'); setStatus('Attack roll ready. Enter dice; result and Apply update from the current roll.', 'ok'); }
+  function startAttack(){ if((actorKind()==='party'||actorKind()==='command') && targetKind()!=='enemy'){ state.filter='enemy'; setStatus('Choose an encounter enemy target first, then tap Attack or Target + Attack.', 'warn'); save(); render(); scrollNow('v26dTargetCard'); return; } if(actorKind()==='command'){ try{ var c=commandById(actorId()); var btn=q('[data-v21b-command-load="'+css(actorId())+'"], [data-v24f-load="'+css(actorId())+'"]'); if(btn) click(btn); }catch(e){} } showAttack(true); }
+  function startSpell(){ if(state.actor==='party:nightingale'){ openNight(false); return; } state.mode='spell'; state.appliedKey=''; save(); document.body.classList.add('v22b-show-spell'); document.body.classList.remove('v22b-show-attack'); routePlay(); scrollNow('spellPanel'); setStatus('Spell / Force resolver opened.', 'ok'); }
+  function openNight(bridge){ setActor('party:nightingale'); state.mode=bridge?'summon':'night'; state.appliedKey=''; save(); unwrapNightPanel(); try{ localStorage.setItem('middaraV26BNightPanelCollapsed','0'); }catch(e){} document.body.classList.add('v26d-night-active'); document.body.classList.remove('v26b-nightingale-collapsed'); var p=id('v24aNightingalePanel'); if(p){ p.classList.remove('v26d-hidden-night'); p.style.display='block'; qa('details',p).forEach(function(d){ d.open=true; }); } if(bridge){ try{ if(window.middaraV24FCommandBridgeApi&&middaraV24FCommandBridgeApi.open) middaraV24FCommandBridgeApi.open(); else if(window.middaraV24FCommandBridgeApi&&middaraV24FCommandBridgeApi.render) middaraV24FCommandBridgeApi.render(); }catch(e){} } routePlay(); setStatus(bridge?'Loyal Esper bridge opened. Choose/summon/load an Esper here.':'Nightingale spell tools opened. Choose Gore Shot, Life Grasp, Corrosive Ideal, or support options.', 'ok'); setTimeout(function(){ scrollNow(bridge?(id('v24fCommandBridgeCard')||p):p); },0); render(); }
+  function startEnemyAttack(){ state.mode='enemyAttack'; state.appliedKey=''; save(); if(actorKind()==='enemy'){ var e=enemyById(actorId()); if(e) setVal('enemyAttackEnemy',inferEnemyPreset(e)); } if(targetKind()==='party'||targetKind()==='command') selectTargetUnderlying(); else { state.filter='party'; setStatus('Choose the party/Command target for the enemy attack.', 'warn'); save(); render(); scrollNow('v26dTargetCard'); return; } routePlay(); scrollNow('enemyAttackEnemy'); setStatus('Enemy Attack resolver opened. Enter enemy dice and use the defensive tray.', 'ok'); }
+  function startOnslaught(){ setActor('party:zeke'); if(targetKind()!=='enemy'){ state.filter='enemy'; setStatus('Choose an encounter enemy target before starting Onslaught.', 'warn'); save(); render(); scrollNow('v26dTargetCard'); return; } state.onslaughtRemaining=2; state.onslaughtTarget=state.target; state.remiProfile=state.remiProfile||'remi_gigas_melee'; save(); setProfile('zeke_dual_short_swords'); showAttack(true); setStatus('Onslaught started. Resolve this attack, then use Next Onslaught FU for the same target.', 'ok'); }
+  function nextOnslaught(){ setActor('party:zeke'); if(state.onslaughtRemaining<=0){ setStatus('No Onslaught follow-up attacks remain.', 'warn'); return; } if(state.onslaughtTarget) setTarget(state.onslaughtTarget); state.onslaughtRemaining=Math.max(0,state.onslaughtRemaining-1); save(); setProfile('zeke_dual_short_swords'); showAttack(true); setStatus('Onslaught follow-up loaded. Same target preserved; dice/options reset. Remaining after this load: '+state.onslaughtRemaining+'.', 'ok'); }
+  function startWhirlwind(){ setActor('party:remi'); state.mode='whirlwind'; if(targetKind()!=='enemy'){ state.filter='enemy'; setStatus('Whirlwind started: choose the first legal target from the Target drawer.', 'warn'); save(); render(); scrollNow('v26dTargetCard'); return; } setProfile(state.remiProfile||'remi_gigas_melee'); showAttack(true); setStatus('Whirlwind attack loaded. Resolve this target, then choose the next legal target manually.', 'ok'); }
+  function nextWhirlwind(){ state.mode='whirlwind'; state.filter='enemy'; state.target=''; state.appliedKey=''; save(); render(); setStatus('Whirlwind: choose the next legal target from the Target drawer.', 'warn'); scrollNow('v26dTargetCard'); }
+  function bladeWorks(){ setActor('party:zeke'); setProfile('zeke_dual_short_swords'); try{ if(window.middaraTurnApi&&middaraTurnApi.setCardState) middaraTurnApi.setCardState('zeke_blade_works','exhausted','Zeke Blade Works exhausted.','ok'); }catch(e){} showAttack(true); setStatus('Blade Works attack loaded. Enter dice.', 'ok'); }
+  function routeAI(){ if(actorKind()==='enemy'){ var e=enemyById(actorId()); if(e){ setVal('aiActingEnemy','tracker:'+e.id); setVal('aiPreset',inferEnemyPreset(e)); } } routePlay(); scrollNow('enemyAiAssistantPanel'); setStatus('Enemy AI assistant opened. Board conditions stay manual.', 'ok'); }
+  function handleAction(a){ if(a==='attack') startAttack(); else if(a==='spell') startSpell(); else if(a==='night-spell') openNight(false); else if(a==='summon-esper') openNight(true); else if(a==='enemy-attack') startEnemyAttack(); else if(a==='enemy-ai') routeAI(); else if(a==='enemy-spell'){ state.mode='enemySpell'; routePlay(); scrollNow('enemySpellPanel'); setStatus('Enemy spell resolver opened.', 'ok'); } else if(a==='whirlwind') startWhirlwind(); else if(a==='whirlwind-next') nextWhirlwind(); else if(a==='onslaught-start') startOnslaught(); else if(a==='onslaught-next') nextOnslaught(); else if(a==='blade-works') bladeWorks(); else if(a==='open-command'){ routePlay(); scrollNow('v21bCommandPanel'); } render(); }
+  function currentKey(){ return [state.mode,state.actor,state.target,text('hitText'),text('finalDamage'),text('spellOutcome'),text('spellDamageText'),text('enemyAttackFinalDamageText')].join('|'); }
+  function pending(){ var mode=state.mode, applied=state.appliedKey&&state.appliedKey===currentKey(); if(mode==='attack'||mode==='whirlwind'){ var dmg=text('finalDamage')||'0', hit=text('hitText')||'-'; return {ready:targetKind()==='enemy', applied:applied, title:'Attack result: '+hit, detail:'Final damage '+dmg+' to '+targetLabel()+'.', apply:'Apply '+dmg+' damage to '+targetLabel()}; }
+    if(mode==='spell'||mode==='night'){ var dmg=text('spellDamageText')||text('spellDamage')||'0', out=text('spellOutcome')||'Spell result'; return {ready:targetKind()==='enemy', applied:applied, title:out, detail:'Apply current spell result to '+targetLabel()+'.', apply:dmg&&dmg!=='0'?'Apply spell ('+dmg+' dmg) to '+targetLabel():'Apply spell to '+targetLabel()}; }
+    if(mode==='summon'){ return {ready:false, applied:false, title:'Loyal Esper bridge', detail:'Use the bridge buttons to summon or load Agares / Eliphie.', apply:'No result'}; }
+    if(mode==='enemyAttack'){ var ed=text('enemyAttackFinalDamageText')||'0', er=text('enemyAttackResultText')||'-'; return {ready:targetKind()==='party'||targetKind()==='command', applied:applied, title:'Enemy attack: '+er, detail:'Final damage '+ed+' to '+targetLabel()+'.', apply:'Apply '+ed+' damage to '+targetLabel()}; }
+    return {ready:false, applied:false, title:'Choose actor, target, and action', detail:state.status||'Stable live flow ready.', apply:'No result'}; }
+  function paintFooter(){ ensureFooter(); var info=pending(); var title=info.applied?'Applied ✓':info.title; var detail=info.applied?(info.apply+' complete.'):info.detail; if(lastFooter.title!==title){ id('v26dFooterTitle').textContent=title; lastFooter.title=title; } if(lastFooter.detail!==detail){ id('v26dFooterDetail').textContent=detail; lastFooter.detail=detail; } var b=id('v26dFooterApply'); var label=info.applied?'Applied ✓':(info.ready?info.apply:'No result'); if(b){ if(lastFooter.apply!==label){ b.textContent=label; lastFooter.apply=label; } b.disabled=!info.ready||!!info.applied; b.classList.toggle('applied', !!info.applied); } }
+  function applyNow(){ var info=pending(); if(!info.ready||info.applied) return; if(state.mode==='attack'||state.mode==='whirlwind'){ click('applyToTracker'); } else if(state.mode==='spell'||state.mode==='night'){ click('applySpellToTracker'); } else if(state.mode==='enemyAttack'){ click('applyEnemyAttackToParty'); } state.appliedKey=currentKey(); save(); render(); }
+  function clearTransient(){ state.appliedKey=''; state.status='Stale UI state cleared. Game state was not changed.'; state.statusKind='ok'; save(); render(); }
+  function relocateBreakdown(){ var tray=id('attackDicePanel'), b=id('breakdownTable'), s=id('spendTable'); if(!tray||!b||!s) return; var existing=id('v26cAttackBreakdownPanel'); if(existing){ if(existing.previousElementSibling!==tray) tray.parentNode.insertBefore(existing,tray.nextSibling); return; } var old=b.closest?b.closest('section'):null; if(!old) return; var panels=qa(':scope > .panel',old); if(panels.length<2) return; var sec=document.createElement('section'); sec.id='v26cAttackBreakdownPanel'; sec.className='panel v26c-attack-breakdown-panel'; sec.setAttribute('data-v17-mode','play'); sec.innerHTML='<details open><summary>Attack result / breakdown</summary><div class="note">Actual attack breakdown moved next to the attack roll.</div><div class="grid two" id="v26cBreakdownGrid"></div><div class="btn-row" style="margin-top:10px"><button type="button" id="v26cBackToFlow">Back to stable flow</button></div></details>'; var grid=sec.querySelector('#v26cBreakdownGrid'); panels.forEach(function(p){ grid.appendChild(p); }); old.parentNode.removeChild(old); tray.parentNode.insertBefore(sec,tray.nextSibling); }
+  function css(s){ try{return CSS.escape(String(s));}catch(e){ return String(s).replace(/[^a-zA-Z0-9_-]/g,'\\$&'); } }
+  function bind(){ document.addEventListener('change',function(ev){ if(ev.target&&ev.target.id==='v26dActorSelect'){ setActor(ev.target.value); } if(ev.target&&ev.target.id==='v26dRemiProfile'){ state.remiProfile=ev.target.value; state.appliedKey=''; save(); if(state.actor==='party:remi' && (state.mode==='attack'||state.mode==='whirlwind')){ setProfile(state.remiProfile); resetAttack(); } render(); } },true);
+    document.addEventListener('click',function(ev){ var f=ev.target&&ev.target.closest?ev.target.closest('[data-v26d-filter]'):null; if(f){ ev.preventDefault(); state.filter=f.getAttribute('data-v26d-filter')||'enemy'; save(); render(); return; } var ta=ev.target&&ev.target.closest?ev.target.closest('[data-v26d-target-attack]'):null; if(ta){ ev.preventDefault(); setTarget(ta.getAttribute('data-v26d-target-attack')); startAttack(); return; } var t=ev.target&&ev.target.closest?ev.target.closest('[data-v26d-target]'):null; if(t){ ev.preventDefault(); setTarget(t.getAttribute('data-v26d-target')); return; } var a=ev.target&&ev.target.closest?ev.target.closest('[data-v26d-action]'):null; if(a){ ev.preventDefault(); handleAction(a.getAttribute('data-v26d-action')); return; } if(ev.target&&ev.target.id==='v26dSyncTurn'){ ev.preventDefault(); syncFromInitiative(); setStatus('Actor synced from current initiative.', 'ok'); } if(ev.target&&ev.target.id==='v26dClearTransient'){ ev.preventDefault(); clearTransient(); } if(ev.target&&ev.target.id==='v26dApplyBtn'){ ev.preventDefault(); applyNow(); } if(ev.target&&ev.target.id==='v26dFooterApply'){ ev.preventDefault(); applyNow(); } if(ev.target&&ev.target.id==='v26dUndoBtn'||ev.target&&ev.target.id==='v26dFooterUndo'){ ev.preventDefault(); click('undoTracker')||click('undoParty'); setStatus('Undo requested in tracker/party if available.', 'ok'); } if(ev.target&&ev.target.id==='v26dFooterNext'){ ev.preventDefault(); click('v25bDoNextTurn')||click('initiativeNextButton'); setTimeout(function(){ syncFromInitiative(); setStatus('Advanced initiative; phase should be Start if using the turn phase strip.', 'ok'); },80); } if(ev.target&&ev.target.id==='v26dToBreakdown'){ ev.preventDefault(); relocateBreakdown(); scrollNow('v26cAttackBreakdownPanel'); } if(ev.target&&ev.target.id==='v26cBackToFlow'){ ev.preventDefault(); scrollNow('v26dStableFlowPanel'); } },true);
+    document.addEventListener('input',function(ev){ if(ev.target&&ev.target.closest&&ev.target.closest('#attackDicePanel,#spellPanel,#enemySpellPanel')){ state.appliedKey=''; save(); setTimeout(render,40); } },true);
+    document.addEventListener('change',function(ev){ if(ev.target&&ev.target.closest&&ev.target.closest('#attackDicePanel,#spellPanel,#enemyAttackEnemy,#enemySpellPanel')){ state.appliedKey=''; save(); setTimeout(render,40); } },true);
+    window.addEventListener('click',function(ev){ var legacy=ev.target&&ev.target.closest?ev.target.closest('[data-v26a-action="attack"], [data-v26a-action="night-spell"], [data-v26a-action="summon-esper"], [data-v26a-action="onslaught-start"], [data-v26a-action="onslaught-next"]'):null; if(!legacy) return; ev.preventDefault(); ev.stopPropagation(); if(ev.stopImmediatePropagation) ev.stopImmediatePropagation(); handleAction(legacy.getAttribute('data-v26a-action').replace('night-spell','night-spell')); },true);
+  }
+  function init(){ load(); renderPanel(); ensureFooter(); unwrapNightPanel(); bind(); if(!state.actor) syncFromInitiative(); render(); setStatus('V2.6D stable render owner loaded. Old live-flow and sticky-footer repainting are hidden; use this panel for testing.', 'ok'); setInterval(function(){ updateChrome(); consolidateCacheButtons(); relocateBreakdown(); renderResolve(); paintFooter(); },700); }
+  ready(init);
 })();
 </script>
 
