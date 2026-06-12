@@ -3,7 +3,7 @@
 <head>
   <meta charset="utf-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1" />
-  <title>Middara Combat Helper - V2.6B Live Flow Calm Cleanup</title>
+  <title>Middara Combat Helper - V2.6C Stable Flow Ownership Cleanup</title>
   <style>
     :root {
       --bg: #101827;
@@ -23446,7 +23446,7 @@ else {
   function stabilizePanels(){ var p=byId("v25cEnemyAiEffectPanel"); if(p){ p.classList.add("v26a-demoted"); var d=p.querySelector("details"); if(d) d.open=false; var s=p.querySelector("summary"); if(s && s.textContent.indexOf("Advanced enemy")<0) s.textContent="Advanced enemy reminders / cleanup"; }
     var turn=byId("v25bTurnPhasePanel"); if(turn){ var token=turn.querySelector(".v25b-phase-grid > .soft-card:nth-child(3)"); if(token) token.setAttribute("aria-hidden","true"); }
     var old=byId("mobileCombatFlowPanel"); if(old) old.setAttribute("aria-hidden", state.legacyVisible?"false":"true"); }
-  function refreshChrome(){ document.title="Middara Combat Helper - V2.6B Live Flow Calm Cleanup"; var sub=q("header .subtitle"); if(sub) sub.setAttribute("data-v26a", "stable"); var cur=byId("currentVersionText"); if(cur) cur.textContent=VERSION; var pwa=byId("pwaVersionText"); if(pwa) pwa.textContent=VERSION; var pwaSummary=q(".v22c-pwa-panel summary"); if(pwaSummary) pwaSummary.textContent="V2.6B hosted / installable web app"; }
+  function refreshChrome(){ document.title="Middara Combat Helper - V2.6C Stable Flow Ownership Cleanup"; var sub=q("header .subtitle"); if(sub) sub.setAttribute("data-v26a", "stable"); var cur=byId("currentVersionText"); if(cur) cur.textContent=VERSION; var pwa=byId("pwaVersionText"); if(pwa) pwa.textContent=VERSION; var pwaSummary=q(".v22c-pwa-panel summary"); if(pwaSummary) pwaSummary.textContent="V2.6B hosted / installable web app"; }
   function bindGlobalRefresh(){ ["change","input"].forEach(function(evt){ document.addEventListener(evt, function(ev){ if(ev.target && (ev.target.closest("#attackDicePanel") || ev.target.closest("#spellPanel") || ev.target.id==="turnCurrentText")){ setTimeout(function(){ render(); }, 80); } }, true); }); ["initiativeNextButton","initiativePrevButton","initiativeEndRoundButton","initiativeShuffleButton"].forEach(function(id){ var el=byId(id); if(el && !el.__v26aBound){ el.__v26aBound=true; el.addEventListener("click", function(){ setTimeout(function(){ if(!(state.routeLockUntil && now()<state.routeLockUntil)){ state.manualActorUntil=0; defaultActorFromInitiative(false); } render(); }, 180); }, true); } }); }
   function init(){ load(); renderPanel(); interceptLegacyActions(); patchNightingaleCollapse(); patchSnapshots(); bindGlobalRefresh(); if(!state.actor) defaultActorFromInitiative(false); render(); stabilizePanels(); refreshChrome(); maintainContext(); setStatus("V2.6A cleanup active: stable live flow owns the table workflow; noisy legacy flow is hidden but available as fallback.", "ok"); setInterval(function(){ stabilizePanels(); refreshChrome(); maintainContext(); }, 1200); setInterval(function(){ render(); }, 3500); }
   ready(init);
@@ -23719,7 +23719,7 @@ else {
     var acts=byId("v25bTokenActions"); if(acts){ var card2=acts.closest ? acts.closest(".soft-card") : acts.parentNode; if(card2) card2.classList.add("v26b-hidden-token-card"); }
   }
   function updateChrome(){
-    document.title="Middara Combat Helper - V2.6B Live Flow Calm Cleanup";
+    document.title="Middara Combat Helper - V2.6C Stable Flow Ownership Cleanup";
     var cur=byId("currentVersionText"); if(cur) cur.textContent=VERSION;
     var pwa=byId("pwaVersionText"); if(pwa) pwa.textContent=VERSION;
     var pwaSummary=q(".v22c-pwa-panel summary"); if(pwaSummary) pwaSummary.textContent="V2.6B hosted / installable web app";
@@ -23738,6 +23738,252 @@ else {
   }
   ready(init);
   window.middaraV26BLiveFlowCalmApi = { filterActorSelect:filterActorSelect, openNightingaleStable:openNightingaleStable, clearEnemiesAndCommands:clearEnemiesAndCommands, updateAttackMirror:updateAttackMirror };
+})();
+</script>
+
+
+<style id="v26c-stable-flow-ownership-style">
+  /* V2.6C: remove the conditional all-board actor surface and stop label churn. */
+  #v26bActorFilterToggle { display: none !important; }
+  #v26aActorNote { display: none !important; }
+  #v26cActorNote { color: var(--dim); font-size: .82rem; margin-top: 6px; min-height: 1.2em; }
+  #v26bAttackMirror { display: none !important; }
+  .v26c-attack-breakdown-panel { margin-top: 12px; border-color: rgba(56,189,248,.28); }
+  .v26c-attack-breakdown-panel summary { color: var(--accent2); font-weight: 900; }
+  .v26c-result-strip { display:grid; grid-template-columns: repeat(4,minmax(0,1fr)); gap:8px; margin: 12px 0; }
+  .v26c-result-mini { border:1px solid rgba(148,163,184,.24); border-radius:12px; padding:9px 10px; background:rgba(2,6,23,.30); min-height:54px; }
+  .v26c-result-mini .label { color:var(--dim); font-size:.72rem; text-transform:uppercase; letter-spacing:.06em; }
+  .v26c-result-mini .value { font-weight:900; color:var(--text); margin-top:2px; overflow:hidden; text-overflow:ellipsis; white-space:nowrap; }
+  body.v26c-night-collapsed #v24aNightingalePanel { display: none !important; }
+  body.v26c-night-open #v24aNightingalePanel { display: block !important; }
+  body.v26c-night-open #v24aNightingalePanel details { display: block !important; }
+  #v26aStableFlowPanel .v26a-action-grid button { min-height: 58px; }
+  #v26aStableFlowPanel .v26a-action-grid button strong,
+  #v26aStableFlowPanel .v26a-action-grid button span { min-height: 1.1em; }
+  @media (max-width: 780px) { .v26c-result-strip { grid-template-columns: repeat(2,minmax(0,1fr)); } }
+</style>
+<script id="v26c-stable-flow-ownership-script">
+(function(){
+  'use strict';
+  var VERSION = 'V2.6C';
+  var STATE_KEY = 'middara_v26a_live_flow_state';
+  var SHOW_ALL_KEY = 'middara_v26b_show_all_board_actors';
+  var NIGHT_COLLAPSE_KEY = 'middara_v26b_nightingale_collapsed';
+  var lastStatus = '';
+  function ready(fn){ if(document.readyState === 'loading') document.addEventListener('DOMContentLoaded', fn); else setTimeout(fn,0); }
+  function byId(id){ return document.getElementById(id); }
+  function q(sel, root){ return (root || document).querySelector(sel); }
+  function qa(sel, root){ return Array.prototype.slice.call((root || document).querySelectorAll(sel)); }
+  function lower(v){ return String(v || '').trim().toLowerCase(); }
+  function esc(v){ return String(v == null ? '' : v).replace(/[&<>"']/g, function(ch){ return ({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#039;'})[ch]; }); }
+  function text(id){ var el=byId(id); return el ? String(el.textContent || el.value || '').trim() : ''; }
+  function val(id){ var el=byId(id); return el ? String(el.value || '') : ''; }
+  function fire(elOrId,type){ var el=typeof elOrId==='string'?byId(elOrId):elOrId; if(!el) return; try{ el.dispatchEvent(new Event(type||'change',{bubbles:true})); }catch(err){ try{ var ev=document.createEvent('Event'); ev.initEvent(type||'change', true, true); el.dispatchEvent(ev); }catch(e){} } }
+  function setVal(id,v){ var el=byId(id); if(el){ el.value=String(v == null ? '' : v); fire(el,'input'); fire(el,'change'); } }
+  function setChecked(id,v){ var el=byId(id); if(el){ el.checked=!!v; fire(el,'change'); } }
+  function setSelect(id,v){ var el=byId(id); if(!el || !el.options) return false; var s=String(v == null ? '' : v); for(var i=0;i<el.options.length;i++){ if(String(el.options[i].value)===s){ el.value=s; fire(el,'change'); return true; } } return false; }
+  function num(v,d){ v=Number(v); return isFinite(v) ? v : (d||0); }
+  function api(){ return window.middaraV26AStableFlowApi || null; }
+  function getState(){ try{ var a=api(); return a && a.getState ? a.getState().state : null; }catch(err){ return null; } }
+  function saveState(st){ try{ localStorage.setItem(STATE_KEY, JSON.stringify(st)); }catch(err){} }
+  function setStatus(msg, kind){
+    lastStatus = msg || lastStatus;
+    var box=byId('v26aStatus');
+    if(box){ box.className=(kind==='warn'?'warning-box':kind==='danger'?'danger-box':'ok-box')+' note v26a-status'; box.textContent=msg || ''; }
+    var rt=byId('v26aResolveText');
+    if(rt && msg){ rt.innerHTML='<strong>'+esc(msg)+'</strong><br><span class="tiny">Use the stable flow controls above; board legality stays manual.</span>'; }
+  }
+  function scrollTo(elOrId){ var el=typeof elOrId==='string'?byId(elOrId):elOrId; if(!el) return; try{ el.scrollIntoView({behavior:'smooth', block:'start'}); }catch(err){ try{ el.scrollIntoView(true); }catch(e){} } }
+  function routePlay(){ var b=q('[data-v17-mode-button="play"]'); if(b && typeof b.click==='function') b.click(); }
+  function enemies(){ try{ return (window.trackerState && Array.isArray(trackerState.enemies)) ? trackerState.enemies : []; }catch(err){ return []; } }
+  function findEnemy(id){ return enemies().filter(function(e){return String(e.id)===String(id);})[0] || null; }
+  function isAliveEnemy(e){ return e && !e.defeated && num(e.damage,0) < num(e.hp,0); }
+  function actorKind(st){ return String((st&&st.actor)||'').split(':')[0] || ''; }
+  function actorId(st){ return String((st&&st.actor)||'').split(':').slice(1).join(':'); }
+  function targetKind(st){ return String((st&&st.target)||'').split(':')[0] || ''; }
+  function targetId(st){ return String((st&&st.target)||'').split(':').slice(1).join(':'); }
+  function syncEnemyTarget(id){
+    var e=findEnemy(id); if(!e) return;
+    try{ if(window.trackerState){ trackerState.selectedId=id; if(typeof window.saveTrackerState==='function') saveTrackerState(); if(typeof window.renderTracker==='function') renderTracker(); } }catch(err){}
+    setVal('targetHp', num(e.hp,0)); setVal('targetDefense', num(e.defense,0)); setVal('targetArmor', num(e.armor,0)); setVal('existingDamage', num(e.damage,0));
+    var st=byId('spellTargetName'); if(st) st.value=e.label || e.name || id;
+  }
+  function defaultProfileFor(charId){ if(charId==='zeke') return 'zeke_dual_short_swords'; if(charId==='rook') return 'rook_normal'; if(charId==='nightingale') return 'nightingale_normal'; if(charId==='remi') return 'remi_gigas_melee'; return ''; }
+  function selectProfile(profileId){ try{ if(typeof window.syncProfiles==='function') window.syncProfiles(); }catch(err){} if(profileId) setSelect('profileSelect', profileId); try{ if(typeof window.syncProfileControls==='function') window.syncProfileControls(); }catch(err2){} }
+  function resetAttackDiceOptions(){
+    qa('.die-face').forEach(function(sel){ sel.selectedIndex=0; fire(sel,'change'); });
+    ['blackFace','attackMod','physMod','magicMod','apMod','adjacentArmor','challengeSupremeSp'].forEach(function(id){ if(byId(id)) setVal(id,'0'); });
+    ['useMasterWork','useMotV','useChallengeSupreme','useMorbidEnvy','reserveChainMeleeFU','reserveChainRangedFU','reserveCriticalDefense','reserveSvalinn','empowered','useOtherworldly','flanking'].forEach(function(id){ if(byId(id)) setChecked(id,false); });
+    try{ if(typeof window.calculate==='function') window.calculate(); }catch(err){}
+  }
+  function loadPartyAttack(charId, profileId, message, preserveTarget){
+    routePlay();
+    var st=getState() || {};
+    st.actor='party:'+charId;
+    st.action='attack'; st.mode='attack'; st.routeLockUntil=Date.now()+6000; st.manualActorUntil=Date.now()+600000;
+    if(preserveTarget && st.target && targetKind(st)==='enemy') syncEnemyTarget(targetId(st));
+    saveState(st);
+    try{ var a=api(); if(a && a.setActor) a.setActor('party:'+charId, true); }catch(err){}
+    setVal('characterSelect', charId);
+    selectProfile(profileId || defaultProfileFor(charId));
+    resetAttackDiceOptions();
+    document.body.classList.add('v22b-show-attack');
+    document.body.classList.remove('v22b-show-spell');
+    document.body.classList.remove('v26c-night-open');
+    hideNightingaleIfNotContext();
+    hideV26BMirror();
+    relocateBreakdown();
+    setStatus(message || 'Attack loaded. Enter dice in the attack roll tray.', 'ok');
+    try{ if(api() && api().render) api().render(); }catch(e){}
+    setTimeout(function(){ scrollTo('attackDicePanel'); }, 35);
+    setTimeout(updateBreakdownHeader, 100);
+  }
+  function quickAttackFromStable(){
+    var st=getState() || {};
+    if(actorKind(st)!=='party'){ setStatus('Choose an adventurer actor before attacking.', 'warn'); return; }
+    if(targetKind(st)!=='enemy'){ setStatus('Choose an encounter enemy target first, then tap Attack.', 'warn'); scrollTo('v26aTargetCard'); return; }
+    syncEnemyTarget(targetId(st));
+    loadPartyAttack(actorId(st), null, (actorId(st)||'Actor')+' attack loaded. Enter dice in the attack roll tray.', true);
+  }
+  function quickTargetAttack(targetValue){
+    var st=getState() || {};
+    st.target=targetValue; st.targetFilter='enemy'; saveState(st); try{ if(api() && api().setTarget) api().setTarget(targetValue, {filter:'enemy'}); }catch(err){}
+    syncEnemyTarget(String(targetValue).split(':').slice(1).join(':'));
+    quickAttackFromStable();
+  }
+  function setNightCollapsed(v){
+    try{ localStorage.setItem(NIGHT_COLLAPSE_KEY, v?'1':'0'); }catch(err){}
+    document.body.classList.toggle('v26c-night-collapsed', !!v);
+    document.body.classList.toggle('v26c-night-open', !v && (getState()||{}).actor==='party:nightingale');
+  }
+  function openNight(bridge){
+    routePlay();
+    var st=getState() || {}; st.actor='party:nightingale'; st.action=bridge?'summon':'spell'; st.mode=bridge?'support':'spell'; st.routeLockUntil=Date.now()+8000; st.manualActorUntil=Date.now()+600000; saveState(st);
+    try{ var a=api(); if(a && a.setActor) a.setActor('party:nightingale', true); }catch(err){}
+    setVal('characterSelect','nightingale');
+    try{ if(typeof window.syncProfiles==='function') window.syncProfiles(); }catch(e){}
+    document.body.classList.add('v26a-nightingale-context','v24a-actor-nightingale','v25d-actor-nightingale','v26c-night-open');
+    document.body.classList.remove('v25d-actor-not-nightingale','v26c-night-collapsed','v22b-show-attack');
+    if(!bridge) document.body.classList.add('v22b-show-spell');
+    try{ localStorage.setItem(NIGHT_COLLAPSE_KEY,'0'); }catch(e2){}
+    var p=byId('v24aNightingalePanel');
+    if(p){ p.style.display='block'; p.setAttribute('data-v17-mode','play'); var d=p.querySelector('details'); if(d) d.open=true; }
+    hideV26BMirror();
+    relocateBreakdown();
+    if(bridge){ try{ if(window.middaraV24FCommandBridgeApi && middaraV24FCommandBridgeApi.render) middaraV24FCommandBridgeApi.render(); }catch(err3){} }
+    var target=bridge ? (byId('v24fCommandBridgeCard') || p) : p;
+    setStatus(bridge ? 'Nightingale / Loyal Esper bridge opened. Choose or load a Loyal Esper here.' : 'Nightingale spell / familiar panel opened. Choose Gore Shot, Life Grasp, Corrosive Ideal, or support options there.', 'ok');
+    setTimeout(function(){ scrollTo(target); }, 50);
+  }
+  function hideNightingaleIfNotContext(){
+    var st=getState() || {}; if(st.actor==='party:nightingale') return;
+    document.body.classList.remove('v26c-night-open');
+  }
+  function hookNightCollapse(){
+    document.addEventListener('toggle', function(ev){
+      var p=byId('v24aNightingalePanel');
+      if(!p || !p.contains(ev.target) || !ev.target.matches || !ev.target.matches('details')) return;
+      if(!ev.target.open){ setNightCollapsed(true); setStatus('Nightingale panel collapsed. Use Nightingale → Spell / Force or Summon Esper to reopen it.', 'ok'); }
+    }, true);
+  }
+  function hideV26BMirror(){ var m=byId('v26bAttackMirror'); if(m) m.style.display='none'; }
+  function findBreakdownSection(){ var b=byId('breakdownTable'); return b && b.closest ? b.closest('section') : null; }
+  function relocateBreakdown(){
+    hideV26BMirror();
+    var tray=byId('attackDicePanel'); var b=byId('breakdownTable'); var s=byId('spendTable');
+    if(!tray || !b || !s) return;
+    var existing=byId('v26cAttackBreakdownPanel');
+    if(!existing){
+      var old=findBreakdownSection(); if(!old) return;
+      var panels=qa(':scope > .panel', old); if(panels.length < 2) return;
+      var sec=document.createElement('section'); sec.id='v26cAttackBreakdownPanel'; sec.className='panel v26c-attack-breakdown-panel'; sec.setAttribute('data-v17-mode','play');
+      sec.innerHTML='<details open><summary>Attack result / breakdown</summary><div class="note">This is the actual attack breakdown moved next to the attack roll. It is not a duplicate mirror.</div><div class="v26c-result-strip" id="v26cResultStrip"></div><div class="grid two" id="v26cBreakdownGrid"></div><div class="btn-row" style="margin-top:10px"><button type="button" id="v26cBackToFlow">Back to stable flow</button></div></details>';
+      var grid=sec.querySelector('#v26cBreakdownGrid'); panels.forEach(function(p){ grid.appendChild(p); });
+      old.parentNode.removeChild(old);
+      tray.parentNode.insertBefore(sec, tray.nextSibling);
+    } else if(existing.previousElementSibling !== tray){
+      tray.parentNode.insertBefore(existing, tray.nextSibling);
+    }
+    updateBreakdownHeader();
+  }
+  function updateBreakdownHeader(){
+    var strip=byId('v26cResultStrip'); if(!strip) return;
+    var rows=[['Result', text('hitText')||'-'], ['Attack', text('attackTotal')||'0'], ['Final damage', text('finalDamage')||'0'], ['Target HP after', text('remainingHp')||'0']];
+    strip.innerHTML=rows.map(function(r){return '<div class="v26c-result-mini"><div class="label">'+esc(r[0])+'</div><div class="value">'+esc(r[1])+'</div></div>';}).join('');
+  }
+  function installActorStaticNote(){
+    try{ localStorage.setItem(SHOW_ALL_KEY,'0'); }catch(err){}
+    var tog=byId('v26bActorFilterToggle'); if(tog) tog.style.display='none';
+    var card=byId('v26aActorCard'); if(card && !byId('v26cActorNote')){ var d=document.createElement('div'); d.id='v26cActorNote'; d.textContent='Actor list follows the initiative track. Use the Target drawer for enemies, allies, and Command Combatants.'; card.appendChild(d); }
+  }
+  function initiativeText(){ return lower([text('turnCurrentText'), text('v25bCurrentTurnText'), text('initiativeCompact'), text('initiativeTable')].join(' ')); }
+  function baseName(label){ return lower(String(label||'').replace(/\s*\((Enemy|Command)\)\s*$/i,'').replace(/\s+#?\d+\s*$/g,'').replace(/\s+\d+\s*$/g,'').replace(/\s+/g,' ')); }
+  function filterActorSelect(){
+    installActorStaticNote();
+    var sel=byId('v26aActorSelect'); if(!sel || !sel.options) return;
+    var init=initiativeText();
+    qa('option', sel).forEach(function(opt){
+      var v=String(opt.value||''); var allow=false;
+      if(!v || v.indexOf('party:')===0) allow=true;
+      else {
+        var label=baseName(opt.textContent||'');
+        allow=!!(label && init.indexOf(label)>=0);
+        if(v.indexOf('command:')===0 && (init.indexOf('agares')>=0 || init.indexOf('eliphie')>=0)) allow=true;
+      }
+      opt.hidden=!allow; opt.disabled=!allow;
+    });
+  }
+  function quickOnslaught(next){
+    var st=getState() || {};
+    if(targetKind(st)!=='enemy'){ setStatus('Choose an encounter enemy target before starting Onslaught.', 'warn'); scrollTo('v26aTargetCard'); return; }
+    st.actor='party:zeke'; st.action='attack'; st.mode='attack'; st.manualActorUntil=Date.now()+600000; st.routeLockUntil=Date.now()+6000; saveState(st);
+    try{ var a=api(); if(a && a.setActor) a.setActor('party:zeke', true); }catch(err){}
+    syncEnemyTarget(targetId(st));
+    loadPartyAttack('zeke','zeke_dual_short_swords', next ? 'Onslaught follow-up loaded: same target preserved; fresh attack roll ready.' : 'Onslaught started: enter dice for Zeke\'s first attack.', true);
+  }
+  function bindEarlyStableClicks(){
+    window.addEventListener('click', function(ev){
+      var t=ev.target && ev.target.closest ? ev.target.closest('[data-v26a-action], [data-v26a-target-attack], #v26cBackToFlow') : null;
+      if(!t) return;
+      var action=t.getAttribute('data-v26a-action'); var ta=t.getAttribute('data-v26a-target-attack');
+      if(t.id==='v26cBackToFlow'){ ev.preventDefault(); ev.stopPropagation(); if(ev.stopImmediatePropagation) ev.stopImmediatePropagation(); scrollTo('v26aStableFlowPanel'); return; }
+      if(ta){ ev.preventDefault(); ev.stopPropagation(); if(ev.stopImmediatePropagation) ev.stopImmediatePropagation(); quickTargetAttack(ta); return; }
+      if(action==='attack'){ ev.preventDefault(); ev.stopPropagation(); if(ev.stopImmediatePropagation) ev.stopImmediatePropagation(); quickAttackFromStable(); return; }
+      if(action==='night-spell'){ ev.preventDefault(); ev.stopPropagation(); if(ev.stopImmediatePropagation) ev.stopImmediatePropagation(); openNight(false); return; }
+      if(action==='summon-esper'){ ev.preventDefault(); ev.stopPropagation(); if(ev.stopImmediatePropagation) ev.stopImmediatePropagation(); openNight(true); return; }
+      if(action==='onslaught-start'){ ev.preventDefault(); ev.stopPropagation(); if(ev.stopImmediatePropagation) ev.stopImmediatePropagation(); quickOnslaught(false); return; }
+      if(action==='onslaught-next'){ ev.preventDefault(); ev.stopPropagation(); if(ev.stopImmediatePropagation) ev.stopImmediatePropagation(); quickOnslaught(true); return; }
+    }, true);
+  }
+  function updateChrome(){
+    document.title='Middara Combat Helper - V2.6C Stable Flow Ownership Cleanup';
+    var h=q('#v26aStableFlowPanel h2'); if(h) h.textContent='V2.6C stable live flow';
+    var sub=q('#v26aStableFlowPanel .cockpit-header .note'); if(sub) sub.textContent='Stable tablet mode: Actor follows initiative, Target drawer selects board figures, Action routes once, and breakdown lives under the roll.';
+    var cur=byId('currentVersionText'); if(cur) cur.textContent=VERSION;
+    var pwa=byId('pwaVersionText'); if(pwa) pwa.textContent=VERSION;
+    var sum=q('.v22c-pwa-panel summary'); if(sum) sum.textContent='V2.6C hosted / installable web app';
+  }
+  function bindUpdates(){
+    ['input','change'].forEach(function(evt){ document.addEventListener(evt, function(ev){ if(ev.target && (ev.target.closest('#attackDicePanel') || ev.target.closest('#v26cAttackBreakdownPanel'))){ setTimeout(updateBreakdownHeader, 60); } }, true); });
+  }
+  function patchSnapshots(){
+    try{ if(window.__middaraV26CSnapshotPatch || !window.middaraDataManagerApi) return; window.__middaraV26CSnapshotPatch=true; var apiObj=window.middaraDataManagerApi; var oldFull=apiObj.exportFullSnapshot; function add(snap){ try{ snap.version=VERSION; snap.v26cStableFlowOwnership={ actorList:'initiative-only', breakdownMoved:true, nightingaleCollapsed:document.body.classList.contains('v26c-night-collapsed') }; }catch(err){} return snap; } if(typeof oldFull==='function') apiObj.exportFullSnapshot=function(){ return add(oldFull.apply(this, arguments)); }; }catch(err){}
+  }
+  function calmLoop(){
+    try{ localStorage.setItem(SHOW_ALL_KEY,'0'); }catch(err){}
+    installActorStaticNote(); filterActorSelect(); hideV26BMirror(); relocateBreakdown(); updateBreakdownHeader(); updateChrome();
+    var st=getState() || {}; if(st.actor!=='party:nightingale' && !document.body.classList.contains('v26c-night-collapsed')) hideNightingaleIfNotContext();
+  }
+  function init(){
+    bindEarlyStableClicks(); hookNightCollapse(); bindUpdates(); patchSnapshots();
+    document.body.classList.add('v26c-active');
+    try{ localStorage.setItem(SHOW_ALL_KEY,'0'); }catch(err){}
+    calmLoop();
+    setInterval(calmLoop, 1200);
+    setStatus('V2.6C cleanup active: actor list is initiative-only, attack breakdown moved under the roll, and Nightingale routes are owned by the stable flow.', 'ok');
+  }
+  ready(init);
+  window.middaraV26CStableFlowApi = { openNight:openNight, relocateBreakdown:relocateBreakdown, filterActorSelect:filterActorSelect, quickAttackFromStable:quickAttackFromStable };
 })();
 </script>
 

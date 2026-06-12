@@ -1,9 +1,9 @@
 {
   "name": "Middara Combat Helper",
   "short_name": "Middara Helper",
-  "description": "Middara Combat Helper V2.6B - stable live flow, compact attack breakdown, and cleanup/reset tools.",
+  "description": "Middara Combat Helper V2.6C - stable live flow ownership, initiative-only actor list, and attack breakdown under the roll.",
   "id": "./?app=middara-combat-helper",
-  "start_url": "./index.html?v=2.6b",
+  "start_url": "./index.html?v=2.6c",
   "scope": "./",
   "display": "standalone",
   "display_override": [
@@ -49,5 +49,5 @@
       "purpose": "any"
     }
   ],
-  "version": "2.5.13"
+  "version": "2.6c"
 }
