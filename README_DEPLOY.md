@@ -1,7 +1,7 @@
-# Middara Combat Helper V2.6D
+# Middara Combat Helper - V2.6F Stable Surface Lock
 
-Upload the extracted contents of this folder to the root of your GitHub Pages repository.
+Upload these extracted files to the root of the GitHub Pages repository. Do not upload the ZIP itself.
 
-After GitHub Pages deploys, open the app on the tablet, use Data > hosted / installable web app > Update app cache, then reload/reopen the Home Screen app.
+After GitHub Pages deploys, open the tablet app, use Data -> Update app cache, then reload/reopen the Home Screen app.
 
-V2.6D hides older live-flow/footer repainting surfaces and adds one stable render owner for the tablet flow.
+V2.6F hides legacy repainting helper panels, replaces the Resolve / Apply tile with a stable message, stabilizes the Nightingale tools visibility, and keeps the V2.6 stable live flow as the primary tablet surface.

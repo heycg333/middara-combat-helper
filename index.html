@@ -3,7 +3,7 @@
 <head>
   <meta charset="utf-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1" />
-  <title>Middara Combat Helper - V2.6E Nightingale Route Stabilization</title>
+  <title>Middara Combat Helper - V2.6F Stable Surface Lock</title>
   <style>
     :root {
       --bg: #101827;
@@ -24373,6 +24373,193 @@ else {
   function init(){ ensurePanel(); bind(); updateChrome(); patchSnapshots(); hideOldNight(); renderPanel(); paintFooter(); setInterval(function(){ updateChrome(); hideOldNight(); renderPanel(); paintFooter(); },500); }
   ready(init);
   window.middaraV26ENightingaleApi={show:showPanel,hide:hidePanel,loadSpell:loadSpell,render:renderPanel};
+})();
+</script>
+
+
+
+<style id="v26fStableSurfaceLockStyle">
+  /* V2.6F: visible-surface lockdown. Hide legacy helper surfaces that still repaint/resize. */
+  #mobileCombatFlowPanel,
+  #v22bMobileCombatFlow,
+  #v26aStableFlowPanel,
+  #v26bAttackMirror,
+  #v24aNightingalePanel,
+  #v24fCommandBridgeCard,
+  #v24iLiveEncounterReadinessPanel,
+  #v25bTurnPhasePanel,
+  #v25cEnemyAiEffectPanel,
+  #v23hChainPolishPanel,
+  #v23kQaPanel,
+  #v23aRookDefensePanel,
+  #v23cRookDefensePanel,
+  #v24eFooterMirror,
+  #v24eResolveMirror,
+  #v24cFooterTitle,
+  #v24cFooterDetail,
+  #v23lFooterMirrorTitle,
+  #v23lFooterMirrorDetail,
+  #v26aFooterMirror,
+  #v25bTokenActions,
+  #v25bTokenSummary {
+    display: none !important;
+    visibility: hidden !important;
+    height: 0 !important;
+    min-height: 0 !important;
+    max-height: 0 !important;
+    overflow: hidden !important;
+    margin: 0 !important;
+    padding: 0 !important;
+    border-width: 0 !important;
+  }
+
+  /* Keep the old main footer hidden; V2.6E/F footer is the only visible footer. */
+  #v17StickyFooter { display:none !important; visibility:hidden !important; }
+
+  /* Lock top-page subtitle and PWA summary to stable text even if old scripts repaint textContent. */
+  header .subtitle {
+    font-size: 0 !important;
+    min-height: 2.45em !important;
+    line-height: 1.25 !important;
+    color: transparent !important;
+    position: relative !important;
+  }
+  header .subtitle::after {
+    content: "V2.6F stable surface lock: legacy repainting panels are hidden; use the stable live flow, stable Nightingale tools, and core resolver panels." !important;
+    display: block !important;
+    font-size: 1rem !important;
+    line-height: 1.25 !important;
+    color: var(--muted) !important;
+    max-width: 980px !important;
+  }
+  .v22c-pwa-panel summary { font-size:0 !important; }
+  .v22c-pwa-panel summary::after {
+    content:"V2.6F hosted / installable web app" !important;
+    font-size:1rem !important;
+    color:var(--accent2) !important;
+    font-weight:800 !important;
+  }
+
+  /* Resolve/Apply card: old text is hidden; V2.6F owns the visible status. */
+  #v26dResolveText,
+  #v26dApplyBtn { display:none !important; visibility:hidden !important; }
+  #v26fResolveStatic {
+    display:block !important;
+    min-height:88px;
+    border:1px solid rgba(52,211,153,.28);
+    background:rgba(15,23,42,.68);
+    border-radius:12px;
+    padding:10px 11px;
+    color:var(--muted);
+  }
+  #v26fResolveStatic strong { display:block; color:var(--text); margin-bottom:4px; }
+  #v26fResolveStatic .tiny { display:block; margin-top:6px; }
+
+  /* Stable flow heading/notes should not resize. */
+  #v26dStableFlowPanel .v26d-head h2 { min-height:1.35em; white-space:nowrap; overflow:hidden; text-overflow:ellipsis; }
+  #v26dStableFlowPanel .v26d-head .note { min-height:2.5em; max-height:2.5em; overflow:hidden; }
+  #v26dStatus { min-height:44px !important; }
+  #v26dActionList button, .v26d-actions button { min-height:58px !important; }
+
+  /* New Nightingale panel is shown only by the stable visible state. Old panels stay gone. */
+  body:not(.v26f-night-visible) #v26eNightingalePanel {
+    display:none !important;
+    visibility:hidden !important;
+    height:0 !important;
+    overflow:hidden !important;
+    margin:0 !important;
+    padding:0 !important;
+    border-width:0 !important;
+  }
+  body.v26f-night-visible #v26eNightingalePanel,
+  body.v26e-night-visible #v26eNightingalePanel {
+    display:block !important;
+    visibility:visible !important;
+    height:auto !important;
+    max-height:none !important;
+    overflow:visible !important;
+    margin:18px 0 0 0 !important;
+    padding:18px !important;
+    border-width:1px !important;
+  }
+
+  /* Stabilize Turn/State page by hiding the experimental turn-phase strip. Core initiative/card-state remains visible. */
+  body.v26f-stable-lock #v25bTurnPhasePanel { display:none !important; }
+</style>
+<script id="v26fStableSurfaceLockScript">
+(function(){
+  'use strict';
+  var VERSION='V2.6F';
+  var TITLE='Middara Combat Helper - V2.6F Stable Surface Lock';
+  var NIGHT_KEY='middaraV26FNightVisible';
+  function ready(fn){ if(document.readyState==='loading') document.addEventListener('DOMContentLoaded',fn); else setTimeout(fn,0); }
+  function id(x){ return document.getElementById(x); }
+  function q(s,r){ return (r||document).querySelector(s); }
+  function qa(s,r){ return Array.prototype.slice.call((r||document).querySelectorAll(s)); }
+  function txt(x){ var el=id(x); return el?String(el.textContent||el.value||'').trim():''; }
+  function val(x){ var el=id(x); return el?String(el.value||''):''; }
+  function setText(x,v){ var el=id(x); if(el && el.textContent!==String(v)) el.textContent=String(v); }
+  function setVal(x,v){ var el=id(x); if(!el) return; if(el.value!==String(v)) el.value=String(v); fire(el,'change'); }
+  function fire(elOrId,type){ var el=typeof elOrId==='string'?id(elOrId):elOrId; if(!el) return; try{ el.dispatchEvent(new Event(type||'change',{bubbles:true})); }catch(e){} }
+  function click(x){ var el=typeof x==='string'?id(x):x; if(!el) return false; try{ el.click(); return true; }catch(e){ return false; } }
+  function esc(v){ return String(v==null?'':v).replace(/[&<>"']/g,function(c){return {'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#039;'}[c];}); }
+  function stable(){ try{ return JSON.parse(localStorage.getItem('middaraV26DStableState')||'{}')||{}; }catch(e){ return {}; } }
+  function saveStable(s){ try{ localStorage.setItem('middaraV26DStableState',JSON.stringify(s||{})); }catch(e){} }
+  function tracker(){ return (window.trackerState&&Array.isArray(window.trackerState.enemies))?window.trackerState.enemies:[]; }
+  function enemyById(eid){ return tracker().filter(function(e){return String(e.id)===String(eid);})[0]||null; }
+  function targetLabel(){ var s=stable(), t=s.target||''; if(t.indexOf('enemy:')===0){ var e=enemyById(t.slice(6)); return e?(e.label||e.name||e.id):'selected enemy'; } if(t.indexOf('party:')===0){ return t.slice(6).replace(/^./,function(c){return c.toUpperCase();}); } if(t.indexOf('command:')===0){ return 'selected Esper'; } var sel=id('targetSelect'); return sel&&sel.options&&sel.selectedIndex>=0 ? String(sel.options[sel.selectedIndex].textContent||'target') : 'target'; }
+  function currentMode(){ try{ var m=localStorage.getItem('middaraV26EActiveMode')||''; if(m) return m; }catch(e){} return stable().mode||'idle'; }
+  function routePlay(){ try{ if(typeof window.v17ShowMode==='function') window.v17ShowMode('play'); else click(q('[data-v17-mode-button="play"]')); }catch(e){ click(q('[data-v17-mode-button="play"]')); } }
+  function scrollToId(x){ var el=id(x); if(!el||!el.scrollIntoView) return; try{ el.scrollIntoView({behavior:'auto',block:'start'}); }catch(e){ try{el.scrollIntoView(true);}catch(_){}} }
+  function showNight(tab){
+    var s=stable(); s.actor='party:nightingale'; s.mode=(tab==='summon'?'summon':'night'); s.routeLockUntil=Date.now()+12000; s.manualActorUntil=Date.now()+600000; saveStable(s);
+    try{ localStorage.setItem('middaraV26EActiveMode',tab==='summon'?'summon':'nightPanel'); localStorage.setItem(NIGHT_KEY,'1'); }catch(e){}
+    document.body.classList.add('v26f-night-visible','v26e-night-visible');
+    setVal('characterSelect','nightingale'); var a=id('v26dActorSelect'); if(a){ a.value='party:nightingale'; fire(a,'change'); }
+    routePlay();
+    var api=window.middaraV26ENightingaleApi; try{ if(api&&typeof api.show==='function') api.show(tab==='summon'?'summon':'spells'); }catch(e){}
+    setTimeout(function(){ document.body.classList.add('v26f-night-visible','v26e-night-visible'); scrollToId('v26eNightingalePanel'); },60);
+    setTimeout(function(){ document.body.classList.add('v26f-night-visible','v26e-night-visible'); },500);
+  }
+  function hideNight(){ try{ localStorage.setItem(NIGHT_KEY,'0'); }catch(e){} document.body.classList.remove('v26f-night-visible','v26e-night-visible'); }
+  function actorIsNight(){ var s=stable(); return s.actor==='party:nightingale'||val('v26dActorSelect')==='party:nightingale'||val('characterSelect')==='nightingale'; }
+  function lockLegacy(){
+    document.body.classList.add('v26f-stable-lock');
+    document.title=TITLE;
+    setText('currentVersionText',VERSION); setText('pwaVersionText',VERSION);
+    var dataH=q('#v22iDataStatusPanel h3'); if(dataH) dataH.textContent='V2.6F save / update status';
+    var legacyIds=['mobileCombatFlowPanel','v22bMobileCombatFlow','v26aStableFlowPanel','v26bAttackMirror','v24aNightingalePanel','v24fCommandBridgeCard','v24iLiveEncounterReadinessPanel','v25bTurnPhasePanel','v25cEnemyAiEffectPanel','v23hChainPolishPanel','v23kQaPanel','v24eFooterMirror','v24eResolveMirror','v17StickyFooter'];
+    legacyIds.forEach(function(x){ var el=id(x); if(el){ el.style.setProperty('display','none','important'); el.style.setProperty('visibility','hidden','important'); el.style.setProperty('height','0','important'); el.style.setProperty('min-height','0','important'); el.style.setProperty('max-height','0','important'); el.style.setProperty('overflow','hidden','important'); } });
+    // Hide any runtime-inserted Play panel that advertises old V2.4F helper surfaces, except the stable Nightingale tools.
+    qa('section[data-v17-mode="play"], section.panel').forEach(function(sec){ if(sec.id==='v26dStableFlowPanel'||sec.id==='v26eNightingalePanel'||sec.id==='combatCockpitPanel'||sec.id==='v26cAttackBreakdownPanel') return; var raw=(sec.textContent||'').slice(0,220); if(/^v24/i.test(sec.id||'') || raw.indexOf('V2.4F')>=0 || raw.indexOf('V2.5C enemy AI')>=0 || raw.indexOf('Ability token quick use')>=0){ sec.style.setProperty('display','none','important'); sec.style.setProperty('visibility','hidden','important'); sec.style.setProperty('height','0','important'); sec.style.setProperty('overflow','hidden','important'); } });
+  }
+  function ensureResolve(){
+    var card=id('v26dResolveCard'); if(!card) return;
+    if(!id('v26fResolveStatic')){ var div=document.createElement('div'); div.id='v26fResolveStatic'; card.insertBefore(div, card.firstChild); }
+    var mode=currentMode(), title='Ready for action', detail='Use Actor → Target → Action. Results and Apply live in the stable footer and resolver panels.';
+    if(mode==='attack'){ title='Attack result'; detail='After entering dice, review Attack result / breakdown below the Attack roll, then use the stable footer Apply button.'; }
+    else if(mode==='spell'){ title='Spell result'; detail='Resolve the spell in the Spell / Force resolver. Use the stable footer Apply button when ready.'; }
+    else if(mode==='enemyAttack'){ title='Enemy attack result'; detail='Resolve enemy dice and defensive reactions in Enemy Attack, then use the stable footer Apply button.'; }
+    else if(mode==='nightPanel'){ title='Nightingale spell tools'; detail='Use the stable Nightingale tools panel for Gore Shot, Life Grasp, Trophy, Blood Toll, The Infection, Ring, and Yuxa.'; }
+    else if(mode==='summon'){ title='Nightingale Loyal Esper bridge'; detail='Use the stable Nightingale tools panel to summon or load Agares / Eliphie. Placement and SOI remain manual.'; }
+    var d=id('v26fResolveStatic'); if(d){ var next='<strong>'+esc(title)+'</strong><span>'+esc(detail)+'</span><span class="tiny">Visible status is owned by V2.6F to prevent old resolver text from flickering.</span>'; if(d.innerHTML!==next) d.innerHTML=next; }
+  }
+  function bind(){
+    // Bubble-level handler is enough now because V2.6E already handles capture. This keeps Nightingale visibly open even after old routes fire.
+    document.addEventListener('click',function(ev){
+      var a=ev.target&&ev.target.closest?ev.target.closest('[data-v26d-action]'):null;
+      if(a){ var action=a.getAttribute('data-v26d-action')||''; if(action==='night-spell'){ setTimeout(function(){ showNight('spells'); },0); } if(action==='summon-esper'){ setTimeout(function(){ showNight('summon'); },0); } if(action==='attack'||action==='quickAttack'||action==='onslaught-start'||action==='onslaught-next'){ try{ localStorage.setItem('middaraV26EActiveMode','attack'); }catch(e){} } if(action==='enemy-attack'){ try{ localStorage.setItem('middaraV26EActiveMode','enemyAttack'); }catch(e){} } }
+      if(ev.target&&ev.target.closest&&ev.target.closest('[data-v26e-action="close"]')){ setTimeout(hideNight,30); }
+      if(ev.target&&ev.target.closest&&ev.target.closest('[data-v26e-spell]')){ setTimeout(function(){ try{ localStorage.setItem('middaraV26EActiveMode','spell'); }catch(e){} ensureResolve(); },80); }
+    },false);
+    document.addEventListener('change',function(ev){ if(ev.target&&ev.target.id==='v26dActorSelect'){ if(ev.target.value!=='party:nightingale') hideNight(); } },true);
+  }
+  var scheduled=false;
+  function calm(){ scheduled=false; lockLegacy(); ensureResolve(); if(actorIsNight()){ try{ if(localStorage.getItem(NIGHT_KEY)==='1') document.body.classList.add('v26f-night-visible'); }catch(e){} } else { hideNight(); } }
+  function schedule(){ if(scheduled) return; scheduled=true; requestAnimationFrame(calm); }
+  function init(){ bind(); calm(); setInterval(calm,900); try{ new MutationObserver(schedule).observe(document.body,{childList:true,subtree:true,characterData:true,attributes:true,attributeFilter:['style','class','open']}); }catch(e){} }
+  ready(init);
+  window.middaraV26FStableLockApi={calm:calm,showNight:showNight,hideNight:hideNight};
 })();
 </script>
 

@@ -1,7 +1,7 @@
 {
   "name": "Middara Combat Helper",
   "short_name": "Middara Helper",
-  "description": "V2.6D Stable Render Owner - tablet-first Middara combat helper.",
+  "description": "V2.6F Stable Surface Lock - tablet-first Middara combat helper with legacy repaint panels hidden.",
   "start_url": "./index.html",
   "scope": "./",
   "display": "standalone",
