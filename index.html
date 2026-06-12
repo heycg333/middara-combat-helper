@@ -3,7 +3,7 @@
 <head>
   <meta charset="utf-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1" />
-  <title>Middara Combat Helper - V2.6A Live Flow Stabilization</title>
+  <title>Middara Combat Helper - V2.6B Live Flow Calm Cleanup</title>
   <style>
     :root {
       --bg: #101827;
@@ -22993,7 +22993,7 @@ else {
 
 <style id="v25d-scope-reset-courage-style">
   header .subtitle.v24h-subtitle-lock::after {
-    content: "V2.6A live-flow stabilization: one calm tablet flow, route locks for manual actions, hidden noisy legacy panels, stable labels, and no generic Ability-token quick-use tile." !important;
+    content: "V2.6B live-flow calm cleanup: stable actor routing, quieter panels, initiative-focused actors, compact attack breakdown, and cleaner reset tools." !important;
   }
   #mobileCombatFlowPanel h2::after { content: "V2.5D Tablet live combat flow" !important; }
   #mobileCombatFlowPanel .cockpit-badge.v24h-badge-lock::after,
@@ -23133,7 +23133,7 @@ else {
   function patchEarthLoaDeathDropdown(){ document.addEventListener("pointerdown", function(ev){ var t=ev.target; if(t && t.id && String(t.id).indexOf("v25cDeathDie_")===0){ ev.stopPropagation(); } }, true); document.addEventListener("click", function(ev){ var t=ev.target; if(t && t.id && String(t.id).indexOf("v25cDeathDie_")===0){ ev.stopPropagation(); } }, true); }
   function updateChrome(){
     document.title = "Middara Combat Helper - V2.5D Scope Reset / Turn Effect Fix";
-    var sub=document.querySelector("header .subtitle"); if(sub){ sub.classList.add("v24h-subtitle-lock"); sub.setAttribute("data-v24h-subtitle", "V2.6A live-flow stabilization: one calm tablet flow, route locks for manual actions, hidden noisy legacy panels, stable labels, and no generic Ability-token quick-use tile."); }
+    var sub=document.querySelector("header .subtitle"); if(sub){ sub.classList.add("v24h-subtitle-lock"); sub.setAttribute("data-v24h-subtitle", "V2.6B live-flow calm cleanup: stable actor routing, quieter panels, initiative-focused actors, compact attack breakdown, and cleaner reset tools."); }
     var pwa=byId("pwaVersionText"); if(pwa) pwa.textContent=VERSION; var cur=byId("currentVersionText"); if(cur) cur.textContent=VERSION;
     var pwaSummary=document.querySelector(".v22c-pwa-panel summary"); if(pwaSummary) pwaSummary.textContent="V2.5D hosted / installable web app";
     var dataH=document.querySelector("#v22iDataStatusPanel h3"); if(dataH) dataH.textContent="V2.5D save / update status";
@@ -23157,7 +23157,7 @@ else {
     overflow: hidden !important;
   }
   header .subtitle::after {
-    content: "V2.6A live-flow stabilization: stable tablet flow, manual actor route locks, simplified panels, and quieter turn/status helpers.";
+    content: "V2.6B live-flow calm cleanup: stable actor routing, quieter panels, initiative-focused actors, compact attack breakdown, and cleaner reset tools.";
     position: absolute;
     left: 0;
     top: 0;
@@ -23446,11 +23446,298 @@ else {
   function stabilizePanels(){ var p=byId("v25cEnemyAiEffectPanel"); if(p){ p.classList.add("v26a-demoted"); var d=p.querySelector("details"); if(d) d.open=false; var s=p.querySelector("summary"); if(s && s.textContent.indexOf("Advanced enemy")<0) s.textContent="Advanced enemy reminders / cleanup"; }
     var turn=byId("v25bTurnPhasePanel"); if(turn){ var token=turn.querySelector(".v25b-phase-grid > .soft-card:nth-child(3)"); if(token) token.setAttribute("aria-hidden","true"); }
     var old=byId("mobileCombatFlowPanel"); if(old) old.setAttribute("aria-hidden", state.legacyVisible?"false":"true"); }
-  function refreshChrome(){ document.title="Middara Combat Helper - V2.6A Live Flow Stabilization"; var sub=q("header .subtitle"); if(sub) sub.setAttribute("data-v26a", "stable"); var cur=byId("currentVersionText"); if(cur) cur.textContent=VERSION; var pwa=byId("pwaVersionText"); if(pwa) pwa.textContent=VERSION; var pwaSummary=q(".v22c-pwa-panel summary"); if(pwaSummary) pwaSummary.textContent="V2.6A hosted / installable web app"; }
+  function refreshChrome(){ document.title="Middara Combat Helper - V2.6B Live Flow Calm Cleanup"; var sub=q("header .subtitle"); if(sub) sub.setAttribute("data-v26a", "stable"); var cur=byId("currentVersionText"); if(cur) cur.textContent=VERSION; var pwa=byId("pwaVersionText"); if(pwa) pwa.textContent=VERSION; var pwaSummary=q(".v22c-pwa-panel summary"); if(pwaSummary) pwaSummary.textContent="V2.6B hosted / installable web app"; }
   function bindGlobalRefresh(){ ["change","input"].forEach(function(evt){ document.addEventListener(evt, function(ev){ if(ev.target && (ev.target.closest("#attackDicePanel") || ev.target.closest("#spellPanel") || ev.target.id==="turnCurrentText")){ setTimeout(function(){ render(); }, 80); } }, true); }); ["initiativeNextButton","initiativePrevButton","initiativeEndRoundButton","initiativeShuffleButton"].forEach(function(id){ var el=byId(id); if(el && !el.__v26aBound){ el.__v26aBound=true; el.addEventListener("click", function(){ setTimeout(function(){ if(!(state.routeLockUntil && now()<state.routeLockUntil)){ state.manualActorUntil=0; defaultActorFromInitiative(false); } render(); }, 180); }, true); } }); }
   function init(){ load(); renderPanel(); interceptLegacyActions(); patchNightingaleCollapse(); patchSnapshots(); bindGlobalRefresh(); if(!state.actor) defaultActorFromInitiative(false); render(); stabilizePanels(); refreshChrome(); maintainContext(); setStatus("V2.6A cleanup active: stable live flow owns the table workflow; noisy legacy flow is hidden but available as fallback.", "ok"); setInterval(function(){ stabilizePanels(); refreshChrome(); maintainContext(); }, 1200); setInterval(function(){ render(); }, 3500); }
   ready(init);
   window.middaraV26AStableFlowApi = { getState:function(){return {state:state, onslaught:onslaught};}, render:render, setActor:setActor, setTarget:setTarget, startOnslaught:startOnslaught, nextOnslaught:nextOnslaught, openNightingalePanel:openNightingalePanel };
+})();
+</script>
+
+
+
+<style id="v26b-live-flow-calm-cleanup-style">
+  header .subtitle::after {
+    content: "";
+  }
+  body.v26b-nightingale-collapsed #v24aNightingalePanel {
+    display: none !important;
+  }
+  #mobileCombatFlowPanel[aria-hidden="true"] { display:none !important; }
+  .v26b-hidden-token-card { display:none !important; }
+  #v26aStableFlowPanel .v26a-action-grid button { min-height: 70px; }
+  #v26aStableFlowPanel .v26a-action-grid button strong { min-height: 1.25em; }
+  #v26aStableFlowPanel .v26a-action-grid button span { min-height: 2.25em; }
+  #v26bAttackMirror {
+    border-color: rgba(163,230,53,.38);
+    background: linear-gradient(180deg, rgba(163,230,53,.07), rgba(255,255,255,.012)), var(--panel);
+  }
+  #v26bAttackMirror .v26b-metrics {
+    display:grid;
+    grid-template-columns: repeat(4, minmax(0,1fr));
+    gap:10px;
+  }
+  #v26bAttackMirror .v26b-mini-metric {
+    border:1px solid rgba(148,163,184,.22);
+    border-radius:13px;
+    padding:10px;
+    background:rgba(2,6,23,.30);
+  }
+  #v26bAttackMirror .v26b-mini-metric .label {
+    color:var(--dim);
+    font-size:.72rem;
+    text-transform:uppercase;
+    letter-spacing:.06em;
+  }
+  #v26bAttackMirror .v26b-mini-metric .value {
+    color:var(--text);
+    font-weight:900;
+    font-size:1.25rem;
+    margin-top:3px;
+  }
+  #v26bAttackMirror details { margin-top: 10px; }
+  #v26bAttackMirror .v26b-breakdown-grid {
+    display:grid;
+    grid-template-columns: minmax(0,1fr) minmax(0,1fr);
+    gap:12px;
+    margin-top:10px;
+  }
+  #v26bAttackMirror .v26b-table-wrap { overflow-x:auto; -webkit-overflow-scrolling:touch; }
+  #v26bAttackMirror table { min-width: 520px; }
+  @media (max-width: 780px) {
+    #v26bAttackMirror .v26b-metrics { grid-template-columns: repeat(2, minmax(0,1fr)); }
+    #v26bAttackMirror .v26b-breakdown-grid { grid-template-columns: 1fr; }
+  }
+  .v26b-tool-btn { border-color: rgba(163,230,53,.35) !important; }
+</style>
+<script id="v26b-live-flow-calm-cleanup-script">
+(function(){
+  "use strict";
+  var VERSION = "V2.6B";
+  var COLLAPSE_KEY = "middara_v26b_nightingale_collapsed";
+  var SHOW_ALL_KEY = "middara_v26b_show_all_board_actors";
+  var lastMirrorHtml = "";
+  function ready(fn){ if(document.readyState === "loading") document.addEventListener("DOMContentLoaded", fn); else setTimeout(fn,0); }
+  function byId(id){ return document.getElementById(id); }
+  function q(sel, root){ return (root || document).querySelector(sel); }
+  function qa(sel, root){ return Array.prototype.slice.call((root || document).querySelectorAll(sel)); }
+  function lower(v){ return String(v || "").trim().toLowerCase(); }
+  function esc(v){ return String(v == null ? "" : v).replace(/[&<>\"']/g, function(ch){ return ({"&":"&amp;","<":"&lt;",">":"&gt;","\"":"&quot;","'":"&#039;"})[ch]; }); }
+  function text(id){ var el=byId(id); return el ? String(el.textContent || el.value || "").trim() : ""; }
+  function val(id){ var el=byId(id); return el ? String(el.value || "") : ""; }
+  function fire(elOrId,type){ var el=typeof elOrId==="string"?byId(elOrId):elOrId; if(!el) return; try{ el.dispatchEvent(new Event(type||"change", {bubbles:true})); }catch(err){ try{ var ev=document.createEvent("Event"); ev.initEvent(type||"change", true, true); el.dispatchEvent(ev); }catch(e){} } }
+  function setVal(id,v){ var el=byId(id); if(el){ el.value=String(v == null ? "" : v); fire(el,"input"); fire(el,"change"); } }
+  function click(id){ var el=typeof id==="string"?byId(id):id; if(el && typeof el.click==="function"){ try{ el.click(); return true; }catch(err){} } return false; }
+  function api(){ return window.middaraV26AStableFlowApi || null; }
+  function apiState(){ try{ var a=api(); return a && a.getState ? a.getState() : {}; }catch(err){ return {}; } }
+  function state(){ return (apiState().state) || {}; }
+  function showAllActors(){ try{return localStorage.getItem(SHOW_ALL_KEY)==="1";}catch(err){return false;} }
+  function setShowAllActors(v){ try{ localStorage.setItem(SHOW_ALL_KEY, v?"1":"0"); }catch(err){} }
+  function setStatus(msg, kind){ var box=byId("v26aStatus"); if(box){ box.className=(kind==="warn"?"warning-box":kind==="danger"?"danger-box":"ok-box")+" note v26a-status"; box.textContent=msg; } }
+  function scrollTo(elOrId){ var el=typeof elOrId==="string"?byId(elOrId):elOrId; if(!el) return; try{ el.scrollIntoView({behavior:"smooth", block:"start"}); }catch(err){ try{ el.scrollIntoView(true); }catch(e){} } }
+  function routePlay(){ var b=document.querySelector('[data-v17-mode-button="play"]'); if(b) click(b); }
+  function initToolbar(){
+    var tb=q("#v26aStableFlowPanel .v26a-toolbar"); if(!tb || byId("v26bResetBoardActors")) return;
+    var reset=document.createElement("button"); reset.type="button"; reset.id="v26bResetBoardActors"; reset.className="v26b-tool-btn"; reset.textContent="Clear enemies + Espers"; reset.title="Clears encounter enemies and Command Combatants. Use this for test cleanup, not during an active encounter.";
+    var toggle=document.createElement("button"); toggle.type="button"; toggle.id="v26bActorFilterToggle"; toggle.className="v26b-tool-btn"; toggle.textContent=showAllActors()?"Actor list: all board actors":"Actor list: initiative-focused";
+    tb.appendChild(toggle); tb.appendChild(reset);
+  }
+  function clearEnemiesAndCommands(){
+    if(!confirm("Clear tracked enemies and active Loyal Espers/Command Combatants? This is intended for test cleanup or starting a fresh encounter.")) return;
+    try{ click("resetTracker"); }catch(err){}
+    try{ if(window.middaraV21FQaApi && typeof middaraV21FQaApi.clearCommandsForRestore === "function") middaraV21FQaApi.clearCommandsForRestore();
+      else if(window.middaraCommandCombatantApi && middaraCommandCombatantApi.importState){ var cur=middaraCommandCombatantApi.getState ? middaraCommandCombatantApi.getState() : {}; middaraCommandCombatantApi.importState({ schemaVersion:"2.6B", combatants:[], selectedId:null, settings:(cur && cur.settings)||{} }); }
+    }catch(err2){}
+    try{ if(window.middaraCommandCombatantApi && middaraCommandCombatantApi.render) middaraCommandCombatantApi.render(); }catch(err3){}
+    try{ var a=api(); if(a){ a.setActor("party:rook", true); a.render && a.render(); } }catch(err4){}
+    setStatus("Cleared tracked enemies and active Command Combatants. Actor list should now be clean.", "ok");
+    setTimeout(function(){ filterActorSelect(); updateTargetDrawerNote(); }, 150);
+  }
+  function bindToolbar(){
+    window.addEventListener("click", function(ev){
+      var reset=ev.target && ev.target.closest ? ev.target.closest("#v26bResetBoardActors") : null;
+      if(reset){ ev.preventDefault(); ev.stopPropagation(); if(ev.stopImmediatePropagation) ev.stopImmediatePropagation(); clearEnemiesAndCommands(); return; }
+      var tog=ev.target && ev.target.closest ? ev.target.closest("#v26bActorFilterToggle") : null;
+      if(tog){ ev.preventDefault(); ev.stopPropagation(); if(ev.stopImmediatePropagation) ev.stopImmediatePropagation(); setShowAllActors(!showAllActors()); tog.textContent=showAllActors()?"Actor list: all board actors":"Actor list: initiative-focused"; filterActorSelect(true); updateTargetDrawerNote(); return; }
+    }, true);
+  }
+  function initiativeText(){
+    return lower([text("turnCurrentText"), text("v25bCurrentTurnText"), text("initiativeCompact"), text("initiativeTable")].join(" "));
+  }
+  function baseName(label){
+    return lower(String(label||"").replace(/\s*\((Enemy|Command)\)\s*$/i,"").replace(/\s+#?\d+\s*$/g,"").replace(/\s+\d+\s*$/g,"").replace(/\s+/g," "));
+  }
+  function optionAllowed(opt, initTxt){
+    var v=String(opt.value||""); if(!v || v.indexOf("party:")===0) return true;
+    if(showAllActors()) return true;
+    var label=baseName(opt.textContent||""); if(!label) return true;
+    if(initTxt.indexOf(label)>=0) return true;
+    if(v.indexOf("command:")===0 && (initTxt.indexOf("agares")>=0 || initTxt.indexOf("eliphie")>=0)) return true;
+    return false;
+  }
+  function filterActorSelect(force){
+    var sel=byId("v26aActorSelect"); if(!sel || !sel.options) return;
+    initToolbar();
+    var initTxt=initiativeText();
+    var current=sel.value;
+    qa("option", sel).forEach(function(opt){
+      var hide=!optionAllowed(opt, initTxt);
+      opt.hidden=hide;
+      opt.disabled=hide;
+    });
+    if(current && sel.selectedOptions && sel.selectedOptions[0] && sel.selectedOptions[0].disabled){
+      var first=qa("option", sel).filter(function(o){return !o.disabled && o.value;})[0];
+      if(first){ sel.value=first.value; try{ var a=api(); if(a && a.setActor) a.setActor(first.value, true); }catch(err){} }
+    }
+    var note=byId("v26aActorNote");
+    if(note){
+      var extra=showAllActors()?" Actor list is showing all alive tracked enemies and active Espers." : " Actor list is initiative-focused; enemies/Espers not in the initiative stay available in the Target drawer or after toggling this filter.";
+      if(note.textContent.indexOf("Actor list is")<0) note.textContent=(note.textContent||"") + extra;
+    }
+  }
+  function updateTargetDrawerNote(){
+    var panel=byId("v26aStableFlowPanel"); if(!panel || byId("v26bActorResetHint")) return;
+    var actorCard=byId("v26aActorCard"); if(!actorCard) return;
+    var div=document.createElement("div"); div.id="v26bActorResetHint"; div.className="tiny"; div.style.marginTop="8px";
+    div.textContent="Tip: Actor list is for whose turn/action is being resolved. Enemies or Espers lingering here are live tracker state; use Clear enemies + Espers for test cleanup, or Enemies → New encounter and Party → Full restore for manual cleanup.";
+    actorCard.appendChild(div);
+  }
+  function applyNightingaleCollapsed(){
+    var collapsed=false; try{ collapsed=localStorage.getItem(COLLAPSE_KEY)==="1"; }catch(err){}
+    document.body.classList.toggle("v26b-nightingale-collapsed", collapsed);
+    var p=byId("v24aNightingalePanel");
+    if(p){
+      if(collapsed){ p.style.display="none"; var d=p.querySelector("details"); if(d) d.open=false; }
+      else { p.style.display=""; }
+    }
+  }
+  function setNightCollapsed(v){ try{ localStorage.setItem(COLLAPSE_KEY, v?"1":"0"); }catch(err){} applyNightingaleCollapsed(); }
+  function openNightingaleStable(bridge){
+    setNightCollapsed(false);
+    routePlay();
+    try{ var a=api(); if(a && a.setActor) a.setActor("party:nightingale", true); }catch(err){}
+    try{ setVal("characterSelect", "nightingale"); }catch(err2){}
+    document.body.classList.add("v26a-nightingale-context");
+    var p=byId("v24aNightingalePanel");
+    if(p){ p.style.display=""; var d=p.querySelector("details"); if(d) d.open=true; }
+    if(bridge){ try{ if(window.middaraV24FCommandBridgeApi && middaraV24FCommandBridgeApi.open) middaraV24FCommandBridgeApi.open(); }catch(err3){} }
+    setStatus(bridge ? "Nightingale Loyal Esper bridge opened. Actor is locked to Nightingale until you choose another actor." : "Nightingale spell/familiar panel opened.", "ok");
+    setTimeout(function(){ scrollTo(bridge ? (byId("v24fCommandBridgeCard") || p) : p); }, 100);
+    setTimeout(function(){ try{ var a=api(); if(a && a.setActor) a.setActor("party:nightingale", true); }catch(err4){} applyNightingaleCollapsed(); }, 450);
+  }
+  function bindNightingale(){
+    window.addEventListener("click", function(ev){
+      var n=ev.target && ev.target.closest ? ev.target.closest('[data-v26a-action="night-spell"], [data-v26a-action="summon-esper"], [data-v22b-action="openCommand"]') : null;
+      if(!n) return;
+      var isSummon=n.getAttribute("data-v26a-action")==="summon-esper" || /Summon\s+Esper/i.test(n.textContent||"");
+      var isNight=n.getAttribute("data-v26a-action")==="night-spell" || isSummon;
+      if(isNight){ ev.preventDefault(); ev.stopPropagation(); if(ev.stopImmediatePropagation) ev.stopImmediatePropagation(); openNightingaleStable(isSummon); return; }
+    }, true);
+    document.addEventListener("toggle", function(ev){
+      var p=byId("v24aNightingalePanel");
+      if(!p || !p.contains(ev.target) || !ev.target.matches || !ev.target.matches("details")) return;
+      if(!ev.target.open){ setNightCollapsed(true); setStatus("Nightingale panel collapsed. Use Spell / Force or Summon Esper to reopen it.", "ok"); }
+    }, true);
+  }
+  function resetAttackDiceOptions(){
+    qa(".die-face").forEach(function(sel){ sel.selectedIndex=0; fire(sel,"change"); });
+    ["blackFace","attackMod","physMod","magicMod","apMod","adjacentArmor","challengeSupremeSp"].forEach(function(id){ if(byId(id)) setVal(id,"0"); });
+    ["useMasterWork","useMotV","useChallengeSupreme","useMorbidEnvy","reserveChainMeleeFU","reserveChainRangedFU","reserveCriticalDefense","reserveSvalinn","empowered","useOtherworldly","flanking"].forEach(function(id){ var el=byId(id); if(el){ el.checked=false; fire(el,"change"); } });
+    try{ if(typeof window.calculate==="function") window.calculate(); }catch(err){}
+  }
+  function selectProfile(profileId){ var sel=byId("profileSelect"); if(sel && profileId){ for(var i=0;i<sel.options.length;i++){ if(sel.options[i].value===profileId){ sel.value=profileId; fire(sel,"change"); break; } } } }
+  function forceZekeAttackRoute(message){
+    routePlay();
+    try{ var a=api(); if(a && a.setActor) a.setActor("party:zeke", true); }catch(err){}
+    setVal("characterSelect", "zeke");
+    try{ if(typeof window.syncProfiles==="function") window.syncProfiles(); }catch(err2){}
+    selectProfile("zeke_dual_short_swords");
+    resetAttackDiceOptions();
+    document.body.classList.add("v22b-show-attack");
+    document.body.classList.remove("v22b-show-spell");
+    setStatus(message || "Zeke attack loaded. Enter dice in the attack roll tray.", "ok");
+    setTimeout(function(){ scrollTo("attackDicePanel"); }, 120);
+    var tries=0;
+    var timer=setInterval(function(){
+      tries++;
+      setVal("characterSelect", "zeke");
+      selectProfile("zeke_dual_short_swords");
+      document.body.classList.add("v22b-show-attack");
+      document.body.classList.remove("v22b-show-spell");
+      if(tries>=6) clearInterval(timer);
+    }, 250);
+  }
+  function bindOnslaught(){
+    window.addEventListener("click", function(ev){
+      var n=ev.target && ev.target.closest ? ev.target.closest('[data-v26a-action="onslaught-start"], [data-v26a-action="onslaught-next"], [data-v23h-action="zeke-start-onslaught"], [data-v23h-action="zeke-next-onslaught"]') : null;
+      if(!n) return;
+      ev.preventDefault(); ev.stopPropagation(); if(ev.stopImmediatePropagation) ev.stopImmediatePropagation();
+      var action=n.getAttribute("data-v26a-action") || n.getAttribute("data-v23h-action") || "";
+      try{ var a=api(); if(a){ if(action.indexOf("next")>=0 && a.nextOnslaught) a.nextOnslaught(); else if(a.startOnslaught) a.startOnslaught(); } }catch(err){}
+      forceZekeAttackRoute(action.indexOf("next")>=0 ? "Onslaught follow-up loaded. Same target should be preserved; dice/options reset." : "Onslaught started. Enter dice for the first Zeke attack.");
+      return false;
+    }, true);
+  }
+  function installAttackMirror(){
+    var tray=byId("attackDicePanel"); if(!tray || byId("v26bAttackMirror")) return;
+    var sec=document.createElement("section"); sec.id="v26bAttackMirror"; sec.className="panel"; sec.setAttribute("data-v17-mode","play");
+    sec.innerHTML='<h2>Attack result / breakdown</h2><div class="note">Compact mirror of the current attack result so you do not need to scroll to the old breakdown tables.</div><div class="v26b-metrics" id="v26bAttackMetrics"></div><details open><summary>Damage and symbol spend breakdown</summary><div class="v26b-breakdown-grid"><div><h3>Damage breakdown</h3><div class="v26b-table-wrap"><table id="v26bBreakdownTable"></table></div></div><div><h3>Symbol spend breakdown</h3><div class="v26b-table-wrap"><table id="v26bSpendTable"></table></div></div></div><div id="v26bSymbols" class="pillbox" style="margin-top:10px"></div><div id="v26bWarnings" class="note" style="margin-top:10px"></div></details><div class="btn-row" style="margin-top:10px"><button type="button" id="v26bBackToFlow">Back to stable flow</button><button type="button" id="v26bFullBreakdown">Jump to old full breakdown</button></div>';
+    tray.parentNode.insertBefore(sec, tray.nextSibling);
+  }
+  function updateAttackMirror(){
+    installAttackMirror();
+    var sec=byId("v26bAttackMirror"); if(!sec) return;
+    var st=state();
+    var active=(st.mode==="attack" || st.action==="attack" || st.action==="whirlwind" || document.body.classList.contains("v22b-show-attack"));
+    sec.style.display=active?"":"none";
+    if(!active) return;
+    var metrics=[
+      ["Result", text("hitText")||"-"],
+      ["Attack", text("attackTotal")||"0"],
+      ["Final damage", text("finalDamage")||"0"],
+      ["Target HP after", text("remainingHp")||"0"]
+    ];
+    var html='<div class="v26b-metrics">'+metrics.map(function(m){return '<div class="v26b-mini-metric"><div class="label">'+esc(m[0])+'</div><div class="value">'+esc(m[1])+'</div></div>';}).join('')+'</div>';
+    var b=byId("breakdownTable"), s=byId("spendTable"), bp=byId("symbolPills"), w=byId("warnings");
+    html += '|' + (b?b.innerHTML:'') + '|' + (s?s.innerHTML:'') + '|' + (bp?bp.innerHTML:'') + '|' + (w?w.innerHTML:'');
+    if(html===lastMirrorHtml) return;
+    lastMirrorHtml=html;
+    var mbox=byId("v26bAttackMetrics"); if(mbox) mbox.innerHTML=metrics.map(function(m){return '<div class="v26b-mini-metric"><div class="label">'+esc(m[0])+'</div><div class="value">'+esc(m[1])+'</div></div>';}).join('');
+    var bt=byId("v26bBreakdownTable"); if(bt && b) bt.innerHTML=b.innerHTML;
+    var stbl=byId("v26bSpendTable"); if(stbl && s) stbl.innerHTML=s.innerHTML;
+    var sy=byId("v26bSymbols"); if(sy && bp) sy.innerHTML=bp.innerHTML;
+    var ww=byId("v26bWarnings"); if(ww && w) ww.innerHTML=w.innerHTML;
+  }
+  function bindMirrorButtons(){
+    window.addEventListener("click", function(ev){
+      if(ev.target && ev.target.id==="v26bBackToFlow"){ ev.preventDefault(); scrollTo("v26aStableFlowPanel"); }
+      if(ev.target && ev.target.id==="v26bFullBreakdown"){ ev.preventDefault(); scrollTo("breakdownTable"); }
+    }, true);
+  }
+  function hardHideTokenTile(){
+    var sum=byId("v25bTokenSummary"); if(sum){ var card=sum.closest ? sum.closest(".soft-card") : sum.parentNode; if(card) card.classList.add("v26b-hidden-token-card"); }
+    var acts=byId("v25bTokenActions"); if(acts){ var card2=acts.closest ? acts.closest(".soft-card") : acts.parentNode; if(card2) card2.classList.add("v26b-hidden-token-card"); }
+  }
+  function updateChrome(){
+    document.title="Middara Combat Helper - V2.6B Live Flow Calm Cleanup";
+    var cur=byId("currentVersionText"); if(cur) cur.textContent=VERSION;
+    var pwa=byId("pwaVersionText"); if(pwa) pwa.textContent=VERSION;
+    var pwaSummary=q(".v22c-pwa-panel summary"); if(pwaSummary) pwaSummary.textContent="V2.6B hosted / installable web app";
+    var h=q("#v26aStableFlowPanel h2"); if(h) h.textContent="V2.6B stable live flow";
+    var sub=q("#v26aStableFlowPanel .cockpit-header .note"); if(sub) sub.textContent="Cleanup mode: one calm Actor -> Target -> Action -> Resolve path. Actor list is initiative-focused by default; use Target drawer for board figures and the reset tools for test cleanup.";
+  }
+  function patchSnapshots(){
+    try{ if(window.__middaraV26BSnapshotPatch || !window.middaraDataManagerApi) return; window.__middaraV26BSnapshotPatch=true; var apiObj=window.middaraDataManagerApi; var oldFull=apiObj.exportFullSnapshot, oldApp=apiObj.exportAppData; function add(snap){ try{ snap.version=VERSION; snap.pwaDeploymentVersion=VERSION; snap.v26bLiveFlowCalmCleanup={ nightingaleCollapsed: (localStorage.getItem(COLLAPSE_KEY)==="1"), showAllBoardActors: showAllActors() }; }catch(err){} return snap; } if(typeof oldFull==="function") apiObj.exportFullSnapshot=function(){ return add(oldFull.apply(this, arguments)); }; if(typeof oldApp==="function") apiObj.exportAppData=function(){ return add(oldApp.apply(this, arguments)); }; }catch(err){}
+  }
+  function bindChangeRefresh(){ ["input","change"].forEach(function(evt){ document.addEventListener(evt, function(ev){ if(ev.target && (ev.target.closest("#attackDicePanel") || ev.target.closest("#v26aStableFlowPanel") || ev.target.closest("#v24aNightingalePanel"))){ setTimeout(function(){ updateAttackMirror(); filterActorSelect(); }, 90); } }, true); }); }
+  function init(){
+    bindToolbar(); bindNightingale(); bindOnslaught(); bindMirrorButtons(); bindChangeRefresh(); patchSnapshots();
+    initToolbar(); hardHideTokenTile(); applyNightingaleCollapsed(); updateChrome(); filterActorSelect(); updateTargetDrawerNote(); installAttackMirror(); updateAttackMirror();
+    setInterval(function(){ initToolbar(); hardHideTokenTile(); applyNightingaleCollapsed(); updateChrome(); filterActorSelect(); updateAttackMirror(); }, 900);
+    setStatus("V2.6B calm cleanup active: initiative-focused actor list, compact attack breakdown, stable Nightingale collapse, and reset tools loaded.", "ok");
+  }
+  ready(init);
+  window.middaraV26BLiveFlowCalmApi = { filterActorSelect:filterActorSelect, openNightingaleStable:openNightingaleStable, clearEnemiesAndCommands:clearEnemiesAndCommands, updateAttackMirror:updateAttackMirror };
 })();
 </script>
 

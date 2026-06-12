@@ -1,9 +1,9 @@
 {
   "name": "Middara Combat Helper",
-  "short_name": "Middara",
-  "description": "Middara Combat Helper V2.6A - Live Flow Stabilization",
+  "short_name": "Middara Helper",
+  "description": "Middara Combat Helper V2.6B - stable live flow, compact attack breakdown, and cleanup/reset tools.",
   "id": "./?app=middara-combat-helper",
-  "start_url": "./index.html?v=2.6a",
+  "start_url": "./index.html?v=2.6b",
   "scope": "./",
   "display": "standalone",
   "display_override": [
