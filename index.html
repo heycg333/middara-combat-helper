@@ -3,7 +3,7 @@
 <head>
   <meta charset="utf-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1" />
-  <title>Middara Combat Helper - V2.5D Scope Reset / Turn Effect Fix</title>
+  <title>Middara Combat Helper - V2.6A Live Flow Stabilization</title>
   <style>
     :root {
       --bg: #101827;
@@ -22846,7 +22846,7 @@ else {
     else if(ph==="refresh"){ html.push('<button type="button" class="primary-action" id="v25bDoRefreshCurrent">Apply Refresh to current actor</button>'); html.push('<button type="button" id="v25bOpenTurnState">Open Turn / State</button>'); }
     else if(ph==="end"){ var m=currentPartyMember(); if(m && num(m.sp,0)===0) html.push('<button type="button" class="primary-action" id="v25bDoInspiration">Rook Inspiration: +1 SP</button>'); var hasParalyze=figureEffectsForActor().some(function(f){ return arr(f.effects).some(function(e){ return lower(e)==="paralyze"; }); }); if(hasParalyze) html.push('<button type="button" class="warn-action" id="v25bDoRemoveParalyze">Remove Paralyze</button>'); html.push('<button type="button" id="v25bDoNextTurn">Advance initiative</button>'); }
     else if(ph==="action"){ html.push('<button type="button" class="primary-action" id="v25bDoOpenFlow">Open live combat flow</button>'); html.push('<button type="button" id="v25bDoOpenChains">Open Chain Assistant</button>'); }
-    else { html.push('<button type="button" id="v25bDoOpenTurnState">Open Turn / State</button>'); html.push('<button type="button" id="v25bCheckCurrentStatus">Check current actor effects</button>'); }
+    else { html.push('<button type="button" id="v25bDoOpenTurnState">Open Turn / State</button>'); html.push('<button type="button" id="v25bDoCurrentStatus">Check current actor effects</button>'); }
     actions.innerHTML=html.join(''); }
   function renderStatusSummary(){ var el=byId("v25bActorStatusSummary"); if(!el) return; var figs=figureEffectsForActor(); var effectCount=0, actionable=0; figs.forEach(function(f){ effectCount += arr(f.effects).length; actionable += actionableEffects(f.effects).length; }); if(!figs.length) el.textContent="No tracked Party/Enemy/Command figure matched the current actor. Use All status effects if needed."; else el.innerHTML=esc(actorLabel())+": <strong>"+effectCount+"</strong> tracked effect(s), <strong>"+actionable+"</strong> status/actionable effect(s)."; }
   function render(){ load(); updateChrome(); var t=turnState(); var card=currentCard(); var round=t ? (t.round || 1) : "-"; var roundEl=byId("v25bRoundText"); if(roundEl) roundEl.textContent=round; var cur=byId("v25bCurrentTurnText"); if(cur) cur.textContent=card ? (card.label || "Current turn") : "-"; var act=byId("v25bActorText"); if(act) act.textContent=actorLabel(); var phText=byId("v25bPhaseText"); if(phText) phText.textContent=(state.phase||"action").replace(/^./, function(c){return c.toUpperCase();}); var prompt=byId("v25bPhasePrompt"); if(prompt) prompt.innerHTML=promptHtml(); document.querySelectorAll("[data-v25b-phase]").forEach(function(btn){ btn.classList.toggle("active", btn.getAttribute("data-v25b-phase") === (state.phase||"action")); }); renderActions(); renderStatusSummary(); renderTokens(); decorateStatusRows(); }
@@ -22993,7 +22993,7 @@ else {
 
 <style id="v25d-scope-reset-courage-style">
   header .subtitle.v24h-subtitle-lock::after {
-    content: "V2.5D scope reset: lean enemy reminders, fixed status routing, spawn initiative insertion, party-only initiative reset, and Courage symbols in attack math." !important;
+    content: "V2.6A live-flow stabilization: one calm tablet flow, route locks for manual actions, hidden noisy legacy panels, stable labels, and no generic Ability-token quick-use tile." !important;
   }
   #mobileCombatFlowPanel h2::after { content: "V2.5D Tablet live combat flow" !important; }
   #mobileCombatFlowPanel .cockpit-badge.v24h-badge-lock::after,
@@ -23119,7 +23119,7 @@ else {
   function phaseStoreSet(phase){ try{ var s=JSON.parse(localStorage.getItem(PHASE_KEY)||"{}"); s.phase=phase; s.lastPhaseAt=new Date().toISOString(); localStorage.setItem(PHASE_KEY, JSON.stringify(s)); }catch(err){} }
   function stayInPhaseAfterEndTurn(){ phaseStoreSet("start"); try{ if(window.middaraTurnPhaseStatusV25B && middaraTurnPhaseStatusV25B.setPhase) middaraTurnPhaseStatusV25B.setPhase("start"); }catch(err){} try{ if(window.v17ShowMode) v17ShowMode("play"); }catch(err2){} var p=byId("v25bTurnPhasePanel"); if(p){ setTimeout(function(){ try{ p.scrollIntoView({behavior:"smooth", block:"start"}); }catch(err3){ p.scrollIntoView(); } }, 40); } setStatus("Advanced initiative. Phase reset to Start; use Start / Status / Refresh before Action.", "ok"); }
   function patchTurnPhaseClicks(){
-    document.addEventListener("click", function(ev){ var b=ev.target && ev.target.closest ? ev.target.closest("button") : null; if(!b) return; if(b.id==="v25bOpenCurrentStatus" || b.id==="v25bDoCurrentStatus" || b.id==="v25bCheckCurrentStatus"){ setTimeout(function(){ setStatusAssistantFilter(true); }, 30); }
+    document.addEventListener("click", function(ev){ var b=ev.target && ev.target.closest ? ev.target.closest("button") : null; if(!b) return; if(b.id==="v25bOpenCurrentStatus" || b.id==="v25bDoCurrentStatus"){ setTimeout(function(){ setStatusAssistantFilter(true); }, 30); }
       if(b.id==="v25bOpenAllStatus" || b.id==="v25bDoAllStatus"){ setTimeout(function(){ setStatusAssistantFilter(false); }, 30); }
       if(b.id==="v25bDoNextTurn"){ setTimeout(stayInPhaseAfterEndTurn, 90); setTimeout(stayInPhaseAfterEndTurn, 260); }
       var phase=b.getAttribute("data-v25b-phase"); if(phase==="status"){ setTimeout(function(){ setStatusAssistantFilter(true); }, 70); }
@@ -23133,7 +23133,7 @@ else {
   function patchEarthLoaDeathDropdown(){ document.addEventListener("pointerdown", function(ev){ var t=ev.target; if(t && t.id && String(t.id).indexOf("v25cDeathDie_")===0){ ev.stopPropagation(); } }, true); document.addEventListener("click", function(ev){ var t=ev.target; if(t && t.id && String(t.id).indexOf("v25cDeathDie_")===0){ ev.stopPropagation(); } }, true); }
   function updateChrome(){
     document.title = "Middara Combat Helper - V2.5D Scope Reset / Turn Effect Fix";
-    var sub=document.querySelector("header .subtitle"); if(sub){ sub.classList.add("v24h-subtitle-lock"); sub.setAttribute("data-v24h-subtitle", "V2.5D scope reset: lean enemy reminders, fixed status routing, spawn initiative insertion, party-only initiative reset, and Courage symbols in attack math."); }
+    var sub=document.querySelector("header .subtitle"); if(sub){ sub.classList.add("v24h-subtitle-lock"); sub.setAttribute("data-v24h-subtitle", "V2.6A live-flow stabilization: one calm tablet flow, route locks for manual actions, hidden noisy legacy panels, stable labels, and no generic Ability-token quick-use tile."); }
     var pwa=byId("pwaVersionText"); if(pwa) pwa.textContent=VERSION; var cur=byId("currentVersionText"); if(cur) cur.textContent=VERSION;
     var pwaSummary=document.querySelector(".v22c-pwa-panel summary"); if(pwaSummary) pwaSummary.textContent="V2.5D hosted / installable web app";
     var dataH=document.querySelector("#v22iDataStatusPanel h3"); if(dataH) dataH.textContent="V2.5D save / update status";
@@ -23143,6 +23143,314 @@ else {
   function init(){ ensureEffectDefinitions(); patchCourageMath(); patchInitiativeButtons(); patchTurnPhaseClicks(); patchEarthLoaDeathDropdown(); patchSnapshots(); periodic(); setInterval(periodic, 600); setTimeout(function(){ setStatus("V2.5D loaded: scope reset active, status routing repaired, initiative reset is party-only, spawned enemies add initiative after current turn, and Courage symbols are in attack math.", "ok"); }, 900); }
   ready(init);
   window.middaraV25DScopeResetApi = { ensureEffectDefinitions:ensureEffectDefinitions, setStatusAssistantFilter:setStatusAssistantFilter, resetInitiativePartyOnly:resetInitiativePartyOnly, ensureEnemyInitiative:ensureEnemyInitiative, updateNightingaleVisibility:updateNightingaleVisibility };
+})();
+</script>
+
+
+
+<style id="v26a-live-flow-stabilization-style">
+  /* V2.6A: calm live-flow owner and visual stabilization */
+  header .subtitle {
+    position: relative !important;
+    color: transparent !important;
+    min-height: 2.6em !important;
+    overflow: hidden !important;
+  }
+  header .subtitle::after {
+    content: "V2.6A live-flow stabilization: stable tablet flow, manual actor route locks, simplified panels, and quieter turn/status helpers.";
+    position: absolute;
+    left: 0;
+    top: 0;
+    right: 0;
+    color: var(--muted);
+    line-height: 1.35;
+  }
+  #mobileCombatFlowPanel { display: none !important; }
+  body.v26a-show-legacy-flow #mobileCombatFlowPanel { display: block !important; }
+  #v23hChainPolishPanel { display: none !important; }
+  #v25bTurnPhasePanel .v25b-phase-grid > .soft-card:nth-child(3) { display: none !important; }
+  body:not(.v26a-nightingale-context) #v24aNightingalePanel { display: none !important; }
+  body.v26a-nightingale-context #v24aNightingalePanel { display: block !important; }
+  #v25cEnemyAiEffectPanel.v26a-demoted details { border-style: dashed; }
+  #v26aStableFlowPanel {
+    border-color: rgba(163,230,53,.42);
+    background: linear-gradient(180deg, rgba(163,230,53,.08), rgba(255,255,255,.014)), var(--panel);
+  }
+  #v26aStableFlowPanel h2 { margin-bottom: 4px; }
+  .v26a-flow-grid {
+    display: grid;
+    grid-template-columns: minmax(0, 0.92fr) minmax(0, 1.08fr);
+    gap: 12px;
+    align-items: start;
+    margin-top: 12px;
+  }
+  .v26a-card {
+    border: 1px solid rgba(148,163,184,.24);
+    border-radius: 14px;
+    padding: 12px;
+    background: rgba(15,23,42,.48);
+    min-height: 160px;
+  }
+  .v26a-card h3 { margin: 0 0 8px; color: var(--accent2); }
+  .v26a-toolbar, .v26a-actions, .v26a-target-toolbar {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 8px;
+    align-items: center;
+  }
+  .v26a-toolbar button, .v26a-actions button, .v26a-target-toolbar button, .v26a-target-card button {
+    width: auto;
+    min-width: auto;
+    min-height: 42px;
+    padding: 8px 10px;
+  }
+  .v26a-actions button.primary, .v26a-target-card button.primary, #v26aApplyBtn.primary {
+    background: linear-gradient(180deg, #22c55e, #15803d);
+    border-color: rgba(34,197,94,.45);
+  }
+  .v26a-actions button.warn, .v26a-target-card button.warn {
+    background: linear-gradient(180deg, #fbbf24, #d97706);
+    color: #111827;
+    border-color: rgba(251,191,36,.45);
+  }
+  .v26a-target-toolbar button.active {
+    color: #06121f;
+    background: linear-gradient(180deg, var(--accent2), #0ea5e9);
+    border-color: rgba(56,189,248,.68);
+  }
+  .v26a-state-strip {
+    display: grid;
+    grid-template-columns: repeat(4, minmax(0, 1fr));
+    gap: 8px;
+    margin-top: 10px;
+  }
+  .v26a-chip {
+    border: 1px solid rgba(148,163,184,.24);
+    border-radius: 12px;
+    padding: 8px 10px;
+    background: rgba(2,6,23,.30);
+    min-height: 52px;
+  }
+  .v26a-chip span { display:block; color: var(--dim); font-size: .75rem; text-transform: uppercase; letter-spacing: .05em; }
+  .v26a-chip strong { display:block; color: var(--text); overflow:hidden; text-overflow:ellipsis; white-space:nowrap; }
+  .v26a-target-cards { display: grid; grid-template-columns: repeat(auto-fit, minmax(210px, 1fr)); gap: 8px; margin-top: 10px; max-height: 360px; overflow: auto; padding-right: 4px; }
+  .v26a-target-card { border: 1px solid rgba(148,163,184,.22); border-radius: 12px; padding: 10px; background: rgba(2,6,23,.30); display: grid; gap: 8px; }
+  .v26a-target-card.selected { border-color: rgba(56,189,248,.70); background: rgba(56,189,248,.10); box-shadow: 0 0 0 2px rgba(56,189,248,.12); }
+  .v26a-target-card .head { display:flex; justify-content:space-between; gap:8px; align-items:flex-start; }
+  .v26a-target-card .head strong { overflow-wrap:anywhere; }
+  .v26a-status { margin-top: 10px; min-height: 42px; }
+  .v26a-substatus { color: var(--dim); font-size:.82rem; margin-top:6px; min-height: 1.2em; }
+  .v26a-action-grid { display:grid; grid-template-columns: repeat(2, minmax(0,1fr)); gap:8px; }
+  .v26a-action-grid button { min-height: 54px; }
+  .v26a-action-grid button strong { display:block; }
+  .v26a-action-grid button span { display:block; color: var(--muted); font-size:.78rem; margin-top:3px; font-weight:500; }
+  #v17StickyFooter { min-height: 76px !important; }
+  #v17StickyFooter #v17FooterTitle,
+  #v17StickyFooter #v17FooterDetail,
+  #v17StickyFooter #v23lFooterMirror,
+  #v17StickyFooter #v24cFooterMirror,
+  #v17StickyFooter #v24eFooterMirror { display: none !important; }
+  #v26aFooterMirror { min-width: 0; display: grid; align-content: center; min-height: 42px; }
+  #v26aFooterTitle { font-weight: 900; color: var(--text); line-height: 1.15; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
+  #v26aFooterDetail { color: var(--muted); font-size: .82rem; line-height: 1.2; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; margin-top: 3px; }
+  #v22bFooterApply.v26a-owned {
+    position: relative !important;
+    color: transparent !important;
+    width: 220px !important;
+    min-width: 220px !important;
+    max-width: 220px !important;
+    min-height: 38px !important;
+    overflow: hidden !important;
+  }
+  #v22bFooterApply.v26a-owned::after {
+    content: attr(data-v26a-label);
+    position: absolute;
+    inset: 0;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    color: #f8fafc;
+    padding: 0 8px;
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    pointer-events: none;
+  }
+  #v22bFooterApply.v26a-owned.v26a-applied::after { color: #ecfdf5; }
+  @media (max-width: 880px) {
+    .v26a-flow-grid, .v26a-state-strip { grid-template-columns: 1fr; }
+    .v26a-action-grid { grid-template-columns: 1fr; }
+    .v26a-toolbar button, .v26a-actions button, .v26a-target-toolbar button { flex: 1 1 140px; }
+  }
+</style>
+<script id="v26a-live-flow-stabilization-script">
+(function(){
+  "use strict";
+  var VERSION = "V2.6A";
+  var STORE = "middara_v26a_live_flow_state";
+  var onslaughtStore = "middara_v26a_onslaught_state";
+  var state = {
+    actor: "", target: "", targetFilter: "enemy", action: "", mode: "idle",
+    status: "Stable live flow ready.", lastAppliedKey: "", legacyVisible: false,
+    manualActorUntil: 0, routeLockUntil: 0, nightPanelCollapsed: false,
+    whirlwindActive: false, whirlwindProfile: "current", waitingWhirlwindTarget: false
+  };
+  var onslaught = { remaining: 0, target: "" };
+  var lastPaint = { footerTitle:"", footerDetail:"", applyLabel:"" };
+
+  function ready(fn){ if(document.readyState === "loading") document.addEventListener("DOMContentLoaded", fn); else setTimeout(fn,0); }
+  function byId(id){ return document.getElementById(id); }
+  function q(sel, root){ return (root || document).querySelector(sel); }
+  function qa(sel, root){ return Array.prototype.slice.call((root || document).querySelectorAll(sel)); }
+  function esc(v){ return String(v == null ? "" : v).replace(/[&<>\"']/g, function(ch){ return ({"&":"&amp;","<":"&lt;",">":"&gt;","\"":"&quot;","'":"&#039;"})[ch]; }); }
+  function lower(v){ return String(v || "").trim().toLowerCase(); }
+  function val(id){ var el=byId(id); return el ? String(el.value || "") : ""; }
+  function text(id){ var el=byId(id); return el ? String(el.textContent || el.value || "").trim() : ""; }
+  function num(v,d){ v=Number(v); return isFinite(v) ? v : (d || 0); }
+  function arr(v){ return Array.isArray(v) ? v : []; }
+  function fire(elOrId,type){ var el=typeof elOrId==="string"?byId(elOrId):elOrId; if(!el) return; try{ el.dispatchEvent(new Event(type || "change", {bubbles:true})); }catch(err){ try{ var ev=document.createEvent("Event"); ev.initEvent(type || "change", true, true); el.dispatchEvent(ev); }catch(e){} } }
+  function click(elOrId){ var el=typeof elOrId==="string"?byId(elOrId):elOrId; if(el && typeof el.click==="function"){ try{ el.click(); return true; }catch(err){} } return false; }
+  function setVal(id,v){ var el=byId(id); if(el){ el.value=String(v == null ? "" : v); fire(el,"input"); fire(el,"change"); } }
+  function setChecked(id,v){ var el=byId(id); if(el){ el.checked=!!v; fire(el,"change"); } }
+  function setSelect(id,v){ var el=byId(id); if(!el || !el.options) return false; var s=String(v == null ? "" : v); for(var i=0;i<el.options.length;i++){ if(String(el.options[i].value)===s){ if(el.value!==s) el.value=s; fire(el,"change"); return true; } } return false; }
+  function selectedText(id){ var el=byId(id); return el && el.options && el.selectedIndex>=0 ? String(el.options[el.selectedIndex].textContent || el.value || "") : val(id); }
+  function now(){ return Date.now ? Date.now() : (new Date()).getTime(); }
+  function save(){ try{ localStorage.setItem(STORE, JSON.stringify(state)); localStorage.setItem(onslaughtStore, JSON.stringify(onslaught)); }catch(err){} }
+  function load(){ try{ var s=JSON.parse(localStorage.getItem(STORE)||"{}"); if(s && typeof s==="object") state=Object.assign(state,s); }catch(err){} try{ var o=JSON.parse(localStorage.getItem(onslaughtStore)||"{}"); if(o && typeof o==="object") onslaught=Object.assign(onslaught,o); }catch(err2){} }
+  function setStatus(msg, kind){ state.status = msg || state.status || "Ready."; state.statusKind = kind || "ok"; save(); renderStatus(); paintFooter(); }
+  function partyMembers(){ try{ return (window.partyState && Array.isArray(partyState.members)) ? partyState.members : []; }catch(err){ return []; } }
+  function enemies(){ try{ return (window.trackerState && Array.isArray(trackerState.enemies)) ? trackerState.enemies : []; }catch(err){ return []; } }
+  function commandState(){ try{ var api=window.middaraCommandCombatantApi; return api && api.getState ? api.getState() : (window.commandCombatantState || {combatants:[]}); }catch(err){ return {combatants:[]}; } }
+  function commandCombatants(){ return arr(commandState().combatants).filter(function(c){ return c && c.status !== "dismissed" && c.status !== "defeated"; }); }
+  function isAliveEnemy(e){ return e && !e.defeated && num(e.damage,0) < num(e.hp,0); }
+  function currentInitiativeLabel(){ return text("turnCurrentText") || text("v25bCurrentTurnText") || text("v17CurrentTurnMetric") || ""; }
+  function normalizeActorFromLabel(label){ var l=lower(label); if(!l) return ""; if(l.indexOf("rook")>=0) return "party:rook"; if(l.indexOf("remi")>=0) return "party:remi"; if(l.indexOf("nightingale")>=0) return "party:nightingale"; if(l.indexOf("zeke")>=0) return "party:zeke"; var cs=commandCombatants(); for(var i=0;i<cs.length;i++){ var c=cs[i]; var n=lower((c.label||"")+" "+(c.name||"")+" "+(c.id||"")); if(n && l.indexOf(n) >= 0) return "command:"+c.id; if(l.indexOf("agares")>=0 && n.indexOf("agares")>=0) return "command:"+c.id; if(l.indexOf("eliphie")>=0 && n.indexOf("eliphie")>=0) return "command:"+c.id; }
+    var list=enemies().filter(isAliveEnemy); for(var j=0;j<list.length;j++){ var e=list[j]; var hay=lower((e.label||"")+" "+(e.name||"")+" "+(e.presetId||"")); if(hay && (l.indexOf(lower(e.label||"__never__"))>=0 || l.indexOf(lower(e.name||"__never__"))>=0 || lower(e.label||"").indexOf(l)>=0)) return "enemy:"+e.id; }
+    return "";
+  }
+  function defaultActorFromInitiative(force){ if(!force && state.manualActorUntil && now() < state.manualActorUntil) return false; if(!force && state.routeLockUntil && now() < state.routeLockUntil) return false; var actor=normalizeActorFromLabel(currentInitiativeLabel()); if(actor){ state.actor=actor; syncUnderlyingActor(false); save(); render(); return true; } return false; }
+  function actorKind(){ return String(state.actor||"").split(":")[0] || ""; }
+  function actorId(){ return String(state.actor||"").split(":").slice(1).join(":"); }
+  function actorLabel(){ var k=actorKind(), id=actorId(); if(k==="party"){ var names={rook:"Rook",remi:"Remi",nightingale:"Nightingale",zeke:"Zeke"}; return names[id] || id || "-"; } if(k==="enemy"){ var e=findEnemy(id); return e ? (e.label || e.name || id) : id; } if(k==="command"){ var c=findCommand(id); return c ? (c.label || c.name || id) : id; } return "-"; }
+  function findEnemy(id){ return enemies().filter(function(e){ return String(e.id)===String(id); })[0] || null; }
+  function findCommand(id){ return commandCombatants().filter(function(c){ return String(c.id)===String(id); })[0] || null; }
+  function targetKind(){ return String(state.target||"").split(":")[0] || ""; }
+  function targetId(){ return String(state.target||"").split(":").slice(1).join(":"); }
+  function targetLabel(){ var k=targetKind(), id=targetId(); if(k==="enemy"){ var e=findEnemy(id); return e ? (e.label || e.name || id) : id; } if(k==="party"){ var p=partyMembers().filter(function(m){ return String(m.id)===String(id); })[0]; return p ? (p.name || id) : id; } if(k==="command"){ var c=findCommand(id); return c ? (c.label || c.name || id) : id; } return "-"; }
+  function setActor(actor, manual){ if(!actor) return; state.actor=actor; if(manual){ state.manualActorUntil=now()+600000; state.routeLockUntil=now()+3000; } syncUnderlyingActor(true); save(); render(); }
+  function syncUnderlyingActor(fireEvents){ var k=actorKind(), id=actorId(); if(k==="party"){ setSelect("characterSelect", id); setSelect("v22bActorSelect", "party:"+id); try{ if(typeof window.syncProfiles==="function") window.syncProfiles(); }catch(err){} }
+    else if(k==="command"){ setSelect("v22bActorSelect", "command:"+id); try{ var s=commandState(); s.selectedId=id; if(window.middaraCommandCombatantApi && middaraCommandCombatantApi.importState) middaraCommandCombatantApi.importState(s); else if(window.middaraCommandCombatantApi && middaraCommandCombatantApi.render) middaraCommandCombatantApi.render(); }catch(err2){} }
+    else if(k==="enemy"){ setSelect("v22bActorSelect", "enemy:"+id); setSelect("enemyAttackEnemy", id); }
+    updateContextClasses(); }
+  function updateContextClasses(){ var isNight=state.actor==="party:nightingale" || (actorKind()==="party" && actorId()==="nightingale"); document.body.classList.toggle("v26a-nightingale-context", !!isNight || (state.routeLockType==="night" && now()<state.routeLockUntil)); document.body.classList.toggle("v26a-show-legacy-flow", !!state.legacyVisible); }
+  function setTarget(t, opts){ opts=opts||{}; if(!t) return; state.target=t; if(opts.filter) state.targetFilter=opts.filter; syncUnderlyingTarget(); if(state.waitingWhirlwindTarget && targetKind()==="enemy"){ state.waitingWhirlwindTarget=false; save(); loadAttackFor("remi", selectedWhirlwindProfile(), "Whirlwind next target selected: enter dice for the next separate attack.", true); }
+    else if(opts.attack){ startAttack(); }
+    save(); render(); }
+  function syncUnderlyingTarget(){ var k=targetKind(), id=targetId(); if(k==="enemy"){ var e=findEnemy(id); try{ if(window.trackerState) trackerState.selectedId=id; if(typeof window.saveTrackerState==="function") saveTrackerState(); if(typeof window.renderTracker==="function") renderTracker(); }catch(err){} if(e){ setVal("targetHp", num(e.hp,0)); setVal("targetDefense", num(e.defense,0)); setVal("targetArmor", num(e.armor,0)); setVal("existingDamage", num(e.damage,0)); var st=byId("spellTargetName"); if(st) st.value=e.label||e.name||id; } }
+    else if(k==="party"){ try{ if(window.partyState) partyState.selectedId=id; if(typeof window.savePartyState==="function") savePartyState(); if(typeof window.renderParty==="function") renderParty(); }catch(err2){} setSelect("enemyAttackTarget", id); }
+    else if(k==="command"){ try{ var s=commandState(); s.selectedId=id; if(window.middaraCommandCombatantApi && middaraCommandCombatantApi.importState) middaraCommandCombatantApi.importState(s); }catch(err3){} setSelect("enemyAttackTarget", "command:"+id); }
+  }
+  function resetAttackDiceOptions(){ qa(".die-face").forEach(function(sel){ sel.selectedIndex=0; fire(sel,"change"); }); setVal("blackFace","0"); ["useMasterWork","useMotV","useChallengeSupreme","useMorbidEnvy","reserveChainMeleeFU","reserveChainRangedFU","reserveCriticalDefense","reserveSvalinn","empowered","useOtherworldly","flanking"].forEach(function(id){ if(byId(id)) setChecked(id,false); }); ["challengeSupremeSp","attackMod","physMod","magicMod","apMod","adjacentArmor"].forEach(function(id){ if(byId(id)) setVal(id,"0"); }); try{ if(typeof window.calculate==="function") window.calculate(); }catch(err){} }
+  function defaultProfileFor(charId){ if(charId==="zeke") return "zeke_dual_short_swords"; if(charId==="rook") return "rook_normal"; if(charId==="nightingale") return "nightingale_normal"; if(charId==="remi") return "remi_gigas_melee"; return ""; }
+  function selectProfile(profileId){ try{ if(typeof window.syncProfiles==="function") window.syncProfiles(); }catch(err){} if(profileId) setSelect("profileSelect", profileId); else { var sel=byId("profileSelect"); if(sel && sel.options && sel.options.length){ fire(sel,"change"); } } try{ if(typeof window.syncProfileControls==="function") window.syncProfileControls(); }catch(err2){} }
+  function loadAttackFor(charId, profileId, message, reset){ state.action="attack"; state.mode="attack"; state.routeLockUntil=now()+5000; setActor("party:"+charId, true); selectProfile(profileId || defaultProfileFor(charId)); if(reset !== false) resetAttackDiceOptions(); document.body.classList.add("v22b-show-attack"); document.body.classList.remove("v22b-show-spell"); routeTo("attackDicePanel"); setStatus(message || (actorLabel()+" attack loaded. Enter dice in the attack roll tray."), "ok"); save(); render(); }
+  function startAttack(){ if(actorKind()==="party"){ if(targetKind()!=="enemy"){ state.targetFilter="enemy"; setStatus("Choose an encounter enemy target first, then tap Attack or Target + Attack.", "warn"); save(); render(); return; } loadAttackFor(actorId(), null, actorLabel()+" attack loaded. Enter dice in the attack roll tray.", true); }
+    else if(actorKind()==="command"){ if(targetKind()!=="enemy"){ state.targetFilter="enemy"; setStatus("Choose an encounter enemy target first, then load the Command attack.", "warn"); save(); render(); return; } try{ var c=findCommand(actorId()); if(c){ var btn=document.querySelector('[data-v21b-command-load="'+cssEscape(actorId())+'"], [data-v24f-load="'+cssEscape(actorId())+'"]'); if(btn) click(btn); } }catch(err){} routeTo("attackDicePanel"); setStatus("Command actor loaded. Choose its attack profile if needed, then enter dice.", "ok"); }
+    else { setStatus("Select a party or Command actor for an adventurer attack.", "warn"); }
+  }
+  function startSpell(){ if(actorKind()==="party" && actorId()==="nightingale"){ openNightingalePanel(false); return; } state.action="spell"; state.mode="spell"; state.routeLockUntil=now()+5000; document.body.classList.add("v22b-show-spell"); document.body.classList.remove("v22b-show-attack"); routeTo("spellPanel"); setStatus("Spell / Force resolver opened. Select the spell and enter Force / Conviction dice.", "ok"); save(); render(); }
+  function routeEnemyAttack(){ state.action="enemyAttack"; state.mode="enemyAttack"; state.routeLockUntil=now()+5000; if(actorKind()==="enemy") setSelect("enemyAttackEnemy", actorId()); if(targetKind()==="party") setSelect("enemyAttackTarget", targetId()); else if(targetKind()==="command") setSelect("enemyAttackTarget", "command:"+targetId()); routeTo("enemyAttackEnemy"); setStatus("Enemy Attack resolver opened. Enter enemy dice and use the in-context defensive tray.", "ok"); save(); render(); }
+  function routeEnemyAi(){ if(actorKind()==="enemy") setSelect("aiActingEnemy", actorId()); routeTo("enemyAiAssistantPanel"); setStatus("Enemy AI assistant opened. Board conditions stay manual.", "ok"); }
+  function selectedWhirlwindProfile(){ return state.whirlwindProfile && state.whirlwindProfile!=="current" ? state.whirlwindProfile : (val("profileSelect") || "remi_gigas_melee"); }
+  function startWhirlwind(){ if(state.actor!=="party:remi") setActor("party:remi", true); state.whirlwindActive=true; state.waitingWhirlwindTarget=false; state.action="whirlwind"; if(targetKind()!=="enemy"){ state.targetFilter="enemy"; state.waitingWhirlwindTarget=true; setStatus("Whirlwind started: choose the first legal target from the Target drawer.", "warn"); save(); render(); return; } loadAttackFor("remi", selectedWhirlwindProfile(), "Whirlwind attack loaded. Resolve this target, then use Next Whirlwind target if another legal target remains.", true); save(); render(); }
+  function nextWhirlwind(){ state.whirlwindActive=true; state.waitingWhirlwindTarget=true; state.targetFilter="enemy"; state.action="whirlwind"; setStatus("Whirlwind: choose the next legal target from the Target drawer. The attack roll will reset after target selection.", "warn"); save(); render(); scrollToPanel("v26aTargetCard"); }
+  function clearWhirlwind(){ state.whirlwindActive=false; state.waitingWhirlwindTarget=false; setStatus("Whirlwind helper cleared.", "ok"); save(); render(); }
+  function startOnslaught(){ if(targetKind()!=="enemy"){ state.targetFilter="enemy"; setStatus("Choose an encounter enemy target before starting Onslaught.", "warn"); save(); render(); return; } onslaught.remaining=2; onslaught.target=state.target; save(); loadAttackFor("zeke", "zeke_dual_short_swords", "Onslaught started: first attack loaded. Target is locked for follow-ups unless you manually change it.", true); }
+  function nextOnslaught(){ if(num(onslaught.remaining,0)<=0){ setStatus("No Onslaught follow-up attacks remain. Start Onslaught again for a new action.", "warn"); return; } if(onslaught.target){ state.target=onslaught.target; syncUnderlyingTarget(); } onslaught.remaining=Math.max(0, num(onslaught.remaining,0)-1); save(); loadAttackFor("zeke", "zeke_dual_short_swords", "Onslaught follow-up loaded. Same target preserved; dice/options reset. Remaining after this load: "+onslaught.remaining+".", true); }
+  function clearOnslaught(){ onslaught.remaining=0; onslaught.target=""; save(); setStatus("Onslaught helper cleared.", "ok"); render(); }
+  function bladeWorks(){ setActor("party:zeke", true); try{ if(window.middaraTurnApi && middaraTurnApi.setCardState) middaraTurnApi.setCardState("zeke_blade_works", "exhausted", "Zeke Blade Works exhausted.", "ok"); }catch(err){} loadAttackFor("zeke", "zeke_dual_short_swords", "Blade Works attack loaded. Enter dice in the attack roll tray.", true); }
+  function openNightingalePanel(bridge){ setActor("party:nightingale", true); state.routeLockUntil=now()+8000; state.routeLockType=bridge?"esper":"night"; state.nightPanelCollapsed=false; save(); updateContextClasses(); var p=byId("v24aNightingalePanel"); if(p){ var d=p.querySelector("details"); if(d) d.open=true; }
+    try{ if(bridge && window.middaraV24FCommandBridgeApi && middaraV24FCommandBridgeApi.open) middaraV24FCommandBridgeApi.open(); }catch(err){} var target=bridge ? (byId("v24fCommandBridgeCard") || p) : p; if(target) setTimeout(function(){ scrollToEl(target); }, 80); setStatus(bridge ? "Nightingale Loyal Esper bridge opened. Actor route is locked to Nightingale." : "Nightingale spell / familiar panel opened.", "ok"); render(); }
+  function cssEscape(s){ try{ return CSS.escape(String(s)); }catch(err){ return String(s).replace(/[^a-zA-Z0-9_-]/g,"\\$&"); } }
+  function routeTo(id){ var play=document.querySelector('[data-v17-mode-button="play"]'); if(play) click(play); setTimeout(function(){ var el=byId(id); if(el) scrollToEl(el); }, 90); }
+  function scrollToPanel(id){ var el=byId(id); if(el) scrollToEl(el); }
+  function scrollToEl(el){ try{ el.scrollIntoView({behavior:"smooth", block:"start"}); }catch(err){ try{ el.scrollIntoView(true); }catch(e){} } }
+  function applyCurrent(){ var mode=state.mode || state.action; if(mode==="attack" || state.action==="attack" || state.action==="whirlwind"){ if(click("applyToTracker")){ state.lastAppliedKey=applyKey(); setStatus("Applied current attack damage to "+targetLabel()+".", "ok"); } }
+    else if(mode==="spell"){ if(click("applySpellToTracker")){ state.lastAppliedKey=applyKey(); setStatus("Applied current spell result to "+targetLabel()+".", "ok"); } }
+    else if(mode==="enemyAttack"){ if(click("applyEnemyAttackToParty")){ state.lastAppliedKey=applyKey(); setStatus("Applied enemy attack result.", "ok"); } }
+    save(); render(); paintFooter(); }
+  function applyKey(){ return [state.mode,state.action,state.actor,state.target,text("hitText"),text("finalDamage"),text("spellOutcome"),text("spellDamageText"),text("enemyAttackFinalDamageText")].join("|"); }
+  function pendingInfo(){ var mode=state.mode || state.action || "idle"; var applied=state.lastAppliedKey && state.lastAppliedKey===applyKey(); if(mode==="attack" || state.action==="attack" || state.action==="whirlwind"){ var dmg=text("finalDamage") || "0"; var hit=text("hitText") || "-"; var ready=targetKind()==="enemy" && hit && hit!=="-"; return {ready:ready, applied:applied, title:"Attack -> "+targetLabel(), detail:"Result "+hit+" | Final damage "+dmg, label:applied?"Applied ✓":"Apply "+dmg+" dmg"}; }
+    if(mode==="spell"){ var sd=text("spellDamageText") || text("spellDamage") || "spell"; return {ready:targetKind()==="enemy", applied:applied, title:"Spell -> "+targetLabel(), detail:"Resolve/apply current spell result", label:applied?"Applied ✓":"Apply spell"}; }
+    if(mode==="enemyAttack"){ var ed=text("enemyAttackFinalDamageText") || "0"; return {ready:true, applied:applied, title:"Enemy attack", detail:"Final damage "+ed+" | Target "+targetLabel(), label:applied?"Applied ✓":"Apply enemy"}; }
+    return {ready:false, applied:false, title:"Stable live flow", detail:"Choose actor, target, and action.", label:"No result"}; }
+  function paintFooter(){ var footer=byId("v17StickyFooter"); if(!footer) return; footer.classList.remove("hidden"); var mirror=byId("v26aFooterMirror"); if(!mirror){ var first=footer.firstElementChild || footer; mirror=document.createElement("div"); mirror.id="v26aFooterMirror"; mirror.innerHTML='<div id="v26aFooterTitle"></div><div id="v26aFooterDetail"></div>'; first.appendChild(mirror); }
+    var info=pendingInfo(); var t=byId("v26aFooterTitle"), d=byId("v26aFooterDetail"); if(t && lastPaint.footerTitle!==info.title){ t.textContent=info.title; lastPaint.footerTitle=info.title; } if(d && lastPaint.footerDetail!==info.detail){ d.textContent=info.detail; lastPaint.footerDetail=info.detail; }
+    var apply=byId("v22bFooterApply") || q('#v17StickyFooter [data-v22b-action="applyPending"]'); if(apply){ apply.classList.add("v26a-owned"); apply.classList.toggle("v26a-applied", !!info.applied); apply.setAttribute("data-v26a-label", info.label); if(info.ready && !info.applied) apply.disabled=false; }
+  }
+  function actorOptions(){ var out=[{v:"",t:"Choose actor"},{v:"party:rook",t:"Rook"},{v:"party:remi",t:"Remi"},{v:"party:nightingale",t:"Nightingale"},{v:"party:zeke",t:"Zeke"}]; commandCombatants().forEach(function(c){ out.push({v:"command:"+c.id,t:(c.label||c.name||c.id)+" (Command)"}); }); enemies().filter(isAliveEnemy).forEach(function(e){ out.push({v:"enemy:"+e.id,t:(e.label||e.name||e.id)+" (Enemy)"}); }); return out; }
+  function renderPanel(){ var old=byId("v26aStableFlowPanel"); if(old) return; var flow=byId("mobileCombatFlowPanel") || byId("combatCockpitPanel") || document.querySelector("main section"); if(!flow || !flow.parentNode) return; var sec=document.createElement("section"); sec.id="v26aStableFlowPanel"; sec.className="panel"; sec.setAttribute("data-v17-mode","play"); sec.innerHTML = '<div class="cockpit-header"><div><h2>V2.6A stable live flow</h2><div class="note">Cleanup mode: one calm Actor → Target → Action → Resolve path. Initiative only defaults the actor when you ask it to or after End Turn; manual routes like Summon Esper and Onslaught are protected.</div></div><div class="cockpit-badge">Stable flow</div></div>'+
+      '<div class="v26a-toolbar" style="margin-top:10px"><button type="button" id="v26aSyncTurn">Sync actor from initiative</button><button type="button" id="v26aLegacyToggle">Show legacy mobile flow</button><button type="button" id="v26aClearLocks">Clear route locks</button><button type="button" id="v26aResetRoll">Reset current roll</button></div>'+
+      '<div class="v26a-state-strip" id="v26aStateStrip"></div>'+
+      '<div class="v26a-flow-grid"><div class="v26a-card" id="v26aActorCard"><h3>1. Actor</h3><label for="v26aActorSelect">Current actor</label><select id="v26aActorSelect"></select><div id="v26aActorNote" class="v26a-substatus"></div></div><div class="v26a-card" id="v26aTargetCard"><h3>2. Target drawer</h3><div class="v26a-target-toolbar"><button type="button" data-v26a-filter="enemy">Enemies</button><button type="button" data-v26a-filter="party">Party</button><button type="button" data-v26a-filter="command">Command</button></div><div id="v26aTargetCards" class="v26a-target-cards"></div></div></div>'+
+      '<div class="v26a-flow-grid"><div class="v26a-card"><h3>3. Action</h3><div id="v26aActionCards" class="v26a-action-grid"></div><div id="v26aActionStatus" class="v26a-substatus"></div></div><div class="v26a-card"><h3>4. Resolve / apply</h3><div id="v26aResolveText" class="note">Choose actor, target, and action.</div><div class="v26a-actions" style="margin-top:10px"><button type="button" id="v26aApplyBtn" class="primary">Apply current result</button><button type="button" id="v26aUndoBtn">Undo</button><button type="button" id="v26aChainsBtn">Chains</button><button type="button" id="v26aNextBtn">End turn / next</button></div><div id="v26aStatus" class="ok-box note v26a-status">Stable live flow ready.</div></div></div>';
+    flow.parentNode.insertBefore(sec, flow);
+    bindPanel();
+  }
+  function render(){ renderPanel(); updateContextClasses(); renderActorSelect(); renderStateStrip(); renderTargets(); renderActions(); renderResolve(); renderStatus(); paintFooter(); save(); }
+  function renderActorSelect(){ var sel=byId("v26aActorSelect"); if(!sel) return; var opts=actorOptions(); var html=opts.map(function(o){ return '<option value="'+esc(o.v)+'">'+esc(o.t)+'</option>'; }).join(""); if(sel.getAttribute("data-v26a-html")!==html){ sel.innerHTML=html; sel.setAttribute("data-v26a-html", html); } if(sel.value!==state.actor) sel.value=state.actor || ""; var note=byId("v26aActorNote"); if(note) note.textContent=(state.manualActorUntil && now()<state.manualActorUntil) ? "Manual actor selected; initiative will not override this route." : "Use Sync actor from initiative when you want the current initiative card to drive actor selection."; }
+  function renderStateStrip(){ var box=byId("v26aStateStrip"); if(!box) return; var info=pendingInfo(); box.innerHTML='<div class="v26a-chip"><span>Initiative</span><strong>'+esc(currentInitiativeLabel()||"-")+'</strong></div><div class="v26a-chip"><span>Actor</span><strong>'+esc(actorLabel())+'</strong></div><div class="v26a-chip"><span>Target</span><strong>'+esc(targetLabel())+'</strong></div><div class="v26a-chip"><span>Pending</span><strong>'+esc(info.applied?"Applied ✓":info.detail)+'</strong></div>'; }
+  function renderTargets(){ var box=byId("v26aTargetCards"); if(!box) return; qa("[data-v26a-filter]").forEach(function(b){ b.classList.toggle("active", b.getAttribute("data-v26a-filter")===state.targetFilter); }); var rows=[]; if(state.targetFilter==="enemy"){ enemies().filter(isAliveEnemy).forEach(function(e){ var rem=Math.max(0,num(e.hp,0)-num(e.damage,0)); var selected=state.target==="enemy:"+e.id; rows.push('<div class="v26a-target-card '+(selected?'selected':'')+'"><div class="head"><div><strong>'+esc(e.label||e.name||e.id)+'</strong><div class="tiny">HP '+rem+' / '+esc(e.hp)+' | Def '+esc(e.defense)+' | Armor '+esc(e.armor)+'</div></div><span class="state-pill '+(selected?'ready':'')+'">'+(selected?'SELECTED':'enemy')+'</span></div><div class="v26a-actions"><button type="button" data-v26a-target="enemy:'+esc(e.id)+'">Target</button><button type="button" class="primary" data-v26a-target-attack="enemy:'+esc(e.id)+'">Target + Attack</button></div></div>'); }); }
+    else if(state.targetFilter==="party"){ partyMembers().forEach(function(m){ var rem=Math.max(0,num(m.hp||m.maxHp,0)-num(m.damage,0)); var selected=state.target==="party:"+m.id; rows.push('<div class="v26a-target-card '+(selected?'selected':'')+'"><div class="head"><div><strong>'+esc(m.name||m.id)+'</strong><div class="tiny">HP '+rem+' / '+esc(m.hp||m.maxHp)+' | SP '+esc(m.sp)+' | Effects '+esc(arr(m.effects).join(', ')||'none')+'</div></div><span class="state-pill '+(selected?'ready':'')+'">'+(selected?'SELECTED':'party')+'</span></div><button type="button" data-v26a-target="party:'+esc(m.id)+'">Use as target/support</button></div>'); }); }
+    else { commandCombatants().forEach(function(c){ var hp=num(c.maxHp||c.hp,0), rem=Math.max(0,hp-num(c.damage,0)); var selected=state.target==="command:"+c.id; rows.push('<div class="v26a-target-card '+(selected?'selected':'')+'"><div class="head"><div><strong>'+esc(c.label||c.name||c.id)+'</strong><div class="tiny">HP '+rem+' / '+hp+' | SP '+esc(c.sp)+' | '+esc(c.status||'summoned')+'</div></div><span class="state-pill '+(selected?'ready':'')+'">'+(selected?'SELECTED':'Command')+'</span></div><button type="button" data-v26a-target="command:'+esc(c.id)+'">Use as target/support</button></div>'); }); }
+    box.innerHTML=rows.join("") || '<div class="v17-empty">No targets in this drawer. Add enemies in Enemies, party state in Party, or Espers in Command.</div>'; }
+  function actionButton(label, sub, action, cls){ return '<button type="button" class="'+(cls||'')+'" data-v26a-action="'+esc(action)+'"><strong>'+esc(label)+'</strong><span>'+esc(sub||'')+'</span></button>'; }
+  function renderActions(){ var box=byId("v26aActionCards"); if(!box) return; var k=actorKind(), id=actorId(), rows=[]; if(k==="party"){
+      rows.push(actionButton("Attack", "Load attack roll tray", "attack", "primary"));
+      if(id==="nightingale"){ rows.push(actionButton("Spell / Force", "Open Nightingale spell panel", "night-spell", "")); rows.push(actionButton("Summon Esper", "Open Loyal Esper bridge", "summon-esper", "")); }
+      else { rows.push(actionButton("Spell / Force", "Open generic spell resolver", "spell", "")); }
+      if(id==="remi"){ rows.push(actionButton("Whirlwind", "Separate attacks; choose each target", "whirlwind", "")); if(state.whirlwindActive) rows.push(actionButton("Next Whirlwind target", "Return to target drawer", "whirlwind-next", "warn")); }
+      if(id==="zeke"){ rows.push(actionButton("Start Onslaught", "First attack, then two same-target FUs", "onslaught-start", "primary")); if(onslaught.remaining>0) rows.push(actionButton("Next Onslaught FU", "Same target, fresh dice", "onslaught-next", "primary")); rows.push(actionButton("Blade Works", "Exhaust and load Zeke attack", "blade-works", "")); }
+      rows.push(actionButton("Enemy Attack", "Open enemy attack resolver", "enemy-attack", ""));
+    } else if(k==="enemy") { rows.push(actionButton("Enemy Attack", "Use this enemy as attacker", "enemy-attack", "primary")); rows.push(actionButton("Enemy AI", "Open AI assistant", "enemy-ai", "")); rows.push(actionButton("Enemy Spell", "Open Conviction resolver", "enemy-spell", "")); }
+    else if(k==="command") { rows.push(actionButton("Attack", "Load Command actor attack", "attack", "primary")); rows.push(actionButton("Open Command", "Detailed Esper tracker", "open-command", "")); rows.push(actionButton("Enemy Attack", "Resolve incoming attack", "enemy-attack", "")); }
+    else rows.push('<div class="v17-empty">Choose an actor to see actions.</div>');
+    box.innerHTML=rows.join(""); var st=byId("v26aActionStatus"); if(st) st.textContent=onslaught.remaining>0?('Onslaught active: '+onslaught.remaining+' follow-up load(s) remain. Target: '+targetLabel()): (state.whirlwindActive?'Whirlwind active: choose/resolve each target manually.':''); }
+  function renderResolve(){ var box=byId("v26aResolveText"); if(!box) return; var info=pendingInfo(); box.innerHTML='<strong>'+esc(info.title)+'</strong><br><span class="tiny">'+esc(info.detail)+'</span>'; var apply=byId("v26aApplyBtn"); if(apply){ apply.textContent=info.applied?"Applied ✓":(info.ready?info.label:"No result to apply"); apply.disabled=!info.ready || !!info.applied; } }
+  function renderStatus(){ var box=byId("v26aStatus"); if(box){ box.className=(state.statusKind==="warn"?"warning-box":state.statusKind==="danger"?"danger-box":"ok-box")+" note v26a-status"; box.textContent=state.status || "Stable live flow ready."; } }
+  function bindPanel(){ document.addEventListener("change", function(ev){ if(ev.target && ev.target.id==="v26aActorSelect"){ setActor(ev.target.value, true); } }, true);
+    document.addEventListener("click", function(ev){ var f=ev.target && ev.target.closest ? ev.target.closest("[data-v26a-filter]") : null; if(f){ ev.preventDefault(); state.targetFilter=f.getAttribute("data-v26a-filter")||"enemy"; save(); render(); return; }
+      var ta=ev.target && ev.target.closest ? ev.target.closest("[data-v26a-target-attack]") : null; if(ta){ ev.preventDefault(); setTarget(ta.getAttribute("data-v26a-target-attack"), {filter:"enemy", attack:true}); return; }
+      var t=ev.target && ev.target.closest ? ev.target.closest("[data-v26a-target]") : null; if(t){ ev.preventDefault(); setTarget(t.getAttribute("data-v26a-target")); return; }
+      var a=ev.target && ev.target.closest ? ev.target.closest("[data-v26a-action]") : null; if(a){ ev.preventDefault(); handleAction(a.getAttribute("data-v26a-action")); return; }
+      if(ev.target && ev.target.id==="v26aSyncTurn"){ ev.preventDefault(); state.manualActorUntil=0; defaultActorFromInitiative(true); setStatus("Actor synced from current initiative card.", "ok"); }
+      if(ev.target && ev.target.id==="v26aLegacyToggle"){ ev.preventDefault(); state.legacyVisible=!state.legacyVisible; save(); render(); }
+      if(ev.target && ev.target.id==="v26aClearLocks"){ ev.preventDefault(); state.manualActorUntil=0; state.routeLockUntil=0; state.routeLockType=""; setStatus("Route locks cleared. Initiative can default the actor again.", "ok"); save(); render(); }
+      if(ev.target && ev.target.id==="v26aResetRoll"){ ev.preventDefault(); resetAttackDiceOptions(); setStatus("Current attack dice/options reset.", "ok"); }
+      if(ev.target && ev.target.id==="v26aApplyBtn"){ ev.preventDefault(); applyCurrent(); }
+      if(ev.target && ev.target.id==="v26aUndoBtn"){ ev.preventDefault(); click("undoTracker") || click("undoParty"); setStatus("Undo requested in the relevant tracker if available.", "ok"); }
+      if(ev.target && ev.target.id==="v26aChainsBtn"){ ev.preventDefault(); click("chainBuildDetected"); routeTo("chainAssistantPanel"); }
+      if(ev.target && ev.target.id==="v26aNextBtn"){ ev.preventDefault(); click("v25bDoNextTurn") || click("initiativeNextButton"); setStatus("Advanced turn if available. Phase should remain at Start.", "ok"); }
+    }, true); }
+  function handleAction(action){ if(action==="attack") startAttack(); else if(action==="spell") startSpell(); else if(action==="night-spell") openNightingalePanel(false); else if(action==="summon-esper") openNightingalePanel(true); else if(action==="enemy-attack") routeEnemyAttack(); else if(action==="enemy-ai") routeEnemyAi(); else if(action==="enemy-spell"){ routeTo("enemySpellPanel"); setStatus("Enemy spell / Conviction resolver opened.", "ok"); } else if(action==="whirlwind") startWhirlwind(); else if(action==="whirlwind-next") nextWhirlwind(); else if(action==="onslaught-start") startOnslaught(); else if(action==="onslaught-next") nextOnslaught(); else if(action==="blade-works") bladeWorks(); else if(action==="open-command"){ routeTo("v21bCommandPanel"); } }
+  function interceptLegacyActions(){ document.addEventListener("click", function(ev){ var node=ev.target && ev.target.closest ? ev.target.closest('[data-v23h-action], [data-v22b-action="openCommand"], [data-v24f-load], [data-v21b-command-load]') : null; if(!node) return; var act=node.getAttribute("data-v23h-action"); if(act==="zeke-start-onslaught" || act==="zeke-next-onslaught"){ ev.preventDefault(); ev.stopPropagation(); if(ev.stopImmediatePropagation) ev.stopImmediatePropagation(); if(act==="zeke-start-onslaught") startOnslaught(); else nextOnslaught(); return; }
+      if(act==="remi-start-whirlwind" || act==="remi-next-whirlwind"){ ev.preventDefault(); ev.stopPropagation(); if(ev.stopImmediatePropagation) ev.stopImmediatePropagation(); if(act==="remi-start-whirlwind") startWhirlwind(); else nextWhirlwind(); return; }
+      var label=node.querySelector ? (node.querySelector("strong") ? node.querySelector("strong").textContent.trim() : node.textContent.trim()) : "";
+      if(node.getAttribute("data-v22b-action")==="openCommand" && label==="Summon Esper"){ ev.preventDefault(); ev.stopPropagation(); if(ev.stopImmediatePropagation) ev.stopImmediatePropagation(); openNightingalePanel(true); return; }
+      var load=node.getAttribute("data-v24f-load") || node.getAttribute("data-v21b-command-load"); if(load){ state.actor="command:"+load; state.manualActorUntil=now()+600000; state.routeLockUntil=now()+4000; syncUnderlyingActor(true); save(); render(); }
+    }, true); }
+  function patchNightingaleCollapse(){ document.addEventListener("toggle", function(ev){ var p=byId("v24aNightingalePanel"); if(!p || !p.contains(ev.target) || ev.target.tagName.toLowerCase()!=="details") return; if(!ev.target.open){ state.nightPanelCollapsed=true; state.routeLockType=""; state.routeLockUntil=0; save(); } }, true); }
+  function maintainContext(){ updateContextClasses(); var p=byId("v24aNightingalePanel"); if(p){ var d=p.querySelector("details"); if(d && state.nightPanelCollapsed && !(state.routeLockType && now()<state.routeLockUntil)){ d.open=false; } }
+    var legacyBtn=byId("v26aLegacyToggle"); if(legacyBtn) legacyBtn.textContent=state.legacyVisible?"Hide legacy mobile flow":"Show legacy mobile flow"; paintFooter(); }
+  function patchSnapshots(){ try{ if(window.__middaraV26ASnapshotPatch || !window.middaraDataManagerApi) return; window.__middaraV26ASnapshotPatch=true; var api=window.middaraDataManagerApi; var oldFull=api.exportFullSnapshot, oldApp=api.exportAppData; function add(snap){ try{ snap.version=VERSION; snap.pwaDeploymentVersion=VERSION; snap.v26aStableLiveFlow={ state:state, onslaught:onslaught, legacyFlowHidden:!state.legacyVisible }; }catch(err){} return snap; } if(typeof oldFull==="function") api.exportFullSnapshot=function(){ return add(oldFull.apply(this, arguments)); }; if(typeof oldApp==="function") api.exportAppData=function(){ return add(oldApp.apply(this, arguments)); }; }catch(err){} }
+  function stabilizePanels(){ var p=byId("v25cEnemyAiEffectPanel"); if(p){ p.classList.add("v26a-demoted"); var d=p.querySelector("details"); if(d) d.open=false; var s=p.querySelector("summary"); if(s && s.textContent.indexOf("Advanced enemy")<0) s.textContent="Advanced enemy reminders / cleanup"; }
+    var turn=byId("v25bTurnPhasePanel"); if(turn){ var token=turn.querySelector(".v25b-phase-grid > .soft-card:nth-child(3)"); if(token) token.setAttribute("aria-hidden","true"); }
+    var old=byId("mobileCombatFlowPanel"); if(old) old.setAttribute("aria-hidden", state.legacyVisible?"false":"true"); }
+  function refreshChrome(){ document.title="Middara Combat Helper - V2.6A Live Flow Stabilization"; var sub=q("header .subtitle"); if(sub) sub.setAttribute("data-v26a", "stable"); var cur=byId("currentVersionText"); if(cur) cur.textContent=VERSION; var pwa=byId("pwaVersionText"); if(pwa) pwa.textContent=VERSION; var pwaSummary=q(".v22c-pwa-panel summary"); if(pwaSummary) pwaSummary.textContent="V2.6A hosted / installable web app"; }
+  function bindGlobalRefresh(){ ["change","input"].forEach(function(evt){ document.addEventListener(evt, function(ev){ if(ev.target && (ev.target.closest("#attackDicePanel") || ev.target.closest("#spellPanel") || ev.target.id==="turnCurrentText")){ setTimeout(function(){ render(); }, 80); } }, true); }); ["initiativeNextButton","initiativePrevButton","initiativeEndRoundButton","initiativeShuffleButton"].forEach(function(id){ var el=byId(id); if(el && !el.__v26aBound){ el.__v26aBound=true; el.addEventListener("click", function(){ setTimeout(function(){ if(!(state.routeLockUntil && now()<state.routeLockUntil)){ state.manualActorUntil=0; defaultActorFromInitiative(false); } render(); }, 180); }, true); } }); }
+  function init(){ load(); renderPanel(); interceptLegacyActions(); patchNightingaleCollapse(); patchSnapshots(); bindGlobalRefresh(); if(!state.actor) defaultActorFromInitiative(false); render(); stabilizePanels(); refreshChrome(); maintainContext(); setStatus("V2.6A cleanup active: stable live flow owns the table workflow; noisy legacy flow is hidden but available as fallback.", "ok"); setInterval(function(){ stabilizePanels(); refreshChrome(); maintainContext(); }, 1200); setInterval(function(){ render(); }, 3500); }
+  ready(init);
+  window.middaraV26AStableFlowApi = { getState:function(){return {state:state, onslaught:onslaught};}, render:render, setActor:setActor, setTarget:setTarget, startOnslaught:startOnslaught, nextOnslaught:nextOnslaught, openNightingalePanel:openNightingalePanel };
 })();
 </script>
 

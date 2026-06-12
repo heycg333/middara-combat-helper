@@ -1,9 +1,9 @@
 {
   "name": "Middara Combat Helper",
   "short_name": "Middara",
-  "description": "Middara Combat Helper V2.5D - Scope Reset / Turn Effect Fix",
+  "description": "Middara Combat Helper V2.6A - Live Flow Stabilization",
   "id": "./?app=middara-combat-helper",
-  "start_url": "./index.html?v=2.5c",
+  "start_url": "./index.html?v=2.6a",
   "scope": "./",
   "display": "standalone",
   "display_override": [
