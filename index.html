@@ -9,7 +9,7 @@
   <link rel="manifest" href="manifest.webmanifest" />
   <link rel="apple-touch-icon" href="icons/apple-touch-icon.png" />
   <link rel="icon" href="icons/favicon.svg" type="image/svg+xml" />
-  <title>Middara Combat Helper - V3.0C Attack Resolver</title>
+  <title>Middara Combat Helper - V3.0D Spell Resolver</title>
   <style>
     :root {
       --bg: #0f172a;
@@ -118,20 +118,32 @@
     .mini-table th { color: var(--accent2); width: 150px; background: rgba(15,23,42,.56); }
     .mini-table tr:last-child th, .mini-table tr:last-child td { border-bottom: 0; }
     button:disabled { opacity: .56; cursor: not-allowed; filter: grayscale(.15); }
+
+    .flow-grid.attack-active .resolve-card { grid-column: 1 / -1; }
+    .attack-layout { display: grid; grid-template-columns: minmax(300px, .92fr) minmax(320px, 1.08fr); gap: 12px; align-items: start; margin-top: 10px; }
+    .breakdown-grid { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 8px; margin-top: 10px; }
+    .breakdown-card { border: 1px solid var(--line); border-radius: 13px; background: rgba(2,6,23,.28); padding: 9px; }
+    .breakdown-card .label { color: var(--accent2); font-size: .78rem; font-weight: 900; text-transform: uppercase; letter-spacing: .045em; margin-bottom: 4px; }
+    .breakdown-card .value { color: var(--muted); font-size: .88rem; }
+    .spend-line { display: block; margin: 2px 0; }
+    @media (max-width: 860px) {
+      .flow-grid.attack-active .resolve-card { grid-column: auto; }
+      .attack-layout, .breakdown-grid { grid-template-columns: 1fr; }
+    }
     .hidden { display: none !important; }
   </style>
 </head>
 <body>
   <header>
     <h1>Middara Combat Helper</h1>
-    <div class="subtitle"><strong>V3.0C Attack Resolver</strong> - clean Play-first rebuild with rebuilt attack math, stable trackers, initiative, selected-target controls, and no legacy patch panels.</div>
+    <div class="subtitle"><strong>V3.0D Spell Resolver</strong> - fixes repeatable symbol spending, Empower symbol impact, and improves the attack resolver layout while keeping the clean V3 shell.</div>
   </header>
   <main id="appRoot"></main>
   <footer class="footer" id="stableFooter" aria-live="polite"></footer>
   <script>
 (function () {
   'use strict';
-  const VERSION = 'V3.0C';
+  const VERSION = 'V3.0D';
   const STORAGE_KEY = 'middara.combatHelper.v3.state';
 
   const DATA = {
@@ -174,6 +186,17 @@
       agares_horn: { id:'agares_horn', actor:'agares', label:'Agares - Horn Energy Blast', dice:['Grey','Red','Black'], range:'Range 6', ap:0, passivePhysical:0, abilities:[{name:'Book', book:1, magic:1}, {name:'Wand 2 Book', book:2, magic:2}, {name:'Trophy Burst', burst:1, magic:4}, {name:'Wand Burst', burst:1, magic:3}], notes:'FU Pull 3, Force 10 + difference hit is a reminder for now.' },
       eliphie_scalpel: { id:'eliphie_scalpel', actor:'eliphie', label:'Eliphie - Scalpel', dice:['Grey','Red','Black'], range:'Melee 1', ap:0, passivePhysical:0, abilities:[{name:'Book', book:1, magic:1}, {name:'Burst', burst:1, magic:2}, {name:'Wand 2 Book', book:2, magic:2}, {name:'Trophy Burst', burst:1, magic:4}], notes:'Bag Full of Organs / support helpers return after core combat is stable.' }
     },
+
+    spellProfiles: {
+      rook_courage_stifle: { id:'rook_courage_stifle', actor:'rook', label:'Rook - Courage Stifle', baseForce:6, castingColors:['Purple','Green','Blue'], defaultColor:'Green', sp:2, damageMode:'flat', flatMagic:10, notes:'Spell 6. Magic Damage = 2 x Rook total Armor. Current Armor 5 => 10 Magic Damage. Choose an eligible Shield/Blunt spellcasting upgrade die manually.' },
+      rook_zealous_reprisal: { id:'rook_zealous_reprisal', actor:'rook', label:'Rook - Zealous Reprisal', baseForce:6, castingColors:['Purple','Green','Blue'], defaultColor:'Green', sp:3, damageMode:'zealous', damageDice:['Green','Blue'], notes:'Spell 6. Damage roll uses equipped combat dice, then damage and Push 3 are reduced by 1 for each space beyond adjacent. Use the discount checkbox if Rook damaged this target this turn.' },
+      night_gore_shot: { id:'night_gore_shot', actor:'nightingale', label:'Nightingale - Gore Shot', baseForce:6, castingColors:['Purple','Red','Grey'], defaultColor:'Grey', sp:0, damageMode:'flat', flatMagic:2, optionalSelfDamage:2, optionalMagicBonus:8, defaultEmpower:true, notes:'Spell 6. Deal 2 Magic Damage. Optional: Nightingale takes 2 Irreducible Damage to add +8 Magic Damage with current highest Cruor level 4.' },
+      night_corrosive_ideal: { id:'night_corrosive_ideal', actor:'nightingale', label:'Nightingale - Corrosive Ideal', baseForce:6, castingColors:['Purple','Red','Grey'], defaultColor:'Grey', sp:1, damageMode:'effect', effect:'Poison', defaultEmpower:true, notes:'Spell 6. If the target fails Conviction, inflict Poison. Effect immunity is respected by the tracker.' },
+      night_life_grasp: { id:'night_life_grasp', actor:'nightingale', label:'Nightingale - Life Grasp (single target core)', baseForce:6, castingColors:['Purple','Red','Grey'], defaultColor:'Grey', sp:1, damageMode:'difference', optionalSelfDamage:6, optionalForceBonus:6, defaultEmpower:true, notes:'Core single-target implementation. Damage equals failed Conviction difference. Optional +6 Force costs 6 Irreducible Damage once per cast. Multi-target helper returns after generic spell core is stable.' },
+      night_abbadon: { id:'night_abbadon', actor:'nightingale', label:"Nightingale - Abbadon's Subtlety", baseForce:6, castingColors:['Purple','Red','Grey'], defaultColor:'Grey', sp:1, damageMode:'previous', previousDamage:true, defaultEmpower:true, notes:'After resolving a Nightingale attack or spell, cast Spell 6. Magic Damage equals previous damage dealt. End Nightingale\'s turn after damage.' },
+      agares_holy_strike: { id:'agares_holy_strike', actor:'agares', label:'Agares - Holy Strike', baseForce:6, castingColors:['Grey'], defaultColor:'Grey', sp:1, damageMode:'flat', flatMagic:18, defaultEmpower:true, notes:'Loyal Esper spell core. Current helper assumes 18 Magic Damage from Nightingale discipline count; adjust later if loadout changes.' },
+      eliphie_gore_shot: { id:'eliphie_gore_shot', actor:'eliphie', label:'Eliphie - Gore Shot', baseForce:6, castingColors:['Grey'], defaultColor:'Grey', sp:0, damageMode:'flat', flatMagic:2, optionalSelfDamage:2, optionalMagicBonus:8, defaultEmpower:true, notes:'Eliphie spell core. Optional self-damage belongs to Eliphie, not Nightingale.' }
+    },
     effects: ['Darkness','Condemn','Disease','Paralyze','Poison','Wilt','Sedate','Barrier','Courage','Haste','Tether','Nemesis'],
     tokens: ['Dodge','Heal','Intervention','Vow','Summon','Energy']
   };
@@ -200,6 +223,7 @@
       createdAt: new Date().toISOString(),
       ui: { activeTab:'play', actorId:'party:rook', targetId:null, targetScope:'enemies', actionId:null, selectedParty:'rook', appliedResultKey:null },
       attack: { profileId:'rook_default', faces:{}, empower:false, empowerFace:0, manualAttackMod:0, manualPhysical:0, manualMagic:0, manualArmorPiercing:0, targetDefenseMod:0, useMasterWork:false, useCourage: true },
+      spell: { profileId:'rook_courage_stifle', castingColor:'Green', castingFace:0, empower:false, empowerFace:0, manualForceMod:0, convictionFaces:{c0:0,c1:0}, useOtherworldly:true, useOptionalBonus:false, previousDamage:0, zealousFaces:{}, zealousDistance:1, zealousDiscount:false },
       party: defaultParty(),
       enemies: [],
       command: [],
@@ -226,6 +250,9 @@
     next.ui = Object.assign(base.ui, raw?.ui || {});
     next.attack = Object.assign(base.attack, raw?.attack || {});
     next.attack.faces = Object.assign(base.attack.faces, raw?.attack?.faces || {});
+    next.spell = Object.assign(base.spell, raw?.spell || {});
+    next.spell.convictionFaces = Object.assign(base.spell.convictionFaces, raw?.spell?.convictionFaces || {});
+    next.spell.zealousFaces = Object.assign(base.spell.zealousFaces, raw?.spell?.zealousFaces || {});
     next.party = Object.assign(base.party, raw?.party || {});
     next.initiative = Object.assign(base.initiative, raw?.initiative || {});
     next.rewards = Object.assign(base.rewards, raw?.rewards || {});
@@ -310,7 +337,15 @@
         return { title: applied ? 'Applied attack damage' : `${result.hit ? 'Hit' : 'Miss'} - ${result.finalDamage} damage`, detail: `${actor} attacking ${target}. Attack ${result.attackTotal} vs Defense ${result.targetDefense}. ${applied ? 'This exact result has already been applied.' : 'Use Apply when ready.'}` };
       }
     }
-    return { title: `${actor} - ${action}`, detail: state.ui.targetId ? `Target: ${target}. V3.0C has clean attack math; spell and enemy-attack modules return next.` : 'Choose a target, then an action.' };
+    if (state.ui.actionId === 'spell') {
+      const result = calculateSpellResult();
+      if (result.ready) {
+        const applied = state.ui.appliedResultKey === result.key;
+        const effectText = result.effect && result.failed ? `; ${result.effect}` : '';
+        return { title: applied ? 'Applied spell result' : `${result.failed ? 'Failed Conviction' : 'Passed Conviction'} - ${result.finalDamage} damage${effectText}`, detail: `${actor} casting on ${target}. Force ${result.force} vs Conviction ${result.conviction}. ${applied ? 'This exact result has already been applied.' : 'Use Apply when ready.'}` };
+      }
+    }
+    return { title: `${actor} - ${action}`, detail: state.ui.targetId ? `Target: ${target}.` : 'Choose a target, then an action.' };
   }
 
   function actorOptionsHtml() {
@@ -402,18 +437,24 @@
         const applied = state.ui.appliedResultKey === result.key;
         applyButton = `<button type="button" class="primary" data-action="apply-attack" ${applied ? 'disabled' : ''}>${applied ? 'Applied ✓' : `Apply ${result.finalDamage} dmg`}</button>`;
       }
+    } else if (state.ui.actionId === 'spell') {
+      const result = calculateSpellResult();
+      if (result.ready) {
+        const applied = state.ui.appliedResultKey === result.key;
+        applyButton = `<button type="button" class="primary" data-action="apply-spell" ${applied ? 'disabled' : ''}>${applied ? 'Applied ✓' : `Apply spell`}</button>`;
+      }
     }
     byId('stableFooter').innerHTML = `<div><div class="footer-title">${escapeHtml(f.title)}</div><div class="footer-detail">${escapeHtml(f.detail)}</div></div><div class="footer-actions">${applyButton}<button type="button" data-action="log-current">Log</button><button type="button" data-action="tab" data-tab="play">Play</button><button type="button" class="ghost" data-action="sync-actor">Sync</button></div>`;
   }
 
   function renderPlayTab() {
     return `<section class="panel" id="playPanel">
-      <div class="live-title"><div><h2>V3.0C stable Play flow</h2><div class="note">Actor → Target → Action → Roll / Resolve → Apply. Attack math is rebuilt cleanly here; Party management stays on the Party tab.</div></div><span class="pill"><strong>Current</strong> ${escapeHtml(currentInitiativeCard()?.label || 'No initiative')}</span></div>
-      <div class="flow-grid" style="margin-top:12px">
+      <div class="live-title"><div><h2>V3.0D stable Play flow</h2><div class="note">Actor → Target → Action → Roll / Resolve → Apply. Attack and spell math are rebuilt cleanly here; Party management stays on the Party tab.</div></div><span class="pill"><strong>Current</strong> ${escapeHtml(currentInitiativeCard()?.label || 'No initiative')}</span></div>
+      <div class="flow-grid ${(state.ui.actionId==='attack'||state.ui.actionId==='spell')?'attack-active':''}" style="margin-top:12px">
         <div class="card"><h3>1. Actor</h3>${renderActorCard()}</div>
         <div class="card"><h3>2. Target drawer</h3>${renderTargetDrawer()}</div>
         <div class="card"><h3>3. Action</h3>${renderActionCard()}</div>
-        <div class="card"><h3>4. Resolve / apply</h3>${renderResolveCard()}</div>
+        <div class="card resolve-card"><h3>4. Resolve / apply</h3>${renderResolveCard()}</div>
       </div>
     </section>
     <section class="grid two">
@@ -440,7 +481,7 @@
     const enemies = state.enemies.filter(e=>!e.defeated).map(e => {
       const def = DATA.enemyDefinitions[e.defId];
       const sel = state.ui.targetId === `enemy:${e.id}`;
-      return `<div class="card ${sel?'selected':''}"><div class="entity-head"><strong>${escapeHtml(e.label)}</strong><span class="pill">HP ${Math.max(0,def.hp-e.damage)}/${def.hp}</span></div>${hpBar(e.damage, def.hp)}${entityStatPills(def, e)}${renderEffects(e,'enemy',e.id)}<div class="compact-actions"><button type="button" class="accent" data-action="select-target" data-target="enemy:${e.id}">Target</button><button type="button" data-action="target-attack" data-target="enemy:${e.id}">Target + Attack</button></div></div>`;
+      return `<div class="card ${sel?'selected':''}"><div class="entity-head"><strong>${escapeHtml(e.label)}</strong><span class="pill">HP ${Math.max(0,def.hp-e.damage)}/${def.hp}</span></div>${hpBar(e.damage, def.hp)}${entityStatPills(def, e)}${renderEffects(e,'enemy',e.id)}<div class="compact-actions"><button type="button" class="accent" data-action="select-target" data-target="enemy:${e.id}">Target</button><button type="button" data-action="target-attack" data-target="enemy:${e.id}">Target + Attack</button><button type="button" data-action="target-spell" data-target="enemy:${e.id}">Target + Spell</button></div></div>`;
     }).join('') || '<div class="note">All tracked enemies are defeated.</div>';
     return `<div class="table-ish">${enemies}</div><details style="margin-top:10px"><summary>Quick add enemy</summary><div style="margin-top:10px">${renderQuickEnemyAdd()}</div></details>`;
   }
@@ -488,12 +529,12 @@
       buttons.push(['wait','AI / reminder','Use the physical AI card; app AI is intentionally omitted in V3 shell.']);
     } else if (actor.type === 'party') {
       buttons.push(['attack','Attack','Roll combat dice, resolve symbols, and apply damage.']);
-      buttons.push(['spell','Spell / Force','Spell resolver returns in V3.0D.']);
+      buttons.push(['spell','Spell / Force','Resolve Force, Conviction, spell damage, and effects.']);
       buttons.push(['support','Support','Use Party/Command trackers for now.']);
       if (actor.id === 'nightingale') buttons.push(['summon','Summon Esper','Open the clean Command summon controls.']);
-      if (actor.id === 'remi') buttons.push(['whirlwind','Whirlwind','Reminder only in V3.0C.']);
-      if (actor.id === 'zeke') buttons.push(['onslaught','Onslaught','Reminder only in V3.0C.']);
-      if (actor.id === 'zeke') buttons.push(['bladeWorks','Blade Works','Reminder only in V3.0C.']);
+      if (actor.id === 'remi') buttons.push(['whirlwind','Whirlwind','Reminder only in V3.0D.']);
+      if (actor.id === 'zeke') buttons.push(['onslaught','Onslaught','Reminder only in V3.0D.']);
+      if (actor.id === 'zeke') buttons.push(['bladeWorks','Blade Works','Reminder only in V3.0D.']);
     } else if (actor.type === 'command') {
       buttons.push(['attack','Attack','Roll Esper attack dice and apply damage.']);
       buttons.push(['spell','Spell / support','Esper spell/support returns after Command core.']);
@@ -502,10 +543,11 @@
   }
   function renderResolveCard() {
     if (state.ui.actionId === 'attack') return renderAttackResolver();
+    if (state.ui.actionId === 'spell') return renderSpellResolver();
     const actor = actorLabel(), target = targetLabel(), action = actionLabel();
     let special = '';
     if (state.ui.actionId === 'summon') special = renderSummonMini();
-    const note = state.ui.actionId === 'spell' ? 'Spell math returns in V3.0D.' : state.ui.actionId === 'enemyAttack' ? 'Enemy attack / defense trays return in V3.0E.' : 'Use the tracker buttons below for now; rules-heavy automation returns only where it helps live play.';
+    const note = state.ui.actionId === 'enemyAttack' ? 'Enemy attack / defense trays return in V3.0E.' : 'Use the tracker buttons below for now; rules-heavy automation returns only where it helps live play.';
     return `<div class="status-line"><div><strong>${escapeHtml(actor)}</strong> - ${escapeHtml(action)}<br><span class="tiny">${escapeHtml(target)}. ${note}</span></div></div>
       ${special}
       <div class="compact-actions"><button type="button" class="primary" data-action="log-current">Log planned action</button><button type="button" data-action="tab" data-tab="enemies">Enemy tracker</button><button type="button" data-action="tab" data-tab="party">Party tracker</button></div>`;
@@ -519,14 +561,20 @@
     const profile = DATA.attackProfiles[state.attack.profileId] || profiles[0];
     const result = calculateAttackResult();
     return `<div class="status-line"><div><strong>${escapeHtml(actorLabel())}</strong> attacking <strong>${escapeHtml(targetLabel())}</strong><br><span class="tiny">${target ? 'Enter dice below. Results auto-update; Apply writes damage to the selected target.' : 'Select a target first.'}</span></div></div>
-      <div class="hr"></div>
-      <label>Attack profile</label>
-      <select id="attackProfileSelect" data-change="attack-profile">${profiles.map(p => `<option value="${p.id}" ${state.attack.profileId===p.id?'selected':''}>${escapeHtml(p.label)} (${escapeHtml(p.range || '')})</option>`).join('')}</select>
-      <div class="tiny" style="margin-top:6px">${escapeHtml(profile.notes || '')}</div>
-      <div class="field-grid" style="margin-top:10px">${renderAttackDiceInputs(profile)}</div>
-      ${renderAttackOptions(profile)}
-      <div class="hr"></div>
-      ${renderAttackResult(result)}`;
+      <div class="attack-layout">
+        <div class="card">
+          <h3>Attack roll</h3>
+          <label>Attack profile</label>
+          <select id="attackProfileSelect" data-change="attack-profile">${profiles.map(p => `<option value="${p.id}" ${state.attack.profileId===p.id?'selected':''}>${escapeHtml(p.label)} (${escapeHtml(p.range || '')})</option>`).join('')}</select>
+          <div class="tiny" style="margin-top:6px">${escapeHtml(profile.notes || '')}</div>
+          <div class="field-grid" style="margin-top:10px">${renderAttackDiceInputs(profile)}</div>
+          ${renderAttackOptions(profile)}
+        </div>
+        <div class="card">
+          <h3>Result / breakdown</h3>
+          ${renderAttackResult(result)}
+        </div>
+      </div>`;
   }
 
   function getAttackProfilesForActor(actorId = state.ui.actorId) {
@@ -565,7 +613,7 @@
       const key = `d${idx}`;
       const selected = state.attack.faces[key] != null ? Number(state.attack.faces[key]) : 0;
       return `<div><label>${escapeHtml(color)} die ${idx+1}</label><select data-change="attack-face" data-die-key="${key}">${renderFaceOptions(color, selected)}</select></div>`;
-    }).join('') + (profile.dice?.includes('Black') ? '' : `<div><label>&nbsp;</label><label><input type="checkbox" data-change="attack-empower" ${state.attack.empower?'checked':''}> <span class="note">Empower attack: add black die</span></label></div>${state.attack.empower ? `<div><label>Empower black die</label><select data-change="attack-empower-face">${renderFaceOptions('Black', state.attack.empowerFace || 0)}</select></div>` : ''}`);
+    }).join('') + (profile.dice?.includes('Black') ? '' : `<div><label>&nbsp;</label><label><input type="checkbox" data-change="attack-empower" ${state.attack.empower?'checked':''}> <span class="note">Empower attack: add black die symbols</span></label></div>${state.attack.empower ? `<div><label>Empower black die</label><select data-change="attack-empower-face">${renderFaceOptions('Black', state.attack.empowerFace || 0)}</select></div>` : ''}`);
   }
   function renderAttackOptions(profile) {
     const actor = getActor();
@@ -596,28 +644,87 @@
   function pay(pool, ability) {
     return { book:(pool.book||0)-(ability.book||0), shield:(pool.shield||0)-(ability.shield||0), burst:(pool.burst||0)-(ability.burst||0), skull:pool.skull||0 };
   }
+  function symbolCost(ability) {
+    return (ability.book||0) + (ability.shield||0) + (ability.burst||0);
+  }
+  function maxAffordable(pool, ability) {
+    const limits = [];
+    if (ability.book) limits.push(Math.floor((pool.book||0) / ability.book));
+    if (ability.shield) limits.push(Math.floor((pool.shield||0) / ability.shield));
+    if (ability.burst) limits.push(Math.floor((pool.burst||0) / ability.burst));
+    return limits.length ? Math.min(...limits) : 0;
+  }
+  function payTimes(pool, ability, times) {
+    return {
+      book:(pool.book||0) - (ability.book||0) * times,
+      shield:(pool.shield||0) - (ability.shield||0) * times,
+      burst:(pool.burst||0) - (ability.burst||0) * times,
+      skull:pool.skull||0
+    };
+  }
+  function aggregateChosen(chosen) {
+    const map = new Map();
+    chosen.forEach(a => {
+      const key = a.name + '|' + (a.book||0) + '|' + (a.shield||0) + '|' + (a.burst||0) + '|' + (a.physical||0) + '|' + (a.magic||0);
+      if (!map.has(key)) map.set(key, Object.assign({count:0}, a));
+      map.get(key).count += 1;
+    });
+    return Array.from(map.values());
+  }
+  function formatSymbolSpend(chosen) {
+    const rows = aggregateChosen(chosen || []);
+    if (!rows.length) return 'No symbol damage spent.';
+    return rows.map(a => {
+      const cost = [`${a.book||0} Book`, `${a.shield||0} Shield`, `${a.burst||0} Burst`].filter(x => !x.startsWith('0')).join(' + ') || '0 symbols';
+      const gain = [`+${(a.physical||0) * a.count} Physical`, `+${(a.magic||0) * a.count} Magic`].filter(x => !x.includes('+0')).join(', ') || '+0 damage';
+      const count = a.count > 1 ? ` x${a.count}` : '';
+      return `<span class="spend-line">${escapeHtml(a.name)}${count} (${escapeHtml(cost)} each): ${escapeHtml(gain)}</span>`;
+    }).join('');
+  }
   function optimizeSymbolSpend(profile, pool, diffHit, targetArmor, armorPiercing, manualPhysical, manualMagic) {
-    const abilities = profile.abilities || [];
+    const abilities = (profile.abilities || []).filter(a => symbolCost(a) > 0);
     let best = null;
-    function score(chosen) {
+    function score(chosen, remaining) {
       const physicalSymbols = chosen.reduce((s,a)=>s+(a.physical||0),0);
       const magicSymbols = chosen.reduce((s,a)=>s+(a.magic||0),0);
-      const physical = Math.max(0, diffHit + (profile.passivePhysical||0) + physicalSymbols + manualPhysical - Math.max(0, targetArmor - armorPiercing));
-      const magic = (profile.passiveMagic||0) + magicSymbols + manualMagic;
-      return { finalDamage: Math.max(0, physical + magic), physical, magic, physicalSymbols, magicSymbols };
+      const rawPhysical = diffHit + (profile.passivePhysical||0) + physicalSymbols + manualPhysical;
+      const effectiveArmor = Math.max(0, targetArmor - armorPiercing);
+      const physical = Math.max(0, rawPhysical - effectiveArmor);
+      const magic = Math.max(0, (profile.passiveMagic||0) + magicSymbols + manualMagic);
+      const finalDamage = Math.max(0, physical + magic);
+      const spentSymbols = chosen.reduce((s,a)=>s + symbolCost(a), 0);
+      return { finalDamage, physical, magic, rawPhysical, effectiveArmor, physicalSymbols, magicSymbols, spentSymbols, chosenCount: chosen.length, remaining };
+    }
+    function better(candidate, incumbent) {
+      if (!incumbent) return true;
+      if (candidate.finalDamage !== incumbent.finalDamage) return candidate.finalDamage > incumbent.finalDamage;
+      if ((candidate.physical + candidate.magic) !== (incumbent.physical + incumbent.magic)) return (candidate.physical + candidate.magic) > (incumbent.physical + incumbent.magic);
+      if (candidate.spentSymbols !== incumbent.spentSymbols) return candidate.spentSymbols > incumbent.spentSymbols;
+      return candidate.chosenCount > incumbent.chosenCount;
     }
     function walk(idx, remaining, chosen) {
       if (idx >= abilities.length) {
-        const sc = score(chosen);
-        if (!best || sc.finalDamage > best.finalDamage) best = Object.assign({ chosen: chosen.slice(), remaining }, sc);
+        const sc = score(chosen, remaining);
+        if (better(sc, best)) best = Object.assign({ chosen: chosen.slice() }, sc);
         return;
       }
-      walk(idx+1, remaining, chosen);
       const ability = abilities[idx];
-      if (canPay(remaining, ability)) walk(idx+1, pay(remaining, ability), chosen.concat(ability));
+      const max = maxAffordable(remaining, ability);
+      for (let count = 0; count <= max; count += 1) {
+        const next = payTimes(remaining, ability, count);
+        const expanded = count ? chosen.concat(Array.from({length:count}, () => ability)) : chosen;
+        walk(idx + 1, next, expanded);
+      }
     }
     walk(0, Object.assign({}, pool), []);
-    return best || { finalDamage:0, physical:0, magic:0, chosen:[], remaining:pool, physicalSymbols:0, magicSymbols:0 };
+    if (!best) {
+      const effectiveArmor = Math.max(0, targetArmor - armorPiercing);
+      const rawPhysical = diffHit + (profile.passivePhysical||0) + manualPhysical;
+      const physical = Math.max(0, rawPhysical - effectiveArmor);
+      const magic = Math.max(0, (profile.passiveMagic||0) + manualMagic);
+      best = { finalDamage: Math.max(0, physical + magic), physical, magic, rawPhysical, effectiveArmor, physicalSymbols:0, magicSymbols:0, spentSymbols:0, chosenCount:0, chosen:[], remaining:pool };
+    }
+    return best;
   }
   function calculateAttackResult() {
     const actor = getActor();
@@ -658,6 +765,20 @@
     const key = JSON.stringify({a:state.ui.actorId,t:state.ui.targetId,p:profile.id,f:state.attack.faces,e:state.attack.empower,ef:state.attack.empowerFace,mA:manualAttack,mP:manualPhysical,mM:manualMagic,mAP:state.attack.manualArmorPiercing,tD:state.attack.targetDefenseMod,c:state.attack.useCourage,mw:state.attack.useMasterWork,damage:finalDamage});
     return { ready:true, actor, target, profile, diceRows, pool, attackRoll, attackTotal, targetDefense, hit, diffHit, armorPiercing, targetArmor, manualPhysical, manualMagic, finalDamage, hpAfter, spend, key, darknessPenalty, masterWork };
   }
+  function renderBreakdownGrid(result) {
+    const diceText = result.diceRows.map(r=>`${escapeHtml(r.color)}: ${escapeHtml(r.label)}`).join('<br>');
+    const modsText = `Manual ${Number(state.attack.manualAttackMod||0)}, Darkness ${result.darknessPenalty}, Master Work ${result.masterWork}`;
+    const armorText = `Armor ${result.targetArmor} - AP ${result.armorPiercing} = ${Math.max(0,result.targetArmor-result.armorPiercing)} effective`;
+    const rawText = `Difference ${result.diffHit} + passive ${result.profile.passivePhysical||0} + symbol Physical ${result.spend.physicalSymbols||0} + manual ${result.manualPhysical} = ${result.spend.rawPhysical||0} before armor`;
+    return `<div class="breakdown-grid">
+      <div class="breakdown-card"><div class="label">Dice</div><div class="value">${diceText}</div></div>
+      <div class="breakdown-card"><div class="label">Symbols available</div><div class="value">${escapeHtml(symbolText(result.pool))}</div></div>
+      <div class="breakdown-card"><div class="label">Attack modifiers</div><div class="value">${escapeHtml(modsText)}</div></div>
+      <div class="breakdown-card"><div class="label">Armor</div><div class="value">${escapeHtml(armorText)}</div></div>
+      <div class="breakdown-card"><div class="label">Symbol spend</div><div class="value">${formatSymbolSpend(result.spend.chosen)}</div></div>
+      <div class="breakdown-card"><div class="label">Damage components</div><div class="value">${escapeHtml(rawText)}<br>Physical after armor: ${result.spend.physical || 0}<br>Magic: ${result.spend.magic || 0}<br><strong>Final: ${result.finalDamage}</strong></div></div>
+    </div>`;
+  }
   function renderAttackResult(result) {
     if (!result.ready) return `<div class="note">${escapeHtml(result.reason || 'Attack is not ready.')}</div>`;
     const applied = state.ui.appliedResultKey === result.key;
@@ -666,17 +787,176 @@
       <div class="card"><h3>Damage</h3><div class="result-metric"><strong>${result.finalDamage}</strong> final damage</div><div class="note">Target HP after: ${result.hpAfter}. ${applied ? 'Applied ✓' : ''}</div></div>
     </div>
     <div class="compact-actions" style="margin-top:10px"><button type="button" class="primary" data-action="apply-attack" ${applied ? 'disabled' : ''}>${applied ? 'Applied ✓' : `Apply ${result.finalDamage} damage`}</button><button type="button" data-action="reset-attack-roll">Reset roll/options</button></div>
-    <details style="margin-top:10px" open><summary>Breakdown</summary>
-      <table class="mini-table" style="margin-top:10px"><tbody>
-        <tr><th>Dice</th><td>${result.diceRows.map(r=>`${escapeHtml(r.color)}: ${escapeHtml(r.label)}`).join('<br>')}</td></tr>
-        <tr><th>Symbols available</th><td>${escapeHtml(symbolText(result.pool))}</td></tr>
-        <tr><th>Attack modifiers</th><td>Manual ${Number(state.attack.manualAttackMod||0)}, Darkness ${result.darknessPenalty}, Master Work ${result.masterWork}</td></tr>
-        <tr><th>Armor</th><td>Target Armor ${result.targetArmor}, Armor Piercing ${result.armorPiercing}, effective Armor ${Math.max(0,result.targetArmor-result.armorPiercing)}</td></tr>
-        <tr><th>Symbol spend</th><td>${result.spend.chosen.length ? result.spend.chosen.map(a=>`${escapeHtml(a.name)}: +${a.physical||0} Physical, +${a.magic||0} Magic`).join('<br>') : 'No symbol damage spent.'}</td></tr>
-        <tr><th>Damage components</th><td>Physical after armor: ${result.spend.physical || 0}<br>Magic: ${result.spend.magic || 0}<br>Final: ${result.finalDamage}</td></tr>
-      </tbody></table>
-    </details>`;
+    <details style="margin-top:10px" open><summary>Damage and symbol breakdown</summary>${renderBreakdownGrid(result)}</details>`;
   }
+
+  function getSpellProfilesForActor(actorId = state.ui.actorId) {
+    const actor = getActor(actorId);
+    if (actor.type === 'party') return Object.values(DATA.spellProfiles).filter(p => p.actor === actor.id);
+    if (actor.type === 'command') return Object.values(DATA.spellProfiles).filter(p => p.actor === actor.def?.id);
+    return [];
+  }
+  function ensureSpellProfileValid(doRender=true) {
+    const profiles = getSpellProfilesForActor();
+    if (!profiles.length) return;
+    if (!profiles.some(p => p.id === state.spell.profileId)) {
+      state.spell.profileId = profiles[0].id;
+      state.spell.castingColor = profiles[0].defaultColor || profiles[0].castingColors?.[0] || 'Purple';
+      state.spell.castingFace = 0;
+      state.spell.empower = !!profiles[0].defaultEmpower;
+      state.spell.empowerFace = 0;
+      state.spell.manualForceMod = 0;
+      state.spell.convictionFaces = {};
+      state.spell.zealousFaces = {};
+      state.spell.useOptionalBonus = false;
+      state.spell.previousDamage = 0;
+      state.spell.zealousDistance = 1;
+      state.spell.zealousDiscount = false;
+      state.ui.appliedResultKey = null;
+      if (doRender) { saveState(); render(); }
+    }
+  }
+  function renderSpellResolver() {
+    const target = getEntityByTarget(state.ui.targetId);
+    const profiles = getSpellProfilesForActor(state.ui.actorId);
+    if (!profiles.length) return `<div class="status-line"><div><strong>No spell profile</strong><br><span class="tiny">${escapeHtml(actorLabel())} does not have a V3 spell profile yet.</span></div></div>`;
+    ensureSpellProfileValid(false);
+    const profile = DATA.spellProfiles[state.spell.profileId] || profiles[0];
+    const result = calculateSpellResult();
+    return `<div class="status-line"><div><strong>${escapeHtml(actorLabel())}</strong> casting <strong>${escapeHtml(profile.label)}</strong><br><span class="tiny">${target ? 'Enter Force and Conviction below. Results auto-update; Apply writes damage/effects to the selected target.' : 'Select a target first.'}</span></div></div>
+      <div class="attack-layout">
+        <div class="card">
+          <h3>Spell / Force roll</h3>
+          <label>Spell profile</label>
+          <select id="spellProfileSelect" data-change="spell-profile">${profiles.map(p => `<option value="${p.id}" ${state.spell.profileId===p.id?'selected':''}>${escapeHtml(p.label)}</option>`).join('')}</select>
+          <div class="tiny" style="margin-top:6px">${escapeHtml(profile.notes || '')}</div>
+          <div class="field-grid" style="margin-top:10px">
+            <div><label>Casting / upgrade die color</label><select data-change="spell-casting-color">${(profile.castingColors||['Purple']).map(c=>`<option value="${c}" ${state.spell.castingColor===c?'selected':''}>${c}</option>`).join('')}</select></div>
+            <div><label>Casting die result</label><select data-change="spell-casting-face">${renderFaceOptions(state.spell.castingColor || profile.defaultColor || 'Purple', state.spell.castingFace || 0)}</select></div>
+            <label><input type="checkbox" data-change="spell-empower" ${state.spell.empower?'checked':''}> <span>Empower this Spell: add black die</span></label>
+            ${state.spell.empower ? `<div><label>Black die result</label><select data-change="spell-empower-face">${renderFaceOptions('Black', state.spell.empowerFace || 0)}</select></div>` : ''}
+            <div><label>Manual Force modifier</label><input type="number" data-change="spell-number" data-field="manualForceMod" value="${Number(state.spell.manualForceMod||0)}" /></div>
+            ${renderSpellSpecificInputs(profile)}
+          </div>
+          <details style="margin-top:10px" open><summary>Target Conviction</summary>
+            ${renderSpellConvictionInputs(target)}
+          </details>
+        </div>
+        <div class="card">
+          <h3>Result / breakdown</h3>
+          ${renderSpellResult(result)}
+        </div>
+      </div>`;
+  }
+  function renderSpellSpecificInputs(profile) {
+    const parts = [];
+    if (profile.optionalMagicBonus || profile.optionalForceBonus) {
+      const label = profile.optionalForceBonus ? `Use optional boost: self ${profile.optionalSelfDamage || 0} Irreducible Damage for +${profile.optionalForceBonus} Force` : `Use optional self-damage bonus: self ${profile.optionalSelfDamage || 0} Irreducible Damage for +${profile.optionalMagicBonus} Magic Damage`;
+      parts.push(`<label><input type="checkbox" data-change="spell-optional" ${state.spell.useOptionalBonus?'checked':''}> <span>${escapeHtml(label)}</span></label>`);
+    }
+    if (profile.previousDamage) parts.push(`<div><label>Previous damage dealt</label><input type="number" data-change="spell-number" data-field="previousDamage" min="0" value="${Number(state.spell.previousDamage||0)}" /></div>`);
+    if (profile.damageMode === 'zealous') {
+      parts.push(`<label><input type="checkbox" data-change="spell-zealous-discount" ${state.spell.zealousDiscount?'checked':''}> <span>Rook damaged this target this turn: SP cost 1 instead of 3</span></label>`);
+      parts.push(`<div><label>Target distance from Rook</label><input type="number" data-change="spell-number" data-field="zealousDistance" min="1" value="${Number(state.spell.zealousDistance||1)}" /></div>`);
+      (profile.damageDice||[]).forEach((color, idx) => {
+        const key = `z${idx}`;
+        parts.push(`<div><label>Zealous damage die ${idx+1}: ${color}</label><select data-change="spell-zealous-face" data-die-key="${key}">${renderFaceOptions(color, state.spell.zealousFaces?.[key] || 0)}</select></div>`);
+      });
+    }
+    if (profile.actor === 'rook' || profile.actor === 'nightingale' || profile.actor === 'eliphie' || profile.actor === 'agares') {
+      parts.push(`<label><input type="checkbox" data-change="spell-otherworldly" ${state.spell.useOtherworldly?'checked':''}> <span>Use remaining Book+Shield pairs for Otherworldly +1 Force each</span></label>`);
+    }
+    return parts.join('');
+  }
+  function renderSpellConvictionInputs(target) {
+    if (!target?.def) return `<div class="note">Select a target to enter Conviction dice.</div>`;
+    const colors = target.def.conviction || ['Purple','Purple'];
+    return `<div class="field-grid" style="margin-top:10px">
+      <div><label>Target Conviction die 1 (${colors[0]})</label><select data-change="spell-conviction-face" data-die-key="c0">${renderFaceOptions(colors[0] || 'Purple', state.spell.convictionFaces?.c0 || 0)}</select></div>
+      <div><label>Target Conviction die 2 (${colors[1]})</label><select data-change="spell-conviction-face" data-die-key="c1">${renderFaceOptions(colors[1] || colors[0] || 'Purple', state.spell.convictionFaces?.c1 || 0)}</select></div>
+    </div>`;
+  }
+  function calculateSpellResult() {
+    const actor = getActor();
+    const target = getEntityByTarget(state.ui.targetId);
+    const profiles = getSpellProfilesForActor();
+    const profile = DATA.spellProfiles[state.spell.profileId] || profiles[0];
+    if (!actor.def || !profile || !target?.def || !target?.state) return { ready:false, reason:'Choose a spell actor and target.' };
+    const castingColor = state.spell.castingColor || profile.defaultColor || profile.castingColors?.[0] || 'Purple';
+    const castFace = DATA.dice[castingColor]?.[Number(state.spell.castingFace || 0)] || DATA.dice[castingColor]?.[0] || {value:0};
+    const pool = { book: castFace.book||0, shield: castFace.shield||0, burst: castFace.burst||0, skull: castFace.skull||0 };
+    const forceRows = [{ source: `${castingColor} casting`, value: castFace.value||0, symbols: symbolText(pool) }];
+    let force = (profile.baseForce || 6) + (castFace.value || 0) + Number(state.spell.manualForceMod || 0);
+    let blackForce = 0;
+    let blackFace = null;
+    if (state.spell.empower) {
+      blackFace = DATA.dice.Black?.[Number(state.spell.empowerFace || 0)] || DATA.dice.Black[0];
+      pool.book += blackFace.book || 0; pool.shield += blackFace.shield || 0; pool.burst += blackFace.burst || 0; pool.skull += blackFace.skull || 0;
+      blackForce = blackFace.skull ? 0 : (blackFace.book || 0);
+      force += blackForce;
+      forceRows.push({ source:'Black Empower', value:blackForce, symbols:symbolText({book:blackFace.book||0, shield:blackFace.shield||0, burst:blackFace.burst||0, skull:blackFace.skull||0}) });
+    }
+    let otherworldlyForce = 0;
+    // Remaining Book+Shield pairs can add Force after black Books are effectively counted for Empower Force.
+    if (state.spell.useOtherworldly) {
+      const remainingBooks = Math.max(0, (pool.book || 0) - blackForce);
+      otherworldlyForce = Math.min(remainingBooks, pool.shield || 0);
+      if (otherworldlyForce > 0) forceRows.push({ source:'Otherworldly Book+Shield', value:otherworldlyForce, symbols:`${otherworldlyForce} pair(s)` });
+      force += otherworldlyForce;
+    }
+    let optionalSelfDamage = 0;
+    if (state.spell.useOptionalBonus && profile.optionalForceBonus) { force += profile.optionalForceBonus; optionalSelfDamage = profile.optionalSelfDamage || 0; forceRows.push({source:'Optional Life Grasp boost', value:profile.optionalForceBonus, symbols:`self ${optionalSelfDamage} Irreducible Damage`}); }
+    const convColors = target.def.conviction || ['Purple','Purple'];
+    const conv0 = DATA.dice[convColors[0]]?.[Number(state.spell.convictionFaces?.c0 || 0)] || DATA.dice[convColors[0]]?.[0] || {value:0};
+    const conv1 = DATA.dice[convColors[1] || convColors[0]]?.[Number(state.spell.convictionFaces?.c1 || 0)] || DATA.dice[convColors[1] || convColors[0]]?.[0] || {value:0};
+    const conviction = (conv0.value || 0) + (conv1.value || 0);
+    const failed = force > conviction;
+    const difference = Math.max(0, force - conviction);
+    let magicDamage = 0;
+    let effect = profile.effect || '';
+    let push = null;
+    const damageRows = [];
+    if (profile.damageMode === 'flat') { magicDamage += profile.flatMagic || 0; if (profile.flatMagic) damageRows.push({source:'Flat spell damage', value:profile.flatMagic}); }
+    if (profile.damageMode === 'difference') { magicDamage += difference; damageRows.push({source:'Failed Conviction difference', value:difference}); }
+    if (profile.damageMode === 'previous') { magicDamage += Number(state.spell.previousDamage || 0); damageRows.push({source:'Previous damage value', value:Number(state.spell.previousDamage||0)}); }
+    if (profile.damageMode === 'zealous') {
+      let damageRoll = 0;
+      (profile.damageDice||[]).forEach((color, idx) => { const face = DATA.dice[color]?.[Number(state.spell.zealousFaces?.[`z${idx}`] || 0)] || DATA.dice[color]?.[0] || {value:0}; damageRoll += face.value || 0; });
+      const distanceReduction = Math.max(0, Number(state.spell.zealousDistance || 1) - 1);
+      magicDamage += Math.max(0, damageRoll - distanceReduction);
+      push = Math.max(0, 3 - distanceReduction);
+      damageRows.push({source:'Equipped combat dice damage roll', value:damageRoll});
+      damageRows.push({source:'Distance reduction', value:-distanceReduction});
+    }
+    if (state.spell.useOptionalBonus && profile.optionalMagicBonus) { magicDamage += profile.optionalMagicBonus; optionalSelfDamage = profile.optionalSelfDamage || 0; damageRows.push({source:'Optional self-damage bonus', value:profile.optionalMagicBonus}); }
+    if (!failed) magicDamage = 0;
+    const finalDamage = Math.max(0, magicDamage);
+    const hpAfter = Math.max(0, (target.def.hp || 0) - ((target.state.damage || 0) + finalDamage));
+    const key = JSON.stringify({mode:'spell', actor:state.ui.actorId, target:state.ui.targetId, profile:profile.id, cast:castingColor, face:state.spell.castingFace, empower:state.spell.empower, eFace:state.spell.empowerFace, force, conviction, damage:finalDamage, effect, opt:state.spell.useOptionalBonus, prev:state.spell.previousDamage, z:state.spell.zealousFaces, dist:state.spell.zealousDistance});
+    return { ready:true, actor, target, profile, force, conviction, failed, difference, finalDamage, hpAfter, effect, push, key, forceRows, damageRows, optionalSelfDamage, convictionRows:[`${convColors[0]}: ${faceLabel(conv0,0)}`, `${convColors[1] || convColors[0]}: ${faceLabel(conv1,1)}`], blackSkull: !!blackFace?.skull, spCost: profile.damageMode==='zealous' && state.spell.zealousDiscount ? 1 : (profile.sp || 0) };
+  }
+  function renderSpellResult(result) {
+    if (!result.ready) return `<div class="note">${escapeHtml(result.reason || 'Spell is not ready.')}</div>`;
+    const applied = state.ui.appliedResultKey === result.key;
+    const status = result.failed ? 'Target failed Conviction' : 'Target passed Conviction';
+    return `<div class="grid two">
+      <div class="card ${result.failed?'ok':'danger'}"><h3>Spell result</h3><div class="result-metric"><strong>${escapeHtml(status)}</strong></div><div class="note">Force ${result.force} vs Conviction ${result.conviction}. Difference ${result.difference}.</div></div>
+      <div class="card"><h3>Outcome</h3><div class="result-metric"><strong>${result.finalDamage}</strong> Magic Damage</div><div class="note">${result.effect && result.failed ? `Inflict ${escapeHtml(result.effect)}. ` : ''}${result.push != null ? `Push ${result.push}. ` : ''}Target HP after: ${result.hpAfter}. ${applied ? 'Applied ✓' : ''}</div></div>
+    </div>
+    <div class="compact-actions" style="margin-top:10px"><button type="button" class="primary" data-action="apply-spell" ${applied ? 'disabled' : ''}>${applied ? 'Applied ✓' : `Apply spell result`}</button><button type="button" data-action="reset-spell-roll">Reset spell roll/options</button></div>
+    <details style="margin-top:10px" open><summary>Force, Conviction, and damage breakdown</summary>${renderSpellBreakdownGrid(result)}</details>`;
+  }
+  function renderSpellBreakdownGrid(result) {
+    const forceRows = result.forceRows.map(r=>`<div class="card"><strong>${escapeHtml(r.source)}</strong><div class="note">+${r.value} Force</div><div class="tiny">${escapeHtml(r.symbols || '')}</div></div>`).join('');
+    const damageRows = result.damageRows.length ? result.damageRows.map(r=>`<div class="card"><strong>${escapeHtml(r.source)}</strong><div class="note">${r.value >= 0 ? '+' : ''}${r.value}</div></div>`).join('') : '<div class="note">No spell damage components.</div>';
+    return `<div class="breakdown-grid" style="margin-top:10px">
+      <div class="card"><h3>Force total</h3><div class="result-metric">${result.force}</div><div class="note">Base Spell ${result.profile.baseForce || 6}; SP cost helper: ${result.spCost}.</div>${result.blackSkull ? '<div class="warn-text tiny">Black die Skull: no black Force symbols; resolve any card-specific backlash manually.</div>' : ''}</div>
+      <div class="card"><h3>Target Conviction</h3><div class="result-metric">${result.conviction}</div><div class="note">${escapeHtml(result.convictionRows.join(' | '))}</div></div>
+      <div class="card"><h3>Force contributors</h3><div class="grid">${forceRows}</div></div>
+      <div class="card"><h3>Damage / effect</h3><div class="grid">${damageRows}</div><div class="note">${result.failed ? 'Target failed, so damage/effects are live.' : 'Target passed, so damage/effects are 0/none.'}</div>${result.optionalSelfDamage ? `<div class="warn-text tiny">Applying this spell also applies ${result.optionalSelfDamage} Irreducible Damage to the caster.</div>` : ''}</div>
+    </div>`;
+  }
+
   function renderSummonMini() {
     return `<div class="card ok" style="margin-top:10px"><h3>Nightingale - Summon Esper</h3><div class="note">Placement/SOI stays manual. This adds a Command Combatant, a Summon token reminder, and an initiative card if enabled.</div><div class="compact-actions"><button type="button" class="primary" data-action="summon-command" data-def="agares">Summon Agares</button><button type="button" class="primary" data-action="summon-command" data-def="eliphie">Summon Eliphie</button><button type="button" data-action="tab" data-tab="command">Open Command</button></div></div>`;
   }
@@ -698,7 +978,7 @@
 
   function renderEnemiesTab() {
     const active = state.enemies.filter(e=>!e.defeated).length;
-    return `<section class="panel"><h2>Enemy tracker</h2><div class="note">Track enemy figures, damage, effects, and initiative. Enemy AI helper and deep enemy-specific panels are intentionally excluded from V3.0C.</div><div class="pillbox" style="margin-top:8px"><span class="pill"><strong>Tracked</strong> ${state.enemies.length}</span><span class="pill"><strong>Active</strong> ${active}</span><span class="pill"><strong>Initiative auto-add</strong> ${state.settings.autoAddEnemyInitiative ? 'On' : 'Off'}</span></div><div style="margin-top:10px">${renderQuickEnemyAdd()}</div><div class="btn-row" style="margin-top:10px"><button class="warn" data-action="clear-defeated-enemies">Clear defeated enemies</button><button class="danger" data-action="clear-enemies">Clear all enemies</button></div><div class="hr"></div>${state.enemies.length ? `<div class="entity-grid">${state.enemies.map(renderEnemyCard).join('')}</div>` : '<div class="note">No tracked enemies.</div>'}</section>`;
+    return `<section class="panel"><h2>Enemy tracker</h2><div class="note">Track enemy figures, damage, effects, and initiative. Enemy AI helper and deep enemy-specific panels are intentionally excluded from V3.0D.</div><div class="pillbox" style="margin-top:8px"><span class="pill"><strong>Tracked</strong> ${state.enemies.length}</span><span class="pill"><strong>Active</strong> ${active}</span><span class="pill"><strong>Initiative auto-add</strong> ${state.settings.autoAddEnemyInitiative ? 'On' : 'Off'}</span></div><div style="margin-top:10px">${renderQuickEnemyAdd()}</div><div class="btn-row" style="margin-top:10px"><button class="warn" data-action="clear-defeated-enemies">Clear defeated enemies</button><button class="danger" data-action="clear-enemies">Clear all enemies</button></div><div class="hr"></div>${state.enemies.length ? `<div class="entity-grid">${state.enemies.map(renderEnemyCard).join('')}</div>` : '<div class="note">No tracked enemies.</div>'}</section>`;
   }
   function renderEnemyCard(e) {
     const def = DATA.enemyDefinitions[e.defId];
@@ -706,7 +986,7 @@
   }
 
   function renderTurnTab() {
-    return `<section class="panel"><h2>Initiative</h2><div class="note">Clean initiative tracker only. Exhaust-card table is intentionally omitted in V3.0C.</div><div class="result-row pillbox" style="margin-top:8px"><span class="pill"><strong>Round</strong> ${state.initiative.round}</span><span class="pill"><strong>Current</strong> ${escapeHtml(currentInitiativeCard()?.label || '-')}</span></div><div class="btn-row" style="margin-top:10px"><button data-action="initiative-prev">Previous</button><button data-action="initiative-next" class="primary">Next turn</button><button data-action="initiative-shuffle">Shuffle</button><button data-action="initiative-end-round">End round / shuffle</button><button data-action="initiative-reset-party" class="warn">Reset to party only</button><button data-action="sync-actor">Sync actor</button></div><div class="hr"></div>${renderInitiativeAdd()}<div class="hr"></div><div class="grid">${state.initiative.cards.map(renderInitiativeCard).join('')}</div></section>`;
+    return `<section class="panel"><h2>Initiative</h2><div class="note">Clean initiative tracker only. Exhaust-card table is intentionally omitted in V3.0D.</div><div class="result-row pillbox" style="margin-top:8px"><span class="pill"><strong>Round</strong> ${state.initiative.round}</span><span class="pill"><strong>Current</strong> ${escapeHtml(currentInitiativeCard()?.label || '-')}</span></div><div class="btn-row" style="margin-top:10px"><button data-action="initiative-prev">Previous</button><button data-action="initiative-next" class="primary">Next turn</button><button data-action="initiative-shuffle">Shuffle</button><button data-action="initiative-end-round">End round / shuffle</button><button data-action="initiative-reset-party" class="warn">Reset to party only</button><button data-action="sync-actor">Sync actor</button></div><div class="hr"></div>${renderInitiativeAdd()}<div class="hr"></div><div class="grid">${state.initiative.cards.map(renderInitiativeCard).join('')}</div></section>`;
   }
   function renderInitiativeAdd() {
     const partyOpts = Object.values(DATA.party).map(p=>`<option value="party:${p.id}">${p.name}</option>`).join('');
@@ -836,6 +1116,7 @@
     if (a === 'select-target') { selectTarget(btn.dataset.target); return; }
     if (a === 'select-actor') { selectActor(btn.dataset.actor); return; }
     if (a === 'target-attack') { state.ui.targetId = btn.dataset.target; state.ui.actionId = 'attack'; state.ui.appliedResultKey = null; ensureAttackProfileValid(false); saveState(); render(); return; }
+    if (a === 'target-spell') { state.ui.targetId = btn.dataset.target; state.ui.actionId = 'spell'; state.ui.appliedResultKey = null; ensureSpellProfileValid(false); saveState(); render(); return; }
     if (a === 'target-damage') { mutateTargetDamage(btn.dataset.delta); saveState(); render(); return; }
     if (a === 'target-sp') { mutateTargetSp(btn.dataset.delta); saveState(); render(); return; }
     if (a === 'target-add-effect') { const ent=getEntityByTarget(state.ui.targetId); addEffectToEntity(ent, selectedTargetEffect()); saveState(); render(); return; }
@@ -843,9 +1124,11 @@
     if (a === 'target-add-token') { const ent=getEntityByTarget(state.ui.targetId); addTokenToEntity(ent, selectedTargetToken()); saveState(); render(); return; }
     if (a === 'target-remove-token') { const ent=getEntityByTarget(state.ui.targetId); removeTokenFromEntity(ent, selectedTargetToken()); saveState(); render(); return; }
     if (a === 'apply-attack') { const r=calculateAttackResult(); if(!r.ready) return; if(state.ui.appliedResultKey===r.key) return; const ent = r.target; ent.state.damage = Math.max(0, Math.min(ent.def.hp || 999, (ent.state.damage||0) + r.finalDamage)); if((ent.type==='enemy' || ent.type==='command') && ent.state.damage >= ent.def.hp) ent.state.defeated = true; state.ui.appliedResultKey = r.key; saveState(); render(); addLog(`${actorLabel()} attacked ${targetLabel()}`, `${r.hit?'Hit':'Miss'}; attack ${r.attackTotal} vs defense ${r.targetDefense}; applied ${r.finalDamage} damage.`); return; }
+    if (a === 'apply-spell') { const r=calculateSpellResult(); if(!r.ready) return; if(state.ui.appliedResultKey===r.key) return; const ent = r.target; if (r.finalDamage > 0) { ent.state.damage = Math.max(0, Math.min(ent.def.hp || 999, (ent.state.damage||0) + r.finalDamage)); if((ent.type==='enemy' || ent.type==='command') && ent.state.damage >= ent.def.hp) ent.state.defeated = true; } if (r.failed && r.effect) addEffectToEntity(ent, r.effect); if (r.optionalSelfDamage > 0) { const caster = r.actor; if (caster?.state && caster?.def) { caster.state.damage = Math.max(0, Math.min(caster.def.hp || 999, (caster.state.damage||0) + r.optionalSelfDamage)); } } state.ui.appliedResultKey = r.key; saveState(); render(); addLog(`${actorLabel()} cast ${r.profile.label}`, `${r.failed?'Target failed':'Target passed'}; Force ${r.force} vs Conviction ${r.conviction}; applied ${r.finalDamage} Magic Damage${r.effect && r.failed ? ' and ' + r.effect : ''}.`); return; }
     if (a === 'reset-attack-roll') { state.attack.faces = {}; state.attack.empower = false; state.attack.empowerFace = 0; state.attack.manualAttackMod = 0; state.attack.manualPhysical = 0; state.attack.manualMagic = 0; state.attack.manualArmorPiercing = 0; state.attack.targetDefenseMod = 0; state.attack.useMasterWork = false; state.attack.useCourage = true; state.ui.appliedResultKey = null; saveState(); render(); return; }
-    if (a === 'set-action') { state.ui.actionId = btn.dataset.actionId; state.ui.appliedResultKey = null; if (state.ui.actionId === 'attack') ensureAttackProfileValid(false); saveState(); render(); return; }
-    if (a === 'log-current') { if(state.ui.actionId==='attack'){ const r=calculateAttackResult(); addLog(`${actorLabel()} attack`, r.ready ? `${r.hit?'Hit':'Miss'}; attack ${r.attackTotal} vs defense ${r.targetDefense}; final damage ${r.finalDamage} to ${targetLabel()}.` : 'Attack not ready.'); } else { addLog(`${actorLabel()} - ${actionLabel()}`, `Target: ${targetLabel()}.`); } return; }
+    if (a === 'reset-spell-roll') { state.spell.castingFace = 0; state.spell.empowerFace = 0; state.spell.manualForceMod = 0; state.spell.convictionFaces = {}; state.spell.useOptionalBonus = false; state.spell.previousDamage = 0; state.spell.zealousFaces = {}; state.spell.zealousDistance = 1; state.spell.zealousDiscount = false; state.ui.appliedResultKey = null; const profile = DATA.spellProfiles[state.spell.profileId]; state.spell.empower = !!profile?.defaultEmpower; saveState(); render(); return; }
+    if (a === 'set-action') { state.ui.actionId = btn.dataset.actionId; state.ui.appliedResultKey = null; if (state.ui.actionId === 'attack') ensureAttackProfileValid(false); if (state.ui.actionId === 'spell') ensureSpellProfileValid(false); saveState(); render(); return; }
+    if (a === 'log-current') { if(state.ui.actionId==='attack'){ const r=calculateAttackResult(); addLog(`${actorLabel()} attack`, r.ready ? `${r.hit?'Hit':'Miss'}; attack ${r.attackTotal} vs defense ${r.targetDefense}; final damage ${r.finalDamage} to ${targetLabel()}.` : 'Attack not ready.'); } else if(state.ui.actionId==='spell'){ const r=calculateSpellResult(); addLog(`${actorLabel()} spell`, r.ready ? `${r.failed?'Failed Conviction':'Passed Conviction'}; Force ${r.force} vs Conviction ${r.conviction}; final damage ${r.finalDamage} to ${targetLabel()}${r.effect && r.failed ? '; effect ' + r.effect : ''}.` : 'Spell not ready.'); } else { addLog(`${actorLabel()} - ${actionLabel()}`, `Target: ${targetLabel()}.`); } return; }
     if (a === 'add-enemy-quick') { const defId = byId('quickEnemyDef')?.value || 'animate'; const count = Math.max(1, Number(byId('quickEnemyCount')?.value || 1)); state.settings.autoAddEnemyInitiative = !!byId('quickEnemyInitiative')?.checked; addEnemies(defId, count); return; }
     if (a === 'party-damage') { const st=state.party[btn.dataset.id]; st.damage=Math.max(0, st.damage + Number(btn.dataset.delta)); saveState(); render(); return; }
     if (a === 'party-sp') { const st=state.party[btn.dataset.id]; const def=DATA.party[btn.dataset.id]; st.sp=Math.max(0, Math.min(def.maxSp, st.sp + Number(btn.dataset.delta))); saveState(); render(); return; }
@@ -897,6 +1180,17 @@
     if (ch === 'attack-number') { state.attack[el.dataset.field] = Number(el.value || 0); state.ui.appliedResultKey = null; saveState(); render(); }
     if (ch === 'attack-courage') { state.attack.useCourage = !!el.checked; state.ui.appliedResultKey = null; saveState(); render(); }
     if (ch === 'attack-masterwork') { state.attack.useMasterWork = !!el.checked; state.ui.appliedResultKey = null; saveState(); render(); }
+    if (ch === 'spell-profile') { state.spell.profileId = el.value; const profile = DATA.spellProfiles[el.value]; state.spell.castingColor = profile?.defaultColor || profile?.castingColors?.[0] || 'Purple'; state.spell.castingFace = 0; state.spell.empower = !!profile?.defaultEmpower; state.spell.empowerFace = 0; state.spell.convictionFaces = {}; state.spell.zealousFaces = {}; state.spell.useOptionalBonus = false; state.spell.previousDamage = 0; state.ui.appliedResultKey = null; saveState(); render(); }
+    if (ch === 'spell-casting-color') { state.spell.castingColor = el.value; state.spell.castingFace = 0; state.ui.appliedResultKey = null; saveState(); render(); }
+    if (ch === 'spell-casting-face') { state.spell.castingFace = Number(el.value); state.ui.appliedResultKey = null; saveState(); render(); }
+    if (ch === 'spell-empower') { state.spell.empower = !!el.checked; state.ui.appliedResultKey = null; saveState(); render(); }
+    if (ch === 'spell-empower-face') { state.spell.empowerFace = Number(el.value); state.ui.appliedResultKey = null; saveState(); render(); }
+    if (ch === 'spell-number') { state.spell[el.dataset.field] = Number(el.value || 0); state.ui.appliedResultKey = null; saveState(); render(); }
+    if (ch === 'spell-conviction-face') { state.spell.convictionFaces[el.dataset.dieKey] = Number(el.value); state.ui.appliedResultKey = null; saveState(); render(); }
+    if (ch === 'spell-zealous-face') { state.spell.zealousFaces[el.dataset.dieKey] = Number(el.value); state.ui.appliedResultKey = null; saveState(); render(); }
+    if (ch === 'spell-optional') { state.spell.useOptionalBonus = !!el.checked; state.ui.appliedResultKey = null; saveState(); render(); }
+    if (ch === 'spell-otherworldly') { state.spell.useOtherworldly = !!el.checked; state.ui.appliedResultKey = null; saveState(); render(); }
+    if (ch === 'spell-zealous-discount') { state.spell.zealousDiscount = !!el.checked; state.ui.appliedResultKey = null; saveState(); render(); }
   });
 
   async function updateCache() {
