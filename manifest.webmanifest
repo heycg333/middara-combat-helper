@@ -1,7 +1,7 @@
 {
   "name": "Middara Combat Helper",
   "short_name": "Middara",
-  "description": "V2.6G play-scoped stable tablet flow for the Middara Combat Helper.",
+  "description": "V2.6H play-scoped stable tablet flow for the Middara Combat Helper.",
   "start_url": "./index.html",
   "scope": "./",
   "display": "standalone",
