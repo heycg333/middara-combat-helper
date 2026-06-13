@@ -1,4 +1,4 @@
-const CACHE_NAME = 'middara-helper-v2-6f-stable-surface-lock-2026-06-12';
+const CACHE_NAME = 'middara-helper-v2-6g-play-surface-scope-2026-06-13';
 const CORE_ASSETS = ['./', './index.html', './manifest.webmanifest', './icons/icon-192.png', './icons/icon-512.png', './icons/apple-touch-icon.png'];
 self.addEventListener('install', event => { event.waitUntil(caches.open(CACHE_NAME).then(cache => cache.addAll(CORE_ASSETS)).then(() => self.skipWaiting())); });
 self.addEventListener('activate', event => { event.waitUntil(caches.keys().then(keys => Promise.all(keys.filter(key => key.startsWith('middara-helper-') && key !== CACHE_NAME).map(key => caches.delete(key)))).then(() => self.clients.claim())); });

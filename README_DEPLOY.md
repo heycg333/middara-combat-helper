@@ -1,7 +1,11 @@
-# Middara Combat Helper - V2.6F Stable Surface Lock
+# Middara Combat Helper V2.6G - Play Surface Scope
 
-Upload these extracted files to the root of the GitHub Pages repository. Do not upload the ZIP itself.
+Upload these extracted files to the root of the GitHub Pages repository.
 
-After GitHub Pages deploys, open the tablet app, use Data -> Update app cache, then reload/reopen the Home Screen app.
+After GitHub Pages deploys, open the tablet app and run:
 
-V2.6F hides legacy repainting helper panels, replaces the Resolve / Apply tile with a stable message, stabilizes the Nightingale tools visibility, and keeps the V2.6 stable live flow as the primary tablet surface.
+Data -> Update app cache
+
+Then reload or reopen the Home Screen app. If an old build persists, use Clear app cache only and reload. This clears cached app files, not local game state.
+
+V2.6G scopes the stable live flow and Nightingale tools to the Play tab only, hides the redundant Loyal Esper bridge shortcut button, and hard-routes Nightingale Spell / Force and Summon Esper before older route handlers can interfere.

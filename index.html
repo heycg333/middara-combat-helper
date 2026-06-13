@@ -3,7 +3,7 @@
 <head>
   <meta charset="utf-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1" />
-  <title>Middara Combat Helper - V2.6F Stable Surface Lock</title>
+  <title>Middara Combat Helper - V2.6G Play Surface Scope</title>
   <style>
     :root {
       --bg: #101827;
@@ -24560,6 +24560,179 @@ else {
   function init(){ bind(); calm(); setInterval(calm,900); try{ new MutationObserver(schedule).observe(document.body,{childList:true,subtree:true,characterData:true,attributes:true,attributeFilter:['style','class','open']}); }catch(e){} }
   ready(init);
   window.middaraV26FStableLockApi={calm:calm,showNight:showNight,hideNight:hideNight};
+})();
+</script>
+
+
+
+<style id="v26gPlaySurfaceScopeCss">
+  /* V2.6G: Play-only ownership for the stable flow and Nightingale tools. */
+  header .subtitle::after {
+    content: "V2.6G play-surface scope: stable live flow and Nightingale tools are visible only on Play; other tabs stay calm." !important;
+  }
+  .v22c-pwa-panel summary::after {
+    content: "V2.6G hosted / installable web app" !important;
+  }
+  /* Do not let stable Play surfaces appear on Enemies / Party / Encounter / Rewards / Turn / Data. */
+  body:not([data-v17-current-mode="play"]) #v26dStableFlowPanel,
+  body:not([data-v17-current-mode="play"]) #v26eNightingalePanel,
+  body:not(.v26g-mode-play) #v26dStableFlowPanel,
+  body:not(.v26g-mode-play) #v26eNightingalePanel {
+    display: none !important;
+    visibility: hidden !important;
+    height: 0 !important;
+    min-height: 0 !important;
+    max-height: 0 !important;
+    overflow: hidden !important;
+    padding: 0 !important;
+    margin: 0 !important;
+    border: 0 !important;
+    pointer-events: none !important;
+  }
+  body.v26g-mode-play #v26dStableFlowPanel {
+    display: block !important;
+    visibility: visible !important;
+    height: auto !important;
+    max-height: none !important;
+    overflow: visible !important;
+    padding: 18px !important;
+    margin: 0 0 18px 0 !important;
+    border-width: 1px !important;
+    pointer-events: auto !important;
+  }
+  body.v26g-mode-play.v26g-night-open #v26eNightingalePanel {
+    display: block !important;
+    visibility: visible !important;
+    height: auto !important;
+    max-height: none !important;
+    overflow: visible !important;
+    padding: 18px !important;
+    margin: 18px 0 0 0 !important;
+    border-width: 1px !important;
+    pointer-events: auto !important;
+  }
+  body.v26g-mode-play:not(.v26g-night-open) #v26eNightingalePanel {
+    display: none !important;
+    visibility: hidden !important;
+    height: 0 !important;
+    min-height: 0 !important;
+    max-height: 0 !important;
+    overflow: hidden !important;
+    padding: 0 !important;
+    margin: 0 !important;
+    border: 0 !important;
+    pointer-events: none !important;
+  }
+  /* The bridge card is adjacent in the new Nightingale tools; remove the redundant shortcut button. */
+  #v26eNightingalePanel [data-v26e-action="summonTab"] {
+    display: none !important;
+  }
+  #v26eNightingalePanel .btn-row:has([data-v26e-action="summonTab"]) {
+    margin-top: 10px !important;
+  }
+  #v26gVersionNote {
+    border: 1px solid rgba(52,211,153,.34);
+    background: rgba(52,211,153,.07);
+    border-radius: 12px;
+    padding: 9px 10px;
+    margin-top: 10px;
+  }
+</style>
+<script id="v26gPlaySurfaceScopeScript">
+(function(){
+  'use strict';
+  var VERSION = 'V2.6G';
+  var TITLE = 'Middara Combat Helper - V2.6G Play Surface Scope';
+  var STABLE_KEY = 'middaraV26DStableState';
+  var NIGHT_MODE_KEY = 'middaraV26EActiveMode';
+  var NIGHT_PANEL_KEY = 'middaraV26ENightingalePanel';
+  var NIGHT_VISIBLE_KEY = 'middaraV26FNightVisible';
+  function ready(fn){ if(document.readyState === 'loading') document.addEventListener('DOMContentLoaded', fn); else setTimeout(fn,0); }
+  function id(x){ return document.getElementById(x); }
+  function q(s,r){ return (r||document).querySelector(s); }
+  function qa(s,r){ return Array.prototype.slice.call((r||document).querySelectorAll(s)); }
+  function readJson(k,d){ try{ var raw=localStorage.getItem(k); return raw ? Object.assign(d||{}, JSON.parse(raw)||{}) : (d||{}); }catch(e){ return d||{}; } }
+  function writeJson(k,v){ try{ localStorage.setItem(k, JSON.stringify(v||{})); }catch(e){} }
+  function fire(el,type){ if(!el) return; try{ el.dispatchEvent(new Event(type||'change',{bubbles:true})); }catch(e){ try{ var ev=document.createEvent('Event'); ev.initEvent(type||'change',true,true); el.dispatchEvent(ev); }catch(_){} } }
+  function setVal(x,v,doFire){ var el=id(x); if(!el) return; el.value=String(v==null?'':v); if(doFire) fire(el,'change'); }
+  function clickEl(el){ if(!el) return false; try{ el.click(); return true; }catch(e){ return false; } }
+  function activeMode(){ return document.body.getAttribute('data-v17-current-mode') || (q('#v17Nav [data-v17-mode-button].active') && q('#v17Nav [data-v17-mode-button].active').getAttribute('data-v17-mode-button')) || 'play'; }
+  function isPlay(){ return activeMode() === 'play'; }
+  function routePlay(){ try{ if(typeof window.v17ShowMode === 'function') window.v17ShowMode('play'); else clickEl(q('[data-v17-mode-button="play"]')); }catch(e){ clickEl(q('[data-v17-mode-button="play"]')); } }
+  function scrollToId(x){ var el=id(x); if(!el||!el.scrollIntoView) return; try{ el.scrollIntoView({behavior:'auto',block:'start'}); }catch(e){ try{ el.scrollIntoView(true); }catch(_){} } }
+  function actorValue(){ var s=readJson(STABLE_KEY,{}); return s.actor || (id('v26dActorSelect') && id('v26dActorSelect').value) || ''; }
+  function actorIsNight(){ return actorValue()==='party:nightingale' || (id('characterSelect') && id('characterSelect').value==='nightingale'); }
+  function panelState(){ return readJson(NIGHT_PANEL_KEY,{visible:false,tab:'spells'}); }
+  function savePanel(ps){ writeJson(NIGHT_PANEL_KEY, ps||{}); }
+  function setStableNight(mode){ var s=readJson(STABLE_KEY,{}); s.actor='party:nightingale'; s.mode=(mode==='summon'?'summon':'night'); s.manualActorUntil=Date.now()+600000; s.routeLockUntil=Date.now()+20000; writeJson(STABLE_KEY,s); setVal('characterSelect','nightingale',false); setVal('v26dActorSelect','party:nightingale',false); setVal('v22bActorSelect','party:nightingale',false); }
+  function setNightOpen(open, tab){
+    var ps=panelState(); ps.visible=!!open; ps.tab=tab||ps.tab||'spells'; ps.status=(ps.tab==='summon')?'Loyal Esper bridge ready. Summon or load an Esper here.':'Nightingale spell tools ready.'; savePanel(ps);
+    try{ localStorage.setItem(NIGHT_VISIBLE_KEY, open?'1':'0'); localStorage.setItem(NIGHT_MODE_KEY, open?(ps.tab==='summon'?'summon':'nightPanel'):'idle'); }catch(e){}
+    document.body.classList.toggle('v26g-night-open', !!open && isPlay());
+    document.body.classList.toggle('v26e-night-visible', !!open && isPlay());
+    document.body.classList.toggle('v26f-night-visible', !!open && isPlay());
+  }
+  function openNight(tab){
+    tab = tab || 'spells';
+    setStableNight(tab==='summon'?'summon':'night');
+    routePlay();
+    setNightOpen(true, tab);
+    try{ if(window.middaraV26ENightingaleApi && typeof window.middaraV26ENightingaleApi.show === 'function') window.middaraV26ENightingaleApi.show(tab); }catch(e){}
+    setNightOpen(true, tab);
+    setTimeout(function(){ setStableNight(tab==='summon'?'summon':'night'); setNightOpen(true,tab); scrollToId('v26eNightingalePanel'); }, 40);
+    setTimeout(function(){ setNightOpen(true,tab); }, 220);
+  }
+  function closeNight(){ setNightOpen(false, 'spells'); }
+  function addVersionNote(){
+    var p=id('v26dStableFlowPanel'); if(!p || id('v26gVersionNote')) return;
+    var note=document.createElement('div'); note.id='v26gVersionNote'; note.className='tiny'; note.textContent='V2.6G: Play surfaces are scoped to the Play tab. Nightingale tools open only from Nightingale Spell / Force or Summon Esper.';
+    var head=p.querySelector('.v26d-head'); if(head && head.parentNode) head.parentNode.insertBefore(note, head.nextSibling);
+  }
+  function updateChrome(){
+    document.title = TITLE;
+    var cur=id('currentVersionText'); if(cur) cur.textContent=VERSION;
+    var pwa=id('pwaVersionText'); if(pwa) pwa.textContent=VERSION;
+    var dataH=q('#v22iDataStatusPanel h3'); if(dataH) dataH.textContent='V2.6G save / update status';
+    var pwaSum=q('.v22c-pwa-panel summary'); if(pwaSum) pwaSum.setAttribute('data-v26g','1');
+  }
+  function enforceScope(){
+    var mode=activeMode();
+    qa('body.v26g-mode-play, body.v26g-mode-enemies, body.v26g-mode-party, body.v26g-mode-command, body.v26g-mode-encounter, body.v26g-mode-rewards, body.v26g-mode-turn, body.v26g-mode-probability, body.v26g-mode-data, body.v26g-mode-all').forEach(function(){});
+    ['play','enemies','party','command','encounter','rewards','turn','probability','data','all'].forEach(function(m){ document.body.classList.toggle('v26g-mode-'+m, mode===m); });
+    var nightShould = mode==='play' && actorIsNight() && (panelState().visible || (function(){try{return localStorage.getItem(NIGHT_VISIBLE_KEY)==='1';}catch(e){return false;}})());
+    document.body.classList.toggle('v26g-night-open', !!nightShould);
+    document.body.classList.toggle('v26e-night-visible', !!nightShould);
+    document.body.classList.toggle('v26f-night-visible', !!nightShould);
+    if(mode!=='play'){
+      var sf=id('v26dStableFlowPanel'); if(sf){ sf.style.setProperty('display','none','important'); sf.style.setProperty('visibility','hidden','important'); }
+      var np=id('v26eNightingalePanel'); if(np){ np.style.setProperty('display','none','important'); np.style.setProperty('visibility','hidden','important'); }
+    } else {
+      var sf2=id('v26dStableFlowPanel'); if(sf2){ sf2.style.removeProperty('display'); sf2.style.removeProperty('visibility'); }
+      var np2=id('v26eNightingalePanel'); if(np2){ if(nightShould){ np2.style.removeProperty('display'); np2.style.removeProperty('visibility'); } else { np2.style.setProperty('display','none','important'); np2.style.setProperty('visibility','hidden','important'); } }
+    }
+    addVersionNote(); updateChrome();
+  }
+  function bind(){
+    /* Capture on window so this wins before older document-level route handlers. */
+    window.addEventListener('click', function(ev){
+      var a=ev.target && ev.target.closest ? ev.target.closest('[data-v26d-action], [data-v26a-action], [data-v22b-action]') : null;
+      if(a){
+        var action=a.getAttribute('data-v26d-action') || a.getAttribute('data-v26a-action') || a.getAttribute('data-v22b-action') || '';
+        if(action==='night-spell' || action==='summon-esper' || (action==='routeSpell' && actorIsNight())){
+          ev.preventDefault(); ev.stopPropagation(); if(ev.stopImmediatePropagation) ev.stopImmediatePropagation();
+          openNight(action==='summon-esper'?'summon':'spells');
+          return;
+        }
+      }
+      var close=ev.target && ev.target.closest ? ev.target.closest('[data-v26e-action="close"]') : null;
+      if(close){ setTimeout(closeNight, 20); }
+    }, true);
+    document.addEventListener('change', function(ev){ if(ev.target && ev.target.id==='v26dActorSelect' && ev.target.value!=='party:nightingale') closeNight(); }, true);
+    document.addEventListener('click', function(ev){ if(ev.target && ev.target.closest && ev.target.closest('[data-v17-mode-button]')) setTimeout(enforceScope, 30); }, true);
+  }
+  function init(){ bind(); enforceScope(); setInterval(enforceScope, 450); try{ new MutationObserver(function(){ enforceScope(); }).observe(document.body,{childList:true,subtree:true,attributes:true,attributeFilter:['class','style','data-v17-current-mode','open']}); }catch(e){} }
+  ready(init);
+  window.middaraV26GPlaySurfaceScopeApi={openNight:openNight,closeNight:closeNight,enforceScope:enforceScope};
 })();
 </script>
 

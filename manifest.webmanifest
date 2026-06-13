@@ -1,7 +1,7 @@
 {
   "name": "Middara Combat Helper",
-  "short_name": "Middara Helper",
-  "description": "V2.6F Stable Surface Lock - tablet-first Middara combat helper with legacy repaint panels hidden.",
+  "short_name": "Middara",
+  "description": "V2.6G play-scoped stable tablet flow for the Middara Combat Helper.",
   "start_url": "./index.html",
   "scope": "./",
   "display": "standalone",
@@ -30,5 +30,6 @@
       "type": "image/png",
       "purpose": "maskable"
     }
-  ]
+  ],
+  "id": "/middara-combat-helper/"
 }
