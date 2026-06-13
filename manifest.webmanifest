@@ -1,7 +1,7 @@
 {
-  "name": "Middara Combat Helper",
-  "short_name": "Middara",
-  "description": "Middara Combat Helper V3.0E - Enemy Attack / Defense Tray",
+  "name": "Middara Combat Helper V3.0F",
+  "short_name": "Middara V3.0F",
+  "description": "V3.0F Nightingale Tools / Defense Polish - clean Nightingale spell/support helpers, Life Grasp multi-target workflow, Trophy effects, and enemy-attack layout polish.",
   "start_url": "./?v=3.0e",
   "scope": "./",
   "display": "standalone",

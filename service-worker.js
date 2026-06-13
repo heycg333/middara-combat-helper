@@ -1,4 +1,4 @@
-const CACHE_NAME = 'middara-helper-v3-0e-enemy-attack-defense';
+const CACHE_NAME = 'middara-helper-v3-0f-nightingale-tools-defense-polish';
 const APP_SHELL = [
   './',
   './index.html',

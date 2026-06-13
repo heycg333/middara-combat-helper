@@ -1,7 +1,7 @@
 
 (function () {
   'use strict';
-  const VERSION = 'V3.0E';
+  const VERSION = 'V3.0F';
   const STORAGE_KEY = 'middara.combatHelper.v3.state';
 
   const DATA = {
@@ -92,6 +92,7 @@
       attack: { profileId:'rook_default', faces:{}, empower:false, empowerFace:0, manualAttackMod:0, manualPhysical:0, manualMagic:0, manualArmorPiercing:0, targetDefenseMod:0, useMasterWork:false, useCourage: true },
       spell: { profileId:'rook_courage_stifle', castingColor:'Green', castingFace:0, empower:false, empowerFace:0, manualForceMod:0, convictionFaces:{c0:0,c1:0}, useOtherworldly:true, useOptionalBonus:false, previousDamage:0, zealousFaces:{}, zealousDistance:1, zealousDiscount:false },
       enemyAttack: { profileId:'animate_basic', faces:{}, empower:false, empowerFace:0, useDodge:false, dodgeFace:0, manualAttackMod:0, manualPhysical:0, manualMagic:0, manualArmorPiercing:0, targetDefenseMod:0, finalReduction:0, forceMiss:false, rookPlate:false, remiShearling:true, remiShearlingPE:false, remiMantleVow:false, nightMorbid:true, nightReinforced:false, nightFlanking:false, zekeBelts:false, summonReduction:false },
+      nightingale: { previousDamage:0, trophyFace:'', trophyTargetId:'', life:{ castingColor:'Grey', castingFace:0, empower:true, empowerFace:0, manualForceMod:0, boost:false, targets:[{targetId:'', c0:0, c1:0},{targetId:'', c0:0, c1:0},{targetId:'', c0:0, c1:0}], appliedKey:null, selfAppliedKey:null } },
       party: defaultParty(),
       enemies: [],
       command: [],
@@ -123,6 +124,10 @@
     next.spell.zealousFaces = Object.assign(base.spell.zealousFaces, raw?.spell?.zealousFaces || {});
     next.enemyAttack = Object.assign(base.enemyAttack, raw?.enemyAttack || {});
     next.enemyAttack.faces = Object.assign(base.enemyAttack.faces, raw?.enemyAttack?.faces || {});
+    next.nightingale = Object.assign(base.nightingale, raw?.nightingale || {});
+    next.nightingale.life = Object.assign(base.nightingale.life, raw?.nightingale?.life || {});
+    next.nightingale.life.targets = Array.isArray(raw?.nightingale?.life?.targets) ? raw.nightingale.life.targets.slice(0,3).map((row,idx)=>Object.assign(base.nightingale.life.targets[idx] || {}, row || {})) : base.nightingale.life.targets;
+    while (next.nightingale.life.targets.length < 3) next.nightingale.life.targets.push({targetId:'', c0:0, c1:0});
     next.party = Object.assign(base.party, raw?.party || {});
     next.initiative = Object.assign(base.initiative, raw?.initiative || {});
     next.rewards = Object.assign(base.rewards, raw?.rewards || {});
@@ -332,7 +337,7 @@
 
   function renderPlayTab() {
     return `<section class="panel" id="playPanel">
-      <div class="live-title"><div><h2>V3.0E stable Play flow</h2><div class="note">Actor → Target → Action → Roll / Resolve → Apply. Attack and spell math are rebuilt cleanly here; Party management stays on the Party tab.</div></div><span class="pill"><strong>Current</strong> ${escapeHtml(currentInitiativeCard()?.label || 'No initiative')}</span></div>
+      <div class="live-title"><div><h2>V3.0F stable Play flow</h2><div class="note">Actor → Target → Action → Roll / Resolve → Apply. Attack and spell math are rebuilt cleanly here; Party management stays on the Party tab.</div></div><span class="pill"><strong>Current</strong> ${escapeHtml(currentInitiativeCard()?.label || 'No initiative')}</span></div>
       <div class="flow-grid ${(state.ui.actionId==='attack'||state.ui.actionId==='spell'||state.ui.actionId==='enemyAttack')?'attack-active':''}" style="margin-top:12px">
         <div class="card"><h3>1. Actor</h3>${renderActorCard()}</div>
         <div class="card"><h3>2. Target drawer</h3>${renderTargetDrawer()}</div>
@@ -732,7 +737,8 @@
           <h3>Result / breakdown</h3>
           ${renderSpellResult(result)}
         </div>
-      </div>`;
+      </div>
+      ${getActor().type === 'party' && getActor().id === 'nightingale' ? renderNightingaleTools() : ''}`;
   }
   function renderSpellSpecificInputs(profile) {
     const parts = [];
@@ -909,19 +915,23 @@
   }
   function renderEnemyAttackOptions(profile, target) {
     const targetType = target?.type || 'none';
-    return `<details style="margin-top:10px" open><summary>Defense, Dodge, and manual modifiers</summary>
+    return `<details style="margin-top:10px" open><summary>Dodge, defense tray, and manual modifiers</summary>
       <div class="field-grid" style="margin-top:10px">
         <label><input type="checkbox" data-change="enemy-dodge" ${state.enemyAttack.useDodge?'checked':''}> <span>Target uses Dodge</span></label>
         ${state.enemyAttack.useDodge ? `<div><label>Dodge black die result</label><select data-change="enemy-dodge-face">${renderFaceOptions('Black', state.enemyAttack.dodgeFace || 0)}</select></div>` : '<div class="note">Dodge not used.</div>'}
         <label><input type="checkbox" data-change="enemy-force-miss" ${state.enemyAttack.forceMiss?'checked':''}> <span>Force attack to miss</span></label>
-        <div><label>Manual target Defense modifier</label><input type="number" data-change="enemy-attack-number" data-field="targetDefenseMod" value="${Number(state.enemyAttack.targetDefenseMod||0)}" /></div>
-        <div><label>Manual enemy attack roll modifier</label><input type="number" data-change="enemy-attack-number" data-field="manualAttackMod" value="${Number(state.enemyAttack.manualAttackMod||0)}" /></div>
-        <div><label>Manual enemy Armor Piercing</label><input type="number" min="0" data-change="enemy-attack-number" data-field="manualArmorPiercing" value="${Number(state.enemyAttack.manualArmorPiercing||0)}" /></div>
-        <div><label>Manual enemy Physical Damage</label><input type="number" data-change="enemy-attack-number" data-field="manualPhysical" value="${Number(state.enemyAttack.manualPhysical||0)}" /></div>
-        <div><label>Manual enemy Magic Damage</label><input type="number" data-change="enemy-attack-number" data-field="manualMagic" value="${Number(state.enemyAttack.manualMagic||0)}" /></div>
-        <div><label>Manual final damage reduction</label><input type="number" min="0" data-change="enemy-attack-number" data-field="finalReduction" value="${Number(state.enemyAttack.finalReduction||0)}" /></div>
       </div>
       <div class="defense-tray">${renderTargetDefenseOptions(targetType, target, profile)}</div>
+      <details class="manual-modifier-block"><summary>Manual modifiers / edge cases</summary>
+        <div class="field-grid" style="margin-top:10px">
+          <div><label>Manual target Defense modifier</label><input type="number" data-change="enemy-attack-number" data-field="targetDefenseMod" value="${Number(state.enemyAttack.targetDefenseMod||0)}" /></div>
+          <div><label>Manual enemy attack roll modifier</label><input type="number" data-change="enemy-attack-number" data-field="manualAttackMod" value="${Number(state.enemyAttack.manualAttackMod||0)}" /></div>
+          <div><label>Manual enemy Armor Piercing</label><input type="number" min="0" data-change="enemy-attack-number" data-field="manualArmorPiercing" value="${Number(state.enemyAttack.manualArmorPiercing||0)}" /></div>
+          <div><label>Manual enemy Physical Damage</label><input type="number" data-change="enemy-attack-number" data-field="manualPhysical" value="${Number(state.enemyAttack.manualPhysical||0)}" /></div>
+          <div><label>Manual enemy Magic Damage</label><input type="number" data-change="enemy-attack-number" data-field="manualMagic" value="${Number(state.enemyAttack.manualMagic||0)}" /></div>
+          <div><label>Manual final damage reduction</label><input type="number" min="0" data-change="enemy-attack-number" data-field="finalReduction" value="${Number(state.enemyAttack.finalReduction||0)}" /></div>
+        </div>
+      </details>
     </details>`;
   }
   function renderTargetDefenseOptions(targetType, target, profile) {
@@ -1006,7 +1016,7 @@
     let finalDamage = hit ? Math.max(0, physical + magic - Number(state.enemyAttack.finalReduction || 0)) : 0;
     if (target.type === 'command' && state.enemyAttack.summonReduction && finalDamage > 0) { finalDamage = Math.max(0, finalDamage - 2); reductions.push('Summon token -2 damage'); }
     const hpAfter = Math.max(0, (target.def.hp || 0) - ((target.state.damage || 0) + finalDamage));
-    const canCounter = target.type === 'party' && (!hit || finalDamage === 0);
+    const canCounter = target.type === 'party';
     const key = JSON.stringify({mode:'enemyAttack', actor:state.ui.actorId, target:state.ui.targetId, profile:profile.id, faces:state.enemyAttack.faces, emp:state.enemyAttack.empower, ef:state.enemyAttack.empowerFace, dodge:state.enemyAttack.useDodge, df:state.enemyAttack.dodgeFace, mods:state.enemyAttack, damage:finalDamage});
     return { ready:true, actor, target, profile, diceRows, pool, attackRoll, attackTotal, targetDefense, hit, forcedMiss, diffHit, dodgeDefense, dodgeSkull: !!dodgeFace?.skull, targetHasDarkness, armorPiercing, effectiveArmor, rawPhysical, physical, magic, finalDamage, hpAfter, spend:baseSpend, reductions, canCounter, key };
   }
@@ -1024,7 +1034,10 @@
   }
   function renderCounterPrompt(result) {
     if (!result.ready || !result.canCounter) return '';
-    return `<div class="card counter-card"><h3>Counter available</h3><div class="note">The attack missed or dealt no Final Damage. Confirm timing/SP at the table, then load the defender attacking the enemy.</div><div class="compact-actions"><button type="button" class="warn" data-action="counter-from-enemy-attack">Counter with ${escapeHtml(targetLabel(state.ui.targetId))}</button></div></div>`;
+    const standard = !result.hit || result.finalDamage === 0;
+    const isRook = result.target?.type === 'party' && result.target?.id === 'rook';
+    const note = standard ? 'The attack missed or dealt no Final Damage, so a standard Counter may be available. Confirm SP/timing at the table.' : (isRook ? 'Rook may have Plate of Superiority counter permission even when dealt damage. Confirm timing/SP at the table.' : 'Standard Counter usually requires no Final Damage; this shortcut is always available for manual/legal edge cases.');
+    return `<div class="card counter-card"><h3>Counter shortcut</h3><div class="note">${escapeHtml(note)}</div><div class="compact-actions"><button type="button" class="warn" data-action="counter-from-enemy-attack">Counter with ${escapeHtml(targetLabel(state.ui.targetId))}</button></div></div>`;
   }
   function renderEnemyAttackBreakdown(result) {
     const diceText = result.diceRows.map(r=>`${escapeHtml(r.color)}: ${escapeHtml(r.label)}`).join('<br>');
@@ -1041,6 +1054,149 @@
     </div>`;
   }
 
+
+  function activeEnemyTargetOptions(selectedId='') {
+    const opts = ['<option value="">Choose tracked enemy</option>'];
+    state.enemies.filter(e => !e.defeated).forEach(e => {
+      const val = `enemy:${e.id}`;
+      opts.push(`<option value="${escapeHtml(val)}" ${selectedId===val?'selected':''}>${escapeHtml(e.label)}</option>`);
+    });
+    return opts.join('');
+  }
+  function loadNightingaleSpell(profileId) {
+    const profile = DATA.spellProfiles[profileId];
+    if (!profile) return;
+    state.ui.actorId = 'party:nightingale';
+    state.ui.actionId = 'spell';
+    state.spell.profileId = profileId;
+    state.spell.castingColor = profile.defaultColor || profile.castingColors?.[0] || 'Grey';
+    state.spell.castingFace = 0;
+    state.spell.empower = !!profile.defaultEmpower;
+    state.spell.empowerFace = 0;
+    state.spell.convictionFaces = {};
+    state.spell.zealousFaces = {};
+    state.spell.useOptionalBonus = false;
+    state.spell.previousDamage = Number(state.nightingale?.previousDamage || 0);
+    state.ui.appliedResultKey = null;
+  }
+  function renderNightingaleTools() {
+    const n = state.nightingale || defaultState().nightingale;
+    return `<div class="card night-tools">
+      <div class="entity-head"><strong>V3.0F Nightingale spell / familiar tools</strong><span class="pill">Guided helpers</span></div>
+      <div class="note" style="margin-top:6px">These are lightweight helpers around the clean Spell resolver. Board/SOI/legal target choices remain manual.</div>
+      <div class="night-tool-grid" style="margin-top:10px">
+        <div class="card">
+          <h3>Quick spell load</h3>
+          <div class="compact-actions">
+            <button type="button" data-action="night-load-spell" data-profile="night_gore_shot">Gore Shot</button>
+            <button type="button" data-action="night-load-spell" data-profile="night_corrosive_ideal">Corrosive Ideal</button>
+            <button type="button" data-action="night-load-spell" data-profile="night_life_grasp">Life Grasp single target</button>
+            <button type="button" data-action="night-load-abbadon">Abbadon's Subtlety</button>
+          </div>
+          <div class="field-grid" style="margin-top:10px">
+            <div><label>Previous damage for Abbadon</label><input type="number" min="0" data-change="night-prev-damage" value="${Number(n.previousDamage||0)}" /></div>
+            <div><label>&nbsp;</label><button type="button" data-action="night-capture-damage">Capture current result damage</button></div>
+          </div>
+        </div>
+        <div class="card">
+          <h3>Post-damage / support</h3>
+          <div class="compact-actions">
+            <button type="button" data-action="night-support" data-kind="ring">Ring of Blood: heal 2</button>
+            <button type="button" data-action="night-support" data-kind="yuxa">Yuxa: heal 1</button>
+            <button type="button" data-action="night-support" data-kind="bloodToll">Blood Toll: +2 SP, 2 self dmg</button>
+            <button type="button" data-action="night-support" data-kind="infection">The Infection: 1 self dmg reminder</button>
+          </div>
+        </div>
+      </div>
+      ${renderLifeGraspMultiHelper()}
+      ${renderTrophyHelper()}
+    </div>`;
+  }
+  function renderLifeGraspMultiHelper() {
+    const life = state.nightingale.life;
+    const calc = calculateLifeGraspMulti();
+    const targetRows = life.targets.map((row, idx) => {
+      const ent = getEntityByTarget(row.targetId);
+      const colors = ent?.def?.conviction || ['Purple','Purple'];
+      return `<div class="life-row">
+        <div class="life-target-grid">
+          <div><label>Target ${idx+1}</label><select data-change="night-life-target" data-index="${idx}">${activeEnemyTargetOptions(row.targetId)}</select></div>
+          <div><label>Conviction 1 ${ent?.def ? '('+escapeHtml(colors[0])+')' : ''}</label><select data-change="night-life-conv" data-index="${idx}" data-die-key="c0">${renderFaceOptions(colors[0] || 'Purple', row.c0 || 0)}</select></div>
+          <div><label>Conviction 2 ${ent?.def ? '('+escapeHtml(colors[1]||colors[0])+')' : ''}</label><select data-change="night-life-conv" data-index="${idx}" data-die-key="c1">${renderFaceOptions(colors[1] || colors[0] || 'Purple', row.c1 || 0)}</select></div>
+          <div><label>Damage</label><div class="pill"><strong>${calc.targetResults[idx]?.damage || 0}</strong></div></div>
+        </div>
+      </div>`;
+    }).join('');
+    const applied = life.appliedKey === calc.key;
+    const selfApplied = life.selfAppliedKey === calc.key;
+    return `<details style="margin-top:10px" ${state.spell.profileId==='night_life_grasp'?'open':''}><summary>Life Grasp multi-target helper</summary>
+      <div class="note" style="margin-top:8px">Use this when casting Life Grasp against up to 3 different opponents. Force is rolled once; each target rolls Conviction separately. Optional +6 Force self-damage is applied once per cast.</div>
+      <div class="field-grid" style="margin-top:10px">
+        <div><label>Casting die color</label><select data-change="night-life-color">${['Grey','Red','Purple'].map(c=>`<option value="${c}" ${life.castingColor===c?'selected':''}>${c}</option>`).join('')}</select></div>
+        <div><label>Casting die result</label><select data-change="night-life-face">${renderFaceOptions(life.castingColor || 'Grey', life.castingFace || 0)}</select></div>
+        <label><input type="checkbox" data-change="night-life-empower" ${life.empower?'checked':''}> <span>Empower this Spell</span></label>
+        ${life.empower ? `<div><label>Black die result</label><select data-change="night-life-empower-face">${renderFaceOptions('Black', life.empowerFace || 0)}</select></div>` : ''}
+        <label><input type="checkbox" data-change="night-life-boost" ${life.boost?'checked':''}> <span>Take 6 Irreducible Damage for +6 Force</span></label>
+        <div><label>Manual Force modifier</label><input type="number" data-change="night-life-manual" value="${Number(life.manualForceMod||0)}" /></div>
+      </div>
+      <div class="grid two" style="margin-top:10px">
+        <div class="card"><h3>Life Grasp Force</h3><div class="result-metric">${calc.force}</div><div class="note">Base 6 + casting ${calc.castValue} + black ${calc.blackForce} + Otherworldly ${calc.otherworldlyForce} + boost ${life.boost?6:0} + manual ${Number(life.manualForceMod||0)}.</div></div>
+        <div class="card"><h3>Total target damage</h3><div class="result-metric">${calc.totalDamage}</div><div class="note">Duplicate targets are blocked on apply. Self-damage: ${life.boost ? '6 Irreducible once' : 'none'}.</div></div>
+      </div>
+      ${targetRows}
+      <div class="compact-actions"><button type="button" class="primary" data-action="night-life-apply-targets" ${applied?'disabled':''}>${applied?'Applied target damage ✓':'Apply Life Grasp target damage'}</button>${life.boost?`<button type="button" class="warn" data-action="night-life-apply-self" ${selfApplied?'disabled':''}>${selfApplied?'Self-damage applied ✓':'Apply 6 self Irreducible Damage'}</button>`:''}<button type="button" data-action="night-load-spell" data-profile="night_life_grasp">Load single-target spell resolver</button></div>
+    </details>`;
+  }
+  function calculateLifeGraspMulti() {
+    const life = state.nightingale.life;
+    const color = life.castingColor || 'Grey';
+    const castFace = DATA.dice[color]?.[Number(life.castingFace||0)] || DATA.dice[color]?.[0] || {value:0};
+    const blackFace = life.empower ? (DATA.dice.Black?.[Number(life.empowerFace||0)] || DATA.dice.Black[0]) : null;
+    const castSymbols = {book:castFace.book||0, shield:castFace.shield||0, burst:castFace.burst||0, skull:castFace.skull||0};
+    const pool = Object.assign({}, castSymbols);
+    let blackForce = 0;
+    if (blackFace) {
+      pool.book += blackFace.book||0; pool.shield += blackFace.shield||0; pool.burst += blackFace.burst||0; pool.skull += blackFace.skull||0;
+      blackForce = blackFace.skull ? 0 : (blackFace.book || 0);
+    }
+    const remainingBooks = Math.max(0, (pool.book||0) - blackForce);
+    const otherworldlyForce = Math.min(remainingBooks, pool.shield||0);
+    const force = 6 + (castFace.value||0) + blackForce + otherworldlyForce + Number(life.manualForceMod||0) + (life.boost ? 6 : 0);
+    const targetResults = life.targets.map(row => {
+      const ent = getEntityByTarget(row.targetId);
+      if (!ent?.def || !ent?.state) return { ready:false, targetId:row.targetId, label:'-', conviction:0, damage:0 };
+      const colors = ent.def.conviction || ['Purple','Purple'];
+      const c0 = DATA.dice[colors[0]]?.[Number(row.c0||0)] || DATA.dice[colors[0]]?.[0] || {value:0};
+      const c1 = DATA.dice[colors[1] || colors[0]]?.[Number(row.c1||0)] || DATA.dice[colors[1] || colors[0]]?.[0] || {value:0};
+      const conviction = (c0.value||0) + (c1.value||0);
+      const damage = Math.max(0, force - conviction);
+      return { ready:true, targetId:row.targetId, label:targetLabel(row.targetId), conviction, damage, ent };
+    });
+    const totalDamage = targetResults.reduce((s,r)=>s+(r.ready?r.damage:0),0);
+    const key = JSON.stringify({mode:'lifeMulti', color, face:life.castingFace, empower:life.empower, eFace:life.empowerFace, boost:life.boost, manual:life.manualForceMod, targets:life.targets, force, totalDamage});
+    return { force, castValue:castFace.value||0, blackForce, otherworldlyForce, targetResults, totalDamage, key };
+  }
+  function renderTrophyHelper() {
+    const n = state.nightingale;
+    const selected = n.trophyTargetId || (state.ui.targetId?.startsWith('enemy:') ? state.ui.targetId : '');
+    const faceOptions = ['<option value="">Choose black die roll</option>'].concat((DATA.dice.Black||[]).map((f,i)=>`<option value="${i}" ${String(n.trophyFace)===String(i)?'selected':''}>${escapeHtml(faceLabel(f,i))}</option>`)).join('');
+    return `<details style="margin-top:10px"><summary>Nightstalker's Trophy / post-spell effect</summary>
+      <div class="note" style="margin-top:8px">After an opponent is affected by a spell Nightingale cast, roll the black die and choose the result here before applying the effect.</div>
+      <div class="field-grid" style="margin-top:10px">
+        <div><label>Trophy target</label><select data-change="night-trophy-target">${activeEnemyTargetOptions(selected)}</select></div>
+        <div><label>Black die result</label><select data-change="night-trophy-face">${faceOptions}</select></div>
+      </div>
+      <div class="compact-actions"><button type="button" class="primary" data-action="night-trophy-apply">Apply Trophy effect</button></div>
+      <div class="tiny">1 Book = Disease; 2 Books = Wilt; 3 Books = Condemn; 4 Books = Darkness; Skull/no Books = no effect.</div>
+    </details>`;
+  }
+  function trophyEffectFromFace(faceIndex) {
+    if (faceIndex === '' || faceIndex == null) return null;
+    const face = DATA.dice.Black?.[Number(faceIndex)];
+    if (!face || face.skull) return '';
+    const books = face.book || 0;
+    return books === 1 ? 'Disease' : books === 2 ? 'Wilt' : books === 3 ? 'Condemn' : books >= 4 ? 'Darkness' : '';
+  }
   function renderSummonMini() {
     return `<div class="card ok" style="margin-top:10px"><h3>Nightingale - Summon Esper</h3><div class="note">Placement/SOI stays manual. This adds a Command Combatant, a Summon token reminder, and an initiative card if enabled.</div><div class="compact-actions"><button type="button" class="primary" data-action="summon-command" data-def="agares">Summon Agares</button><button type="button" class="primary" data-action="summon-command" data-def="eliphie">Summon Eliphie</button><button type="button" data-action="tab" data-tab="command">Open Command</button></div></div>`;
   }
@@ -1070,7 +1226,7 @@
   }
 
   function renderTurnTab() {
-    return `<section class="panel"><h2>Initiative</h2><div class="note">Clean initiative tracker only. Exhaust-card table is intentionally omitted in V3.0E.</div><div class="result-row pillbox" style="margin-top:8px"><span class="pill"><strong>Round</strong> ${state.initiative.round}</span><span class="pill"><strong>Current</strong> ${escapeHtml(currentInitiativeCard()?.label || '-')}</span></div><div class="btn-row" style="margin-top:10px"><button data-action="initiative-prev">Previous</button><button data-action="initiative-next" class="primary">Next turn</button><button data-action="initiative-shuffle">Shuffle</button><button data-action="initiative-end-round">End round / shuffle</button><button data-action="initiative-reset-party" class="warn">Reset to party only</button><button data-action="sync-actor">Sync actor</button></div><div class="hr"></div>${renderInitiativeAdd()}<div class="hr"></div><div class="grid">${state.initiative.cards.map(renderInitiativeCard).join('')}</div></section>`;
+    return `<section class="panel"><h2>Initiative</h2><div class="note">Clean initiative tracker only. Exhaust-card table is intentionally omitted in the clean V3 rebuild.</div><div class="result-row pillbox" style="margin-top:8px"><span class="pill"><strong>Round</strong> ${state.initiative.round}</span><span class="pill"><strong>Current</strong> ${escapeHtml(currentInitiativeCard()?.label || '-')}</span></div><div class="btn-row" style="margin-top:10px"><button data-action="initiative-prev">Previous</button><button data-action="initiative-next" class="primary">Next turn</button><button data-action="initiative-shuffle">Shuffle</button><button data-action="initiative-end-round">End round / shuffle</button><button data-action="initiative-reset-party" class="warn">Reset to party only</button><button data-action="sync-actor">Sync actor</button></div><div class="hr"></div>${renderInitiativeAdd()}<div class="hr"></div><div class="grid">${state.initiative.cards.map(renderInitiativeCard).join('')}</div></section>`;
   }
   function renderInitiativeAdd() {
     const partyOpts = Object.values(DATA.party).map(p=>`<option value="party:${p.id}">${p.name}</option>`).join('');
@@ -1229,7 +1385,7 @@
         if ((ent.type === 'party' || ent.type === 'command') && ent.state.damage >= ent.def.hp) ent.state.defeated = true;
       }
       if (ent.type === 'party' && ent.id === 'remi' && state.enemyAttack.remiMantleVow && r.finalDamage >= 3) addTokenToEntity(ent, 'Vow');
-      if (ent.type === 'command' && state.enemyAttack.summonReduction && r.finalDamage >= 0) removeTokenFromEntity({state:state.party.nightingale}, 'Summon');
+      if (ent.type === 'command' && state.enemyAttack.summonReduction && r.reductions.includes('Summon token -2 damage')) removeTokenFromEntity({state:state.party.nightingale}, 'Summon');
       state.ui.appliedResultKey = r.key;
       saveState(); render();
       addLog(`${actorLabel()} attacked ${targetLabel()}`, `${r.hit?'Hit':'Miss'}; attack ${r.attackTotal} vs defense ${r.targetDefense}; applied ${r.finalDamage} damage.`);
@@ -1262,7 +1418,7 @@
     }
     if (a === 'counter-from-enemy-attack') {
       const r = calculateEnemyAttackResult();
-      if (!r.ready || !r.canCounter) return;
+      if (!r.ready || r.target?.type !== 'party') return;
       const attackerTarget = state.ui.actorId;
       const defenderActor = state.ui.targetId;
       state.ui.actorId = defenderActor;
@@ -1325,6 +1481,52 @@
     if (a === 'command-add-token') { const c=state.command.find(x=>x.id===btn.dataset.id); if(c){ addTokenToEntity({state:c}, document.querySelector(`[data-select=\"command-token-${c.id}\"]`)?.value); saveState(); render(); } return; }
     if (a === 'command-remove-token') { const c=state.command.find(x=>x.id===btn.dataset.id); if(c){ removeTokenFromEntity({state:c}, document.querySelector(`[data-select=\"command-token-${c.id}\"]`)?.value); saveState(); render(); } return; }
     if (a === 'toggle-command-dismiss') { const c=state.command.find(x=>x.id===btn.dataset.id); if(c){ c.dismissed=!c.dismissed; saveState(); render(); } return; }
+    if (a === 'night-load-spell') { loadNightingaleSpell(btn.dataset.profile); saveState(); render(); return; }
+    if (a === 'night-capture-damage') {
+      let dmg = 0;
+      if (state.ui.actorId === 'party:nightingale' && state.ui.actionId === 'spell') { const r=calculateSpellResult(); if(r.ready) dmg = r.finalDamage; }
+      if (state.ui.actorId === 'party:nightingale' && state.ui.actionId === 'attack') { const r=calculateAttackResult(); if(r.ready) dmg = r.finalDamage; }
+      state.nightingale.previousDamage = dmg;
+      if (state.spell.profileId === 'night_abbadon') state.spell.previousDamage = dmg;
+      saveState(); render(); return;
+    }
+    if (a === 'night-load-abbadon') { const dmg = Number(state.nightingale.previousDamage || 0); loadNightingaleSpell('night_abbadon'); state.spell.previousDamage = dmg; saveState(); render(); return; }
+    if (a === 'night-support') {
+      const n = {type:'party', id:'nightingale', def:DATA.party.nightingale, state:state.party.nightingale};
+      const kind = btn.dataset.kind;
+      if (kind === 'ring') { n.state.damage = Math.max(0, n.state.damage - 2); addLog('Ring of Blood', 'Nightingale healed 2 after dealing damage.'); }
+      if (kind === 'yuxa') { n.state.damage = Math.max(0, n.state.damage - 1); addLog('Yuxa heal', 'Nightingale healed 1 after dealing damage.'); }
+      if (kind === 'bloodToll') { n.state.damage = Math.min(n.def.hp, n.state.damage + 2); n.state.sp = Math.min(n.def.maxSp, (n.state.sp||0) + 2); addLog('Blood Toll', 'Nightingale took 2 Irreducible Damage and gained +2 SP.'); }
+      if (kind === 'infection') { n.state.damage = Math.min(n.def.hp, n.state.damage + 1); addLog('The Infection', 'Nightingale took 1 Irreducible Damage. Reduce current SP cost by 1 manually.'); }
+      saveState(); render(); return;
+    }
+    if (a === 'night-life-apply-targets') {
+      const calc = calculateLifeGraspMulti();
+      const ids = calc.targetResults.filter(r=>r.ready).map(r=>r.targetId);
+      if (new Set(ids).size !== ids.length) { alert('Life Grasp targets must be different opponents.'); return; }
+      if (state.nightingale.life.appliedKey === calc.key) return;
+      calc.targetResults.forEach(r => { if (r.ready && r.damage > 0) { r.ent.state.damage = Math.min(r.ent.def.hp, (r.ent.state.damage||0) + r.damage); if (r.ent.type === 'enemy' && r.ent.state.damage >= r.ent.def.hp) r.ent.state.defeated = true; } });
+      state.nightingale.life.appliedKey = calc.key;
+      saveState(); render(); addLog('Life Grasp multi-target', `Applied ${calc.totalDamage} total Magic Damage across selected targets.`); return;
+    }
+    if (a === 'night-life-apply-self') {
+      const calc = calculateLifeGraspMulti();
+      if (!state.nightingale.life.boost || state.nightingale.life.selfAppliedKey === calc.key) return;
+      const n = state.party.nightingale;
+      n.damage = Math.min(DATA.party.nightingale.hp, (n.damage||0) + 6);
+      state.nightingale.life.selfAppliedKey = calc.key;
+      saveState(); render(); addLog('Life Grasp boost', 'Applied 6 Irreducible Damage to Nightingale once for the +6 Force boost.'); return;
+    }
+    if (a === 'night-trophy-apply') {
+      const targetId = state.nightingale.trophyTargetId || (state.ui.targetId?.startsWith('enemy:') ? state.ui.targetId : '');
+      if (state.nightingale.trophyFace === '' || state.nightingale.trophyFace == null) { alert('Choose the Trophy black die result first.'); return; }
+      const effect = trophyEffectFromFace(state.nightingale.trophyFace);
+      if (!effect) { addLog("Nightstalker's Trophy", 'Black die produced no applicable Book effect.'); return; }
+      const ent = getEntityByTarget(targetId);
+      if (!ent || ent.type !== 'enemy') { alert('Choose a tracked enemy target for Trophy.'); return; }
+      addEffectToEntity(ent, effect);
+      saveState(); render(); addLog("Nightstalker's Trophy", `Applied ${effect} to ${targetLabel(targetId)}.`); return;
+    }
     if (a === 'save-rewards') { state.rewards.gold=Number(byId('rewardGold')?.value||0); state.rewards.xp=Number(byId('rewardXp')?.value||0); state.rewards.notes=byId('rewardNotes')?.value||''; saveState(); render(); return; }
     if (a === 'export-snapshot') { const box=byId('snapshotBox'); if(box) box.value=JSON.stringify(state,null,2); return; }
     if (a === 'copy-snapshot') { const text=byId('snapshotBox')?.value || JSON.stringify(state,null,2); navigator.clipboard?.writeText(text); return; }
@@ -1355,6 +1557,17 @@
     if (ch === 'spell-optional') { state.spell.useOptionalBonus = !!el.checked; state.ui.appliedResultKey = null; saveState(); render(); }
     if (ch === 'spell-otherworldly') { state.spell.useOtherworldly = !!el.checked; state.ui.appliedResultKey = null; saveState(); render(); }
     if (ch === 'spell-zealous-discount') { state.spell.zealousDiscount = !!el.checked; state.ui.appliedResultKey = null; saveState(); render(); }
+    if (ch === 'night-prev-damage') { state.nightingale.previousDamage = Number(el.value || 0); if (state.spell.profileId === 'night_abbadon') state.spell.previousDamage = Number(el.value || 0); saveState(); render(); }
+    if (ch === 'night-life-color') { state.nightingale.life.castingColor = el.value; state.nightingale.life.castingFace = 0; state.nightingale.life.appliedKey = null; state.nightingale.life.selfAppliedKey = null; saveState(); render(); }
+    if (ch === 'night-life-face') { state.nightingale.life.castingFace = Number(el.value); state.nightingale.life.appliedKey = null; state.nightingale.life.selfAppliedKey = null; saveState(); render(); }
+    if (ch === 'night-life-empower') { state.nightingale.life.empower = !!el.checked; state.nightingale.life.appliedKey = null; state.nightingale.life.selfAppliedKey = null; saveState(); render(); }
+    if (ch === 'night-life-empower-face') { state.nightingale.life.empowerFace = Number(el.value); state.nightingale.life.appliedKey = null; state.nightingale.life.selfAppliedKey = null; saveState(); render(); }
+    if (ch === 'night-life-boost') { state.nightingale.life.boost = !!el.checked; state.nightingale.life.appliedKey = null; state.nightingale.life.selfAppliedKey = null; saveState(); render(); }
+    if (ch === 'night-life-manual') { state.nightingale.life.manualForceMod = Number(el.value || 0); state.nightingale.life.appliedKey = null; state.nightingale.life.selfAppliedKey = null; saveState(); render(); }
+    if (ch === 'night-life-target') { const idx = Number(el.dataset.index); state.nightingale.life.targets[idx].targetId = el.value; state.nightingale.life.targets[idx].c0 = 0; state.nightingale.life.targets[idx].c1 = 0; state.nightingale.life.appliedKey = null; state.nightingale.life.selfAppliedKey = null; saveState(); render(); }
+    if (ch === 'night-life-conv') { const idx = Number(el.dataset.index); const key = el.dataset.dieKey; state.nightingale.life.targets[idx][key] = Number(el.value); state.nightingale.life.appliedKey = null; saveState(); render(); }
+    if (ch === 'night-trophy-face') { state.nightingale.trophyFace = el.value; saveState(); render(); }
+    if (ch === 'night-trophy-target') { state.nightingale.trophyTargetId = el.value; saveState(); render(); }
     if (ch === 'enemy-attack-profile') { state.enemyAttack.profileId = el.value; state.enemyAttack.faces = {}; state.ui.appliedResultKey = null; saveState(); render(); }
     if (ch === 'enemy-attack-face') { state.enemyAttack.faces[el.dataset.dieKey] = Number(el.value); state.ui.appliedResultKey = null; saveState(); render(); }
     if (ch === 'enemy-attack-empower') { state.enemyAttack.empower = !!el.checked; state.ui.appliedResultKey = null; saveState(); render(); }
