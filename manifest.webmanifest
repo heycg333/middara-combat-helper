@@ -1,7 +1,7 @@
 {
-  "name": "Middara Combat Helper V3.0D",
-  "short_name": "Middara V3.0D",
-  "description": "Middara Combat Helper V3.0D clean spell resolver rebuilt on the V3 stable shell.",
+  "name": "Middara Combat Helper",
+  "short_name": "Middara",
+  "description": "Middara Combat Helper V3.0D1 - cleanup, attack Otherworldly, initiative sync patch.",
   "start_url": "./index.html",
   "scope": "./",
   "display": "standalone",

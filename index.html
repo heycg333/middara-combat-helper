@@ -9,7 +9,7 @@
   <link rel="manifest" href="manifest.webmanifest" />
   <link rel="apple-touch-icon" href="icons/apple-touch-icon.png" />
   <link rel="icon" href="icons/favicon.svg" type="image/svg+xml" />
-  <title>Middara Combat Helper - V3.0D Spell Resolver</title>
+  <title>Middara Combat Helper - V3.0D1 Cleanup / Attack Spell Patch</title>
   <style>
     :root {
       --bg: #0f172a;
@@ -59,7 +59,7 @@
     .card.danger { border-color: rgba(251,113,133,.55); background: rgba(251,113,133,.08); }
     .card.ok { border-color: rgba(52,211,153,.5); background: rgba(52,211,153,.08); }
     .flow-grid { display: grid; grid-template-columns: minmax(0,1fr) minmax(0,1fr); gap: 12px; align-items: start; }
-    @media (max-width: 760px) { .flow-grid { grid-template-columns: 1fr; } }
+    @media (max-width: 680px) { .flow-grid { grid-template-columns: 1fr; } }
     .field-grid { display: grid; grid-template-columns: repeat(2, minmax(0,1fr)); gap: 10px; }
     .field-grid.three { grid-template-columns: repeat(3, minmax(0,1fr)); }
     .grid { display: grid; gap: 12px; }
@@ -126,7 +126,7 @@
     .breakdown-card .label { color: var(--accent2); font-size: .78rem; font-weight: 900; text-transform: uppercase; letter-spacing: .045em; margin-bottom: 4px; }
     .breakdown-card .value { color: var(--muted); font-size: .88rem; }
     .spend-line { display: block; margin: 2px 0; }
-    @media (max-width: 860px) {
+    @media (max-width: 720px) {
       .flow-grid.attack-active .resolve-card { grid-column: auto; }
       .attack-layout, .breakdown-grid { grid-template-columns: 1fr; }
     }
@@ -136,14 +136,14 @@
 <body>
   <header>
     <h1>Middara Combat Helper</h1>
-    <div class="subtitle"><strong>V3.0D Spell Resolver</strong> - fixes repeatable symbol spending, Empower symbol impact, and improves the attack resolver layout while keeping the clean V3 shell.</div>
+    <div class="subtitle"><strong>V3.0D1 Cleanup / Attack Spell Patch</strong> - syncs enemy cleanup with initiative, adds Otherworldly attack symbol damage, tightens tablet layout, and fixes Rook spellcasting die options.</div>
   </header>
   <main id="appRoot"></main>
   <footer class="footer" id="stableFooter" aria-live="polite"></footer>
   <script>
 (function () {
   'use strict';
-  const VERSION = 'V3.0D';
+  const VERSION = 'V3.0D1';
   const STORAGE_KEY = 'middara.combatHelper.v3.state';
 
   const DATA = {
@@ -176,20 +176,20 @@
       Black:  [{value:0, book:2, shield:2, label:'2 Book + 2 Shield'}, {value:0, book:3, shield:1, label:'3 Book + 1 Shield'}, {value:0, book:1, shield:3, label:'1 Book + 3 Shield'}, {value:0, shield:4, label:'4 Shield'}, {value:0, book:4, label:'4 Book'}, {value:0, skull:1, label:'Skull'}]
     },
     attackProfiles: {
-      rook_default: { id:'rook_default', actor:'rook', label:'Rook - Loche Smasher + Svalinn', dice:['Green','Blue'], range:'Melee 1', ap:1, passivePhysical:0, abilities:[{name:'Loche Shield', shield:1, physical:1}, {name:'Loche Burst', burst:1, physical:3}], notes:'Default +1 Armor Piercing from Loche Smasher.' },
-      remi_chain_melee: { id:'remi_chain_melee', actor:'remi', label:'Remi - Chain Pick melee side', dice:['Green','Green','Black'], range:'Melee 1', ap:0, passivePhysical:1, abilities:[{name:'2 Shield', shield:2, physical:3}, {name:'Burst', burst:1, physical:3}], notes:'Hammer Helm passive adds +1 Physical Damage. Master Work can add +1 to attack roll.' },
-      remi_chain_ranged: { id:'remi_chain_ranged', actor:'remi', label:'Remi - Chain Pick ranged side', dice:['Red','Green','Black'], range:'Range 4', ap:0, passivePhysical:1, abilities:[{name:'Shield', shield:1, physical:1}, {name:'Burst', burst:1, physical:3}], notes:'Hammer Helm passive adds +1 Physical Damage. Master Work can add +1 to attack roll.' },
-      remi_scimitar: { id:'remi_scimitar', actor:'remi', label:'Remi - Scimitar Swallow', dice:['Teal','Teal'], range:'Melee 1', ap:0, passivePhysical:1, abilities:[{name:'2 Shield', shield:2, physical:2}, {name:'Burst', burst:1, physical:2}], notes:'Hammer Helm passive adds +1 Physical Damage.' },
-      night_default: { id:'night_default', actor:'nightingale', label:'Nightingale - Wand + Trophy', dice:['Grey','Red','Black'], range:'Range 4', ap:0, passivePhysical:0, passiveMagic:0, abilities:[{name:'Trophy Book', book:1, magic:1}, {name:'Wand 2 Book', book:2, magic:2}, {name:'Trophy Burst', burst:1, magic:4}, {name:'Wand Burst', burst:1, magic:3}], notes:'Nightstalker/Wand symbols deal Magic Damage. Trophy/Morbid follow-up helpers return in later V3 modules.' },
-      zeke_default: { id:'zeke_default', actor:'zeke', label:'Zeke - dual short swords', dice:['Green','Blue'], range:'Melee 1', ap:0, passivePhysical:0, abilities:[{name:'Sword 2 Shield', shield:2, physical:3}, {name:'Dweller Shield', shield:1, physical:1}, {name:'Sword Burst', burst:1, physical:4}, {name:'Dweller Burst', burst:1, physical:3}], notes:'Adjacent targets may not Dodge from Sword of Sorrow; track board legality manually.' },
-      agares_punch: { id:'agares_punch', actor:'agares', label:'Agares - Gigantic Punch', dice:['Grey','Red','Black'], range:'Melee 1', ap:0, passivePhysical:0, abilities:[{name:'Book', book:1, magic:1}, {name:'Wand 2 Book', book:2, magic:2}, {name:'Trophy Burst', burst:1, magic:4}, {name:'Wand Burst', burst:1, magic:3}], notes:'FU Push 3, Force 10 + difference hit is a reminder for now.' },
-      agares_horn: { id:'agares_horn', actor:'agares', label:'Agares - Horn Energy Blast', dice:['Grey','Red','Black'], range:'Range 6', ap:0, passivePhysical:0, abilities:[{name:'Book', book:1, magic:1}, {name:'Wand 2 Book', book:2, magic:2}, {name:'Trophy Burst', burst:1, magic:4}, {name:'Wand Burst', burst:1, magic:3}], notes:'FU Pull 3, Force 10 + difference hit is a reminder for now.' },
-      eliphie_scalpel: { id:'eliphie_scalpel', actor:'eliphie', label:'Eliphie - Scalpel', dice:['Grey','Red','Black'], range:'Melee 1', ap:0, passivePhysical:0, abilities:[{name:'Book', book:1, magic:1}, {name:'Burst', burst:1, magic:2}, {name:'Wand 2 Book', book:2, magic:2}, {name:'Trophy Burst', burst:1, magic:4}], notes:'Bag Full of Organs / support helpers return after core combat is stable.' }
+      rook_default: { id:'rook_default', actor:'rook', label:'Rook - Loche Smasher + Svalinn', dice:['Green','Blue'], range:'Melee 1', ap:1, passivePhysical:0, otherworldlyAttack:true, abilities:[{name:'Loche Shield', shield:1, physical:1}, {name:'Loche Burst', burst:1, physical:3}], notes:'Default +1 Armor Piercing from Loche Smasher.' },
+      remi_chain_melee: { id:'remi_chain_melee', actor:'remi', label:'Remi - Chain Pick melee side', dice:['Green','Green','Black'], range:'Melee 1', ap:0, passivePhysical:1, otherworldlyAttack:true, abilities:[{name:'2 Shield', shield:2, physical:3}, {name:'Burst', burst:1, physical:3}], notes:'Hammer Helm passive adds +1 Physical Damage. Master Work can add +1 to attack roll.' },
+      remi_chain_ranged: { id:'remi_chain_ranged', actor:'remi', label:'Remi - Chain Pick ranged side', dice:['Red','Green','Black'], range:'Range 4', ap:0, passivePhysical:1, otherworldlyAttack:true, abilities:[{name:'Shield', shield:1, physical:1}, {name:'Burst', burst:1, physical:3}], notes:'Hammer Helm passive adds +1 Physical Damage. Master Work can add +1 to attack roll.' },
+      remi_scimitar: { id:'remi_scimitar', actor:'remi', label:'Remi - Scimitar Swallow', dice:['Teal','Teal'], range:'Melee 1', ap:0, passivePhysical:1, otherworldlyAttack:true, abilities:[{name:'2 Shield', shield:2, physical:2}, {name:'Burst', burst:1, physical:2}], notes:'Hammer Helm passive adds +1 Physical Damage.' },
+      night_default: { id:'night_default', actor:'nightingale', label:'Nightingale - Wand + Trophy', dice:['Grey','Red','Black'], range:'Range 4', ap:0, passivePhysical:0, passiveMagic:0, otherworldlyAttack:true, abilities:[{name:'Trophy Book', book:1, magic:1}, {name:'Wand 2 Book', book:2, magic:2}, {name:'Trophy Burst', burst:1, magic:4}, {name:'Wand Burst', burst:1, magic:3}], notes:'Nightstalker/Wand symbols deal Magic Damage. Trophy/Morbid follow-up helpers return in later V3 modules.' },
+      zeke_default: { id:'zeke_default', actor:'zeke', label:'Zeke - dual short swords', dice:['Green','Blue'], range:'Melee 1', ap:0, passivePhysical:0, otherworldlyAttack:true, abilities:[{name:'Sword 2 Shield', shield:2, physical:3}, {name:'Dweller Shield', shield:1, physical:1}, {name:'Sword Burst', burst:1, physical:4}, {name:'Dweller Burst', burst:1, physical:3}], notes:'Adjacent targets may not Dodge from Sword of Sorrow; track board legality manually.' },
+      agares_punch: { id:'agares_punch', actor:'agares', label:'Agares - Gigantic Punch', dice:['Grey','Red','Black'], range:'Melee 1', ap:0, passivePhysical:0, otherworldlyAttack:true, abilities:[{name:'Book', book:1, magic:1}, {name:'Wand 2 Book', book:2, magic:2}, {name:'Trophy Burst', burst:1, magic:4}, {name:'Wand Burst', burst:1, magic:3}], notes:'FU Push 3, Force 10 + difference hit is a reminder for now.' },
+      agares_horn: { id:'agares_horn', actor:'agares', label:'Agares - Horn Energy Blast', dice:['Grey','Red','Black'], range:'Range 6', ap:0, passivePhysical:0, otherworldlyAttack:true, abilities:[{name:'Book', book:1, magic:1}, {name:'Wand 2 Book', book:2, magic:2}, {name:'Trophy Burst', burst:1, magic:4}, {name:'Wand Burst', burst:1, magic:3}], notes:'FU Pull 3, Force 10 + difference hit is a reminder for now.' },
+      eliphie_scalpel: { id:'eliphie_scalpel', actor:'eliphie', label:'Eliphie - Scalpel', dice:['Grey','Red','Black'], range:'Melee 1', ap:0, passivePhysical:0, otherworldlyAttack:true, abilities:[{name:'Book', book:1, magic:1}, {name:'Burst', burst:1, magic:2}, {name:'Wand 2 Book', book:2, magic:2}, {name:'Trophy Burst', burst:1, magic:4}], notes:'Bag Full of Organs / support helpers return after core combat is stable.' }
     },
 
     spellProfiles: {
-      rook_courage_stifle: { id:'rook_courage_stifle', actor:'rook', label:'Rook - Courage Stifle', baseForce:6, castingColors:['Purple','Green','Blue'], defaultColor:'Green', sp:2, damageMode:'flat', flatMagic:10, notes:'Spell 6. Magic Damage = 2 x Rook total Armor. Current Armor 5 => 10 Magic Damage. Choose an eligible Shield/Blunt spellcasting upgrade die manually.' },
-      rook_zealous_reprisal: { id:'rook_zealous_reprisal', actor:'rook', label:'Rook - Zealous Reprisal', baseForce:6, castingColors:['Purple','Green','Blue'], defaultColor:'Green', sp:3, damageMode:'zealous', damageDice:['Green','Blue'], notes:'Spell 6. Damage roll uses equipped combat dice, then damage and Push 3 are reduced by 1 for each space beyond adjacent. Use the discount checkbox if Rook damaged this target this turn.' },
+      rook_courage_stifle: { id:'rook_courage_stifle', actor:'rook', label:'Rook - Courage Stifle', baseForce:6, castingColors:['Purple','Green','Grey'], defaultColor:'Green', sp:2, damageMode:'flat', flatMagic:10, notes:'Spell 6. Magic Damage = 2 x Rook total Armor. Current Armor 5 => 10 Magic Damage. Choose an eligible Shield/Blunt spellcasting upgrade die manually.' },
+      rook_zealous_reprisal: { id:'rook_zealous_reprisal', actor:'rook', label:'Rook - Zealous Reprisal', baseForce:6, castingColors:['Purple','Green','Grey'], defaultColor:'Green', sp:3, damageMode:'zealous', damageDice:['Green','Blue'], notes:'Spell 6. Damage roll uses equipped combat dice, then damage and Push 3 are reduced by 1 for each space beyond adjacent. Use the discount checkbox if Rook damaged this target this turn.' },
       night_gore_shot: { id:'night_gore_shot', actor:'nightingale', label:'Nightingale - Gore Shot', baseForce:6, castingColors:['Purple','Red','Grey'], defaultColor:'Grey', sp:0, damageMode:'flat', flatMagic:2, optionalSelfDamage:2, optionalMagicBonus:8, defaultEmpower:true, notes:'Spell 6. Deal 2 Magic Damage. Optional: Nightingale takes 2 Irreducible Damage to add +8 Magic Damage with current highest Cruor level 4.' },
       night_corrosive_ideal: { id:'night_corrosive_ideal', actor:'nightingale', label:'Nightingale - Corrosive Ideal', baseForce:6, castingColors:['Purple','Red','Grey'], defaultColor:'Grey', sp:1, damageMode:'effect', effect:'Poison', defaultEmpower:true, notes:'Spell 6. If the target fails Conviction, inflict Poison. Effect immunity is respected by the tracker.' },
       night_life_grasp: { id:'night_life_grasp', actor:'nightingale', label:'Nightingale - Life Grasp (single target core)', baseForce:6, castingColors:['Purple','Red','Grey'], defaultColor:'Grey', sp:1, damageMode:'difference', optionalSelfDamage:6, optionalForceBonus:6, defaultEmpower:true, notes:'Core single-target implementation. Damage equals failed Conviction difference. Optional +6 Force costs 6 Irreducible Damage once per cast. Multi-target helper returns after generic spell core is stable.' },
@@ -449,7 +449,7 @@
 
   function renderPlayTab() {
     return `<section class="panel" id="playPanel">
-      <div class="live-title"><div><h2>V3.0D stable Play flow</h2><div class="note">Actor → Target → Action → Roll / Resolve → Apply. Attack and spell math are rebuilt cleanly here; Party management stays on the Party tab.</div></div><span class="pill"><strong>Current</strong> ${escapeHtml(currentInitiativeCard()?.label || 'No initiative')}</span></div>
+      <div class="live-title"><div><h2>V3.0D1 stable Play flow</h2><div class="note">Actor → Target → Action → Roll / Resolve → Apply. Attack and spell math are rebuilt cleanly here; Party management stays on the Party tab.</div></div><span class="pill"><strong>Current</strong> ${escapeHtml(currentInitiativeCard()?.label || 'No initiative')}</span></div>
       <div class="flow-grid ${(state.ui.actionId==='attack'||state.ui.actionId==='spell')?'attack-active':''}" style="margin-top:12px">
         <div class="card"><h3>1. Actor</h3>${renderActorCard()}</div>
         <div class="card"><h3>2. Target drawer</h3>${renderTargetDrawer()}</div>
@@ -532,9 +532,9 @@
       buttons.push(['spell','Spell / Force','Resolve Force, Conviction, spell damage, and effects.']);
       buttons.push(['support','Support','Use Party/Command trackers for now.']);
       if (actor.id === 'nightingale') buttons.push(['summon','Summon Esper','Open the clean Command summon controls.']);
-      if (actor.id === 'remi') buttons.push(['whirlwind','Whirlwind','Reminder only in V3.0D.']);
-      if (actor.id === 'zeke') buttons.push(['onslaught','Onslaught','Reminder only in V3.0D.']);
-      if (actor.id === 'zeke') buttons.push(['bladeWorks','Blade Works','Reminder only in V3.0D.']);
+      if (actor.id === 'remi') buttons.push(['whirlwind','Whirlwind','Reminder only in V3.0D1.']);
+      if (actor.id === 'zeke') buttons.push(['onslaught','Onslaught','Reminder only in V3.0D1.']);
+      if (actor.id === 'zeke') buttons.push(['bladeWorks','Blade Works','Reminder only in V3.0D1.']);
     } else if (actor.type === 'command') {
       buttons.push(['attack','Attack','Roll Esper attack dice and apply damage.']);
       buttons.push(['spell','Spell / support','Esper spell/support returns after Command core.']);
@@ -682,7 +682,9 @@
     }).join('');
   }
   function optimizeSymbolSpend(profile, pool, diffHit, targetArmor, armorPiercing, manualPhysical, manualMagic) {
-    const abilities = (profile.abilities || []).filter(a => symbolCost(a) > 0);
+    const abilities = (profile.abilities || [])
+      .concat(profile.otherworldlyAttack ? [{name:'Otherworldly upgrade', book:2, magic:2}] : [])
+      .filter(a => symbolCost(a) > 0);
     let best = null;
     function score(chosen, remaining) {
       const physicalSymbols = chosen.reduce((s,a)=>s+(a.physical||0),0);
@@ -978,7 +980,7 @@
 
   function renderEnemiesTab() {
     const active = state.enemies.filter(e=>!e.defeated).length;
-    return `<section class="panel"><h2>Enemy tracker</h2><div class="note">Track enemy figures, damage, effects, and initiative. Enemy AI helper and deep enemy-specific panels are intentionally excluded from V3.0D.</div><div class="pillbox" style="margin-top:8px"><span class="pill"><strong>Tracked</strong> ${state.enemies.length}</span><span class="pill"><strong>Active</strong> ${active}</span><span class="pill"><strong>Initiative auto-add</strong> ${state.settings.autoAddEnemyInitiative ? 'On' : 'Off'}</span></div><div style="margin-top:10px">${renderQuickEnemyAdd()}</div><div class="btn-row" style="margin-top:10px"><button class="warn" data-action="clear-defeated-enemies">Clear defeated enemies</button><button class="danger" data-action="clear-enemies">Clear all enemies</button></div><div class="hr"></div>${state.enemies.length ? `<div class="entity-grid">${state.enemies.map(renderEnemyCard).join('')}</div>` : '<div class="note">No tracked enemies.</div>'}</section>`;
+    return `<section class="panel"><h2>Enemy tracker</h2><div class="note">Track enemy figures, damage, effects, and initiative. Enemy AI helper and deep enemy-specific panels are intentionally excluded from V3.0D1.</div><div class="pillbox" style="margin-top:8px"><span class="pill"><strong>Tracked</strong> ${state.enemies.length}</span><span class="pill"><strong>Active</strong> ${active}</span><span class="pill"><strong>Initiative auto-add</strong> ${state.settings.autoAddEnemyInitiative ? 'On' : 'Off'}</span></div><div style="margin-top:10px">${renderQuickEnemyAdd()}</div><div class="btn-row" style="margin-top:10px"><button class="warn" data-action="clear-defeated-enemies">Clear defeated enemies</button><button class="danger" data-action="clear-enemies">Clear all enemies</button></div><div class="hr"></div>${state.enemies.length ? `<div class="entity-grid">${state.enemies.map(renderEnemyCard).join('')}</div>` : '<div class="note">No tracked enemies.</div>'}</section>`;
   }
   function renderEnemyCard(e) {
     const def = DATA.enemyDefinitions[e.defId];
@@ -986,7 +988,7 @@
   }
 
   function renderTurnTab() {
-    return `<section class="panel"><h2>Initiative</h2><div class="note">Clean initiative tracker only. Exhaust-card table is intentionally omitted in V3.0D.</div><div class="result-row pillbox" style="margin-top:8px"><span class="pill"><strong>Round</strong> ${state.initiative.round}</span><span class="pill"><strong>Current</strong> ${escapeHtml(currentInitiativeCard()?.label || '-')}</span></div><div class="btn-row" style="margin-top:10px"><button data-action="initiative-prev">Previous</button><button data-action="initiative-next" class="primary">Next turn</button><button data-action="initiative-shuffle">Shuffle</button><button data-action="initiative-end-round">End round / shuffle</button><button data-action="initiative-reset-party" class="warn">Reset to party only</button><button data-action="sync-actor">Sync actor</button></div><div class="hr"></div>${renderInitiativeAdd()}<div class="hr"></div><div class="grid">${state.initiative.cards.map(renderInitiativeCard).join('')}</div></section>`;
+    return `<section class="panel"><h2>Initiative</h2><div class="note">Clean initiative tracker only. Exhaust-card table is intentionally omitted in V3.0D1.</div><div class="result-row pillbox" style="margin-top:8px"><span class="pill"><strong>Round</strong> ${state.initiative.round}</span><span class="pill"><strong>Current</strong> ${escapeHtml(currentInitiativeCard()?.label || '-')}</span></div><div class="btn-row" style="margin-top:10px"><button data-action="initiative-prev">Previous</button><button data-action="initiative-next" class="primary">Next turn</button><button data-action="initiative-shuffle">Shuffle</button><button data-action="initiative-end-round">End round / shuffle</button><button data-action="initiative-reset-party" class="warn">Reset to party only</button><button data-action="sync-actor">Sync actor</button></div><div class="hr"></div>${renderInitiativeAdd()}<div class="hr"></div><div class="grid">${state.initiative.cards.map(renderInitiativeCard).join('')}</div></section>`;
   }
   function renderInitiativeAdd() {
     const partyOpts = Object.values(DATA.party).map(p=>`<option value="party:${p.id}">${p.name}</option>`).join('');
@@ -1047,6 +1049,16 @@
     if (state.initiative.cards.some(c => c.type==='command' && c.ref===defId)) return;
     const def = DATA.commandDefinitions[defId];
     insertInitiativeCard({ id:uid('init'), type:'command', ref:defId, label:def.name });
+  }
+
+  function cleanupEnemyInitiative() {
+    const activeDefIds = new Set(state.enemies.filter(e => !e.defeated).map(e => e.defId));
+    state.initiative.cards = state.initiative.cards.filter(c => c.type !== 'enemy' || activeDefIds.has(c.ref));
+    if (state.initiative.currentIndex >= state.initiative.cards.length) state.initiative.currentIndex = Math.max(0, state.initiative.cards.length - 1);
+  }
+  function removeAllEnemyInitiative() {
+    state.initiative.cards = state.initiative.cards.filter(c => c.type !== 'enemy');
+    if (state.initiative.currentIndex >= state.initiative.cards.length) state.initiative.currentIndex = Math.max(0, state.initiative.cards.length - 1);
   }
   function addEnemies(defId, count=1) {
     const def = DATA.enemyDefinitions[defId];
@@ -1142,8 +1154,8 @@
     if (a === 'toggle-enemy-defeated') { const e=state.enemies.find(x=>x.id===btn.dataset.id); if(e){ e.defeated=!e.defeated; saveState(); render(); } return; }
     if (a === 'enemy-add-effect') { const e=state.enemies.find(x=>x.id===btn.dataset.id); if(e){ addEffectToEntity({type:'enemy', id:e.id, def:DATA.enemyDefinitions[e.defId], state:e}, document.querySelector(`[data-select="enemy-effect-${e.id}"]`)?.value); saveState(); render(); } return; }
     if (a === 'enemy-remove-effect') { const e=state.enemies.find(x=>x.id===btn.dataset.id); if(e){ removeEffectFromEntity({state:e}, document.querySelector(`[data-select="enemy-effect-${e.id}"]`)?.value); saveState(); render(); } return; }
-    if (a === 'clear-defeated-enemies') { state.enemies = state.enemies.filter(e => !e.defeated); saveState(); render(); addLog('Cleared defeated enemies'); return; }
-    if (a === 'clear-enemies') { if(confirm('Clear all tracked enemies for this encounter?')) { state.enemies = []; state.ui.targetId = null; saveState(); render(); addLog('Cleared all enemies'); } return; }
+    if (a === 'clear-defeated-enemies') { state.enemies = state.enemies.filter(e => !e.defeated); cleanupEnemyInitiative(); if (state.ui.targetId && !getEntityByTarget(state.ui.targetId)?.state) state.ui.targetId = null; saveState(); render(); addLog('Cleared defeated enemies', 'Removed enemy initiative cards for groups with no active figures.'); return; }
+    if (a === 'clear-enemies') { if(confirm('Clear all tracked enemies for this encounter?')) { state.enemies = []; state.ui.targetId = null; if (state.ui.actorId && state.ui.actorId.startsWith('enemy:')) state.ui.actorId = 'party:rook'; removeAllEnemyInitiative(); saveState(); render(); addLog('Cleared all enemies', 'Removed tracked enemies and enemy initiative cards.'); } return; }
     if (a === 'initiative-next') { if(state.initiative.cards.length){ state.initiative.currentIndex=(state.initiative.currentIndex+1)%state.initiative.cards.length; syncActorFromInitiative(false); } saveState(); render(); return; }
     if (a === 'initiative-prev') { if(state.initiative.cards.length){ state.initiative.currentIndex=(state.initiative.currentIndex-1+state.initiative.cards.length)%state.initiative.cards.length; syncActorFromInitiative(false); } saveState(); render(); return; }
     if (a === 'initiative-shuffle') { state.initiative.cards.sort(()=>Math.random()-.5); state.initiative.currentIndex=0; syncActorFromInitiative(false); saveState(); render(); return; }
