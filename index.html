@@ -9,7 +9,7 @@
   <link rel="manifest" href="manifest.webmanifest" />
   <link rel="apple-touch-icon" href="icons/apple-touch-icon.png" />
   <link rel="icon" href="icons/favicon.svg" type="image/svg+xml" />
-  <title>Middara Combat Helper - V3.0B Party / Enemy / Initiative Core</title>
+  <title>Middara Combat Helper - V3.0C Attack Resolver</title>
   <style>
     :root {
       --bg: #0f172a;
@@ -111,20 +111,27 @@
     details { border:1px solid var(--line); border-radius:14px; padding:10px 12px; background:rgba(15,23,42,.48); }
     summary { cursor:pointer; color:var(--accent); font-weight:900; }
     .table-ish { display:grid; gap:8px; }
+
+    .result-metric { font-size: 1.18rem; color: var(--text); font-weight: 800; }
+    .mini-table { width: 100%; border-collapse: collapse; overflow: hidden; border-radius: 12px; }
+    .mini-table th, .mini-table td { border-bottom: 1px solid var(--line); padding: 8px 9px; text-align: left; vertical-align: top; }
+    .mini-table th { color: var(--accent2); width: 150px; background: rgba(15,23,42,.56); }
+    .mini-table tr:last-child th, .mini-table tr:last-child td { border-bottom: 0; }
+    button:disabled { opacity: .56; cursor: not-allowed; filter: grayscale(.15); }
     .hidden { display: none !important; }
   </style>
 </head>
 <body>
   <header>
     <h1>Middara Combat Helper</h1>
-    <div class="subtitle"><strong>V3.0B Party / Enemy / Initiative Core</strong> - clean Play-first rebuild with stable trackers, initiative, selected-target controls, and no legacy patch panels. Combat math returns in the next V3 modules.</div>
+    <div class="subtitle"><strong>V3.0C Attack Resolver</strong> - clean Play-first rebuild with rebuilt attack math, stable trackers, initiative, selected-target controls, and no legacy patch panels.</div>
   </header>
   <main id="appRoot"></main>
   <footer class="footer" id="stableFooter" aria-live="polite"></footer>
   <script>
 (function () {
   'use strict';
-  const VERSION = 'V3.0B';
+  const VERSION = 'V3.0C';
   const STORAGE_KEY = 'middara.combatHelper.v3.state';
 
   const DATA = {
@@ -144,6 +151,28 @@
     commandDefinitions: {
       agares: { id:'agares', name:'Agares', hp:32, recovery:3, maxSp:5, defense:13, armor:4, movement:4, soi:4, tags:['Loyal Esper','Command','Squeeze'] },
       eliphie: { id:'eliphie', name:'Eliphie', hp:32, recovery:3, maxSp:5, defense:13, armor:0, movement:6, soi:4, tags:['Loyal Esper','Command'] }
+    },
+    dice: {
+      White:  [{value:2},{value:3},{value:4, shield:1},{value:5, book:1, shield:1},{value:6, book:1, shield:2},{value:7, book:1, shield:2, burst:1}],
+      Teal:   [{value:3},{value:4},{value:5, shield:1},{value:6, book:1, shield:1},{value:7, book:1, shield:2},{value:8, book:1, shield:2, burst:1}],
+      Green:  [{value:4},{value:5},{value:6, shield:1},{value:7, book:1, shield:1},{value:8, book:1, shield:2},{value:9, book:1, shield:2, burst:1}],
+      Blue:   [{value:5},{value:6},{value:7, shield:1},{value:8, book:1, shield:1},{value:9, book:1, shield:2},{value:10, book:1, shield:2, burst:1}],
+      Purple: [{value:1},{value:2},{value:3, book:1},{value:5, book:1, shield:1},{value:6, book:2, shield:1},{value:7, book:2, shield:1, burst:1}],
+      Orange: [{value:2},{value:3},{value:4, book:1},{value:6, book:1, shield:1},{value:7, book:2, shield:1},{value:8, book:2, shield:1, burst:1}],
+      Red:    [{value:3},{value:4},{value:5, book:1},{value:7, book:1, shield:1},{value:8, book:2, shield:1},{value:9, book:2, shield:1, burst:1}],
+      Grey:   [{value:4},{value:5},{value:6, book:1},{value:8, book:1, shield:1},{value:9, book:2, shield:1},{value:10, book:2, shield:1, burst:1}],
+      Black:  [{value:0, book:2, shield:2, label:'2 Book + 2 Shield'}, {value:0, book:3, shield:1, label:'3 Book + 1 Shield'}, {value:0, book:1, shield:3, label:'1 Book + 3 Shield'}, {value:0, shield:4, label:'4 Shield'}, {value:0, book:4, label:'4 Book'}, {value:0, skull:1, label:'Skull'}]
+    },
+    attackProfiles: {
+      rook_default: { id:'rook_default', actor:'rook', label:'Rook - Loche Smasher + Svalinn', dice:['Green','Blue'], range:'Melee 1', ap:1, passivePhysical:0, abilities:[{name:'Loche Shield', shield:1, physical:1}, {name:'Loche Burst', burst:1, physical:3}], notes:'Default +1 Armor Piercing from Loche Smasher.' },
+      remi_chain_melee: { id:'remi_chain_melee', actor:'remi', label:'Remi - Chain Pick melee side', dice:['Green','Green','Black'], range:'Melee 1', ap:0, passivePhysical:1, abilities:[{name:'2 Shield', shield:2, physical:3}, {name:'Burst', burst:1, physical:3}], notes:'Hammer Helm passive adds +1 Physical Damage. Master Work can add +1 to attack roll.' },
+      remi_chain_ranged: { id:'remi_chain_ranged', actor:'remi', label:'Remi - Chain Pick ranged side', dice:['Red','Green','Black'], range:'Range 4', ap:0, passivePhysical:1, abilities:[{name:'Shield', shield:1, physical:1}, {name:'Burst', burst:1, physical:3}], notes:'Hammer Helm passive adds +1 Physical Damage. Master Work can add +1 to attack roll.' },
+      remi_scimitar: { id:'remi_scimitar', actor:'remi', label:'Remi - Scimitar Swallow', dice:['Teal','Teal'], range:'Melee 1', ap:0, passivePhysical:1, abilities:[{name:'2 Shield', shield:2, physical:2}, {name:'Burst', burst:1, physical:2}], notes:'Hammer Helm passive adds +1 Physical Damage.' },
+      night_default: { id:'night_default', actor:'nightingale', label:'Nightingale - Wand + Trophy', dice:['Grey','Red','Black'], range:'Range 4', ap:0, passivePhysical:0, passiveMagic:0, abilities:[{name:'Trophy Book', book:1, magic:1}, {name:'Wand 2 Book', book:2, magic:2}, {name:'Trophy Burst', burst:1, magic:4}, {name:'Wand Burst', burst:1, magic:3}], notes:'Nightstalker/Wand symbols deal Magic Damage. Trophy/Morbid follow-up helpers return in later V3 modules.' },
+      zeke_default: { id:'zeke_default', actor:'zeke', label:'Zeke - dual short swords', dice:['Green','Blue'], range:'Melee 1', ap:0, passivePhysical:0, abilities:[{name:'Sword 2 Shield', shield:2, physical:3}, {name:'Dweller Shield', shield:1, physical:1}, {name:'Sword Burst', burst:1, physical:4}, {name:'Dweller Burst', burst:1, physical:3}], notes:'Adjacent targets may not Dodge from Sword of Sorrow; track board legality manually.' },
+      agares_punch: { id:'agares_punch', actor:'agares', label:'Agares - Gigantic Punch', dice:['Grey','Red','Black'], range:'Melee 1', ap:0, passivePhysical:0, abilities:[{name:'Book', book:1, magic:1}, {name:'Wand 2 Book', book:2, magic:2}, {name:'Trophy Burst', burst:1, magic:4}, {name:'Wand Burst', burst:1, magic:3}], notes:'FU Push 3, Force 10 + difference hit is a reminder for now.' },
+      agares_horn: { id:'agares_horn', actor:'agares', label:'Agares - Horn Energy Blast', dice:['Grey','Red','Black'], range:'Range 6', ap:0, passivePhysical:0, abilities:[{name:'Book', book:1, magic:1}, {name:'Wand 2 Book', book:2, magic:2}, {name:'Trophy Burst', burst:1, magic:4}, {name:'Wand Burst', burst:1, magic:3}], notes:'FU Pull 3, Force 10 + difference hit is a reminder for now.' },
+      eliphie_scalpel: { id:'eliphie_scalpel', actor:'eliphie', label:'Eliphie - Scalpel', dice:['Grey','Red','Black'], range:'Melee 1', ap:0, passivePhysical:0, abilities:[{name:'Book', book:1, magic:1}, {name:'Burst', burst:1, magic:2}, {name:'Wand 2 Book', book:2, magic:2}, {name:'Trophy Burst', burst:1, magic:4}], notes:'Bag Full of Organs / support helpers return after core combat is stable.' }
     },
     effects: ['Darkness','Condemn','Disease','Paralyze','Poison','Wilt','Sedate','Barrier','Courage','Haste','Tether','Nemesis'],
     tokens: ['Dodge','Heal','Intervention','Vow','Summon','Energy']
@@ -169,7 +198,8 @@
       schema: 'middara-v3-clean-shell',
       version: VERSION,
       createdAt: new Date().toISOString(),
-      ui: { activeTab:'play', actorId:'party:rook', targetId:null, targetScope:'enemies', actionId:null, selectedParty:'rook' },
+      ui: { activeTab:'play', actorId:'party:rook', targetId:null, targetScope:'enemies', actionId:null, selectedParty:'rook', appliedResultKey:null },
+      attack: { profileId:'rook_default', faces:{}, empower:false, empowerFace:0, manualAttackMod:0, manualPhysical:0, manualMagic:0, manualArmorPiercing:0, targetDefenseMod:0, useMasterWork:false, useCourage: true },
       party: defaultParty(),
       enemies: [],
       command: [],
@@ -194,6 +224,8 @@
     const base = defaultState();
     const next = Object.assign(base, raw || {});
     next.ui = Object.assign(base.ui, raw?.ui || {});
+    next.attack = Object.assign(base.attack, raw?.attack || {});
+    next.attack.faces = Object.assign(base.attack.faces, raw?.attack?.faces || {});
     next.party = Object.assign(base.party, raw?.party || {});
     next.initiative = Object.assign(base.initiative, raw?.initiative || {});
     next.rewards = Object.assign(base.rewards, raw?.rewards || {});
@@ -271,28 +303,30 @@
     const actor = actorLabel();
     const action = actionLabel();
     const target = targetLabel();
-    return { title: `${actor} - ${action}`, detail: state.ui.targetId ? `Target: ${target}. V3.0B keeps the table state clean; combat math returns in V3.0C/D.` : 'Choose a target, then an action. Combat math is intentionally disabled in V3.0B while the core state stays clean.' };
+    if (state.ui.actionId === 'attack') {
+      const result = calculateAttackResult();
+      if (result.ready) {
+        const applied = state.ui.appliedResultKey === result.key;
+        return { title: applied ? 'Applied attack damage' : `${result.hit ? 'Hit' : 'Miss'} - ${result.finalDamage} damage`, detail: `${actor} attacking ${target}. Attack ${result.attackTotal} vs Defense ${result.targetDefense}. ${applied ? 'This exact result has already been applied.' : 'Use Apply when ready.'}` };
+      }
+    }
+    return { title: `${actor} - ${action}`, detail: state.ui.targetId ? `Target: ${target}. V3.0C has clean attack math; spell and enemy-attack modules return next.` : 'Choose a target, then an action.' };
   }
 
   function actorOptionsHtml() {
     const opts = [];
-    const added = new Set();
-    function add(value, label) {
-      if (added.has(value)) return;
-      added.add(value);
-      opts.push({ value, label });
+    Object.values(DATA.party).forEach(p => opts.push({ value:`party:${p.id}`, label:p.name }));
+    const initKeys = new Set(state.initiative.cards.map(c => `${c.type}:${c.ref}`));
+    state.command
+      .filter(c => !c.defeated && !c.dismissed && initKeys.has(`command:${c.defId}`))
+      .forEach(c => opts.push({ value:`command:${c.id}`, label:c.label }));
+    state.enemies
+      .filter(e => !e.defeated && initKeys.has(`enemy:${e.defId}`))
+      .forEach(e => opts.push({ value:`enemy:${e.id}`, label:e.label }));
+    if (state.ui.actorId && !opts.some(o => o.value === state.ui.actorId)) {
+      const label = actorLabel(state.ui.actorId);
+      if (label && label !== 'No actor') opts.push({ value:state.ui.actorId, label:`${label} (manual)` });
     }
-    // Party adventurers are always legal live-flow actors.
-    Object.values(DATA.party).forEach(p => add(`party:${p.id}`, p.name));
-    // Enemy and Command actors are shown only when represented by initiative.
-    state.initiative.cards.forEach(card => {
-      if (card.type === 'enemy') {
-        state.enemies.filter(e => e.defId === card.ref && !e.defeated).forEach(e => add(`enemy:${e.id}`, e.label));
-      }
-      if (card.type === 'command') {
-        state.command.filter(c => c.defId === card.ref && !c.defeated && !c.dismissed).forEach(c => add(`command:${c.id}`, c.label));
-      }
-    });
     return opts.map(o => `<option value="${escapeHtml(o.value)}" ${state.ui.actorId===o.value?'selected':''}>${escapeHtml(o.label)}</option>`).join('');
   }
   function selectActor(actorId) {
@@ -361,12 +395,20 @@
   }
   function renderFooter() {
     const f = currentFooterText();
-    byId('stableFooter').innerHTML = `<div><div class="footer-title">${escapeHtml(f.title)}</div><div class="footer-detail">${escapeHtml(f.detail)}</div></div><div class="footer-actions"><button type="button" class="primary" data-action="log-current">Log</button><button type="button" data-action="tab" data-tab="play">Play</button><button type="button" class="ghost" data-action="sync-actor">Sync</button></div>`;
+    let applyButton = '';
+    if (state.ui.actionId === 'attack') {
+      const result = calculateAttackResult();
+      if (result.ready) {
+        const applied = state.ui.appliedResultKey === result.key;
+        applyButton = `<button type="button" class="primary" data-action="apply-attack" ${applied ? 'disabled' : ''}>${applied ? 'Applied ✓' : `Apply ${result.finalDamage} dmg`}</button>`;
+      }
+    }
+    byId('stableFooter').innerHTML = `<div><div class="footer-title">${escapeHtml(f.title)}</div><div class="footer-detail">${escapeHtml(f.detail)}</div></div><div class="footer-actions">${applyButton}<button type="button" data-action="log-current">Log</button><button type="button" data-action="tab" data-tab="play">Play</button><button type="button" class="ghost" data-action="sync-actor">Sync</button></div>`;
   }
 
   function renderPlayTab() {
     return `<section class="panel" id="playPanel">
-      <div class="live-title"><div><h2>V3.0B stable Play flow</h2><div class="note">Actor → Target → Action → Resolve. Party management lives on the Party tab; Play only shows selected-target tools and fast enemy setup.</div></div><span class="pill"><strong>Current</strong> ${escapeHtml(currentInitiativeCard()?.label || 'No initiative')}</span></div>
+      <div class="live-title"><div><h2>V3.0C stable Play flow</h2><div class="note">Actor → Target → Action → Roll / Resolve → Apply. Attack math is rebuilt cleanly here; Party management stays on the Party tab.</div></div><span class="pill"><strong>Current</strong> ${escapeHtml(currentInitiativeCard()?.label || 'No initiative')}</span></div>
       <div class="flow-grid" style="margin-top:12px">
         <div class="card"><h3>1. Actor</h3>${renderActorCard()}</div>
         <div class="card"><h3>2. Target drawer</h3>${renderTargetDrawer()}</div>
@@ -375,23 +417,10 @@
       </div>
     </section>
     <section class="grid two">
-      <div class="panel"><h2>Selected target quick controls</h2>${renderSelectedTargetTools()}</div>
-      <div class="panel"><h2>Fast enemy setup</h2>${state.enemies.length ? `<div class="entity-grid">${state.enemies.filter(e=>!e.defeated).slice(0,4).map(renderEnemyCard).join('') || '<div class="note">All tracked enemies are defeated.</div>'}</div>` : '<div class="note">No enemies tracked. Add enemies below or from the Enemies tab.</div>'}<div class="hr"></div>${renderQuickEnemyAdd()}<div class="btn-row" style="margin-top:10px"><button type="button" data-action="tab" data-tab="enemies">Open full enemy tracker</button></div></div>
+      <div class="panel"><h2>Encounter quick setup</h2><div class="note">For full HP/effect editing, use Enemies or Party. This area is only for adding spawned enemies quickly.</div>${renderQuickEnemyAdd()}<div class="hr"></div><div class="pillbox"><span class="pill"><strong>Enemies</strong> ${state.enemies.filter(e=>!e.defeated).length} active / ${state.enemies.length} tracked</span><span class="pill"><strong>Command</strong> ${state.command.filter(c=>!c.defeated&&!c.dismissed).length} active</span></div></div>
+      <div class="panel"><h2>Selected target</h2>${renderSelectedTargetTools()}</div>
     </section>
     ${renderLogPanel()}`;
-  }
-
-  function renderSelectedTargetTools() {
-    const ent = getEntityByTarget(state.ui.targetId);
-    if (!ent || !ent.state || !ent.def) {
-      return '<div class="note">Select a target from the Target drawer to see quick damage/effect controls here. Full party management stays on the Party tab.</div>';
-    }
-    const openTab = ent.type === 'enemy' ? 'enemies' : ent.type === 'party' ? 'party' : 'command';
-    const dmgActions = `<button data-action="quick-target-damage" data-delta="1">+1 dmg</button><button data-action="quick-target-damage" data-delta="-1">-1 dmg</button>`;
-    const spActions = (ent.type === 'party' || ent.type === 'command') ? `<button data-action="quick-target-sp" data-delta="1">+1 SP</button><button data-action="quick-target-sp" data-delta="-1">-1 SP</button>` : '';
-    const tokenEditor = (ent.type === 'party' || ent.type === 'command') ? `<div><label>Ability token</label><select id="quickTargetToken">${DATA.tokens.map(t=>`<option>${t}</option>`).join('')}</select></div>` : '';
-    const tokenButtons = (ent.type === 'party' || ent.type === 'command') ? `<button data-action="quick-target-add-token">Add token</button><button data-action="quick-target-remove-token">Remove token</button>` : '';
-    return `<div class="card selected"><div class="entity-head"><strong>${escapeHtml(targetLabel())}</strong><span class="pill">${ent.type}</span></div>${hpBar(ent.state.damage || 0, ent.def.hp || 0)}${entityStatPills(ent.def, ent.state)}${renderEffects(ent.state, ent.type, ent.id)}<div class="compact-actions">${dmgActions}${spActions}<button data-action="tab" data-tab="${openTab}">Open full tracker</button></div><div class="field-grid" style="margin-top:8px"><div><label>Effect</label><select id="quickTargetEffect">${DATA.effects.map(e=>`<option>${e}</option>`).join('')}</select></div>${tokenEditor}</div><div class="compact-actions"><button data-action="quick-target-add-effect">Add effect</button><button data-action="quick-target-remove-effect">Remove effect</button>${tokenButtons}</div></div>`;
   }
   function renderActorCard() {
     const actor = getActor();
@@ -408,11 +437,12 @@
   }
   function renderTargetEnemyList() {
     if (!state.enemies.length) return `<div class="note">No enemies on the board yet.</div>${renderQuickEnemyAdd()}`;
-    return `<div class="table-ish">${state.enemies.filter(e=>!e.defeated).map(e => {
+    const enemies = state.enemies.filter(e=>!e.defeated).map(e => {
       const def = DATA.enemyDefinitions[e.defId];
       const sel = state.ui.targetId === `enemy:${e.id}`;
       return `<div class="card ${sel?'selected':''}"><div class="entity-head"><strong>${escapeHtml(e.label)}</strong><span class="pill">HP ${Math.max(0,def.hp-e.damage)}/${def.hp}</span></div>${hpBar(e.damage, def.hp)}${entityStatPills(def, e)}${renderEffects(e,'enemy',e.id)}<div class="compact-actions"><button type="button" class="accent" data-action="select-target" data-target="enemy:${e.id}">Target</button><button type="button" data-action="target-attack" data-target="enemy:${e.id}">Target + Attack</button></div></div>`;
-    }).join('') || '<div class="note">All tracked enemies are defeated.</div>'}</div>`;
+    }).join('') || '<div class="note">All tracked enemies are defeated.</div>';
+    return `<div class="table-ish">${enemies}</div><details style="margin-top:10px"><summary>Quick add enemy</summary><div style="margin-top:10px">${renderQuickEnemyAdd()}</div></details>`;
   }
   function renderTargetPartyList() {
     return `<div class="table-ish">${Object.keys(DATA.party).map(id => {
@@ -428,6 +458,28 @@
       return `<div class="card ${sel?'selected':''}"><div class="entity-head"><strong>${escapeHtml(c.label)}</strong><span class="pill">HP ${Math.max(0,def.hp-c.damage)}/${def.hp}</span></div>${hpBar(c.damage, def.hp)}${entityStatPills(def, c)}${renderEffects(c,'command',c.id)}<div class="compact-actions"><button type="button" class="accent" data-action="select-target" data-target="command:${c.id}">Target</button><button type="button" data-action="load-command-actor" data-id="${c.id}">Load actor</button></div></div>`;
     }).join('')}</div>`;
   }
+
+  function renderSelectedTargetTools() {
+    const ent = getEntityByTarget(state.ui.targetId);
+    if (!ent || !ent.state || !ent.def) {
+      return `<div class="note">No target selected. Choose an enemy, party member, or Command Combatant from the Target drawer.</div>`;
+    }
+    const safeTargetId = escapeHtml(state.ui.targetId);
+    const canSp = ent.type === 'party' || ent.type === 'command';
+    const canTokens = ent.type === 'party' || ent.type === 'command';
+    const title = targetLabel(state.ui.targetId);
+    const tokenTools = canTokens ? `<div class="field-grid" style="margin-top:8px"><div><label>Ability token</label><select id="targetTokenSelect">${DATA.tokens.map(t=>`<option>${escapeHtml(t)}</option>`).join('')}</select></div><div><label>&nbsp;</label><div class="compact-actions"><button data-action="target-add-token">Add token</button><button data-action="target-remove-token">Remove token</button></div></div></div>` : `<div class="tiny" style="margin-top:8px">Ability tokens are currently tracked for Party and Command actors only.</div>`;
+    const spTools = canSp ? `<button data-action="target-sp" data-delta="1">+1 SP</button><button data-action="target-sp" data-delta="-1">-1 SP</button>` : '';
+    return `<div class="card target-tools">
+      <div class="entity-head"><strong>${escapeHtml(title)}</strong><span class="pill">${escapeHtml(ent.type)}</span></div>
+      ${hpBar(ent.state.damage || 0, ent.def.hp || 0)}${entityStatPills(ent.def, ent.state)}${renderEffects(ent.state, ent.type, ent.id)}
+      <div class="compact-actions"><button data-action="target-damage" data-delta="1">+1 dmg</button><button data-action="target-damage" data-delta="-1">-1 dmg</button><button data-action="target-damage" data-delta="5">+5 dmg</button><button data-action="target-damage" data-delta="-5">-5 dmg</button>${spTools}</div>
+      <div class="field-grid" style="margin-top:8px"><div><label>Effect</label><select id="targetEffectSelect">${DATA.effects.map(e=>`<option>${escapeHtml(e)}</option>`).join('')}</select></div><div><label>&nbsp;</label><div class="compact-actions"><button data-action="target-add-effect">Add effect</button><button data-action="target-remove-effect">Remove effect</button></div></div></div>
+      ${tokenTools}
+      <div class="compact-actions">${ent.type === 'enemy' ? `<button data-action="select-actor" data-actor="${safeTargetId}">Use as enemy actor</button>` : ent.type === 'party' ? `<button data-action="select-actor" data-actor="${safeTargetId}">Use as actor</button>` : `<button data-action="load-command-actor" data-id="${escapeHtml(ent.id)}">Load actor</button>`}</div>
+    </div>`;
+  }
+
   function renderActionCard() {
     const actor = getActor();
     const buttons = [];
@@ -435,28 +487,195 @@
       buttons.push(['enemyAttack','Enemy Attack','Resolve an enemy attack against party/Command.']);
       buttons.push(['wait','AI / reminder','Use the physical AI card; app AI is intentionally omitted in V3 shell.']);
     } else if (actor.type === 'party') {
-      buttons.push(['attack','Attack','Core attack resolver returns in V3.0C.']);
-      buttons.push(['spell','Spell / Force','Core spell resolver returns in V3.0D.']);
+      buttons.push(['attack','Attack','Roll combat dice, resolve symbols, and apply damage.']);
+      buttons.push(['spell','Spell / Force','Spell resolver returns in V3.0D.']);
       buttons.push(['support','Support','Use Party/Command trackers for now.']);
       if (actor.id === 'nightingale') buttons.push(['summon','Summon Esper','Open the clean Command summon controls.']);
-      if (actor.id === 'remi') buttons.push(['whirlwind','Whirlwind','Reminder only in V3.0B.']);
-      if (actor.id === 'zeke') buttons.push(['onslaught','Onslaught','Reminder only in V3.0B.']);
-      if (actor.id === 'zeke') buttons.push(['bladeWorks','Blade Works','Reminder only in V3.0B.']);
+      if (actor.id === 'remi') buttons.push(['whirlwind','Whirlwind','Reminder only in V3.0C.']);
+      if (actor.id === 'zeke') buttons.push(['onslaught','Onslaught','Reminder only in V3.0C.']);
+      if (actor.id === 'zeke') buttons.push(['bladeWorks','Blade Works','Reminder only in V3.0C.']);
     } else if (actor.type === 'command') {
-      buttons.push(['attack','Attack','Esper attack resolver returns after Command core.']);
+      buttons.push(['attack','Attack','Roll Esper attack dice and apply damage.']);
       buttons.push(['spell','Spell / support','Esper spell/support returns after Command core.']);
     }
     return `<div class="grid two">${buttons.map(([id,label,note]) => `<button type="button" class="${state.ui.actionId===id?'active':''}" data-action="set-action" data-action-id="${id}"><strong>${label}</strong><br><span class="tiny">${note}</span></button>`).join('')}</div>`;
   }
   function renderResolveCard() {
+    if (state.ui.actionId === 'attack') return renderAttackResolver();
     const actor = actorLabel(), target = targetLabel(), action = actionLabel();
     let special = '';
     if (state.ui.actionId === 'summon') special = renderSummonMini();
-    const needsMath = ['attack','spell','enemyAttack'].includes(state.ui.actionId);
-    const note = needsMath ? 'This resolver shell is ready; combat math returns in V3.0C/D/E.' : 'Use the tracker buttons below for now; rules-heavy automation returns only where it helps live play.';
+    const note = state.ui.actionId === 'spell' ? 'Spell math returns in V3.0D.' : state.ui.actionId === 'enemyAttack' ? 'Enemy attack / defense trays return in V3.0E.' : 'Use the tracker buttons below for now; rules-heavy automation returns only where it helps live play.';
     return `<div class="status-line"><div><strong>${escapeHtml(actor)}</strong> - ${escapeHtml(action)}<br><span class="tiny">${escapeHtml(target)}. ${note}</span></div></div>
       ${special}
       <div class="compact-actions"><button type="button" class="primary" data-action="log-current">Log planned action</button><button type="button" data-action="tab" data-tab="enemies">Enemy tracker</button><button type="button" data-action="tab" data-tab="party">Party tracker</button></div>`;
+  }
+
+  function renderAttackResolver() {
+    const target = getEntityByTarget(state.ui.targetId);
+    const profiles = getAttackProfilesForActor(state.ui.actorId);
+    if (!profiles.length) return `<div class="status-line"><div><strong>No attack profile</strong><br><span class="tiny">${escapeHtml(actorLabel())} does not have a V3 attack profile yet.</span></div></div>`;
+    ensureAttackProfileValid(false);
+    const profile = DATA.attackProfiles[state.attack.profileId] || profiles[0];
+    const result = calculateAttackResult();
+    return `<div class="status-line"><div><strong>${escapeHtml(actorLabel())}</strong> attacking <strong>${escapeHtml(targetLabel())}</strong><br><span class="tiny">${target ? 'Enter dice below. Results auto-update; Apply writes damage to the selected target.' : 'Select a target first.'}</span></div></div>
+      <div class="hr"></div>
+      <label>Attack profile</label>
+      <select id="attackProfileSelect" data-change="attack-profile">${profiles.map(p => `<option value="${p.id}" ${state.attack.profileId===p.id?'selected':''}>${escapeHtml(p.label)} (${escapeHtml(p.range || '')})</option>`).join('')}</select>
+      <div class="tiny" style="margin-top:6px">${escapeHtml(profile.notes || '')}</div>
+      <div class="field-grid" style="margin-top:10px">${renderAttackDiceInputs(profile)}</div>
+      ${renderAttackOptions(profile)}
+      <div class="hr"></div>
+      ${renderAttackResult(result)}`;
+  }
+
+  function getAttackProfilesForActor(actorId = state.ui.actorId) {
+    const actor = getActor(actorId);
+    if (actor.type === 'party') return Object.values(DATA.attackProfiles).filter(p => p.actor === actor.id);
+    if (actor.type === 'command') return Object.values(DATA.attackProfiles).filter(p => p.actor === actor.def?.id);
+    return [];
+  }
+  function ensureAttackProfileValid(doRender=true) {
+    const profiles = getAttackProfilesForActor();
+    if (!profiles.length) return;
+    if (!profiles.some(p => p.id === state.attack.profileId)) {
+      state.attack.profileId = profiles[0].id;
+      state.attack.faces = {};
+      state.attack.empower = false;
+      state.ui.appliedResultKey = null;
+      if (doRender) { saveState(); render(); }
+    }
+  }
+  function faceLabel(face, idx) {
+    if (!face) return `Face ${idx+1}`;
+    if (face.skull) return face.label || 'Skull';
+    const bits = [`${face.value}`];
+    if (face.book) bits.push(`${face.book} Book`);
+    if (face.shield) bits.push(`${face.shield} Shield`);
+    if (face.burst) bits.push(`${face.burst} Burst`);
+    return face.label || bits.join(' + ');
+  }
+  function renderFaceOptions(color, selectedIdx) {
+    const faces = DATA.dice[color] || [];
+    return faces.map((f,i)=>`<option value="${i}" ${Number(selectedIdx)===i?'selected':''}>${escapeHtml(faceLabel(f,i))}</option>`).join('');
+  }
+  function renderAttackDiceInputs(profile) {
+    const dice = profile.dice || [];
+    return dice.map((color, idx) => {
+      const key = `d${idx}`;
+      const selected = state.attack.faces[key] != null ? Number(state.attack.faces[key]) : 0;
+      return `<div><label>${escapeHtml(color)} die ${idx+1}</label><select data-change="attack-face" data-die-key="${key}">${renderFaceOptions(color, selected)}</select></div>`;
+    }).join('') + (profile.dice?.includes('Black') ? '' : `<div><label>&nbsp;</label><label><input type="checkbox" data-change="attack-empower" ${state.attack.empower?'checked':''}> <span class="note">Empower attack: add black die</span></label></div>${state.attack.empower ? `<div><label>Empower black die</label><select data-change="attack-empower-face">${renderFaceOptions('Black', state.attack.empowerFace || 0)}</select></div>` : ''}`);
+  }
+  function renderAttackOptions(profile) {
+    const actor = getActor();
+    const target = getEntityByTarget(state.ui.targetId);
+    const hasCourage = actor.state?.effects?.includes('Courage');
+    const hasDarkness = actor.state?.effects?.includes('Darkness');
+    const remiMaster = actor.type === 'party' && actor.id === 'remi' && profile.id.includes('chain');
+    return `<details style="margin-top:10px" open><summary>Attack options and manual modifiers</summary>
+      <div class="field-grid" style="margin-top:10px">
+        ${hasCourage ? `<label><input type="checkbox" data-change="attack-courage" ${state.attack.useCourage!==false?'checked':''}> <span>Courage: +1 Book and +1 Shield</span></label>` : `<div class="note">No Courage effect on actor.</div>`}
+        ${hasDarkness ? `<div class="note warn-text">Darkness: -1 to attack roll is applied.</div>` : `<div class="note">No Darkness attack penalty.</div>`}
+        ${remiMaster ? `<label><input type="checkbox" data-change="attack-masterwork" ${state.attack.useMasterWork?'checked':''}> <span>Use Master Work: +1 attack roll</span></label>` : `<div class="note">Profile-specific exhaust modifiers can be added later.</div>`}
+        <div><label>Target Defense modifier</label><input type="number" data-change="attack-number" data-field="targetDefenseMod" value="${Number(state.attack.targetDefenseMod||0)}" /></div>
+        <div><label>Manual attack roll modifier</label><input type="number" data-change="attack-number" data-field="manualAttackMod" value="${Number(state.attack.manualAttackMod||0)}" /></div>
+        <div><label>Manual Armor Piercing</label><input type="number" data-change="attack-number" data-field="manualArmorPiercing" min="0" value="${Number(state.attack.manualArmorPiercing||0)}" /></div>
+        <div><label>Manual Physical Damage</label><input type="number" data-change="attack-number" data-field="manualPhysical" value="${Number(state.attack.manualPhysical||0)}" /></div>
+        <div><label>Manual Magic Damage</label><input type="number" data-change="attack-number" data-field="manualMagic" value="${Number(state.attack.manualMagic||0)}" /></div>
+      </div>
+      <div class="tiny" style="margin-top:8px">Target armor is ${target?.def?.armor ?? '-'} before Armor Piercing. Board-state options like flanking, range, line of sight, and legal target choice stay manual.</div>
+    </details>`;
+  }
+  function symbolText(pool) {
+    return `${pool.book||0} Book, ${pool.shield||0} Shield, ${pool.burst||0} Burst${pool.skull ? ', Skull' : ''}`;
+  }
+  function canPay(pool, ability) {
+    return (pool.book||0) >= (ability.book||0) && (pool.shield||0) >= (ability.shield||0) && (pool.burst||0) >= (ability.burst||0);
+  }
+  function pay(pool, ability) {
+    return { book:(pool.book||0)-(ability.book||0), shield:(pool.shield||0)-(ability.shield||0), burst:(pool.burst||0)-(ability.burst||0), skull:pool.skull||0 };
+  }
+  function optimizeSymbolSpend(profile, pool, diffHit, targetArmor, armorPiercing, manualPhysical, manualMagic) {
+    const abilities = profile.abilities || [];
+    let best = null;
+    function score(chosen) {
+      const physicalSymbols = chosen.reduce((s,a)=>s+(a.physical||0),0);
+      const magicSymbols = chosen.reduce((s,a)=>s+(a.magic||0),0);
+      const physical = Math.max(0, diffHit + (profile.passivePhysical||0) + physicalSymbols + manualPhysical - Math.max(0, targetArmor - armorPiercing));
+      const magic = (profile.passiveMagic||0) + magicSymbols + manualMagic;
+      return { finalDamage: Math.max(0, physical + magic), physical, magic, physicalSymbols, magicSymbols };
+    }
+    function walk(idx, remaining, chosen) {
+      if (idx >= abilities.length) {
+        const sc = score(chosen);
+        if (!best || sc.finalDamage > best.finalDamage) best = Object.assign({ chosen: chosen.slice(), remaining }, sc);
+        return;
+      }
+      walk(idx+1, remaining, chosen);
+      const ability = abilities[idx];
+      if (canPay(remaining, ability)) walk(idx+1, pay(remaining, ability), chosen.concat(ability));
+    }
+    walk(0, Object.assign({}, pool), []);
+    return best || { finalDamage:0, physical:0, magic:0, chosen:[], remaining:pool, physicalSymbols:0, magicSymbols:0 };
+  }
+  function calculateAttackResult() {
+    const actor = getActor();
+    const target = getEntityByTarget(state.ui.targetId);
+    const profiles = getAttackProfilesForActor();
+    const profile = DATA.attackProfiles[state.attack.profileId] || profiles[0];
+    if (!actor.def || !profile || !target?.def || !target?.state) return { ready:false, reason:'Choose an attack actor and target.' };
+    const dice = profile.dice || [];
+    let attackRoll = 0;
+    const pool = {book:0, shield:0, burst:0, skull:0};
+    const diceRows = [];
+    dice.forEach((color, idx) => {
+      const face = DATA.dice[color]?.[Number(state.attack.faces[`d${idx}`] || 0)] || DATA.dice[color]?.[0] || {value:0};
+      attackRoll += face.value || 0;
+      pool.book += face.book || 0; pool.shield += face.shield || 0; pool.burst += face.burst || 0; pool.skull += face.skull || 0;
+      diceRows.push({ color, label: faceLabel(face, idx), value: face.value || 0, symbols: {book:face.book||0, shield:face.shield||0, burst:face.burst||0, skull:face.skull||0} });
+    });
+    if (state.attack.empower && !dice.includes('Black')) {
+      const face = DATA.dice.Black?.[Number(state.attack.empowerFace || 0)] || DATA.dice.Black[0];
+      pool.book += face.book || 0; pool.shield += face.shield || 0; pool.burst += face.burst || 0; pool.skull += face.skull || 0;
+      diceRows.push({ color:'Black (Empower)', label: faceLabel(face, 0), value: 0, symbols:{book:face.book||0, shield:face.shield||0, burst:face.burst||0, skull:face.skull||0} });
+    }
+    if (actor.state?.effects?.includes('Courage') && state.attack.useCourage !== false) { pool.book += 1; pool.shield += 1; }
+    const darknessPenalty = actor.state?.effects?.includes('Darkness') ? -1 : 0;
+    const masterWork = state.attack.useMasterWork ? 1 : 0;
+    const manualAttack = Number(state.attack.manualAttackMod || 0);
+    const attackTotal = attackRoll + manualAttack + darknessPenalty + masterWork;
+    const targetDefense = (target.def.defense || 0) + Number(state.attack.targetDefenseMod || 0);
+    const hit = attackTotal >= targetDefense;
+    const diffHit = hit ? Math.max(0, attackTotal - targetDefense) : 0;
+    const armorPiercing = Math.max(0, (profile.ap || 0) + Number(state.attack.manualArmorPiercing || 0));
+    const targetArmor = target.def.armor || 0;
+    const manualPhysical = Number(state.attack.manualPhysical || 0);
+    const manualMagic = Number(state.attack.manualMagic || 0);
+    const spend = hit ? optimizeSymbolSpend(profile, pool, diffHit, targetArmor, armorPiercing, manualPhysical, manualMagic) : {finalDamage:0, physical:0, magic:0, chosen:[], remaining:pool, physicalSymbols:0, magicSymbols:0};
+    const finalDamage = hit ? spend.finalDamage : 0;
+    const hpAfter = Math.max(0, (target.def.hp || 0) - (target.state.damage || 0) - finalDamage);
+    const key = JSON.stringify({a:state.ui.actorId,t:state.ui.targetId,p:profile.id,f:state.attack.faces,e:state.attack.empower,ef:state.attack.empowerFace,mA:manualAttack,mP:manualPhysical,mM:manualMagic,mAP:state.attack.manualArmorPiercing,tD:state.attack.targetDefenseMod,c:state.attack.useCourage,mw:state.attack.useMasterWork,damage:finalDamage});
+    return { ready:true, actor, target, profile, diceRows, pool, attackRoll, attackTotal, targetDefense, hit, diffHit, armorPiercing, targetArmor, manualPhysical, manualMagic, finalDamage, hpAfter, spend, key, darknessPenalty, masterWork };
+  }
+  function renderAttackResult(result) {
+    if (!result.ready) return `<div class="note">${escapeHtml(result.reason || 'Attack is not ready.')}</div>`;
+    const applied = state.ui.appliedResultKey === result.key;
+    return `<div class="grid two">
+      <div class="card ${result.hit?'ok':'danger'}"><h3>Attack result</h3><div class="result-metric"><strong>${result.hit ? 'Hit' : 'Miss'}</strong></div><div class="note">Attack ${result.attackTotal} vs Defense ${result.targetDefense}. Difference hit ${result.diffHit}.</div></div>
+      <div class="card"><h3>Damage</h3><div class="result-metric"><strong>${result.finalDamage}</strong> final damage</div><div class="note">Target HP after: ${result.hpAfter}. ${applied ? 'Applied ✓' : ''}</div></div>
+    </div>
+    <div class="compact-actions" style="margin-top:10px"><button type="button" class="primary" data-action="apply-attack" ${applied ? 'disabled' : ''}>${applied ? 'Applied ✓' : `Apply ${result.finalDamage} damage`}</button><button type="button" data-action="reset-attack-roll">Reset roll/options</button></div>
+    <details style="margin-top:10px" open><summary>Breakdown</summary>
+      <table class="mini-table" style="margin-top:10px"><tbody>
+        <tr><th>Dice</th><td>${result.diceRows.map(r=>`${escapeHtml(r.color)}: ${escapeHtml(r.label)}`).join('<br>')}</td></tr>
+        <tr><th>Symbols available</th><td>${escapeHtml(symbolText(result.pool))}</td></tr>
+        <tr><th>Attack modifiers</th><td>Manual ${Number(state.attack.manualAttackMod||0)}, Darkness ${result.darknessPenalty}, Master Work ${result.masterWork}</td></tr>
+        <tr><th>Armor</th><td>Target Armor ${result.targetArmor}, Armor Piercing ${result.armorPiercing}, effective Armor ${Math.max(0,result.targetArmor-result.armorPiercing)}</td></tr>
+        <tr><th>Symbol spend</th><td>${result.spend.chosen.length ? result.spend.chosen.map(a=>`${escapeHtml(a.name)}: +${a.physical||0} Physical, +${a.magic||0} Magic`).join('<br>') : 'No symbol damage spent.'}</td></tr>
+        <tr><th>Damage components</th><td>Physical after armor: ${result.spend.physical || 0}<br>Magic: ${result.spend.magic || 0}<br>Final: ${result.finalDamage}</td></tr>
+      </tbody></table>
+    </details>`;
   }
   function renderSummonMini() {
     return `<div class="card ok" style="margin-top:10px"><h3>Nightingale - Summon Esper</h3><div class="note">Placement/SOI stays manual. This adds a Command Combatant, a Summon token reminder, and an initiative card if enabled.</div><div class="compact-actions"><button type="button" class="primary" data-action="summon-command" data-def="agares">Summon Agares</button><button type="button" class="primary" data-action="summon-command" data-def="eliphie">Summon Eliphie</button><button type="button" data-action="tab" data-tab="command">Open Command</button></div></div>`;
@@ -478,15 +697,16 @@
   }
 
   function renderEnemiesTab() {
-    return `<section class="panel"><h2>Enemy tracker</h2><div class="note">Track enemy figures, damage, effects, and initiative. Adding enemies uses the lowest available number and can ensure an initiative card after the current turn.</div><div style="margin-top:10px">${renderQuickEnemyAdd()}</div><div class="btn-row" style="margin-top:10px"><button type="button" class="warn" data-action="clear-enemies">New encounter / clear enemies</button></div><div class="hr"></div>${state.enemies.length ? `<div class="entity-grid">${state.enemies.map(renderEnemyCard).join('')}</div>` : '<div class="note">No tracked enemies.</div>'}</section>`;
+    const active = state.enemies.filter(e=>!e.defeated).length;
+    return `<section class="panel"><h2>Enemy tracker</h2><div class="note">Track enemy figures, damage, effects, and initiative. Enemy AI helper and deep enemy-specific panels are intentionally excluded from V3.0C.</div><div class="pillbox" style="margin-top:8px"><span class="pill"><strong>Tracked</strong> ${state.enemies.length}</span><span class="pill"><strong>Active</strong> ${active}</span><span class="pill"><strong>Initiative auto-add</strong> ${state.settings.autoAddEnemyInitiative ? 'On' : 'Off'}</span></div><div style="margin-top:10px">${renderQuickEnemyAdd()}</div><div class="btn-row" style="margin-top:10px"><button class="warn" data-action="clear-defeated-enemies">Clear defeated enemies</button><button class="danger" data-action="clear-enemies">Clear all enemies</button></div><div class="hr"></div>${state.enemies.length ? `<div class="entity-grid">${state.enemies.map(renderEnemyCard).join('')}</div>` : '<div class="note">No tracked enemies.</div>'}</section>`;
   }
   function renderEnemyCard(e) {
     const def = DATA.enemyDefinitions[e.defId];
-    return `<div class="card ${e.defeated?'danger':''} ${state.ui.targetId===`enemy:${e.id}`?'selected':''}"><div class="entity-head"><strong>${escapeHtml(e.label)}</strong><span class="pill">${e.defeated?'Defeated':'Active'}</span></div>${hpBar(e.damage,def.hp)}${entityStatPills(def, e)}${renderEffects(e,'enemy',e.id)}<div class="tiny" style="margin-top:6px">${def.tags.map(escapeHtml).join(', ')}${def.immunities ? ' | Immune: '+def.immunities.map(escapeHtml).join(', ') : ''}</div><div class="compact-actions"><button data-action="enemy-damage" data-id="${e.id}" data-delta="1">+1 dmg</button><button data-action="enemy-damage" data-id="${e.id}" data-delta="-1">-1 dmg</button><button data-action="toggle-enemy-defeated" data-id="${e.id}">${e.defeated?'Un-defeat':'Defeat'}</button><button class="accent" data-action="select-target" data-target="enemy:${e.id}">Target</button><button data-action="select-actor" data-actor="enemy:${e.id}">Actor</button><button data-action="delete-enemy" data-id="${e.id}" class="danger">Remove</button></div><div class="field-grid" style="margin-top:8px"><div><label>Effect</label><select data-select="enemy-effect-${e.id}">${DATA.effects.map(x=>`<option>${x}</option>`).join('')}</select></div><div><label>&nbsp;</label><button data-action="enemy-add-effect" data-id="${e.id}">Add effect</button></div></div><div class="compact-actions"><button data-action="enemy-remove-effect" data-id="${e.id}">Remove selected effect</button></div></div>`;
+    return `<div class="card ${e.defeated?'danger':''} ${state.ui.targetId===`enemy:${e.id}`?'selected':''}"><div class="entity-head"><strong>${escapeHtml(e.label)}</strong><span class="pill">${e.defeated?'Defeated':'Active'}</span></div>${hpBar(e.damage,def.hp)}${entityStatPills(def, e)}${renderEffects(e,'enemy',e.id)}<div class="tiny" style="margin-top:6px">${def.tags.map(escapeHtml).join(', ')}${def.immunities ? ' | Immune: '+def.immunities.map(escapeHtml).join(', ') : ''}</div><div class="compact-actions"><button data-action="enemy-damage" data-id="${e.id}" data-delta="1">+1 dmg</button><button data-action="enemy-damage" data-id="${e.id}" data-delta="-1">-1 dmg</button><button data-action="toggle-enemy-defeated" data-id="${e.id}">${e.defeated?'Un-defeat':'Defeat'}</button><button class="accent" data-action="select-target" data-target="enemy:${e.id}">Target</button><button data-action="select-actor" data-actor="enemy:${e.id}">Actor</button></div><div class="field-grid" style="margin-top:8px"><div><label>Effect</label><select data-select="enemy-effect-${e.id}">${DATA.effects.map(x=>`<option>${x}</option>`).join('')}</select></div><div><label>&nbsp;</label><button data-action="enemy-add-effect" data-id="${e.id}">Add effect</button></div></div><div class="compact-actions"><button data-action="enemy-remove-effect" data-id="${e.id}">Remove selected effect</button></div></div>`;
   }
 
   function renderTurnTab() {
-    return `<section class="panel"><h2>Initiative</h2><div class="note">Clean initiative tracker only. Exhaust-card table is intentionally omitted in V3.0B.</div><div class="result-row pillbox" style="margin-top:8px"><span class="pill"><strong>Round</strong> ${state.initiative.round}</span><span class="pill"><strong>Current</strong> ${escapeHtml(currentInitiativeCard()?.label || '-')}</span></div><div class="btn-row" style="margin-top:10px"><button data-action="initiative-prev">Previous</button><button data-action="initiative-next" class="primary">Next turn</button><button data-action="initiative-shuffle">Shuffle</button><button data-action="initiative-end-round">End round / shuffle</button><button data-action="initiative-reset-party" class="warn">Reset to party only</button><button data-action="sync-actor">Sync actor</button></div><div class="hr"></div>${renderInitiativeAdd()}<div class="hr"></div><div class="grid">${state.initiative.cards.map(renderInitiativeCard).join('')}</div></section>`;
+    return `<section class="panel"><h2>Initiative</h2><div class="note">Clean initiative tracker only. Exhaust-card table is intentionally omitted in V3.0C.</div><div class="result-row pillbox" style="margin-top:8px"><span class="pill"><strong>Round</strong> ${state.initiative.round}</span><span class="pill"><strong>Current</strong> ${escapeHtml(currentInitiativeCard()?.label || '-')}</span></div><div class="btn-row" style="margin-top:10px"><button data-action="initiative-prev">Previous</button><button data-action="initiative-next" class="primary">Next turn</button><button data-action="initiative-shuffle">Shuffle</button><button data-action="initiative-end-round">End round / shuffle</button><button data-action="initiative-reset-party" class="warn">Reset to party only</button><button data-action="sync-actor">Sync actor</button></div><div class="hr"></div>${renderInitiativeAdd()}<div class="hr"></div><div class="grid">${state.initiative.cards.map(renderInitiativeCard).join('')}</div></section>`;
   }
   function renderInitiativeAdd() {
     const partyOpts = Object.values(DATA.party).map(p=>`<option value="party:${p.id}">${p.name}</option>`).join('');
@@ -504,7 +724,7 @@
   }
   function renderCommandCard(c) {
     const def = DATA.commandDefinitions[c.defId];
-    return `<div class="card ${c.defeated?'danger':''} ${state.ui.actorId===`command:${c.id}`?'selected':''}"><div class="entity-head"><strong>${escapeHtml(c.label)}</strong><span class="pill">${c.defeated?'Defeated':c.dismissed?'Dismissed':'Summoned'}</span></div>${hpBar(c.damage,def.hp)}${entityStatPills(def,c)}${renderEffects(c,'command',c.id)}<div class="compact-actions"><button data-action="command-damage" data-id="${c.id}" data-delta="1">+1 dmg</button><button data-action="command-damage" data-id="${c.id}" data-delta="-1">-1 dmg</button><button data-action="command-sp" data-id="${c.id}" data-delta="1">+1 SP</button><button data-action="command-sp" data-id="${c.id}" data-delta="-1">-1 SP</button><button class="accent" data-action="load-command-actor" data-id="${c.id}">Load actor</button><button data-action="toggle-command-dismiss" data-id="${c.id}">${c.dismissed?'Summon/return':'Dismiss'}</button><button data-action="delete-command" data-id="${c.id}" class="danger">Remove</button></div><div class="field-grid" style="margin-top:8px"><div><label>Effect</label><select data-select="command-effect-${c.id}">${DATA.effects.map(e=>`<option>${e}</option>`).join('')}</select></div><div><label>Ability token</label><select data-select="command-token-${c.id}">${DATA.tokens.map(e=>`<option>${e}</option>`).join('')}</select></div></div><div class="compact-actions"><button data-action="command-add-effect" data-id="${c.id}">Add effect</button><button data-action="command-remove-effect" data-id="${c.id}">Remove effect</button><button data-action="command-add-token" data-id="${c.id}">Add token</button><button data-action="command-remove-token" data-id="${c.id}">Remove token</button></div></div>`;
+    return `<div class="card ${c.defeated?'danger':''} ${state.ui.actorId===`command:${c.id}`?'selected':''}"><div class="entity-head"><strong>${escapeHtml(c.label)}</strong><span class="pill">${c.defeated?'Defeated':c.dismissed?'Dismissed':'Summoned'}</span></div>${hpBar(c.damage,def.hp)}${entityStatPills(def,c)}${renderEffects(c,'command',c.id)}<div class="compact-actions"><button data-action="command-damage" data-id="${c.id}" data-delta="1">+1 dmg</button><button data-action="command-damage" data-id="${c.id}" data-delta="-1">-1 dmg</button><button data-action="command-sp" data-id="${c.id}" data-delta="1">+1 SP</button><button data-action="command-sp" data-id="${c.id}" data-delta="-1">-1 SP</button><button class="accent" data-action="load-command-actor" data-id="${c.id}">Load actor</button><button data-action="toggle-command-dismiss" data-id="${c.id}">${c.dismissed?'Summon/return':'Dismiss'}</button></div><div class="field-grid" style="margin-top:8px"><div><label>Effect</label><select data-select="command-effect-${c.id}">${DATA.effects.map(x=>`<option>${escapeHtml(x)}</option>`).join('')}</select></div><div><label>Ability token</label><select data-select="command-token-${c.id}">${DATA.tokens.map(x=>`<option>${escapeHtml(x)}</option>`).join('')}</select></div></div><div class="compact-actions"><button data-action="command-add-effect" data-id="${c.id}">Add effect</button><button data-action="command-remove-effect" data-id="${c.id}">Remove effect</button><button data-action="command-add-token" data-id="${c.id}">Add token</button><button data-action="command-remove-token" data-id="${c.id}">Remove token</button></div></div>`;
   }
 
   function renderRewardsTab() {
@@ -513,7 +733,7 @@
 
   function renderDataTab() {
     const exported = JSON.stringify(state, null, 2);
-    return `<section class="panel"><h2>Data / deployment</h2><div class="note">V3 uses a new snapshot schema. Old V2 snapshots are not automatically migrated yet; keep V2 snapshots separate until a migration tool exists. V3.0B snapshots remain compatible with V3.0A clean-shell state.</div><div class="btn-row" style="margin-top:10px"><button class="primary" data-action="export-snapshot">Refresh export box</button><button data-action="copy-snapshot">Copy JSON</button><button class="warn" data-action="import-snapshot">Import JSON from box</button><button class="danger" data-action="reset-app">Reset V3 local state</button></div><textarea id="snapshotBox" style="margin-top:10px">${escapeHtml(exported)}</textarea><div class="hr"></div><h3>PWA cache</h3><div class="note">Update cache checks for a newer GitHub Pages deployment. Clear app cache only removes cached app files, not localStorage state.</div><div class="btn-row" style="margin-top:10px"><button data-action="update-cache">Update app cache</button><button data-action="clear-cache">Clear app cache only</button></div><div id="dataStatus" class="note" style="margin-top:10px"></div></section>`;
+    return `<section class="panel"><h2>Data / deployment</h2><div class="note">V3 uses a new snapshot schema. Old V2 snapshots are not automatically migrated yet; keep V2 snapshots separate until a migration tool exists.</div><div class="btn-row" style="margin-top:10px"><button class="primary" data-action="export-snapshot">Refresh export box</button><button data-action="copy-snapshot">Copy JSON</button><button class="warn" data-action="import-snapshot">Import JSON from box</button><button class="danger" data-action="reset-app">Reset V3 local state</button></div><textarea id="snapshotBox" style="margin-top:10px">${escapeHtml(exported)}</textarea><div class="hr"></div><h3>PWA cache</h3><div class="note">Update cache checks for a newer GitHub Pages deployment. Clear app cache only removes cached app files, not localStorage state.</div><div class="btn-row" style="margin-top:10px"><button data-action="update-cache">Update app cache</button><button data-action="clear-cache">Clear app cache only</button></div><div id="dataStatus" class="note" style="margin-top:10px"></div></section>`;
   }
 
   function renderLogPanel() {
@@ -590,6 +810,22 @@
     if (ent.state.tokens[token] <= 0) delete ent.state.tokens[token];
   }
 
+
+  function mutateTargetDamage(delta) {
+    const ent = getEntityByTarget(state.ui.targetId);
+    if (!ent || !ent.state || !ent.def) return;
+    ent.state.damage = Math.max(0, Math.min(ent.def.hp || 999, (ent.state.damage || 0) + Number(delta || 0)));
+    if (ent.type === 'enemy' && ent.state.damage >= ent.def.hp) ent.state.defeated = true;
+    if (ent.type === 'command' && ent.state.damage >= ent.def.hp) ent.state.defeated = true;
+  }
+  function mutateTargetSp(delta) {
+    const ent = getEntityByTarget(state.ui.targetId);
+    if (!ent || !ent.state || !ent.def || ent.state.sp == null) return;
+    ent.state.sp = Math.max(0, Math.min(ent.def.maxSp || 99, ent.state.sp + Number(delta || 0)));
+  }
+  function selectedTargetEffect() { return byId('targetEffectSelect')?.value || DATA.effects[0]; }
+  function selectedTargetToken() { return byId('targetTokenSelect')?.value || DATA.tokens[0]; }
+
   document.addEventListener('click', function (ev) {
     const btn = ev.target.closest('[data-action]');
     if (!btn) return;
@@ -599,15 +835,17 @@
     if (a === 'target-scope') { state.ui.targetScope = btn.dataset.scope; saveState(); render(); return; }
     if (a === 'select-target') { selectTarget(btn.dataset.target); return; }
     if (a === 'select-actor') { selectActor(btn.dataset.actor); return; }
-    if (a === 'target-attack') { state.ui.targetId = btn.dataset.target; state.ui.actionId = 'attack'; saveState(); render(); return; }
-    if (a === 'quick-target-damage') { const ent=getEntityByTarget(state.ui.targetId); if(ent?.state && ent?.def){ ent.state.damage=Math.max(0, Math.min(ent.def.hp || 999, (ent.state.damage||0)+Number(btn.dataset.delta))); if(ent.type==='enemy' && ent.state.damage>=ent.def.hp) ent.state.defeated=true; if(ent.type==='command' && ent.state.damage>=ent.def.hp) ent.state.defeated=true; saveState(); render(); } return; }
-    if (a === 'quick-target-sp') { const ent=getEntityByTarget(state.ui.targetId); if(ent?.state && ent?.def && (ent.type==='party'||ent.type==='command')){ ent.state.sp=Math.max(0, Math.min(ent.def.maxSp || 99, (ent.state.sp||0)+Number(btn.dataset.delta))); saveState(); render(); } return; }
-    if (a === 'quick-target-add-effect') { const ent=getEntityByTarget(state.ui.targetId); addEffectToEntity(ent, byId('quickTargetEffect')?.value); saveState(); render(); return; }
-    if (a === 'quick-target-remove-effect') { const ent=getEntityByTarget(state.ui.targetId); removeEffectFromEntity(ent, byId('quickTargetEffect')?.value); saveState(); render(); return; }
-    if (a === 'quick-target-add-token') { const ent=getEntityByTarget(state.ui.targetId); addTokenToEntity(ent, byId('quickTargetToken')?.value); saveState(); render(); return; }
-    if (a === 'quick-target-remove-token') { const ent=getEntityByTarget(state.ui.targetId); removeTokenFromEntity(ent, byId('quickTargetToken')?.value); saveState(); render(); return; }
-    if (a === 'set-action') { state.ui.actionId = btn.dataset.actionId; saveState(); render(); return; }
-    if (a === 'log-current') { addLog(`${actorLabel()} - ${actionLabel()}`, `Target: ${targetLabel()}. V3.0B logged the flow only.`); return; }
+    if (a === 'target-attack') { state.ui.targetId = btn.dataset.target; state.ui.actionId = 'attack'; state.ui.appliedResultKey = null; ensureAttackProfileValid(false); saveState(); render(); return; }
+    if (a === 'target-damage') { mutateTargetDamage(btn.dataset.delta); saveState(); render(); return; }
+    if (a === 'target-sp') { mutateTargetSp(btn.dataset.delta); saveState(); render(); return; }
+    if (a === 'target-add-effect') { const ent=getEntityByTarget(state.ui.targetId); addEffectToEntity(ent, selectedTargetEffect()); saveState(); render(); return; }
+    if (a === 'target-remove-effect') { const ent=getEntityByTarget(state.ui.targetId); removeEffectFromEntity(ent, selectedTargetEffect()); saveState(); render(); return; }
+    if (a === 'target-add-token') { const ent=getEntityByTarget(state.ui.targetId); addTokenToEntity(ent, selectedTargetToken()); saveState(); render(); return; }
+    if (a === 'target-remove-token') { const ent=getEntityByTarget(state.ui.targetId); removeTokenFromEntity(ent, selectedTargetToken()); saveState(); render(); return; }
+    if (a === 'apply-attack') { const r=calculateAttackResult(); if(!r.ready) return; if(state.ui.appliedResultKey===r.key) return; const ent = r.target; ent.state.damage = Math.max(0, Math.min(ent.def.hp || 999, (ent.state.damage||0) + r.finalDamage)); if((ent.type==='enemy' || ent.type==='command') && ent.state.damage >= ent.def.hp) ent.state.defeated = true; state.ui.appliedResultKey = r.key; saveState(); render(); addLog(`${actorLabel()} attacked ${targetLabel()}`, `${r.hit?'Hit':'Miss'}; attack ${r.attackTotal} vs defense ${r.targetDefense}; applied ${r.finalDamage} damage.`); return; }
+    if (a === 'reset-attack-roll') { state.attack.faces = {}; state.attack.empower = false; state.attack.empowerFace = 0; state.attack.manualAttackMod = 0; state.attack.manualPhysical = 0; state.attack.manualMagic = 0; state.attack.manualArmorPiercing = 0; state.attack.targetDefenseMod = 0; state.attack.useMasterWork = false; state.attack.useCourage = true; state.ui.appliedResultKey = null; saveState(); render(); return; }
+    if (a === 'set-action') { state.ui.actionId = btn.dataset.actionId; state.ui.appliedResultKey = null; if (state.ui.actionId === 'attack') ensureAttackProfileValid(false); saveState(); render(); return; }
+    if (a === 'log-current') { if(state.ui.actionId==='attack'){ const r=calculateAttackResult(); addLog(`${actorLabel()} attack`, r.ready ? `${r.hit?'Hit':'Miss'}; attack ${r.attackTotal} vs defense ${r.targetDefense}; final damage ${r.finalDamage} to ${targetLabel()}.` : 'Attack not ready.'); } else { addLog(`${actorLabel()} - ${actionLabel()}`, `Target: ${targetLabel()}.`); } return; }
     if (a === 'add-enemy-quick') { const defId = byId('quickEnemyDef')?.value || 'animate'; const count = Math.max(1, Number(byId('quickEnemyCount')?.value || 1)); state.settings.autoAddEnemyInitiative = !!byId('quickEnemyInitiative')?.checked; addEnemies(defId, count); return; }
     if (a === 'party-damage') { const st=state.party[btn.dataset.id]; st.damage=Math.max(0, st.damage + Number(btn.dataset.delta)); saveState(); render(); return; }
     if (a === 'party-sp') { const st=state.party[btn.dataset.id]; const def=DATA.party[btn.dataset.id]; st.sp=Math.max(0, Math.min(def.maxSp, st.sp + Number(btn.dataset.delta))); saveState(); render(); return; }
@@ -616,13 +854,13 @@
     if (a === 'party-add-token') { const id=btn.dataset.id; addTokenToEntity({state:state.party[id]}, document.querySelector(`[data-select="party-token-${id}"]`)?.value); saveState(); render(); return; }
     if (a === 'party-remove-token') { const id=btn.dataset.id; removeTokenFromEntity({state:state.party[id]}, document.querySelector(`[data-select="party-token-${id}"]`)?.value); saveState(); render(); return; }
     if (a === 'prepare-party') { Object.keys(state.party).forEach(id => { const def=DATA.party[id], st=state.party[id]; const half=Math.floor(def.hp/2); if (st.damage > half) st.damage = half; st.sp = def.recovery; st.effects = []; }); saveState(); render(); addLog('Prepared party', 'Removed Effects, set SP to recovery, and preserved Ability Tokens.'); return; }
-    if (a === 'restore-party') { Object.keys(state.party).forEach(id => { const def=DATA.party[id], st=state.party[id]; st.damage=0; st.sp=def.recovery; st.effects=[]; st.tokens={}; }); state.command=[]; state.initiative.cards = state.initiative.cards.filter(c=>c.type!=='command'); saveState(); render(); addLog('Restored party', 'Removed damage, Effects, Ability Tokens, cleared Command Combatants, and removed Command initiative cards.'); return; }
+    if (a === 'restore-party') { Object.keys(state.party).forEach(id => { const def=DATA.party[id], st=state.party[id]; st.damage=0; st.sp=def.recovery; st.effects=[]; st.tokens={}; }); state.command=[]; saveState(); render(); addLog('Restored party', 'Removed damage, Effects, Ability Tokens, and cleared Command Combatants.'); return; }
     if (a === 'enemy-damage') { const e=state.enemies.find(x=>x.id===btn.dataset.id); if(e){ const def=DATA.enemyDefinitions[e.defId]; e.damage=Math.max(0, Math.min(def.hp, e.damage + Number(btn.dataset.delta))); if(e.damage>=def.hp) e.defeated=true; saveState(); render(); } return; }
     if (a === 'toggle-enemy-defeated') { const e=state.enemies.find(x=>x.id===btn.dataset.id); if(e){ e.defeated=!e.defeated; saveState(); render(); } return; }
-    if (a === 'delete-enemy') { state.enemies = state.enemies.filter(x=>x.id!==btn.dataset.id); if(state.ui.targetId===`enemy:${btn.dataset.id}`) state.ui.targetId=null; if(state.ui.actorId===`enemy:${btn.dataset.id}`) state.ui.actorId=null; saveState(); render(); return; }
-    if (a === 'clear-enemies') { if(confirm('Clear tracked enemies and enemy initiative cards?')) { state.enemies=[]; state.initiative.cards = state.initiative.cards.filter(c=>c.type!=='enemy'); state.ui.targetId=null; if(actorKind()==='enemy') state.ui.actorId=null; normalizeState(); saveState(); render(); addLog('Cleared enemies', 'Removed tracked enemies and enemy initiative cards.'); } return; }
     if (a === 'enemy-add-effect') { const e=state.enemies.find(x=>x.id===btn.dataset.id); if(e){ addEffectToEntity({type:'enemy', id:e.id, def:DATA.enemyDefinitions[e.defId], state:e}, document.querySelector(`[data-select="enemy-effect-${e.id}"]`)?.value); saveState(); render(); } return; }
     if (a === 'enemy-remove-effect') { const e=state.enemies.find(x=>x.id===btn.dataset.id); if(e){ removeEffectFromEntity({state:e}, document.querySelector(`[data-select="enemy-effect-${e.id}"]`)?.value); saveState(); render(); } return; }
+    if (a === 'clear-defeated-enemies') { state.enemies = state.enemies.filter(e => !e.defeated); saveState(); render(); addLog('Cleared defeated enemies'); return; }
+    if (a === 'clear-enemies') { if(confirm('Clear all tracked enemies for this encounter?')) { state.enemies = []; state.ui.targetId = null; saveState(); render(); addLog('Cleared all enemies'); } return; }
     if (a === 'initiative-next') { if(state.initiative.cards.length){ state.initiative.currentIndex=(state.initiative.currentIndex+1)%state.initiative.cards.length; syncActorFromInitiative(false); } saveState(); render(); return; }
     if (a === 'initiative-prev') { if(state.initiative.cards.length){ state.initiative.currentIndex=(state.initiative.currentIndex-1+state.initiative.cards.length)%state.initiative.cards.length; syncActorFromInitiative(false); } saveState(); render(); return; }
     if (a === 'initiative-shuffle') { state.initiative.cards.sort(()=>Math.random()-.5); state.initiative.currentIndex=0; syncActorFromInitiative(false); saveState(); render(); return; }
@@ -635,12 +873,11 @@
     if (a === 'load-command-actor') { state.ui.actorId = `command:${btn.dataset.id}`; state.ui.activeTab = 'play'; state.ui.actionId = null; saveState(); render(); return; }
     if (a === 'command-damage') { const c=state.command.find(x=>x.id===btn.dataset.id); if(c){ const def=DATA.commandDefinitions[c.defId]; c.damage=Math.max(0, Math.min(def.hp, c.damage+Number(btn.dataset.delta))); if(c.damage>=def.hp)c.defeated=true; saveState(); render(); } return; }
     if (a === 'command-sp') { const c=state.command.find(x=>x.id===btn.dataset.id); if(c){ const def=DATA.commandDefinitions[c.defId]; c.sp=Math.max(0, Math.min(def.maxSp, c.sp+Number(btn.dataset.delta))); saveState(); render(); } return; }
+    if (a === 'command-add-effect') { const c=state.command.find(x=>x.id===btn.dataset.id); if(c){ addEffectToEntity({type:'command', id:c.id, def:DATA.commandDefinitions[c.defId], state:c}, document.querySelector(`[data-select=\"command-effect-${c.id}\"]`)?.value); saveState(); render(); } return; }
+    if (a === 'command-remove-effect') { const c=state.command.find(x=>x.id===btn.dataset.id); if(c){ removeEffectFromEntity({state:c}, document.querySelector(`[data-select=\"command-effect-${c.id}\"]`)?.value); saveState(); render(); } return; }
+    if (a === 'command-add-token') { const c=state.command.find(x=>x.id===btn.dataset.id); if(c){ addTokenToEntity({state:c}, document.querySelector(`[data-select=\"command-token-${c.id}\"]`)?.value); saveState(); render(); } return; }
+    if (a === 'command-remove-token') { const c=state.command.find(x=>x.id===btn.dataset.id); if(c){ removeTokenFromEntity({state:c}, document.querySelector(`[data-select=\"command-token-${c.id}\"]`)?.value); saveState(); render(); } return; }
     if (a === 'toggle-command-dismiss') { const c=state.command.find(x=>x.id===btn.dataset.id); if(c){ c.dismissed=!c.dismissed; saveState(); render(); } return; }
-    if (a === 'delete-command') { state.command = state.command.filter(x=>x.id!==btn.dataset.id); if(state.ui.actorId===`command:${btn.dataset.id}`) state.ui.actorId=null; if(state.ui.targetId===`command:${btn.dataset.id}`) state.ui.targetId=null; state.initiative.cards = state.initiative.cards.filter(c=>!(c.type==='command' && !state.command.some(cmd=>cmd.defId===c.ref))); saveState(); render(); return; }
-    if (a === 'command-add-effect') { const c=state.command.find(x=>x.id===btn.dataset.id); if(c){ addEffectToEntity({type:'command', id:c.id, def:DATA.commandDefinitions[c.defId], state:c}, document.querySelector(`[data-select="command-effect-${c.id}"]`)?.value); saveState(); render(); } return; }
-    if (a === 'command-remove-effect') { const c=state.command.find(x=>x.id===btn.dataset.id); if(c){ removeEffectFromEntity({state:c}, document.querySelector(`[data-select="command-effect-${c.id}"]`)?.value); saveState(); render(); } return; }
-    if (a === 'command-add-token') { const c=state.command.find(x=>x.id===btn.dataset.id); if(c){ addTokenToEntity({state:c}, document.querySelector(`[data-select="command-token-${c.id}"]`)?.value); saveState(); render(); } return; }
-    if (a === 'command-remove-token') { const c=state.command.find(x=>x.id===btn.dataset.id); if(c){ removeTokenFromEntity({state:c}, document.querySelector(`[data-select="command-token-${c.id}"]`)?.value); saveState(); render(); } return; }
     if (a === 'save-rewards') { state.rewards.gold=Number(byId('rewardGold')?.value||0); state.rewards.xp=Number(byId('rewardXp')?.value||0); state.rewards.notes=byId('rewardNotes')?.value||''; saveState(); render(); return; }
     if (a === 'export-snapshot') { const box=byId('snapshotBox'); if(box) box.value=JSON.stringify(state,null,2); return; }
     if (a === 'copy-snapshot') { const text=byId('snapshotBox')?.value || JSON.stringify(state,null,2); navigator.clipboard?.writeText(text); return; }
@@ -651,7 +888,15 @@
   });
   document.addEventListener('change', function (ev) {
     const el = ev.target;
-    if (el.dataset.change === 'actor') { selectActor(el.value); }
+    const ch = el.dataset.change;
+    if (ch === 'actor') { selectActor(el.value); }
+    if (ch === 'attack-profile') { state.attack.profileId = el.value; state.attack.faces = {}; state.ui.appliedResultKey = null; saveState(); render(); }
+    if (ch === 'attack-face') { state.attack.faces[el.dataset.dieKey] = Number(el.value); state.ui.appliedResultKey = null; saveState(); render(); }
+    if (ch === 'attack-empower') { state.attack.empower = !!el.checked; state.ui.appliedResultKey = null; saveState(); render(); }
+    if (ch === 'attack-empower-face') { state.attack.empowerFace = Number(el.value); state.ui.appliedResultKey = null; saveState(); render(); }
+    if (ch === 'attack-number') { state.attack[el.dataset.field] = Number(el.value || 0); state.ui.appliedResultKey = null; saveState(); render(); }
+    if (ch === 'attack-courage') { state.attack.useCourage = !!el.checked; state.ui.appliedResultKey = null; saveState(); render(); }
+    if (ch === 'attack-masterwork') { state.attack.useMasterWork = !!el.checked; state.ui.appliedResultKey = null; saveState(); render(); }
   });
 
   async function updateCache() {

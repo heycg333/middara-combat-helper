@@ -1,4 +1,4 @@
-const CACHE_NAME = 'middara-helper-v3-0b-party-enemy-initiative-core';
+const CACHE_NAME = 'middara-helper-v3-0c-attack-resolver-2026-06-13';
 const APP_SHELL = [
   './',
   './index.html',
