@@ -1,11 +1,11 @@
 {
-  "name": "Middara Combat Helper V3.0F",
-  "short_name": "Middara V3.0F",
-  "description": "V3.0F Nightingale Tools / Defense Polish - clean Nightingale spell/support helpers, Life Grasp multi-target workflow, Trophy effects, and enemy-attack layout polish.",
-  "start_url": "./?v=3.0e",
+  "name": "Middara Combat Helper",
+  "short_name": "Middara",
+  "description": "V3.0G clean tablet helper with Command / Loyal Esper core and no generic ability-token tracking.",
+  "start_url": "./index.html",
   "scope": "./",
   "display": "standalone",
-  "background_color": "#101827",
+  "background_color": "#0f172a",
   "theme_color": "#101827",
   "icons": [
     {
@@ -30,6 +30,5 @@
       "type": "image/png",
       "purpose": "maskable"
     }
-  ],
-  "id": "middara-combat-helper-v3"
+  ]
 }

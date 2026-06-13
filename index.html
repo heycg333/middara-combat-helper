@@ -9,7 +9,7 @@
   <link rel="manifest" href="manifest.webmanifest" />
   <link rel="apple-touch-icon" href="icons/apple-touch-icon.png" />
   <link rel="icon" href="icons/favicon.svg" type="image/svg+xml" />
-  <title>Middara Combat Helper - V3.0F Nightingale Tools / Defense Polish</title>
+  <title>Middara Combat Helper - V3.0G Command / Loyal Esper Core</title>
   <style>
     :root {
       --bg: #0f172a;
@@ -147,14 +147,14 @@
 <body>
   <header>
     <h1>Middara Combat Helper</h1>
-    <div class="subtitle"><strong>V3.0F Nightingale Tools / Defense Polish</strong> - adds a clean Nightingale spell/support helper, Life Grasp multi-target workflow, Trophy effects, and enemy-attack defense layout polish.</div>
+    <div class="subtitle"><strong>V3.0G Command / Loyal Esper Core</strong> - clean Loyal Esper actor flow with no generic ability-token tracking.</div>
   </header>
   <main id="appRoot"></main>
   <footer class="footer" id="stableFooter" aria-live="polite"></footer>
   <script>
 (function () {
   'use strict';
-  const VERSION = 'V3.0F';
+  const VERSION = 'V3.0G';
   const STORAGE_KEY = 'middara.combatHelper.v3.state';
 
   const DATA = {
@@ -232,7 +232,7 @@
   function defaultParty() {
     const party = {};
     Object.values(DATA.party).forEach(p => {
-      party[p.id] = { id:p.id, damage:0, sp:p.recovery, effects:[], tokens:{} };
+      party[p.id] = { id:p.id, damage:0, sp:p.recovery, effects:[], tokens:{} }; // tokens kept only for legacy snapshot compatibility
     });
     return party;
   }
@@ -245,7 +245,7 @@
       attack: { profileId:'rook_default', faces:{}, empower:false, empowerFace:0, manualAttackMod:0, manualPhysical:0, manualMagic:0, manualArmorPiercing:0, targetDefenseMod:0, useMasterWork:false, useCourage: true },
       spell: { profileId:'rook_courage_stifle', castingColor:'Green', castingFace:0, empower:false, empowerFace:0, manualForceMod:0, convictionFaces:{c0:0,c1:0}, useOtherworldly:true, useOptionalBonus:false, previousDamage:0, zealousFaces:{}, zealousDistance:1, zealousDiscount:false },
       enemyAttack: { profileId:'animate_basic', faces:{}, empower:false, empowerFace:0, useDodge:false, dodgeFace:0, manualAttackMod:0, manualPhysical:0, manualMagic:0, manualArmorPiercing:0, targetDefenseMod:0, finalReduction:0, forceMiss:false, rookPlate:false, remiShearling:true, remiShearlingPE:false, remiMantleVow:false, nightMorbid:true, nightReinforced:false, nightFlanking:false, zekeBelts:false, summonReduction:false },
-      nightingale: { previousDamage:0, trophyFace:'', trophyTargetId:'', life:{ castingColor:'Grey', castingFace:0, empower:true, empowerFace:0, manualForceMod:0, boost:false, targets:[{targetId:'', c0:0, c1:0},{targetId:'', c0:0, c1:0},{targetId:'', c0:0, c1:0}], appliedKey:null, selfAppliedKey:null } },
+      nightingale: { previousDamage:0, trophyFace:'', trophyTargetId:'', lifeOpen:false, trophyOpen:false, life:{ castingColor:'Grey', castingFace:0, empower:true, empowerFace:0, manualForceMod:0, boost:false, targets:[{targetId:'', c0:0, c1:0},{targetId:'', c0:0, c1:0},{targetId:'', c0:0, c1:0}], appliedKey:null, selfAppliedKey:null } },
       party: defaultParty(),
       enemies: [],
       command: [],
@@ -278,6 +278,8 @@
     next.enemyAttack = Object.assign(base.enemyAttack, raw?.enemyAttack || {});
     next.enemyAttack.faces = Object.assign(base.enemyAttack.faces, raw?.enemyAttack?.faces || {});
     next.nightingale = Object.assign(base.nightingale, raw?.nightingale || {});
+    next.nightingale.lifeOpen = raw?.nightingale?.lifeOpen ?? base.nightingale.lifeOpen;
+    next.nightingale.trophyOpen = raw?.nightingale?.trophyOpen ?? base.nightingale.trophyOpen;
     next.nightingale.life = Object.assign(base.nightingale.life, raw?.nightingale?.life || {});
     next.nightingale.life.targets = Array.isArray(raw?.nightingale?.life?.targets) ? raw.nightingale.life.targets.slice(0,3).map((row,idx)=>Object.assign(base.nightingale.life.targets[idx] || {}, row || {})) : base.nightingale.life.targets;
     while (next.nightingale.life.targets.length < 3) next.nightingale.life.targets.push({targetId:'', c0:0, c1:0});
@@ -433,8 +435,7 @@
   }
   function renderEffects(entity, type, id) {
     const effects = (entity.effects || []).map(e => `<span class="effect">${escapeHtml(e)}</span>`).join('');
-    const tokens = Object.entries(entity.tokens || {}).filter(([,n]) => n>0).map(([k,n]) => `<span class="effect token">${escapeHtml(k)} x${n}</span>`).join('');
-    return `<div class="effects">${effects || '<span class="tiny">No effects</span>'}${tokens}</div>`;
+    return `<div class="effects">${effects || '<span class="tiny">No effects</span>'}</div>`;
   }
   function entityStatPills(def, st) {
     const hp = def.hp || 0;
@@ -447,6 +448,12 @@
     const root = byId('appRoot');
     root.innerHTML = renderNav() + renderActiveTab();
     renderFooter();
+  }
+  function renderPreserveScroll() {
+    const x = window.scrollX || 0;
+    const y = window.scrollY || 0;
+    render();
+    requestAnimationFrame(() => window.scrollTo(x, y));
   }
   function renderNav() {
     const tabs = [ ['play','Play'], ['party','Party'], ['enemies','Enemies'], ['turn','Turn'], ['command','Command'], ['rewards','Rewards'], ['data','Data'] ];
@@ -490,7 +497,7 @@
 
   function renderPlayTab() {
     return `<section class="panel" id="playPanel">
-      <div class="live-title"><div><h2>V3.0F stable Play flow</h2><div class="note">Actor → Target → Action → Roll / Resolve → Apply. Attack and spell math are rebuilt cleanly here; Party management stays on the Party tab.</div></div><span class="pill"><strong>Current</strong> ${escapeHtml(currentInitiativeCard()?.label || 'No initiative')}</span></div>
+      <div class="live-title"><div><h2>V3.0G stable Play flow</h2><div class="note">Actor → Target → Action → Roll / Resolve → Apply. Attack and spell math are rebuilt cleanly here; Party management stays on the Party tab.</div></div><span class="pill"><strong>Current</strong> ${escapeHtml(currentInitiativeCard()?.label || 'No initiative')}</span></div>
       <div class="flow-grid ${(state.ui.actionId==='attack'||state.ui.actionId==='spell'||state.ui.actionId==='enemyAttack')?'attack-active':''}" style="margin-top:12px">
         <div class="card"><h3>1. Actor</h3>${renderActorCard()}</div>
         <div class="card"><h3>2. Target drawer</h3>${renderTargetDrawer()}</div>
@@ -548,16 +555,14 @@
     }
     const safeTargetId = escapeHtml(state.ui.targetId);
     const canSp = ent.type === 'party' || ent.type === 'command';
-    const canTokens = ent.type === 'party' || ent.type === 'command';
     const title = targetLabel(state.ui.targetId);
-    const tokenTools = canTokens ? `<div class="field-grid" style="margin-top:8px"><div><label>Ability token</label><select id="targetTokenSelect">${DATA.tokens.map(t=>`<option>${escapeHtml(t)}</option>`).join('')}</select></div><div><label>&nbsp;</label><div class="compact-actions"><button data-action="target-add-token">Add token</button><button data-action="target-remove-token">Remove token</button></div></div></div>` : `<div class="tiny" style="margin-top:8px">Ability tokens are currently tracked for Party and Command actors only.</div>`;
     const spTools = canSp ? `<button data-action="target-sp" data-delta="1">+1 SP</button><button data-action="target-sp" data-delta="-1">-1 SP</button>` : '';
     return `<div class="card target-tools">
       <div class="entity-head"><strong>${escapeHtml(title)}</strong><span class="pill">${escapeHtml(ent.type)}</span></div>
       ${hpBar(ent.state.damage || 0, ent.def.hp || 0)}${entityStatPills(ent.def, ent.state)}${renderEffects(ent.state, ent.type, ent.id)}
       <div class="compact-actions"><button data-action="target-damage" data-delta="1">+1 dmg</button><button data-action="target-damage" data-delta="-1">-1 dmg</button><button data-action="target-damage" data-delta="5">+5 dmg</button><button data-action="target-damage" data-delta="-5">-5 dmg</button>${spTools}</div>
       <div class="field-grid" style="margin-top:8px"><div><label>Effect</label><select id="targetEffectSelect">${DATA.effects.map(e=>`<option>${escapeHtml(e)}</option>`).join('')}</select></div><div><label>&nbsp;</label><div class="compact-actions"><button data-action="target-add-effect">Add effect</button><button data-action="target-remove-effect">Remove effect</button></div></div></div>
-      ${tokenTools}
+      <div class="tiny" style="margin-top:8px">Ability tokens are handled on the physical table in V3. Use this quick panel for HP, SP, and Effects only.</div>
       <div class="compact-actions">${ent.type === 'enemy' ? `<button data-action="select-actor" data-actor="${safeTargetId}">Use as enemy actor</button>` : ent.type === 'party' ? `<button data-action="select-actor" data-actor="${safeTargetId}">Use as actor</button>` : `<button data-action="load-command-actor" data-id="${escapeHtml(ent.id)}">Load actor</button>`}</div>
     </div>`;
   }
@@ -572,13 +577,13 @@
       buttons.push(['attack','Attack','Roll combat dice, resolve symbols, and apply damage.']);
       buttons.push(['spell','Spell / Force','Resolve Force, Conviction, spell damage, and effects.']);
       buttons.push(['support','Support','Use Party/Command trackers for now.']);
-      if (actor.id === 'nightingale') buttons.push(['summon','Summon Esper','Open the clean Command summon controls.']);
+      if (actor.id === 'nightingale') buttons.push(['summon','Summon Esper','Open the clean Loyal Esper controls.']);
       if (actor.id === 'remi') buttons.push(['whirlwind','Whirlwind','Reminder only in V3 for now.']);
       if (actor.id === 'zeke') buttons.push(['onslaught','Onslaught','Reminder only in V3 for now.']);
       if (actor.id === 'zeke') buttons.push(['bladeWorks','Blade Works','Reminder only in V3 for now.']);
     } else if (actor.type === 'command') {
       buttons.push(['attack','Attack','Roll Esper attack dice and apply damage.']);
-      buttons.push(['spell','Spell / support','Esper spell/support returns after Command core.']);
+      buttons.push(['spell','Spell / support','Use Esper spell profiles where available; support abilities stay table-guided for now.']);
     }
     return `<div class="grid two">${buttons.map(([id,label,note]) => `<button type="button" class="${state.ui.actionId===id?'active':''}" data-action="set-action" data-action-id="${id}"><strong>${label}</strong><br><span class="tiny">${note}</span></button>`).join('')}</div>`;
   }
@@ -1090,8 +1095,7 @@
   function renderTargetDefenseOptions(targetType, target, profile) {
     if (!target?.def) return '<div class="note">Select a Party or Command target to show defense options.</div>';
     if (targetType === 'command') {
-      const summons = state.party.nightingale?.tokens?.Summon || 0;
-      return `<div class="defense-option"><label><input type="checkbox" data-change="enemy-summon-reduction" ${state.enemyAttack.summonReduction?'checked':''} ${summons<=0?'disabled':''}> <span>Spend Nightingale Summon token: reduce non-Irreducible damage to this Esper by 2 (${summons} available)</span></label><div class="tiny">Summoner damage remains a table/house-rule prompt; V3 currently applies only the tracked Esper damage.</div></div>`;
+      return `<div class="defense-option"><label><input type="checkbox" data-change="enemy-summon-reduction" ${state.enemyAttack.summonReduction?'checked':''}> <span>Use physical Summon token: reduce non-Irreducible damage to this Loyal Esper by 2</span></label><div class="tiny">Confirm the physical Summon token is available and discard it on the table. Summoner damage remains your house-rule/table prompt; V3 applies only the Esper damage.</div></div>`;
     }
     if (targetType !== 'party') return '<div class="note">Defense trays are currently for Party and Command targets.</div>';
     const id = target.id;
@@ -1103,7 +1107,7 @@
     } else if (id === 'remi') {
       bits.push(`<div class="defense-option"><label><input type="checkbox" data-change="def-remi-shearling" ${state.enemyAttack.remiShearling?'checked':''}> <span>Remi - Reinforced Shearling: reduce melee Physical Damage by 2</span></label><div class="tiny">${melee ? 'This profile appears melee/range-adjacent.' : 'Profile is not marked melee; uncheck if not applicable.'}</div></div>`);
       bits.push(`<div class="defense-option"><label><input type="checkbox" data-change="def-remi-shearling-pe" ${state.enemyAttack.remiShearlingPE?'checked':''}> <span>Remi - Shearling Per Encounter: reduce Physical by current damage tokens (${target.state.damage||0})</span></label></div>`);
-      bits.push(`<div class="defense-option"><label><input type="checkbox" data-change="def-remi-vow" ${state.enemyAttack.remiMantleVow?'checked':''}> <span>Remi - Mantle: if dealt 3+ damage, gain Vow token on Apply</span></label><div class="tiny">If the attack misses, spend 1 SP to heal 2 manually for now.</div></div>`);
+      bits.push(`<div class="defense-option"><label><input type="checkbox" data-change="def-remi-vow" ${state.enemyAttack.remiMantleVow?'checked':''}> <span>Remi - Mantle reminder: if dealt 3+ damage, gain Vow on the table</span></label><div class="tiny">Vow tokens are physical only in V3. If the attack misses, spend 1 SP to heal 2 manually for now.</div></div>`);
     } else if (id === 'nightingale') {
       bits.push(`<div class="defense-option"><label><input type="checkbox" data-change="def-night-morbid" ${state.enemyAttack.nightMorbid?'checked':''}> <span>Nightingale - Morbid Leather: reduce melee Physical Damage by 2</span></label></div>`);
       bits.push(`<div class="defense-option"><label><input type="checkbox" data-change="def-night-reinforced" ${state.enemyAttack.nightReinforced?'checked':''}> <span>Nightingale - Reinforced upgrade: reduce melee Physical Damage by 2</span></label></div>`);
@@ -1235,7 +1239,7 @@
   function renderNightingaleTools() {
     const n = state.nightingale || defaultState().nightingale;
     return `<div class="card night-tools">
-      <div class="entity-head"><strong>V3.0F Nightingale spell / familiar tools</strong><span class="pill">Guided helpers</span></div>
+      <div class="entity-head"><strong>V3.0G Nightingale spell / familiar tools</strong><span class="pill">Guided helpers</span></div>
       <div class="note" style="margin-top:6px">These are lightweight helpers around the clean Spell resolver. Board/SOI/legal target choices remain manual.</div>
       <div class="night-tool-grid" style="margin-top:10px">
         <div class="card">
@@ -1282,7 +1286,8 @@
     }).join('');
     const applied = life.appliedKey === calc.key;
     const selfApplied = life.selfAppliedKey === calc.key;
-    return `<details style="margin-top:10px" ${state.spell.profileId==='night_life_grasp'?'open':''}><summary>Life Grasp multi-target helper</summary>
+    const lifeOpen = !!state.nightingale.lifeOpen || state.spell.profileId === 'night_life_grasp';
+    return `<details data-night-details="life" style="margin-top:10px" ${lifeOpen?'open':''}><summary>Life Grasp multi-target helper</summary>
       <div class="note" style="margin-top:8px">Use this when casting Life Grasp against up to 3 different opponents. Force is rolled once; each target rolls Conviction separately. Optional +6 Force self-damage is applied once per cast.</div>
       <div class="field-grid" style="margin-top:10px">
         <div><label>Casting die color</label><select data-change="night-life-color">${['Grey','Red','Purple'].map(c=>`<option value="${c}" ${life.castingColor===c?'selected':''}>${c}</option>`).join('')}</select></div>
@@ -1333,7 +1338,8 @@
     const n = state.nightingale;
     const selected = n.trophyTargetId || (state.ui.targetId?.startsWith('enemy:') ? state.ui.targetId : '');
     const faceOptions = ['<option value="">Choose black die roll</option>'].concat((DATA.dice.Black||[]).map((f,i)=>`<option value="${i}" ${String(n.trophyFace)===String(i)?'selected':''}>${escapeHtml(faceLabel(f,i))}</option>`)).join('');
-    return `<details style="margin-top:10px"><summary>Nightstalker's Trophy / post-spell effect</summary>
+    const trophyOpen = !!state.nightingale.trophyOpen;
+    return `<details data-night-details="trophy" style="margin-top:10px" ${trophyOpen?'open':''}><summary>Nightstalker's Trophy / post-spell effect</summary>
       <div class="note" style="margin-top:8px">After an opponent is affected by a spell Nightingale cast, roll the black die and choose the result here before applying the effect.</div>
       <div class="field-grid" style="margin-top:10px">
         <div><label>Trophy target</label><select data-change="night-trophy-target">${activeEnemyTargetOptions(selected)}</select></div>
@@ -1351,21 +1357,26 @@
     return books === 1 ? 'Disease' : books === 2 ? 'Wilt' : books === 3 ? 'Condemn' : books >= 4 ? 'Darkness' : '';
   }
   function renderSummonMini() {
-    return `<div class="card ok" style="margin-top:10px"><h3>Nightingale - Summon Esper</h3><div class="note">Placement/SOI stays manual. This adds a Command Combatant, a Summon token reminder, and an initiative card if enabled.</div><div class="compact-actions"><button type="button" class="primary" data-action="summon-command" data-def="agares">Summon Agares</button><button type="button" class="primary" data-action="summon-command" data-def="eliphie">Summon Eliphie</button><button type="button" data-action="tab" data-tab="command">Open Command</button></div></div>`;
+    const active = state.command.filter(c => !c.defeated && !c.dismissed);
+    const cards = active.length ? active.map(c => {
+      const def = DATA.commandDefinitions[c.defId];
+      return `<div class="card ${state.ui.actorId === `command:${c.id}` ? 'selected' : ''}"><div class="entity-head"><strong>${escapeHtml(c.label)}</strong><span class="pill">${escapeHtml(def.name)}</span></div>${hpBar(c.damage, def.hp)}${entityStatPills(def, c)}${renderEffects(c,'command',c.id)}<div class="tiny" style="margin-top:6px">SOI ${def.soi || 4}. Use physical Summon tokens on the table; V3 does not track generic ability tokens.</div><div class="compact-actions"><button type="button" class="accent" data-action="load-command-actor" data-id="${c.id}">Load actor</button><button type="button" data-action="select-target" data-target="command:${c.id}">Target</button><button type="button" data-action="tab" data-tab="command">Open Command</button></div></div>`;
+    }).join('') : '<div class="note">No active Loyal Espers yet.</div>';
+    return `<div class="card ok" style="margin-top:10px"><h3>Nightingale - Summon Esper</h3><div class="note">Placement/SOI stays manual. V3 adds the Esper as its own Command actor and can add its initiative card. Ability tokens are not tracked digitally; use the physical Summon token on the table.</div><div class="compact-actions"><button type="button" class="primary" data-action="summon-command" data-def="agares">Summon Agares</button><button type="button" class="primary" data-action="summon-command" data-def="eliphie">Summon Eliphie</button><button type="button" data-action="tab" data-tab="command">Open Command</button></div><div class="hr"></div><h3>Active Loyal Espers</h3><div class="grid">${cards}</div></div>`;
   }
   function renderQuickEnemyAdd() {
     return `<div class="field-grid three"><div><label>Enemy type</label><select id="quickEnemyDef">${Object.values(DATA.enemyDefinitions).map(d => `<option value="${d.id}">${escapeHtml(d.name)}</option>`).join('')}</select></div><div><label>Count</label><input id="quickEnemyCount" type="number" min="1" step="1" value="1" /></div><div><label>&nbsp;</label><button type="button" class="primary" data-action="add-enemy-quick">Add enemy</button></div></div><label style="margin-top:8px"><input type="checkbox" id="quickEnemyInitiative" ${state.settings.autoAddEnemyInitiative?'checked':''} /> <span class="note">Also add/ensure initiative card after current turn</span></label>`;
   }
 
   function renderPartyTab() {
-    return `<section class="panel"><h2>Party tracker</h2><div class="note">Add/remove adventurer Effects and Ability Tokens here. Prepare removes Effects and keeps Ability Tokens; Restore removes both.</div><div class="btn-row" style="margin-top:10px"><button type="button" data-action="prepare-party">Prepare next encounter</button><button type="button" class="warn" data-action="restore-party">Full restore party</button></div><div class="hr"></div><div class="entity-grid">${Object.keys(DATA.party).map(renderPartyCard).join('')}</div></section>`;
+    return `<section class="panel"><h2>Party tracker</h2><div class="note">Track adventurer damage, SP, and Effects here. Ability tokens stay on the physical table in V3; use manual healing/damage buttons when a token or card resolves.</div><div class="btn-row" style="margin-top:10px"><button type="button" data-action="prepare-party">Prepare next encounter</button><button type="button" class="warn" data-action="restore-party">Full restore party</button></div><div class="hr"></div><div class="entity-grid">${Object.keys(DATA.party).map(renderPartyCard).join('')}</div></section>`;
   }
   function renderPartyCard(id) {
     const def = DATA.party[id], st = state.party[id];
     return `<div class="card ${state.ui.actorId===`party:${id}`?'selected':''}"><div class="entity-head"><strong>${def.name}</strong><span class="pill">HP ${Math.max(0,def.hp-st.damage)}/${def.hp}</span></div>${hpBar(st.damage,def.hp)}${entityStatPills(def, st)}${renderEffects(st,'party',id)}
       <div class="compact-actions"><button data-action="party-damage" data-id="${id}" data-delta="1">+1 dmg</button><button data-action="party-damage" data-id="${id}" data-delta="-1">-1 dmg</button><button data-action="party-sp" data-id="${id}" data-delta="1">+1 SP</button><button data-action="party-sp" data-id="${id}" data-delta="-1">-1 SP</button><button data-action="select-actor" data-actor="party:${id}">Actor</button><button data-action="select-target" data-target="party:${id}">Target</button></div>
-      <div class="field-grid" style="margin-top:8px"><div><label>Effect</label><select data-select="party-effect-${id}">${DATA.effects.map(e=>`<option>${e}</option>`).join('')}</select></div><div><label>Ability token</label><select data-select="party-token-${id}">${DATA.tokens.map(e=>`<option>${e}</option>`).join('')}</select></div></div>
-      <div class="compact-actions"><button data-action="party-add-effect" data-id="${id}">Add effect</button><button data-action="party-remove-effect" data-id="${id}">Remove effect</button><button data-action="party-add-token" data-id="${id}">Add token</button><button data-action="party-remove-token" data-id="${id}">Remove token</button></div>
+      <div class="field-grid" style="margin-top:8px"><div><label>Effect</label><select data-select="party-effect-${id}">${DATA.effects.map(x=>`<option>${escapeHtml(x)}</option>`).join('')}</select></div><div><label>&nbsp;</label><div class="compact-actions"><button data-action="party-add-effect" data-id="${id}">Add effect</button><button data-action="party-remove-effect" data-id="${id}">Remove effect</button></div></div></div>
+      <div class="tiny" style="margin-top:8px">Ability tokens are not tracked digitally in V3.</div>
     </div>`;
   }
 
@@ -1393,11 +1404,11 @@
 
   function renderCommandTab() {
     const active = state.command;
-    return `<section class="panel"><h2>Command / Loyal Espers</h2><div class="note">Minimal V3 Command tracker: summon, HP/SP, effects/tokens, load as actor. Full skill automation returns only where it materially helps live play.</div><div class="btn-row" style="margin-top:10px"><button class="primary" data-action="summon-command" data-def="agares">Summon Agares</button><button class="primary" data-action="summon-command" data-def="eliphie">Summon Eliphie</button></div><div class="hr"></div>${active.length ? `<div class="entity-grid">${active.map(renderCommandCard).join('')}</div>` : '<div class="note">No active or dismissed Command Combatants.</div>'}</section>`;
+    return `<section class="panel"><h2>Command / Loyal Espers</h2><div class="note">Minimal V3 Command tracker: summon, HP/SP, Effects, load as actor. Ability tokens are kept physical on the table; support skills are added only where they materially reduce table friction.</div><div class="btn-row" style="margin-top:10px"><button class="primary" data-action="summon-command" data-def="agares">Summon Agares</button><button class="primary" data-action="summon-command" data-def="eliphie">Summon Eliphie</button></div><div class="hr"></div>${active.length ? `<div class="entity-grid">${active.map(renderCommandCard).join('')}</div>` : '<div class="note">No active or dismissed Command Combatants.</div>'}</section>`;
   }
   function renderCommandCard(c) {
     const def = DATA.commandDefinitions[c.defId];
-    return `<div class="card ${c.defeated?'danger':''} ${state.ui.actorId===`command:${c.id}`?'selected':''}"><div class="entity-head"><strong>${escapeHtml(c.label)}</strong><span class="pill">${c.defeated?'Defeated':c.dismissed?'Dismissed':'Summoned'}</span></div>${hpBar(c.damage,def.hp)}${entityStatPills(def,c)}${renderEffects(c,'command',c.id)}<div class="compact-actions"><button data-action="command-damage" data-id="${c.id}" data-delta="1">+1 dmg</button><button data-action="command-damage" data-id="${c.id}" data-delta="-1">-1 dmg</button><button data-action="command-sp" data-id="${c.id}" data-delta="1">+1 SP</button><button data-action="command-sp" data-id="${c.id}" data-delta="-1">-1 SP</button><button class="accent" data-action="load-command-actor" data-id="${c.id}">Load actor</button><button data-action="toggle-command-dismiss" data-id="${c.id}">${c.dismissed?'Summon/return':'Dismiss'}</button></div><div class="field-grid" style="margin-top:8px"><div><label>Effect</label><select data-select="command-effect-${c.id}">${DATA.effects.map(x=>`<option>${escapeHtml(x)}</option>`).join('')}</select></div><div><label>Ability token</label><select data-select="command-token-${c.id}">${DATA.tokens.map(x=>`<option>${escapeHtml(x)}</option>`).join('')}</select></div></div><div class="compact-actions"><button data-action="command-add-effect" data-id="${c.id}">Add effect</button><button data-action="command-remove-effect" data-id="${c.id}">Remove effect</button><button data-action="command-add-token" data-id="${c.id}">Add token</button><button data-action="command-remove-token" data-id="${c.id}">Remove token</button></div></div>`;
+    return `<div class="card ${c.defeated?'danger':''} ${state.ui.actorId===`command:${c.id}`?'selected':''}"><div class="entity-head"><strong>${escapeHtml(c.label)}</strong><span class="pill">${c.defeated?'Defeated':c.dismissed?'Dismissed':'Summoned'}</span></div>${hpBar(c.damage,def.hp)}${entityStatPills(def,c)}${renderEffects(c,'command',c.id)}<div class="tiny" style="margin-top:6px">SOI ${def.soi || 4}. Support/board legality remains manual.</div><div class="compact-actions"><button data-action="command-damage" data-id="${c.id}" data-delta="1">+1 dmg</button><button data-action="command-damage" data-id="${c.id}" data-delta="-1">-1 dmg</button><button data-action="command-sp" data-id="${c.id}" data-delta="1">+1 SP</button><button data-action="command-sp" data-id="${c.id}" data-delta="-1">-1 SP</button><button class="accent" data-action="load-command-actor" data-id="${c.id}">Load actor</button><button data-action="toggle-command-defeated" data-id="${c.id}">${c.defeated?'Un-defeat':'Defeat'}</button><button data-action="toggle-command-dismiss" data-id="${c.id}">${c.dismissed?'Summon/return':'Dismiss'}</button><button class="danger" data-action="remove-command" data-id="${c.id}">Remove</button></div><div class="field-grid" style="margin-top:8px"><div><label>Effect</label><select data-select="command-effect-${c.id}">${DATA.effects.map(x=>`<option>${escapeHtml(x)}</option>`).join('')}</select></div><div><label>&nbsp;</label><div class="compact-actions"><button data-action="command-add-effect" data-id="${c.id}">Add effect</button><button data-action="command-remove-effect" data-id="${c.id}">Remove effect</button></div></div></div><div class="tiny" style="margin-top:8px">Ability tokens are not tracked digitally in V3.</div></div>`;
   }
 
   function renderRewardsTab() {
@@ -1462,16 +1473,26 @@
   }
   function summonCommand(defId) {
     const def = DATA.commandDefinitions[defId];
+    const existing = state.command.find(c => c.defId === defId && !c.defeated && !c.dismissed);
+    if (existing) {
+      state.ui.actorId = `command:${existing.id}`;
+      state.ui.targetId = `command:${existing.id}`;
+      state.ui.targetScope = 'command';
+      state.ui.actionId = null;
+      saveState(); render();
+      addLog(`${def.name} already active`, 'Loaded the existing Loyal Esper instead of creating a duplicate.');
+      return;
+    }
     const count = state.command.filter(c=>c.defId===defId).length + 1;
     const cmd = { id:uid('cmd'), defId, label: count>1 ? `${def.name} ${count}` : def.name, damage:0, sp:def.recovery, effects:[], tokens:{}, defeated:false, dismissed:false };
     state.command.push(cmd);
-    if (state.party.nightingale) state.party.nightingale.tokens.Summon = (state.party.nightingale.tokens.Summon || 0) + 1;
     ensureCommandInitiative(defId);
     state.ui.actorId = `command:${cmd.id}`;
-    state.ui.targetId = null;
+    state.ui.targetId = `command:${cmd.id}`;
+    state.ui.targetScope = 'command';
     state.ui.actionId = null;
     saveState(); render();
-    addLog(`Summoned ${def.name}`, 'Placement and SOI were handled manually. Added a Summon token reminder to Nightingale.');
+    addLog(`Summoned ${def.name}`, 'Placement/SOI and the physical Summon token were handled on the table. V3 added the Loyal Esper actor and initiative card if enabled.');
   }
   function addEffectToEntity(ent, effect) {
     if (!ent || !ent.state || !effect) return;
@@ -1537,8 +1558,6 @@
         ent.state.damage = Math.max(0, Math.min(ent.def.hp || 999, (ent.state.damage || 0) + r.finalDamage));
         if ((ent.type === 'party' || ent.type === 'command') && ent.state.damage >= ent.def.hp) ent.state.defeated = true;
       }
-      if (ent.type === 'party' && ent.id === 'remi' && state.enemyAttack.remiMantleVow && r.finalDamage >= 3) addTokenToEntity(ent, 'Vow');
-      if (ent.type === 'command' && state.enemyAttack.summonReduction && r.reductions.includes('Summon token -2 damage')) removeTokenFromEntity({state:state.party.nightingale}, 'Summon');
       state.ui.appliedResultKey = r.key;
       saveState(); render();
       addLog(`${actorLabel()} attacked ${targetLabel()}`, `${r.hit?'Hit':'Miss'}; attack ${r.attackTotal} vs defense ${r.targetDefense}; applied ${r.finalDamage} damage.`);
@@ -1609,8 +1628,8 @@
     if (a === 'party-remove-effect') { const id=btn.dataset.id; removeEffectFromEntity({state:state.party[id]}, document.querySelector(`[data-select="party-effect-${id}"]`)?.value); saveState(); render(); return; }
     if (a === 'party-add-token') { const id=btn.dataset.id; addTokenToEntity({state:state.party[id]}, document.querySelector(`[data-select="party-token-${id}"]`)?.value); saveState(); render(); return; }
     if (a === 'party-remove-token') { const id=btn.dataset.id; removeTokenFromEntity({state:state.party[id]}, document.querySelector(`[data-select="party-token-${id}"]`)?.value); saveState(); render(); return; }
-    if (a === 'prepare-party') { Object.keys(state.party).forEach(id => { const def=DATA.party[id], st=state.party[id]; const half=Math.floor(def.hp/2); if (st.damage > half) st.damage = half; st.sp = def.recovery; st.effects = []; }); saveState(); render(); addLog('Prepared party', 'Removed Effects, set SP to recovery, and preserved Ability Tokens.'); return; }
-    if (a === 'restore-party') { Object.keys(state.party).forEach(id => { const def=DATA.party[id], st=state.party[id]; st.damage=0; st.sp=def.recovery; st.effects=[]; st.tokens={}; }); state.command=[]; saveState(); render(); addLog('Restored party', 'Removed damage, Effects, Ability Tokens, and cleared Command Combatants.'); return; }
+    if (a === 'prepare-party') { Object.keys(state.party).forEach(id => { const def=DATA.party[id], st=state.party[id]; const half=Math.floor(def.hp/2); if (st.damage > half) st.damage = half; st.sp = def.recovery; st.effects = []; }); saveState(); render(); addLog('Prepared party', 'Removed Effects and set SP to recovery. Ability tokens are handled physically in V3.'); return; }
+    if (a === 'restore-party') { Object.keys(state.party).forEach(id => { const def=DATA.party[id], st=state.party[id]; st.damage=0; st.sp=def.recovery; st.effects=[]; st.tokens={}; }); state.command=[]; saveState(); render(); addLog('Restored party', 'Removed damage/effects and cleared Command Combatants. Ability tokens are handled physically in V3.'); return; }
     if (a === 'enemy-damage') { const e=state.enemies.find(x=>x.id===btn.dataset.id); if(e){ const def=DATA.enemyDefinitions[e.defId]; e.damage=Math.max(0, Math.min(def.hp, e.damage + Number(btn.dataset.delta))); if(e.damage>=def.hp) e.defeated=true; saveState(); render(); } return; }
     if (a === 'toggle-enemy-defeated') { const e=state.enemies.find(x=>x.id===btn.dataset.id); if(e){ e.defeated=!e.defeated; saveState(); render(); } return; }
     if (a === 'enemy-add-effect') { const e=state.enemies.find(x=>x.id===btn.dataset.id); if(e){ addEffectToEntity({type:'enemy', id:e.id, def:DATA.enemyDefinitions[e.defId], state:e}, document.querySelector(`[data-select="enemy-effect-${e.id}"]`)?.value); saveState(); render(); } return; }
@@ -1660,7 +1679,8 @@
       if (state.nightingale.life.appliedKey === calc.key) return;
       calc.targetResults.forEach(r => { if (r.ready && r.damage > 0) { r.ent.state.damage = Math.min(r.ent.def.hp, (r.ent.state.damage||0) + r.damage); if (r.ent.type === 'enemy' && r.ent.state.damage >= r.ent.def.hp) r.ent.state.defeated = true; } });
       state.nightingale.life.appliedKey = calc.key;
-      saveState(); render(); addLog('Life Grasp multi-target', `Applied ${calc.totalDamage} total Magic Damage across selected targets.`); return;
+      state.nightingale.lifeOpen = true;
+      saveState(); renderPreserveScroll(); addLog('Life Grasp multi-target', `Applied ${calc.totalDamage} total Magic Damage across selected targets.`); return;
     }
     if (a === 'night-life-apply-self') {
       const calc = calculateLifeGraspMulti();
@@ -1668,7 +1688,8 @@
       const n = state.party.nightingale;
       n.damage = Math.min(DATA.party.nightingale.hp, (n.damage||0) + 6);
       state.nightingale.life.selfAppliedKey = calc.key;
-      saveState(); render(); addLog('Life Grasp boost', 'Applied 6 Irreducible Damage to Nightingale once for the +6 Force boost.'); return;
+      state.nightingale.lifeOpen = true;
+      saveState(); renderPreserveScroll(); addLog('Life Grasp boost', 'Applied 6 Irreducible Damage to Nightingale once for the +6 Force boost.'); return;
     }
     if (a === 'night-trophy-apply') {
       const targetId = state.nightingale.trophyTargetId || (state.ui.targetId?.startsWith('enemy:') ? state.ui.targetId : '');
@@ -1678,8 +1699,11 @@
       const ent = getEntityByTarget(targetId);
       if (!ent || ent.type !== 'enemy') { alert('Choose a tracked enemy target for Trophy.'); return; }
       addEffectToEntity(ent, effect);
-      saveState(); render(); addLog("Nightstalker's Trophy", `Applied ${effect} to ${targetLabel(targetId)}.`); return;
+      state.nightingale.trophyOpen = true;
+      saveState(); renderPreserveScroll(); addLog("Nightstalker's Trophy", `Applied ${effect} to ${targetLabel(targetId)}.`); return;
     }
+    if (a === 'toggle-command-defeated') { const c=state.command.find(x=>x.id===btn.dataset.id); if(c){ c.defeated=!c.defeated; if(c.defeated) c.dismissed=false; saveState(); render(); } return; }
+    if (a === 'remove-command') { const id=btn.dataset.id; const c=state.command.find(x=>x.id===id); if(c && confirm('Remove '+c.label+' from the Command tracker?')){ state.command = state.command.filter(x=>x.id!==id); state.initiative.cards = state.initiative.cards.filter(card => !(card.type==='command' && card.ref===c.defId)); if (state.ui.actorId === `command:${id}`) state.ui.actorId = 'party:nightingale'; if (state.ui.targetId === `command:${id}`) state.ui.targetId = null; saveState(); render(); } return; }
     if (a === 'save-rewards') { state.rewards.gold=Number(byId('rewardGold')?.value||0); state.rewards.xp=Number(byId('rewardXp')?.value||0); state.rewards.notes=byId('rewardNotes')?.value||''; saveState(); render(); return; }
     if (a === 'export-snapshot') { const box=byId('snapshotBox'); if(box) box.value=JSON.stringify(state,null,2); return; }
     if (a === 'copy-snapshot') { const text=byId('snapshotBox')?.value || JSON.stringify(state,null,2); navigator.clipboard?.writeText(text); return; }
@@ -1688,6 +1712,13 @@
     if (a === 'update-cache') { updateCache(); return; }
     if (a === 'clear-cache') { clearCache(); return; }
   });
+  document.addEventListener('toggle', function (ev) {
+    const key = ev.target?.dataset?.nightDetails;
+    if (!key) return;
+    if (key === 'life') state.nightingale.lifeOpen = ev.target.open;
+    if (key === 'trophy') state.nightingale.trophyOpen = ev.target.open;
+    saveState();
+  }, true);
   document.addEventListener('change', function (ev) {
     const el = ev.target;
     const ch = el.dataset.change;
@@ -1710,17 +1741,17 @@
     if (ch === 'spell-optional') { state.spell.useOptionalBonus = !!el.checked; state.ui.appliedResultKey = null; saveState(); render(); }
     if (ch === 'spell-otherworldly') { state.spell.useOtherworldly = !!el.checked; state.ui.appliedResultKey = null; saveState(); render(); }
     if (ch === 'spell-zealous-discount') { state.spell.zealousDiscount = !!el.checked; state.ui.appliedResultKey = null; saveState(); render(); }
-    if (ch === 'night-prev-damage') { state.nightingale.previousDamage = Number(el.value || 0); if (state.spell.profileId === 'night_abbadon') state.spell.previousDamage = Number(el.value || 0); saveState(); render(); }
-    if (ch === 'night-life-color') { state.nightingale.life.castingColor = el.value; state.nightingale.life.castingFace = 0; state.nightingale.life.appliedKey = null; state.nightingale.life.selfAppliedKey = null; saveState(); render(); }
-    if (ch === 'night-life-face') { state.nightingale.life.castingFace = Number(el.value); state.nightingale.life.appliedKey = null; state.nightingale.life.selfAppliedKey = null; saveState(); render(); }
-    if (ch === 'night-life-empower') { state.nightingale.life.empower = !!el.checked; state.nightingale.life.appliedKey = null; state.nightingale.life.selfAppliedKey = null; saveState(); render(); }
-    if (ch === 'night-life-empower-face') { state.nightingale.life.empowerFace = Number(el.value); state.nightingale.life.appliedKey = null; state.nightingale.life.selfAppliedKey = null; saveState(); render(); }
-    if (ch === 'night-life-boost') { state.nightingale.life.boost = !!el.checked; state.nightingale.life.appliedKey = null; state.nightingale.life.selfAppliedKey = null; saveState(); render(); }
-    if (ch === 'night-life-manual') { state.nightingale.life.manualForceMod = Number(el.value || 0); state.nightingale.life.appliedKey = null; state.nightingale.life.selfAppliedKey = null; saveState(); render(); }
-    if (ch === 'night-life-target') { const idx = Number(el.dataset.index); state.nightingale.life.targets[idx].targetId = el.value; state.nightingale.life.targets[idx].c0 = 0; state.nightingale.life.targets[idx].c1 = 0; state.nightingale.life.appliedKey = null; state.nightingale.life.selfAppliedKey = null; saveState(); render(); }
-    if (ch === 'night-life-conv') { const idx = Number(el.dataset.index); const key = el.dataset.dieKey; state.nightingale.life.targets[idx][key] = Number(el.value); state.nightingale.life.appliedKey = null; saveState(); render(); }
-    if (ch === 'night-trophy-face') { state.nightingale.trophyFace = el.value; saveState(); render(); }
-    if (ch === 'night-trophy-target') { state.nightingale.trophyTargetId = el.value; saveState(); render(); }
+    if (ch === 'night-prev-damage') { state.nightingale.previousDamage = Number(el.value || 0); if (state.spell.profileId === 'night_abbadon') state.spell.previousDamage = Number(el.value || 0); saveState(); renderPreserveScroll(); return; }
+    if (ch === 'night-life-color') { state.nightingale.lifeOpen = true; state.nightingale.life.castingColor = el.value; state.nightingale.life.castingFace = 0; state.nightingale.life.appliedKey = null; state.nightingale.life.selfAppliedKey = null; saveState(); renderPreserveScroll(); return; }
+    if (ch === 'night-life-face') { state.nightingale.lifeOpen = true; state.nightingale.life.castingFace = Number(el.value); state.nightingale.life.appliedKey = null; state.nightingale.life.selfAppliedKey = null; saveState(); renderPreserveScroll(); return; }
+    if (ch === 'night-life-empower') { state.nightingale.lifeOpen = true; state.nightingale.life.empower = !!el.checked; state.nightingale.life.appliedKey = null; state.nightingale.life.selfAppliedKey = null; saveState(); renderPreserveScroll(); return; }
+    if (ch === 'night-life-empower-face') { state.nightingale.lifeOpen = true; state.nightingale.life.empowerFace = Number(el.value); state.nightingale.life.appliedKey = null; state.nightingale.life.selfAppliedKey = null; saveState(); renderPreserveScroll(); return; }
+    if (ch === 'night-life-boost') { state.nightingale.lifeOpen = true; state.nightingale.life.boost = !!el.checked; state.nightingale.life.appliedKey = null; state.nightingale.life.selfAppliedKey = null; saveState(); renderPreserveScroll(); return; }
+    if (ch === 'night-life-manual') { state.nightingale.lifeOpen = true; state.nightingale.life.manualForceMod = Number(el.value || 0); state.nightingale.life.appliedKey = null; state.nightingale.life.selfAppliedKey = null; saveState(); renderPreserveScroll(); return; }
+    if (ch === 'night-life-target') { const idx = Number(el.dataset.index); state.nightingale.lifeOpen = true; state.nightingale.life.targets[idx].targetId = el.value; state.nightingale.life.targets[idx].c0 = 0; state.nightingale.life.targets[idx].c1 = 0; state.nightingale.life.appliedKey = null; state.nightingale.life.selfAppliedKey = null; saveState(); renderPreserveScroll(); return; }
+    if (ch === 'night-life-conv') { const idx = Number(el.dataset.index); const key = el.dataset.dieKey; state.nightingale.lifeOpen = true; state.nightingale.life.targets[idx][key] = Number(el.value); state.nightingale.life.appliedKey = null; saveState(); renderPreserveScroll(); return; }
+    if (ch === 'night-trophy-face') { state.nightingale.trophyOpen = true; state.nightingale.trophyFace = el.value; saveState(); renderPreserveScroll(); return; }
+    if (ch === 'night-trophy-target') { state.nightingale.trophyOpen = true; state.nightingale.trophyTargetId = el.value; saveState(); renderPreserveScroll(); return; }
     if (ch === 'enemy-attack-profile') { state.enemyAttack.profileId = el.value; state.enemyAttack.faces = {}; state.ui.appliedResultKey = null; saveState(); render(); }
     if (ch === 'enemy-attack-face') { state.enemyAttack.faces[el.dataset.dieKey] = Number(el.value); state.ui.appliedResultKey = null; saveState(); render(); }
     if (ch === 'enemy-attack-empower') { state.enemyAttack.empower = !!el.checked; state.ui.appliedResultKey = null; saveState(); render(); }
