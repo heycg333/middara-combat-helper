@@ -1,151 +1,4 @@
-<!doctype html>
-<html lang="en">
-<head>
-  <meta charset="utf-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover" />
-  <meta name="theme-color" content="#101827" />
-  <meta name="apple-mobile-web-app-capable" content="yes" />
-  <meta name="apple-mobile-web-app-title" content="Middara Helper" />
-  <link rel="manifest" href="manifest.webmanifest" />
-  <link rel="apple-touch-icon" href="icons/apple-touch-icon.png" />
-  <link rel="icon" href="icons/favicon.svg" type="image/svg+xml" />
-  <title>Middara Combat Helper - V3.0E Enemy Attack / Defense Tray</title>
-  <style>
-    :root {
-      --bg: #0f172a;
-      --panel: #182235;
-      --panel2: #212f46;
-      --card: rgba(15, 23, 42, .62);
-      --card2: rgba(2, 6, 23, .32);
-      --text: #f8fafc;
-      --muted: #cbd5e1;
-      --dim: #94a3b8;
-      --line: rgba(255,255,255,.14);
-      --accent: #38bdf8;
-      --accent2: #a3e635;
-      --ok: #34d399;
-      --warn: #fbbf24;
-      --danger: #fb7185;
-      --input: #0b1220;
-      --shadow: 0 18px 40px rgba(0,0,0,.32);
-      --radius: 18px;
-    }
-    * { box-sizing: border-box; }
-    html { -webkit-text-size-adjust: 100%; text-size-adjust: 100%; }
-    body {
-      margin: 0;
-      min-height: 100vh;
-      background: radial-gradient(circle at 0 0, #23344f, #0f172a 44%, #070b13 100%);
-      color: var(--text);
-      font-family: system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
-      line-height: 1.42;
-      padding-bottom: 96px;
-    }
-    header, main { width: min(1240px, 100%); margin: 0 auto; }
-    header { padding: 18px 14px 10px; }
-    h1 { margin: 0 0 6px; font-size: clamp(1.55rem, 3vw, 2.55rem); letter-spacing: -.04em; }
-    h2 { margin: 0 0 10px; font-size: 1.08rem; }
-    h3 { margin: 0 0 8px; font-size: .98rem; color: var(--accent); }
-    p { margin: 0 0 10px; }
-    .subtitle { color: var(--muted); max-width: 960px; }
-    main { padding: 0 14px 34px; display: grid; gap: 14px; }
-    .nav { position: sticky; top: 0; z-index: 50; padding: 8px; margin: 0 14px 8px; background: rgba(15,23,42,.94); backdrop-filter: blur(10px); border: 1px solid var(--line); border-radius: 999px; box-shadow: var(--shadow); display: grid; grid-template-columns: repeat(7, minmax(0,1fr)); gap: 6px; }
-    .nav button { min-width: 0; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
-    @media (max-width: 820px) { .nav { grid-template-columns: repeat(4, minmax(0,1fr)); border-radius: 18px; } }
-    .panel { background: linear-gradient(180deg, rgba(255,255,255,.046), rgba(255,255,255,.018)), var(--panel); border: 1px solid var(--line); border-radius: var(--radius); box-shadow: var(--shadow); padding: 14px; }
-    .panel.soft { background: var(--panel2); }
-    .card { background: var(--card); border: 1px solid var(--line); border-radius: 16px; padding: 12px; }
-    .card.selected { border-color: rgba(56,189,248,.72); background: rgba(56,189,248,.10); }
-    .card.danger { border-color: rgba(251,113,133,.55); background: rgba(251,113,133,.08); }
-    .card.ok { border-color: rgba(52,211,153,.5); background: rgba(52,211,153,.08); }
-    .flow-grid { display: grid; grid-template-columns: minmax(0,1fr) minmax(0,1fr); gap: 12px; align-items: start; }
-    @media (max-width: 680px) { .flow-grid { grid-template-columns: 1fr; } }
-    .field-grid { display: grid; grid-template-columns: repeat(2, minmax(0,1fr)); gap: 10px; }
-    .field-grid.three { grid-template-columns: repeat(3, minmax(0,1fr)); }
-    .grid { display: grid; gap: 12px; }
-    .grid.two { grid-template-columns: minmax(0,1fr) minmax(0,1fr); }
-    .grid.three { grid-template-columns: repeat(3, minmax(0,1fr)); }
-    @media (max-width: 860px) { .field-grid, .field-grid.three, .grid.two, .grid.three { grid-template-columns: 1fr; } }
-    label { display: block; color: var(--muted); font-size: .86rem; margin: 0 0 5px; }
-    input, select, textarea, button { width: 100%; border: 1px solid var(--line); border-radius: 12px; background: var(--input); color: var(--text); font: inherit; font-size: 16px; padding: 10px 11px; }
-    textarea { min-height: 160px; font-family: ui-monospace, SFMono-Regular, Menlo, Consolas, monospace; font-size: .86rem; }
-    button { cursor: pointer; font-weight: 800; background: #334155; }
-    button:hover { filter: brightness(1.08); }
-    button.primary { background: linear-gradient(180deg, #22c55e, #15803d); border-color: rgba(34,197,94,.52); }
-    button.accent { background: linear-gradient(180deg, #38bdf8, #0284c7); color: #06111f; border-color: rgba(56,189,248,.52); }
-    button.warn { background: linear-gradient(180deg, #fbbf24, #d97706); color: #111827; border-color: rgba(251,191,36,.52); }
-    button.danger { background: linear-gradient(180deg, #fb7185, #be123c); color: #fff; border-color: rgba(251,113,133,.55); }
-    button.ghost { background: rgba(15,23,42,.55); color: var(--muted); }
-    button.active, .nav button.active { background: linear-gradient(180deg, #38bdf8, #0ea5e9); color: #05131f; border-color: rgba(56,189,248,.7); }
-    .btn-row { display: flex; flex-wrap: wrap; gap: 8px; align-items: center; }
-    .btn-row button { width: auto; min-width: 112px; }
-    .compact-actions { display: flex; flex-wrap: wrap; gap: 6px; margin-top: 8px; }
-    .compact-actions button { width: auto; min-width: 0; padding: 7px 9px; font-size: .84rem; }
-    .note { color: var(--muted); font-size: .9rem; }
-    .tiny { color: var(--dim); font-size: .78rem; }
-    .pillbox { display: flex; flex-wrap: wrap; gap: 6px; }
-    .pill { display: inline-flex; gap: 5px; align-items: center; border: 1px solid var(--line); background: rgba(15,23,42,.54); border-radius: 999px; padding: 5px 8px; color: var(--muted); font-size: .8rem; }
-    .pill strong { color: var(--text); }
-    .hr { height: 1px; background: var(--line); margin: 12px 0; }
-    .entity-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(245px, 1fr)); gap: 10px; }
-    .entity-head { display: flex; justify-content: space-between; gap: 8px; align-items: start; }
-    .entity-head strong { overflow-wrap: anywhere; }
-    .bar { height: 8px; background: rgba(255,255,255,.12); border-radius: 999px; overflow: hidden; margin-top: 8px; }
-    .bar span { display:block; height:100%; background: var(--accent); }
-    .bar.danger span { background: var(--danger); }
-    .effects { display: flex; flex-wrap: wrap; gap: 5px; margin-top: 8px; min-height: 22px; }
-    .effect { border: 1px solid rgba(163,230,53,.34); color: #d9f99d; background: rgba(163,230,53,.08); border-radius: 999px; padding: 3px 7px; font-size: .74rem; }
-    .token { border-color: rgba(56,189,248,.35); color: #bae6fd; background: rgba(56,189,248,.08); }
-    .live-title { display:flex; justify-content:space-between; gap:10px; align-items:start; flex-wrap:wrap; }
-    .status-line { min-height: 45px; display: flex; align-items: center; border: 1px solid rgba(56,189,248,.25); background: rgba(56,189,248,.07); border-radius: 14px; padding: 10px 12px; color: var(--muted); }
-    .footer { position: fixed; left: max(10px, env(safe-area-inset-left)); right: max(10px, env(safe-area-inset-right)); bottom: max(10px, env(safe-area-inset-bottom)); z-index: 70; width: min(1210px, calc(100% - 20px)); margin: 0 auto; background: linear-gradient(180deg, rgba(30,41,59,.98), rgba(15,23,42,.98)); border: 1px solid rgba(56,189,248,.35); border-radius: 18px; padding: 10px; display: grid; grid-template-columns: minmax(0,1fr) auto; gap: 10px; align-items: center; box-shadow: 0 16px 42px rgba(0,0,0,.45); }
-    .footer-title { font-weight: 900; }
-    .footer-detail { color: var(--muted); font-size: .84rem; }
-    .footer-actions { display:flex; gap:7px; flex-wrap:wrap; justify-content:flex-end; }
-    .footer-actions button { width:auto; min-width:82px; padding: 8px 10px; font-size:.85rem; }
-    @media (max-width: 680px) { .footer { grid-template-columns: 1fr; } .footer-actions { justify-content:flex-start; } body { padding-bottom: 154px; } }
-    .initiative-card { display:grid; grid-template-columns:auto minmax(0,1fr) auto; gap:10px; align-items:center; border:1px solid var(--line); border-radius:14px; background:var(--card); padding:10px; }
-    .initiative-card.current { border-color: rgba(56,189,248,.75); background: rgba(56,189,248,.09); }
-    .num { width:28px; height:28px; display:grid; place-items:center; border-radius:999px; background: rgba(255,255,255,.1); color:var(--muted); font-weight:900; }
-    .current .num { background:var(--accent); color:#06111f; }
-    details { border:1px solid var(--line); border-radius:14px; padding:10px 12px; background:rgba(15,23,42,.48); }
-    summary { cursor:pointer; color:var(--accent); font-weight:900; }
-    .table-ish { display:grid; gap:8px; }
 
-    .result-metric { font-size: 1.18rem; color: var(--text); font-weight: 800; }
-    .mini-table { width: 100%; border-collapse: collapse; overflow: hidden; border-radius: 12px; }
-    .mini-table th, .mini-table td { border-bottom: 1px solid var(--line); padding: 8px 9px; text-align: left; vertical-align: top; }
-    .mini-table th { color: var(--accent2); width: 150px; background: rgba(15,23,42,.56); }
-    .mini-table tr:last-child th, .mini-table tr:last-child td { border-bottom: 0; }
-    button:disabled { opacity: .56; cursor: not-allowed; filter: grayscale(.15); }
-
-    .flow-grid.attack-active .resolve-card { grid-column: 1 / -1; }
-    .attack-layout { display: grid; grid-template-columns: minmax(300px, .92fr) minmax(320px, 1.08fr); gap: 12px; align-items: start; margin-top: 10px; }
-    .breakdown-grid { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 8px; margin-top: 10px; }
-    .breakdown-card { border: 1px solid var(--line); border-radius: 13px; background: rgba(2,6,23,.28); padding: 9px; }
-    .breakdown-card .label { color: var(--accent2); font-size: .78rem; font-weight: 900; text-transform: uppercase; letter-spacing: .045em; margin-bottom: 4px; }
-    .breakdown-card .value { color: var(--muted); font-size: .88rem; }
-    .spend-line { display: block; margin: 2px 0; }
-    @media (max-width: 720px) {
-      .flow-grid.attack-active .resolve-card { grid-column: auto; }
-      .attack-layout, .breakdown-grid { grid-template-columns: 1fr; }
-    }
-
-    .defense-tray { display: grid; gap: 8px; margin-top: 10px; }
-    .defense-option { border: 1px solid var(--line); border-radius: 13px; background: rgba(2,6,23,.24); padding: 9px; }
-    .defense-option label { color: var(--text); }
-    .counter-card { margin-top: 10px; border-color: rgba(251,191,36,.42); background: rgba(251,191,36,.08); }
-    .hidden { display: none !important; }
-  </style>
-</head>
-<body>
-  <header>
-    <h1>Middara Combat Helper</h1>
-    <div class="subtitle"><strong>V3.0E Enemy Attack / Defense Tray</strong> - adds a clean enemy attack resolver, target-specific defensive trays, Dodge, Counter shortcuts, and Command damage routing.</div>
-  </header>
-  <main id="appRoot"></main>
-  <footer class="footer" id="stableFooter" aria-live="polite"></footer>
-  <script>
 (function () {
   'use strict';
   const VERSION = 'V3.0E';
@@ -1376,7 +1229,7 @@
         if ((ent.type === 'party' || ent.type === 'command') && ent.state.damage >= ent.def.hp) ent.state.defeated = true;
       }
       if (ent.type === 'party' && ent.id === 'remi' && state.enemyAttack.remiMantleVow && r.finalDamage >= 3) addTokenToEntity(ent, 'Vow');
-      if (ent.type === 'command' && state.enemyAttack.summonReduction && r.reductions.includes('Summon token -2 damage')) removeTokenFromEntity({state:state.party.nightingale}, 'Summon');
+      if (ent.type === 'command' && state.enemyAttack.summonReduction && r.finalDamage >= 0) removeTokenFromEntity({state:state.party.nightingale}, 'Summon');
       state.ui.appliedResultKey = r.key;
       saveState(); render();
       addLog(`${actorLabel()} attacked ${targetLabel()}`, `${r.hit?'Hit':'Miss'}; attack ${r.attackTotal} vs defense ${r.targetDefense}; applied ${r.finalDamage} damage.`);
@@ -1549,6 +1402,4 @@
   saveState();
   render();
 })();
-  </script>
-</body>
-</html>
+  

@@ -1,11 +1,11 @@
 {
   "name": "Middara Combat Helper",
   "short_name": "Middara",
-  "description": "Middara Combat Helper V3.0D1 - cleanup, attack Otherworldly, initiative sync patch.",
-  "start_url": "./index.html",
+  "description": "Middara Combat Helper V3.0E - Enemy Attack / Defense Tray",
+  "start_url": "./?v=3.0e",
   "scope": "./",
   "display": "standalone",
-  "background_color": "#0f172a",
+  "background_color": "#101827",
   "theme_color": "#101827",
   "icons": [
     {
@@ -30,5 +30,6 @@
       "type": "image/png",
       "purpose": "maskable"
     }
-  ]
+  ],
+  "id": "middara-combat-helper-v3"
 }
