@@ -1,7 +1,7 @@
 {
-  "name": "Middara Combat Helper",
-  "short_name": "Middara",
-  "description": "V3.0A clean shell for the Middara Combat Helper tabletop app.",
+  "name": "Middara Combat Helper V3.0B",
+  "short_name": "Middara V3",
+  "description": "Middara Combat Helper V3.0B clean Party / Enemy / Initiative core.",
   "start_url": "./index.html",
   "scope": "./",
   "display": "standalone",
