@@ -1,11 +1,11 @@
 {
   "name": "Middara Combat Helper",
   "short_name": "Middara",
-  "description": "V2.6H play-scoped stable tablet flow for the Middara Combat Helper.",
+  "description": "V3.0A clean shell for the Middara Combat Helper tabletop app.",
   "start_url": "./index.html",
   "scope": "./",
   "display": "standalone",
-  "background_color": "#101827",
+  "background_color": "#0f172a",
   "theme_color": "#101827",
   "icons": [
     {
@@ -30,6 +30,5 @@
       "type": "image/png",
       "purpose": "maskable"
     }
-  ],
-  "id": "/middara-combat-helper/"
+  ]
 }

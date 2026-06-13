@@ -1,11 +1,13 @@
-# Middara Combat Helper V2.6H - Emergency Unfreeze
+# Middara Combat Helper V3.0A Clean Shell
 
-Upload these extracted files to the root of the GitHub Pages repository.
+Upload the extracted contents of this folder to the root of the GitHub Pages repository.
 
-After GitHub Pages deploys, open the tablet app and run:
+This build is a clean-shell rebuild. It intentionally omits legacy V2 panels, probability mode, enemy AI, and combat math so the Play-first shell can be tested for stability before features are rebuilt.
 
-Data -> Update app cache
+After upload:
+1. Wait for GitHub Pages to deploy.
+2. Open the site on the tablet.
+3. Use Data -> Update app cache.
+4. Reload or reopen the Home Screen app.
 
-Then reload or reopen the Home Screen app. If an old build persists, use Clear app cache only and reload. This clears cached app files, not local game state.
-
-V2.6H scopes the stable live flow and Nightingale tools to the Play tab only, hides the redundant Loyal Esper bridge shortcut button, and hard-routes Nightingale Spell / Force and Summon Esper before older route handlers can interfere.
+Do not upload exported snapshot JSON files to GitHub.
