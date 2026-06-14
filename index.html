@@ -9,7 +9,7 @@
   <link rel="manifest" href="manifest.webmanifest" />
   <link rel="apple-touch-icon" href="icons/apple-touch-icon.png" />
   <link rel="icon" href="icons/favicon.svg" type="image/svg+xml" />
-  <title>Middara Combat Helper - V3.0I Remi / Zeke Chain Helpers</title>
+  <title>Middara Combat Helper - V3.0J Rook Support / Force Fix</title>
   <style>
     :root {
       --bg: #0f172a;
@@ -150,14 +150,15 @@
 <body>
   <header>
     <h1>Middara Combat Helper</h1>
-    <div class="subtitle"><strong>V3.0I Remi / Zeke Chain Helpers</strong> - Remi/Zeke chain helpers added and enemy spell layout fixed in the clean V3 core.</div>
+    <div class="subtitle"><strong>V3.0J Rook Support / Force Fix</strong> - Rook support/heal tools added; spell-like Force checks such as Remi Command 2 no longer add a casting die.</div>
   </header>
   <main id="appRoot"></main>
   <footer class="footer" id="stableFooter" aria-live="polite"></footer>
   <script>
+
 (function () {
   'use strict';
-  const VERSION = 'V3.0I';
+  const VERSION = 'V3.0J';
   const STORAGE_KEY = 'middara.combatHelper.v3.state';
 
   const DATA = {
@@ -204,8 +205,8 @@
     spellProfiles: {
       rook_courage_stifle: { id:'rook_courage_stifle', actor:'rook', label:'Rook - Courage Stifle', baseForce:6, castingColors:['Purple','Green','Grey'], defaultColor:'Green', sp:2, damageMode:'flat', flatMagic:10, notes:'Spell 6. Magic Damage = 2 x Rook total Armor. Current Armor 5 => 10 Magic Damage. Choose an eligible Shield/Blunt spellcasting upgrade die manually.' },
       rook_zealous_reprisal: { id:'rook_zealous_reprisal', actor:'rook', label:'Rook - Zealous Reprisal', baseForce:6, castingColors:['Purple','Green','Grey'], defaultColor:'Green', sp:3, damageMode:'zealous', damageDice:['Green','Blue'], notes:'Spell 6. Damage roll uses equipped combat dice, then damage and Push 3 are reduced by 1 for each space beyond adjacent. Use the discount checkbox if Rook damaged this target this turn.' },
-      remi_command2: { id:'remi_command2', actor:'remi', label:'Remi - Chain Pick Command 2 FU', baseForce:9, castingColors:['Purple'], defaultColor:'Purple', sp:0, damageMode:'effect', effect:'', notes:'Spell-like / Force check helper. Use after Chain Pick ranged FU. Manual Force modifier is prefilled with the previous attack difference hit, so Force = 9 + difference hit.' },
-      zeke_dweller_darkness: { id:'zeke_dweller_darkness', actor:'zeke', label:'Zeke - Dweller Darkness FU', baseForce:9, castingColors:['Purple'], defaultColor:'Purple', sp:0, damageMode:'effect', effect:'Darkness', notes:'Spell-like / Force check helper. Use after Dweller\'s Short Sword FU. Manual Force modifier is prefilled with the previous attack difference hit, so Force = 9 + difference hit.' },
+      remi_command2: { id:'remi_command2', actor:'remi', label:'Remi - Chain Pick Command 2 FU', baseForce:9, noCasting:true, sp:0, damageMode:'effect', effect:'', notes:'Spell-like / Force check helper. Use after Chain Pick ranged FU. This does not use a casting die; manual Force modifier is prefilled with the previous attack difference hit, so Force = 9 + difference hit.' },
+      zeke_dweller_darkness: { id:'zeke_dweller_darkness', actor:'zeke', label:'Zeke - Dweller Darkness FU', baseForce:9, noCasting:true, sp:0, damageMode:'effect', effect:'Darkness', notes:'Spell-like / Force check helper. Use after Dweller\'s Short Sword FU. This does not use a casting die; manual Force modifier is prefilled with the previous attack difference hit, so Force = 9 + difference hit.' },
       night_gore_shot: { id:'night_gore_shot', actor:'nightingale', label:'Nightingale - Gore Shot', baseForce:6, castingColors:['Purple','Red','Grey'], defaultColor:'Grey', sp:0, damageMode:'flat', flatMagic:2, optionalSelfDamage:2, optionalMagicBonus:8, defaultEmpower:true, notes:'Spell 6. Deal 2 Magic Damage. Optional: Nightingale takes 2 Irreducible Damage to add +8 Magic Damage with current highest Cruor level 4.' },
       night_corrosive_ideal: { id:'night_corrosive_ideal', actor:'nightingale', label:'Nightingale - Corrosive Ideal', baseForce:6, castingColors:['Purple','Red','Grey'], defaultColor:'Grey', sp:1, damageMode:'effect', effect:'Poison', defaultEmpower:true, notes:'Spell 6. If the target fails Conviction, inflict Poison. Effect immunity is respected by the tracker.' },
       night_life_grasp: { id:'night_life_grasp', actor:'nightingale', label:'Nightingale - Life Grasp (single target core)', baseForce:6, castingColors:['Purple','Red','Grey'], defaultColor:'Grey', sp:1, damageMode:'difference', optionalSelfDamage:6, optionalForceBonus:6, defaultEmpower:true, notes:'Core single-target implementation. Damage equals failed Conviction difference. Optional +6 Force costs 6 Irreducible Damage once per cast. Multi-target helper returns after generic spell core is stable.' },
@@ -374,7 +375,7 @@
     return targetId;
   }
   function actionLabel(actionId = state.ui.actionId) {
-    const labels = { attack:'Attack', spell:'Spell / Force', enemyAttack:'Enemy Attack', enemySpell:'Enemy Spell / Conviction', support:'Support', summon:'Summon Esper', whirlwind:'Whirlwind', onslaught:'Onslaught', bladeWorks:'Blade Works', wait:'Manual / reminder' };
+    const labels = { attack:'Attack', spell:'Spell / Force', enemyAttack:'Enemy Attack', enemySpell:'Enemy Spell / Conviction', support:'Support', rookSupport:'Rook Support / Heal', summon:'Summon Esper', whirlwind:'Whirlwind', onslaught:'Onslaught', bladeWorks:'Blade Works', wait:'Manual / reminder' };
     return labels[actionId] || 'Choose action';
   }
   function currentFooterText() {
@@ -402,6 +403,9 @@
         const applied = state.ui.appliedResultKey === result.key;
         return { title: applied ? 'Applied enemy attack' : `${result.hit ? 'Enemy hit' : 'Enemy miss'} - ${result.finalDamage} damage`, detail: `${actor} attacking ${target}. Attack ${result.attackTotal} vs Defense ${result.targetDefense}. ${applied ? 'This exact result has already been applied.' : 'Use Apply when ready.'}` };
       }
+    }
+    if (state.ui.actionId === 'rookSupport') {
+      return { title:'Rook support ready', detail:`Support target: ${target}. Confirm SOI/physical token timing, then use the buttons in Resolve / Apply.` };
     }
     if (state.ui.actionId === 'enemySpell') {
       const result = calculateEnemySpellResult();
@@ -520,7 +524,8 @@
         const applied = state.ui.appliedResultKey === result.key;
         applyButton = `<button type="button" class="primary" data-action="apply-enemy-attack" ${applied ? 'disabled' : ''}>${applied ? 'Applied ✓' : `Apply enemy ${result.finalDamage} dmg`}</button>`;
       }
-    } else if (state.ui.actionId === 'enemySpell') {
+    }
+    if (state.ui.actionId === 'enemySpell') {
       const result = calculateEnemySpellResult();
       if (result.ready) {
         const applied = state.ui.appliedResultKey === result.key;
@@ -532,7 +537,7 @@
 
   function renderPlayTab() {
     return `<section class="panel" id="playPanel">
-      <div class="live-title"><div><h2>V3.0I stable Play flow</h2><div class="note">Actor → Target → Action → Roll / Resolve → Apply. Attack, spell, enemy attack, enemy spell, and core Remi/Zeke follow-up helpers are rebuilt cleanly here; Party management stays on the Party tab.</div></div><span class="pill"><strong>Current</strong> ${escapeHtml(currentInitiativeCard()?.label || 'No initiative')}</span></div>
+      <div class="live-title"><div><h2>V3.0J stable Play flow</h2><div class="note">Actor → Target → Action → Roll / Resolve → Apply. Rook support tools added; Remi/Zeke chain helpers and the clean combat cores stay inside this stable Play flow.</div></div><span class="pill"><strong>Current</strong> ${escapeHtml(currentInitiativeCard()?.label || 'No initiative')}</span></div>
       <div class="flow-grid ${(['attack','spell','enemyAttack','enemySpell'].includes(state.ui.actionId))?'attack-active':''}" style="margin-top:12px">
         <div class="card"><h3>1. Actor</h3>${renderActorCard()}</div>
         <div class="card"><h3>2. Target drawer</h3>${renderTargetDrawer()}</div>
@@ -613,6 +618,7 @@
       buttons.push(['attack','Attack','Roll combat dice, resolve symbols, and apply damage.']);
       buttons.push(['spell','Spell / Force','Resolve Force, Conviction, spell damage, and effects.']);
       buttons.push(['support','Support','Use Party/Command trackers for now.']);
+      if (actor.id === 'rook') buttons.push(['rookSupport','Rook Support / Heal','Heal a selected ally, add Courage/Barrier/Haste, or apply Rook support reminders.']);
       if (actor.id === 'nightingale') buttons.push(['summon','Summon Esper','Open the clean Loyal Esper controls.']);
       if (actor.id === 'remi') buttons.push(['whirlwind','Whirlwind','Start/continue guided Whirlwind attacks.']);
       if (actor.id === 'zeke') buttons.push(['onslaught','Onslaught','Start/continue same-target follow-up attacks.']);
@@ -667,6 +673,7 @@
     if (state.ui.actionId === 'spell') return renderSpellResolver();
     if (state.ui.actionId === 'enemyAttack') return renderEnemyAttackResolver();
     if (state.ui.actionId === 'enemySpell') return renderEnemySpellResolver();
+    if (state.ui.actionId === 'rookSupport') return renderRookSupportTools();
     const actor = actorLabel(), target = targetLabel(), action = actionLabel();
     let special = '';
     if (state.ui.actionId === 'summon') special = renderSummonMini();
@@ -674,6 +681,31 @@
     return `<div class="status-line"><div><strong>${escapeHtml(actor)}</strong> - ${escapeHtml(action)}<br><span class="tiny">${escapeHtml(target)}. ${note}</span></div></div>
       ${special}
       <div class="compact-actions"><button type="button" class="primary" data-action="log-current">Log planned action</button><button type="button" data-action="tab" data-tab="enemies">Enemy tracker</button><button type="button" data-action="tab" data-tab="party">Party tracker</button></div>`;
+  }
+
+  function renderRookSupportTools() {
+    const actor = getActor();
+    const target = getEntityByTarget(state.ui.targetId);
+    if (actor.type !== 'party' || actor.id !== 'rook') {
+      return `<div class="status-line"><div><strong>Rook support</strong><br><span class="tiny">Select Rook as actor to use these support shortcuts.</span></div></div>`;
+    }
+    const targetOk = target && (target.type === 'party' || target.type === 'command');
+    const targetName = targetOk ? targetLabel() : 'No ally selected';
+    return `<div class="status-line"><div><strong>Rook support / heal tools</strong><br><span class="tiny">Selected support target: ${escapeHtml(targetName)}. Confirm SOI and physical card/token timing at the table.</span></div></div>
+      <div class="grid two" style="margin-top:10px">
+        <div class="card">
+          <h3>Mend / Heal shortcut</h3>
+          <div class="note">Use this when you spend one of Rook's physical Heal tokens. The app applies the Heal 6 math only; it does not track Heal tokens.</div>
+          <div class="compact-actions"><button type="button" class="primary" data-action="rook-heal6" ${targetOk ? '' : 'disabled'}>Heal selected target 6</button><button type="button" data-action="target-scope" data-scope="party">Pick party target</button><button type="button" data-action="target-scope" data-scope="command">Pick Command target</button></div>
+          <div class="tiny" style="margin-top:8px">If the healed target is another ally, Rook gains +1 SP from Mend. This is applied automatically, capped by Rook's SP max.</div>
+        </div>
+        <div class="card">
+          <h3>Positive Effect support</h3>
+          <div class="note">Use for Proof of Divinity or Paradigm Assault after confirming the trigger and SOI manually.</div>
+          <div class="compact-actions"><button type="button" data-action="rook-give-effect" data-effect="Courage" ${targetOk ? '' : 'disabled'}>Give Courage</button><button type="button" data-action="rook-give-effect" data-effect="Barrier" ${targetOk ? '' : 'disabled'}>Give Barrier</button><button type="button" data-action="rook-give-effect" data-effect="Haste" ${targetOk ? '' : 'disabled'}>Give Haste</button><button type="button" data-action="rook-gain-sp">Rook +1 SP trigger</button></div>
+          <div class="tiny" style="margin-top:8px">Proof of Divinity gives Courage. Paradigm Assault can give Haste, Barrier, or Courage after Rook hits.</div>
+        </div>
+      </div>`;
   }
 
   function renderAttackResolver() {
@@ -926,9 +958,9 @@
     if (!profiles.length) return;
     if (!profiles.some(p => p.id === state.spell.profileId)) {
       state.spell.profileId = profiles[0].id;
-      state.spell.castingColor = profiles[0].defaultColor || profiles[0].castingColors?.[0] || 'Purple';
+      state.spell.castingColor = profiles[0].noCasting ? '' : (profiles[0].defaultColor || profiles[0].castingColors?.[0] || 'Purple');
       state.spell.castingFace = 0;
-      state.spell.empower = !!profiles[0].defaultEmpower;
+      state.spell.empower = profiles[0].noCasting ? false : !!profiles[0].defaultEmpower;
       state.spell.empowerFace = 0;
       state.spell.manualForceMod = 0;
       state.spell.convictionFaces = {};
@@ -956,10 +988,10 @@
           <select id="spellProfileSelect" data-change="spell-profile">${profiles.map(p => `<option value="${p.id}" ${state.spell.profileId===p.id?'selected':''}>${escapeHtml(p.label)}</option>`).join('')}</select>
           <div class="tiny" style="margin-top:6px">${escapeHtml(profile.notes || '')}</div>
           <div class="field-grid" style="margin-top:10px">
-            <div><label>Casting / upgrade die color</label><select data-change="spell-casting-color">${(profile.castingColors||['Purple']).map(c=>`<option value="${c}" ${state.spell.castingColor===c?'selected':''}>${c}</option>`).join('')}</select></div>
+            ${profile.noCasting ? `<div class="card" style="grid-column:1/-1"><strong>Spell-like fixed Force</strong><div class="note">This Force check does not use a casting die. Force = base ${profile.baseForce || 0} + manual modifier.</div></div>` : `<div><label>Casting / upgrade die color</label><select data-change="spell-casting-color">${(profile.castingColors||['Purple']).map(c=>`<option value="${c}" ${state.spell.castingColor===c?'selected':''}>${c}</option>`).join('')}</select></div>
             <div><label>Casting die result</label><select data-change="spell-casting-face">${renderFaceOptions(state.spell.castingColor || profile.defaultColor || 'Purple', state.spell.castingFace || 0)}</select></div>
             <label><input type="checkbox" data-change="spell-empower" ${state.spell.empower?'checked':''}> <span>Empower this Spell: add black die</span></label>
-            ${state.spell.empower ? `<div><label>Black die result</label><select data-change="spell-empower-face">${renderFaceOptions('Black', state.spell.empowerFace || 0)}</select></div>` : ''}
+            ${state.spell.empower ? `<div><label>Black die result</label><select data-change="spell-empower-face">${renderFaceOptions('Black', state.spell.empowerFace || 0)}</select></div>` : ''}`}
             <div><label>Manual Force modifier</label><input type="number" data-change="spell-number" data-field="manualForceMod" value="${Number(state.spell.manualForceMod||0)}" /></div>
             ${renderSpellSpecificInputs(profile)}
           </div>
@@ -989,7 +1021,7 @@
         parts.push(`<div><label>Zealous damage die ${idx+1}: ${color}</label><select data-change="spell-zealous-face" data-die-key="${key}">${renderFaceOptions(color, state.spell.zealousFaces?.[key] || 0)}</select></div>`);
       });
     }
-    if (profile.actor === 'rook' || profile.actor === 'nightingale' || profile.actor === 'eliphie' || profile.actor === 'agares') {
+    if (!profile.noCasting && (profile.actor === 'rook' || profile.actor === 'nightingale' || profile.actor === 'eliphie' || profile.actor === 'agares')) {
       parts.push(`<label><input type="checkbox" data-change="spell-otherworldly" ${state.spell.useOtherworldly?'checked':''}> <span>Use remaining Book+Shield pairs for Otherworldly +1 Force each</span></label>`);
     }
     return parts.join('');
@@ -1008,14 +1040,19 @@
     const profiles = getSpellProfilesForActor();
     const profile = DATA.spellProfiles[state.spell.profileId] || profiles[0];
     if (!actor.def || !profile || !target?.def || !target?.state) return { ready:false, reason:'Choose a spell actor and target.' };
-    const castingColor = state.spell.castingColor || profile.defaultColor || profile.castingColors?.[0] || 'Purple';
-    const castFace = DATA.dice[castingColor]?.[Number(state.spell.castingFace || 0)] || DATA.dice[castingColor]?.[0] || {value:0};
+    const noCasting = !!profile.noCasting;
+    const castingColor = noCasting ? '' : (state.spell.castingColor || profile.defaultColor || profile.castingColors?.[0] || 'Purple');
+    const castFace = noCasting ? {value:0} : (DATA.dice[castingColor]?.[Number(state.spell.castingFace || 0)] || DATA.dice[castingColor]?.[0] || {value:0});
     const pool = { book: castFace.book||0, shield: castFace.shield||0, burst: castFace.burst||0, skull: castFace.skull||0 };
-    const forceRows = [{ source: `${castingColor} casting`, value: castFace.value||0, symbols: symbolText(pool) }];
-    let force = (profile.baseForce || 6) + (castFace.value || 0) + Number(state.spell.manualForceMod || 0);
+    const baseForce = Number(profile.baseForce || 6);
+    const manualForce = Number(state.spell.manualForceMod || 0);
+    const forceRows = [{ source: 'Base Force', value: baseForce, symbols: profile.noCasting ? 'Spell-like fixed Force' : 'Spell profile' }];
+    if (!noCasting) forceRows.push({ source: `${castingColor} casting`, value: castFace.value||0, symbols: symbolText(pool) });
+    if (manualForce !== 0) forceRows.push({ source:'Manual Force modifier', value:manualForce, symbols:'Manual / FU modifier' });
+    let force = baseForce + (noCasting ? 0 : (castFace.value || 0)) + manualForce;
     let blackForce = 0;
     let blackFace = null;
-    if (state.spell.empower) {
+    if (!noCasting && state.spell.empower) {
       blackFace = DATA.dice.Black?.[Number(state.spell.empowerFace || 0)] || DATA.dice.Black[0];
       pool.book += blackFace.book || 0; pool.shield += blackFace.shield || 0; pool.burst += blackFace.burst || 0; pool.skull += blackFace.skull || 0;
       blackForce = blackFace.skull ? 0 : (blackFace.book || 0);
@@ -1024,7 +1061,7 @@
     }
     let otherworldlyForce = 0;
     // Remaining Book+Shield pairs can add Force after black Books are effectively counted for Empower Force.
-    if (state.spell.useOtherworldly) {
+    if (!noCasting && state.spell.useOtherworldly) {
       const remainingBooks = Math.max(0, (pool.book || 0) - blackForce);
       otherworldlyForce = Math.min(remainingBooks, pool.shield || 0);
       if (otherworldlyForce > 0) forceRows.push({ source:'Otherworldly Book+Shield', value:otherworldlyForce, symbols:`${otherworldlyForce} pair(s)` });
@@ -1076,7 +1113,7 @@
     const forceRows = result.forceRows.map(r=>`<div class="card"><strong>${escapeHtml(r.source)}</strong><div class="note">+${r.value} Force</div><div class="tiny">${escapeHtml(r.symbols || '')}</div></div>`).join('');
     const damageRows = result.damageRows.length ? result.damageRows.map(r=>`<div class="card"><strong>${escapeHtml(r.source)}</strong><div class="note">${r.value >= 0 ? '+' : ''}${r.value}</div></div>`).join('') : '<div class="note">No spell damage components.</div>';
     return `<div class="breakdown-grid" style="margin-top:10px">
-      <div class="card"><h3>Force total</h3><div class="result-metric">${result.force}</div><div class="note">Base Spell ${result.profile.baseForce || 6}; SP cost helper: ${result.spCost}.</div>${result.blackSkull ? '<div class="warn-text tiny">Black die Skull: no black Force symbols; resolve any card-specific backlash manually.</div>' : ''}</div>
+      <div class="card"><h3>Force total</h3><div class="result-metric">${result.force}</div><div class="note">${result.profile.noCasting ? 'Spell-like fixed Force' : 'Base Spell'} ${result.profile.baseForce || 6}; SP cost helper: ${result.spCost}.</div>${result.blackSkull ? '<div class="warn-text tiny">Black die Skull: no black Force symbols; resolve any card-specific backlash manually.</div>' : ''}</div>
       <div class="card"><h3>Target Conviction</h3><div class="result-metric">${result.conviction}</div><div class="note">${escapeHtml(result.convictionRows.join(' | '))}</div></div>
       <div class="card"><h3>Force contributors</h3><div class="grid">${forceRows}</div></div>
       <div class="card"><h3>Damage / effect</h3><div class="grid">${damageRows}</div><div class="note">${result.failed ? 'Target failed, so damage/effects are live.' : 'Target passed, so damage/effects are 0/none.'}</div>${result.optionalSelfDamage ? `<div class="warn-text tiny">Applying this spell also applies ${result.optionalSelfDamage} Irreducible Damage to the caster.</div>` : ''}</div>
@@ -1795,9 +1832,9 @@
     const profile = DATA.spellProfiles[profileId];
     if (!profile) return;
     state.spell.profileId = profileId;
-    state.spell.castingColor = profile.defaultColor || profile.castingColors?.[0] || 'Purple';
+    state.spell.castingColor = profile.noCasting ? '' : (profile.defaultColor || profile.castingColors?.[0] || 'Purple');
     state.spell.castingFace = 0;
-    state.spell.empower = !!profile.defaultEmpower;
+    state.spell.empower = profile.noCasting ? false : !!profile.defaultEmpower;
     state.spell.empowerFace = 0;
     state.spell.manualForceMod = Number(forceMod || 0);
     state.spell.convictionFaces = {};
@@ -1923,7 +1960,41 @@
       return;
     }
     if (a === 'reset-attack-roll') { resetAttackRollState(); saveState(); render(); return; }
-    if (a === 'reset-spell-roll') { state.spell.castingFace = 0; state.spell.empowerFace = 0; state.spell.manualForceMod = 0; state.spell.convictionFaces = {}; state.spell.useOptionalBonus = false; state.spell.previousDamage = 0; state.spell.zealousFaces = {}; state.spell.zealousDistance = 1; state.spell.zealousDiscount = false; state.ui.appliedResultKey = null; const profile = DATA.spellProfiles[state.spell.profileId]; state.spell.empower = !!profile?.defaultEmpower; saveState(); render(); return; }
+    if (a === 'reset-spell-roll') { state.spell.castingFace = 0; state.spell.empowerFace = 0; state.spell.manualForceMod = 0; state.spell.convictionFaces = {}; state.spell.useOptionalBonus = false; state.spell.previousDamage = 0; state.spell.zealousFaces = {}; state.spell.zealousDistance = 1; state.spell.zealousDiscount = false; state.ui.appliedResultKey = null; const profile = DATA.spellProfiles[state.spell.profileId]; state.spell.empower = profile?.noCasting ? false : !!profile?.defaultEmpower; saveState(); render(); return; }
+    if (a === 'rook-heal6') {
+      const target = getEntityByTarget(state.ui.targetId);
+      if (!target || !['party','command'].includes(target.type) || !target.state) return;
+      const before = Number(target.state.damage || 0);
+      const healed = Math.min(6, before);
+      target.state.damage = Math.max(0, before - 6);
+      let spNote = '';
+      if (!(target.type === 'party' && target.id === 'rook')) {
+        const rook = state.party.rook;
+        const rookDef = DATA.party.rook;
+        rook.sp = Math.max(0, Math.min(rookDef.maxSp, Number(rook.sp || 0) + 1));
+        spNote = ' Rook gained +1 SP from healing another ally.';
+      }
+      saveState(); render();
+      addLog('Rook Heal token shortcut', `Healed ${targetLabel()} for ${healed}. Confirm physical Heal token/SP timing at the table.${spNote}`);
+      return;
+    }
+    if (a === 'rook-give-effect') {
+      const target = getEntityByTarget(state.ui.targetId);
+      const effect = btn.dataset.effect || 'Courage';
+      if (!target || !['party','command'].includes(target.type) || !target.state) return;
+      addEffectToEntity(target, effect);
+      saveState(); render();
+      addLog('Rook support effect', `Added ${effect} to ${targetLabel()}. Confirm SOI and trigger timing at the table.`);
+      return;
+    }
+    if (a === 'rook-gain-sp') {
+      const rook = state.party.rook;
+      const rookDef = DATA.party.rook;
+      rook.sp = Math.max(0, Math.min(rookDef.maxSp, Number(rook.sp || 0) + 1));
+      saveState(); render();
+      addLog('Rook SP trigger', 'Rook gained +1 SP from a confirmed support trigger.');
+      return;
+    }
     if (a === 'remi-load-profile') {
       state.ui.actorId = 'party:remi';
       loadAttackProfile(state.remiZeke.remiProfile || 'remi_chain_melee');
@@ -2134,7 +2205,7 @@
     if (ch === 'attack-number') { state.attack[el.dataset.field] = Number(el.value || 0); state.ui.appliedResultKey = null; saveState(); render(); }
     if (ch === 'attack-courage') { state.attack.useCourage = !!el.checked; state.ui.appliedResultKey = null; saveState(); render(); }
     if (ch === 'attack-masterwork') { state.attack.useMasterWork = !!el.checked; state.ui.appliedResultKey = null; saveState(); render(); }
-    if (ch === 'spell-profile') { state.spell.profileId = el.value; const profile = DATA.spellProfiles[el.value]; state.spell.castingColor = profile?.defaultColor || profile?.castingColors?.[0] || 'Purple'; state.spell.castingFace = 0; state.spell.empower = !!profile?.defaultEmpower; state.spell.empowerFace = 0; state.spell.convictionFaces = {}; state.spell.zealousFaces = {}; state.spell.useOptionalBonus = false; state.spell.previousDamage = 0; state.ui.appliedResultKey = null; saveState(); render(); }
+    if (ch === 'spell-profile') { state.spell.profileId = el.value; const profile = DATA.spellProfiles[el.value]; state.spell.castingColor = profile?.noCasting ? '' : (profile?.defaultColor || profile?.castingColors?.[0] || 'Purple'); state.spell.castingFace = 0; state.spell.empower = profile?.noCasting ? false : !!profile?.defaultEmpower; state.spell.empowerFace = 0; state.spell.convictionFaces = {}; state.spell.zealousFaces = {}; state.spell.useOptionalBonus = false; state.spell.previousDamage = 0; state.ui.appliedResultKey = null; saveState(); render(); }
     if (ch === 'spell-casting-color') { state.spell.castingColor = el.value; state.spell.castingFace = 0; state.ui.appliedResultKey = null; saveState(); render(); }
     if (ch === 'spell-casting-face') { state.spell.castingFace = Number(el.value); state.ui.appliedResultKey = null; saveState(); render(); }
     if (ch === 'spell-empower') { state.spell.empower = !!el.checked; state.ui.appliedResultKey = null; saveState(); render(); }
@@ -2217,6 +2288,7 @@
   saveState();
   render();
 })();
+  
   </script>
 </body>
 </html>

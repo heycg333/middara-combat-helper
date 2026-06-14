@@ -1,7 +1,7 @@
 {
-  "name": "Middara Combat Helper",
-  "short_name": "Middara",
-  "description": "V3.0I clean tablet helper with Remi / Zeke chain helpers and enemy spell layout fix.",
+  "name": "Middara Combat Helper V3.0J",
+  "short_name": "Middara V3.0J",
+  "description": "V3.0J clean tablet helper with Rook support/heal tools and fixed spell-like Force checks.",
   "start_url": "./index.html",
   "scope": "./",
   "display": "standalone",

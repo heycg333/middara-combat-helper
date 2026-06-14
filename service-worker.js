@@ -1,4 +1,4 @@
-const CACHE_NAME = 'middara-helper-v3-0i-remi-zeke-chain-helpers';
+const CACHE_NAME = 'middara-helper-v3-0j-rook-support-force-fix';
 const APP_SHELL = [
   './',
   './index.html',

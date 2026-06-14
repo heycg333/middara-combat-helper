@@ -1,3 +1,3 @@
-# Middara Combat Helper V3.0I
+# Middara Combat Helper V3.0J
 
-Upload all files in this folder to the root of the GitHub Pages repository. This build adds clean Remi/Zeke chain helpers and fixes the Enemy Spell / Conviction layout.
+Upload these files to the root of the GitHub Pages repository.
