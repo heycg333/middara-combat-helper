@@ -1,7 +1,8 @@
 
+
 (function () {
   'use strict';
-  const VERSION = 'V3.0J';
+  const VERSION = 'V3.0K';
   const STORAGE_KEY = 'middara.combatHelper.v3.state';
 
   const DATA = {
@@ -120,7 +121,7 @@
           { id: uid('init'), type:'party', ref:'zeke', label:'Zeke' }
         ]
       },
-      rewards: { gold:0, xp:0, notes:'' },
+      rewards: { gold:0, partyXp:0, xp:{rook:0, remi:0, nightingale:0, zeke:0}, notes:'' },
       settings: { autoAddEnemyInitiative:true, autoAddCommandInitiative:true },
       log: []
     };
@@ -151,6 +152,14 @@
     next.party = Object.assign(base.party, raw?.party || {});
     next.initiative = Object.assign(base.initiative, raw?.initiative || {});
     next.rewards = Object.assign(base.rewards, raw?.rewards || {});
+    if (!next.rewards.xp || typeof next.rewards.xp !== 'object') {
+      const oldXp = Number(raw?.rewards?.xp || raw?.rewards?.partyXp || 0);
+      next.rewards.partyXp = Number(raw?.rewards?.partyXp ?? oldXp ?? 0);
+      next.rewards.xp = Object.assign(base.rewards.xp, {});
+    } else {
+      next.rewards.xp = Object.assign(base.rewards.xp, raw.rewards.xp || {});
+      next.rewards.partyXp = Number(raw?.rewards?.partyXp || 0);
+    }
     next.settings = Object.assign(base.settings, raw?.settings || {});
     next.enemies = Array.isArray(raw?.enemies) ? raw.enemies : [];
     next.command = Array.isArray(raw?.command) ? raw.command : [];
@@ -205,7 +214,7 @@
   function getActor(actorId = state.ui.actorId) {
     const [type, id] = (actorId || ':').split(':');
     if (type === 'party') return { type, id, def: DATA.party[id], state: state.party[id] };
-    if (type === 'enemy') { const s = state.enemies.find(e => e.id === id); return { type, id, def: DATA.enemyDefinitions[s?.defId], state:s }; }
+    if (type === 'enemy') { const s = state.enemies.find(e => e.id === id); return { type, id, def: enemyDefFromRow(s), state:s }; }
     if (type === 'command') { const s = state.command.find(c => c.id === id); return { type, id, def: DATA.commandDefinitions[s?.defId], state:s }; }
     return { type:'none' };
   }
@@ -269,7 +278,7 @@
       .filter(c => !c.defeated && !c.dismissed && initKeys.has(`command:${c.defId}`))
       .forEach(c => opts.push({ value:`command:${c.id}`, label:c.label }));
     state.enemies
-      .filter(e => !e.defeated && initKeys.has(`enemy:${e.defId}`))
+      .filter(e => !e.defeated && (initKeys.has(`enemy:${e.defId}`) || initKeys.has(`enemy:${e.id}`)))
       .forEach(e => opts.push({ value:`enemy:${e.id}`, label:e.label }));
     if (state.ui.actorId && !opts.some(o => o.value === state.ui.actorId)) {
       const label = actorLabel(state.ui.actorId);
@@ -298,7 +307,7 @@
       if (c) actorId = `command:${c.id}`;
     }
     if (card.type === 'enemy') {
-      const e = state.enemies.find(x => x.defId === card.ref && !x.defeated);
+      const e = state.enemies.find(x => (x.id === card.ref || x.defId === card.ref) && !x.defeated);
       if (e) actorId = `enemy:${e.id}`;
     }
     if (actorId) state.ui.actorId = actorId;
@@ -312,6 +321,91 @@
   function renderEffects(entity, type, id) {
     const effects = (entity.effects || []).map(e => `<span class="effect">${escapeHtml(e)}</span>`).join('');
     return `<div class="effects">${effects || '<span class="tiny">No effects</span>'}</div>`;
+  }
+
+  function enemyDefFromRow(enemy) {
+    if (!enemy) return null;
+    return enemy.customDef || DATA.enemyDefinitions[enemy.defId] || null;
+  }
+  function enemyInitiativeKey(enemy) {
+    if (!enemy) return '';
+    return enemy.customDef ? enemy.id : enemy.defId;
+  }
+  function diceColorOptions(selected='', allowNone=false) {
+    const colors = Object.keys(DATA.dice).filter(c => c !== 'Black');
+    const opts = allowNone ? [`<option value="" ${!selected?'selected':''}>None</option>`] : [];
+    return opts.concat(colors.map(c => `<option value="${c}" ${selected===c?'selected':''}>${c}</option>`)).join('');
+  }
+  function customEnemyDiceOptions(index) {
+    return diceColorOptions(index === 0 ? 'Green' : '', true);
+  }
+  function parseCustomImmunities(raw) {
+    return String(raw || '').split(',').map(s => s.trim()).filter(Boolean);
+  }
+  function customSymbolAbilities(def) {
+    const s = def?.symbolDamage || {};
+    const abilities = [];
+    const add = (symbol, physical, magic) => {
+      physical = Number(physical || 0); magic = Number(magic || 0);
+      if (!physical && !magic) return;
+      const ability = { name:`Custom ${symbol}` };
+      ability[symbol.toLowerCase()] = 1;
+      if (physical) ability.physical = physical;
+      if (magic) ability.magic = magic;
+      abilities.push(ability);
+    };
+    add('Shield', s.shieldPhysical, s.shieldMagic);
+    add('Book', s.bookPhysical, s.bookMagic);
+    add('Burst', s.burstPhysical, s.burstMagic);
+    return abilities;
+  }
+  function customEnemyAttackProfile(enemy) {
+    const def = enemyDefFromRow(enemy);
+    return { id:`custom_attack_${enemy?.id || 'enemy'}`, enemy:def?.id || 'custom', label:`${enemy?.label || def?.name || 'Custom enemy'} - custom attack`, dice:(def?.combatDice || []).filter(Boolean), range:'Custom enemy attack', ap:0, abilities:customSymbolAbilities(def), notes:'One-off custom enemy attack. Use manual modifiers for card text not modeled here.' };
+  }
+  function customEnemySpellProfile(enemy) {
+    const def = enemyDefFromRow(enemy);
+    if (!def || !def.castingDie) return null;
+    return { id:`custom_spell_${enemy?.id || 'enemy'}`, enemy:def.id || 'custom', label:`${enemy?.label || def.name || 'Custom enemy'} - custom Spell / Force`, baseForce:6, castingColors:[def.castingDie], defaultColor:def.castingDie, effect:'', damageMode:'manual', flatMagic:0, notes:'One-off custom enemy spell/Force check. Set manual effect/damage if the revealed card calls for it.' };
+  }
+  function customEnemyForm() {
+    return `<details style="margin-top:12px"><summary>Add custom one-off enemy / hidden boss</summary>
+      <div class="note" style="margin-top:8px">Use this for hidden cards or bosses that are not in the database. It creates a tracked enemy only; it does not save a reusable preset.</div>
+      <div class="field-grid" style="margin-top:10px">
+        <div><label>Name</label><input id="customEnemyName" placeholder="Hidden Boss" /></div>
+        <div><label>HP</label><input id="customEnemyHp" type="number" min="1" step="1" value="20" /></div>
+        <div><label>Defense</label><input id="customEnemyDefense" type="number" min="0" step="1" value="12" /></div>
+        <div><label>Armor</label><input id="customEnemyArmor" type="number" min="0" step="1" value="0" /></div>
+      </div>
+      <div class="field-grid" style="margin-top:10px">
+        <div><label>Combat die 1</label><select id="customEnemyDie1">${diceColorOptions('Green', false)}</select></div>
+        <div><label>Combat die 2</label><select id="customEnemyDie2">${diceColorOptions('', true)}</select></div>
+        <div><label>Combat die 3</label><select id="customEnemyDie3">${diceColorOptions('', true)}</select></div>
+        <div><label>Combat die 4</label><select id="customEnemyDie4">${diceColorOptions('', true)}</select></div>
+      </div>
+      <div class="field-grid" style="margin-top:10px">
+        <div><label>Casting die</label><select id="customEnemyCasting">${diceColorOptions('', true)}</select></div>
+        <div><label>Conviction die 1</label><select id="customEnemyConv1">${diceColorOptions('Teal', false)}</select></div>
+        <div><label>Conviction die 2</label><select id="customEnemyConv2">${diceColorOptions('Green', false)}</select></div>
+      </div>
+      <details style="margin-top:10px"><summary>Optional symbol damage, resistance reminders, immunities</summary>
+        <div class="field-grid" style="margin-top:10px">
+          <div><label>Shield + Physical</label><input id="customEnemyShieldPhysical" type="number" min="0" step="1" value="0" /></div>
+          <div><label>Shield + Magic</label><input id="customEnemyShieldMagic" type="number" min="0" step="1" value="0" /></div>
+          <div><label>Book + Physical</label><input id="customEnemyBookPhysical" type="number" min="0" step="1" value="0" /></div>
+          <div><label>Book + Magic</label><input id="customEnemyBookMagic" type="number" min="0" step="1" value="0" /></div>
+          <div><label>Burst + Physical</label><input id="customEnemyBurstPhysical" type="number" min="0" step="1" value="0" /></div>
+          <div><label>Burst + Magic</label><input id="customEnemyBurstMagic" type="number" min="0" step="1" value="0" /></div>
+        </div>
+        <div class="field-grid" style="margin-top:10px">
+          <label><input type="checkbox" id="customEnemyResistPhysical" /> Resistance: Physical reminder</label>
+          <label><input type="checkbox" id="customEnemyResistMagic" /> Resistance: Magic reminder</label>
+          <div><label>Effect immunities, comma-separated</label><input id="customEnemyImmunities" placeholder="Poison, Darkness" /></div>
+        </div>
+      </details>
+      <label style="margin-top:8px"><input type="checkbox" id="customEnemyInitiative" checked /> <span class="note">Also add this enemy's initiative card after current turn</span></label>
+      <div class="btn-row" style="margin-top:10px"><button class="primary" data-action="add-custom-enemy">Add custom enemy</button></div>
+    </details>`;
   }
   function entityStatPills(def, st) {
     const hp = def.hp || 0;
@@ -380,7 +474,7 @@
 
   function renderPlayTab() {
     return `<section class="panel" id="playPanel">
-      <div class="live-title"><div><h2>V3.0J stable Play flow</h2><div class="note">Actor → Target → Action → Roll / Resolve → Apply. Rook support tools added; Remi/Zeke chain helpers and the clean combat cores stay inside this stable Play flow.</div></div><span class="pill"><strong>Current</strong> ${escapeHtml(currentInitiativeCard()?.label || 'No initiative')}</span></div>
+      <div class="live-title"><div><h2>V3.0K stable Play flow</h2><div class="note">Actor → Target → Action → Roll / Resolve → Apply. Custom enemy and Rewards Lite added; clean combat cores remain inside this stable Play flow.</div></div><span class="pill"><strong>Current</strong> ${escapeHtml(currentInitiativeCard()?.label || 'No initiative')}</span></div>
       <div class="flow-grid ${(['attack','spell','enemyAttack','enemySpell'].includes(state.ui.actionId))?'attack-active':''}" style="margin-top:12px">
         <div class="card"><h3>1. Actor</h3>${renderActorCard()}</div>
         <div class="card"><h3>2. Target drawer</h3>${renderTargetDrawer()}</div>
@@ -410,7 +504,7 @@
   function renderTargetEnemyList() {
     if (!state.enemies.length) return `<div class="note">No enemies on the board yet.</div>${renderQuickEnemyAdd()}`;
     const enemies = state.enemies.filter(e=>!e.defeated).map(e => {
-      const def = DATA.enemyDefinitions[e.defId];
+      const def = enemyDefFromRow(e);
       const sel = state.ui.targetId === `enemy:${e.id}`;
       return `<div class="card ${sel?'selected':''}"><div class="entity-head"><strong>${escapeHtml(e.label)}</strong><span class="pill">HP ${Math.max(0,def.hp-e.damage)}/${def.hp}</span></div>${hpBar(e.damage, def.hp)}${entityStatPills(def, e)}${renderEffects(e,'enemy',e.id)}<div class="compact-actions"><button type="button" class="accent" data-action="select-target" data-target="enemy:${e.id}">Target</button><button type="button" data-action="target-attack" data-target="enemy:${e.id}">Target + Attack</button><button type="button" data-action="target-spell" data-target="enemy:${e.id}">Target + Spell</button></div></div>`;
     }).join('') || '<div class="note">All tracked enemies are defeated.</div>';
@@ -967,6 +1061,7 @@
   function getEnemyAttackProfilesForActor(actorId = state.ui.actorId) {
     const actor = getActor(actorId);
     if (actor.type !== 'enemy' || !actor.def) return [];
+    if (actor.state?.customDef) return [customEnemyAttackProfile(actor.state)];
     return Object.values(DATA.enemyAttackProfiles).filter(p => p.enemy === actor.def.id);
   }
   function ensureEnemyAttackProfileValid(doRender=true) {
@@ -1171,8 +1266,12 @@
   function getEnemySpellProfilesForActor(actorId = state.ui.actorId) {
     const actor = getActor(actorId);
     if (actor.type !== 'enemy' || !actor.def) return [];
-    const exact = Object.values(DATA.enemySpellProfiles).filter(p => p.enemy === actor.def.id);
     const manual = DATA.enemySpellProfiles.manual_enemy_spell ? [DATA.enemySpellProfiles.manual_enemy_spell] : [];
+    if (actor.state?.customDef) {
+      const custom = customEnemySpellProfile(actor.state);
+      return custom ? [custom].concat(manual) : manual;
+    }
+    const exact = Object.values(DATA.enemySpellProfiles).filter(p => p.enemy === actor.def.id);
     return exact.length ? exact.concat(manual) : manual;
   }
   function ensureEnemySpellProfileValid(doRender=true) {
@@ -1361,7 +1460,7 @@
   function renderNightingaleTools() {
     const n = state.nightingale || defaultState().nightingale;
     return `<div class="card night-tools">
-      <div class="entity-head"><strong>V3.0G Nightingale spell / familiar tools</strong><span class="pill">Guided helpers</span></div>
+      <div class="entity-head"><strong>Nightingale spell / familiar tools</strong><span class="pill">Guided helpers</span></div>
       <div class="note" style="margin-top:6px">These are lightweight helpers around the clean Spell resolver. Board/SOI/legal target choices remain manual.</div>
       <div class="night-tool-grid" style="margin-top:10px">
         <div class="card">
@@ -1504,11 +1603,14 @@
 
   function renderEnemiesTab() {
     const active = state.enemies.filter(e=>!e.defeated).length;
-    return `<section class="panel"><h2>Enemy tracker</h2><div class="note">Track enemy figures, damage, effects, and initiative. Enemy AI helper and deep enemy-specific panels are intentionally excluded from V3. Enemy attack math now lives in Play.</div><div class="pillbox" style="margin-top:8px"><span class="pill"><strong>Tracked</strong> ${state.enemies.length}</span><span class="pill"><strong>Active</strong> ${active}</span><span class="pill"><strong>Initiative auto-add</strong> ${state.settings.autoAddEnemyInitiative ? 'On' : 'Off'}</span></div><div style="margin-top:10px">${renderQuickEnemyAdd()}</div><div class="btn-row" style="margin-top:10px"><button class="warn" data-action="clear-defeated-enemies">Clear defeated enemies</button><button class="danger" data-action="clear-enemies">Clear all enemies</button></div><div class="hr"></div>${state.enemies.length ? `<div class="entity-grid">${state.enemies.map(renderEnemyCard).join('')}</div>` : '<div class="note">No tracked enemies.</div>'}</section>`;
+    return `<section class="panel"><h2>Enemy tracker</h2><div class="note">Track enemy figures, damage, effects, and initiative. Enemy AI helper and deep enemy-specific panels are intentionally excluded from V3. Enemy attack math now lives in Play.</div><div class="pillbox" style="margin-top:8px"><span class="pill"><strong>Tracked</strong> ${state.enemies.length}</span><span class="pill"><strong>Active</strong> ${active}</span><span class="pill"><strong>Initiative auto-add</strong> ${state.settings.autoAddEnemyInitiative ? 'On' : 'Off'}</span></div><div style="margin-top:10px">${renderQuickEnemyAdd()}${customEnemyForm()}</div><div class="btn-row" style="margin-top:10px"><button class="warn" data-action="clear-defeated-enemies">Clear defeated enemies</button><button class="danger" data-action="clear-enemies">Clear all enemies</button></div><div class="hr"></div>${state.enemies.length ? `<div class="entity-grid">${state.enemies.map(renderEnemyCard).join('')}</div>` : '<div class="note">No tracked enemies.</div>'}</section>`;
   }
   function renderEnemyCard(e) {
-    const def = DATA.enemyDefinitions[e.defId];
-    return `<div class="card ${e.defeated?'danger':''} ${state.ui.targetId===`enemy:${e.id}`?'selected':''}"><div class="entity-head"><strong>${escapeHtml(e.label)}</strong><span class="pill">${e.defeated?'Defeated':'Active'}</span></div>${hpBar(e.damage,def.hp)}${entityStatPills(def, e)}${renderEffects(e,'enemy',e.id)}<div class="tiny" style="margin-top:6px">${def.tags.map(escapeHtml).join(', ')}${def.immunities ? ' | Immune: '+def.immunities.map(escapeHtml).join(', ') : ''}</div><div class="compact-actions"><button data-action="enemy-damage" data-id="${e.id}" data-delta="1">+1 dmg</button><button data-action="enemy-damage" data-id="${e.id}" data-delta="-1">-1 dmg</button><button data-action="toggle-enemy-defeated" data-id="${e.id}">${e.defeated?'Un-defeat':'Defeat'}</button><button class="accent" data-action="select-target" data-target="enemy:${e.id}">Target</button><button data-action="select-actor" data-actor="enemy:${e.id}">Actor</button></div><div class="field-grid" style="margin-top:8px"><div><label>Effect</label><select data-select="enemy-effect-${e.id}">${DATA.effects.map(x=>`<option>${x}</option>`).join('')}</select></div><div><label>&nbsp;</label><button data-action="enemy-add-effect" data-id="${e.id}">Add effect</button></div></div><div class="compact-actions"><button data-action="enemy-remove-effect" data-id="${e.id}">Remove selected effect</button></div></div>`;
+    const def = enemyDefFromRow(e);
+    const tagText = (def.tags || []).map(escapeHtml).join(', ');
+    const immuneText = def.immunities?.length ? ' | Immune: '+def.immunities.map(escapeHtml).join(', ') : '';
+    const resistText = def.resistances?.length ? ' | Resist reminder: '+def.resistances.map(escapeHtml).join(', ') : '';
+    return `<div class="card ${e.defeated?'danger':''} ${state.ui.targetId===`enemy:${e.id}`?'selected':''}"><div class="entity-head"><strong>${escapeHtml(e.label)}</strong><span class="pill">${e.defeated?'Defeated':'Active'}</span></div>${hpBar(e.damage,def.hp)}${entityStatPills(def, e)}${renderEffects(e,'enemy',e.id)}<div class="tiny" style="margin-top:6px">${tagText}${immuneText}${resistText}</div><div class="compact-actions"><button data-action="enemy-damage" data-id="${e.id}" data-delta="1">+1 dmg</button><button data-action="enemy-damage" data-id="${e.id}" data-delta="-1">-1 dmg</button><button data-action="toggle-enemy-defeated" data-id="${e.id}">${e.defeated?'Un-defeat':'Defeat'}</button><button class="accent" data-action="select-target" data-target="enemy:${e.id}">Target</button><button data-action="select-actor" data-actor="enemy:${e.id}">Actor</button><button data-action="enemy-ensure-initiative" data-id="${e.id}">Ensure initiative</button></div><div class="field-grid" style="margin-top:8px"><div><label>Effect</label><select data-select="enemy-effect-${e.id}">${DATA.effects.map(x=>`<option>${x}</option>`).join('')}</select></div><div><label>&nbsp;</label><button data-action="enemy-add-effect" data-id="${e.id}">Add effect</button></div></div><div class="compact-actions"><button data-action="enemy-remove-effect" data-id="${e.id}">Remove selected effect</button></div></div>`;
   }
 
   function renderTurnTab() {
@@ -1516,7 +1618,7 @@
   }
   function renderInitiativeAdd() {
     const partyOpts = Object.values(DATA.party).map(p=>`<option value="party:${p.id}">${p.name}</option>`).join('');
-    const enemyOpts = Object.values(DATA.enemyDefinitions).map(d=>`<option value="enemy:${d.id}">${d.name}</option>`).join('');
+    const enemyOpts = Object.values(DATA.enemyDefinitions).map(d=>`<option value="enemy:${d.id}">${d.name}</option>`).join('') + state.enemies.filter(e=>e.customDef && !e.defeated).map(e=>`<option value="enemy:${e.id}">${escapeHtml(e.label)}</option>`).join('');
     const cmdOpts = Object.values(DATA.commandDefinitions).map(d=>`<option value="command:${d.id}">${d.name}</option>`).join('');
     return `<div class="field-grid"><div><label>Add initiative card</label><select id="initiativeAddSelect"><optgroup label="Party">${partyOpts}</optgroup><optgroup label="Enemies">${enemyOpts}</optgroup><optgroup label="Command">${cmdOpts}</optgroup></select></div><div><label>&nbsp;</label><button data-action="initiative-add-card">Add after current turn</button></div></div>`;
   }
@@ -1534,7 +1636,22 @@
   }
 
   function renderRewardsTab() {
-    return `<section class="panel"><h2>Rewards / notes</h2><div class="note">Lightweight optional tracker. Long-term campaign bookkeeping is intentionally not part of the V3 core loop.</div><div class="field-grid"><div><label>Party gold</label><input id="rewardGold" type="number" value="${state.rewards.gold}" /></div><div><label>Party XP notes / total</label><input id="rewardXp" type="number" value="${state.rewards.xp}" /></div></div><div style="margin-top:10px"><label>Reward / inventory notes</label><textarea id="rewardNotes">${escapeHtml(state.rewards.notes)}</textarea></div><div class="btn-row" style="margin-top:10px"><button class="primary" data-action="save-rewards">Save rewards</button></div></section>`;
+    const xp = Object.assign({rook:0, remi:0, nightingale:0, zeke:0}, state.rewards.xp || {});
+    const xpCards = Object.values(DATA.party).map(p => `<div class="card"><div class="entity-head"><strong>${p.name}</strong><span class="pill">XP ${Number(xp[p.id] || 0)}</span></div><div class="field-grid"><div><label>${p.name} XP</label><input id="rewardXp_${p.id}" type="number" step="1" value="${Number(xp[p.id] || 0)}" /></div><div><label>Adjust</label><div class="compact-actions"><button data-action="reward-individual-xp" data-id="${p.id}" data-delta="1">+1</button><button data-action="reward-individual-xp" data-id="${p.id}" data-delta="-1">-1</button><button data-action="reward-individual-xp" data-id="${p.id}" data-delta="5">+5</button></div></div></div></div>`).join('');
+    return `<section class="panel"><h2>Rewards / campaign totals</h2><div class="note">Lite tracker only: tally loot cards physically, then update party gold and XP totals here when convenient.</div>
+      <div class="field-grid" style="margin-top:10px">
+        <div><label>Party gold</label><input id="rewardGold" type="number" step="1" value="${Number(state.rewards.gold || 0)}" /></div>
+        <div><label>Party total XP</label><input id="rewardPartyXp" type="number" step="1" value="${Number(state.rewards.partyXp || 0)}" /></div>
+      </div>
+      <div class="field-grid" style="margin-top:10px">
+        <div><label>Gold adjustment</label><input id="rewardGoldDelta" type="number" step="1" value="10" /></div>
+        <div><label>XP adjustment</label><input id="rewardXpDelta" type="number" step="1" value="1" /></div>
+      </div>
+      <div class="btn-row" style="margin-top:10px"><button data-action="reward-gold-delta" data-sign="1">Add gold</button><button data-action="reward-gold-delta" data-sign="-1">Spend/remove gold</button><button data-action="reward-party-xp-delta" data-sign="1">Add party XP</button><button data-action="reward-all-xp-delta" data-sign="1">Add XP to all adventurers</button></div>
+      <div class="hr"></div><h3>Individual adventurer XP</h3><div class="entity-grid">${xpCards}</div>
+      <div style="margin-top:10px"><label>Reward / inventory notes</label><textarea id="rewardNotes">${escapeHtml(state.rewards.notes || '')}</textarea></div>
+      <div class="btn-row" style="margin-top:10px"><button class="primary" data-action="save-rewards">Save reward totals</button></div>
+    </section>`;
   }
 
   function renderDataTab() {
@@ -1549,7 +1666,7 @@
   function getEntityByTarget(targetId) {
     const [type,id] = (targetId||':').split(':');
     if (type==='party') return { type, id, def:DATA.party[id], state:state.party[id] };
-    if (type==='enemy') { const st=state.enemies.find(e=>e.id===id); return { type, id, def:DATA.enemyDefinitions[st?.defId], state:st }; }
+    if (type==='enemy') { const st=state.enemies.find(e=>e.id===id); return { type, id, def:enemyDefFromRow(st), state:st }; }
     if (type==='command') { const st=state.command.find(c=>c.id===id); return { type, id, def:DATA.commandDefinitions[st?.defId], state:st }; }
     return null;
   }
@@ -1566,7 +1683,14 @@
     if (!state.settings.autoAddEnemyInitiative) return;
     if (state.initiative.cards.some(c => c.type==='enemy' && c.ref===defId)) return;
     const def = DATA.enemyDefinitions[defId];
+    if (!def) return;
     insertInitiativeCard({ id:uid('init'), type:'enemy', ref:defId, label:def.name });
+  }
+  function ensureEnemyInitiativeForRow(enemy) {
+    if (!enemy) return;
+    const ref = enemy.customDef ? enemy.id : enemy.defId;
+    if (state.initiative.cards.some(c => c.type==='enemy' && c.ref===ref)) return;
+    insertInitiativeCard({ id:uid('init'), type:'enemy', ref, label:enemy.customDef ? enemy.label : (enemyDefFromRow(enemy)?.name || enemy.label) });
   }
   function ensureCommandInitiative(defId) {
     if (!state.settings.autoAddCommandInitiative) return;
@@ -1576,8 +1700,9 @@
   }
 
   function cleanupEnemyInitiative() {
-    const activeDefIds = new Set(state.enemies.filter(e => !e.defeated).map(e => e.defId));
-    state.initiative.cards = state.initiative.cards.filter(c => c.type !== 'enemy' || activeDefIds.has(c.ref));
+    const activeKeys = new Set();
+    state.enemies.filter(e => !e.defeated).forEach(e => { activeKeys.add(e.defId); activeKeys.add(e.id); });
+    state.initiative.cards = state.initiative.cards.filter(c => c.type !== 'enemy' || activeKeys.has(c.ref));
     if (state.initiative.currentIndex >= state.initiative.cards.length) state.initiative.currentIndex = Math.max(0, state.initiative.cards.length - 1);
   }
   function removeAllEnemyInitiative() {
@@ -1586,12 +1711,43 @@
   }
   function addEnemies(defId, count=1) {
     const def = DATA.enemyDefinitions[defId];
+    if (!def) return;
     for (let i=0;i<count;i++) {
       const n = lowestAvailableNumber(defId);
       state.enemies.push({ id:uid('enemy'), defId, number:n, label:`${def.name} ${n}`, damage:0, effects:[], tokens:{}, defeated:false });
     }
     ensureEnemyInitiative(defId);
     saveState(); render();
+  }
+  function addCustomEnemyFromForm() {
+    const name = (byId('customEnemyName')?.value || 'Custom Enemy').trim();
+    const id = uid('enemy');
+    const combatDice = ['customEnemyDie1','customEnemyDie2','customEnemyDie3','customEnemyDie4'].map(k => byId(k)?.value || '').filter(Boolean);
+    const customDef = {
+      id:`custom_${id}`,
+      name,
+      hp:Math.max(1, Number(byId('customEnemyHp')?.value || 1)),
+      defense:Math.max(0, Number(byId('customEnemyDefense')?.value || 0)),
+      armor:Math.max(0, Number(byId('customEnemyArmor')?.value || 0)),
+      combatDice: combatDice.length ? combatDice : ['Green'],
+      castingDie: byId('customEnemyCasting')?.value || '',
+      conviction:[byId('customEnemyConv1')?.value || 'Teal', byId('customEnemyConv2')?.value || 'Green'],
+      symbolDamage:{
+        shieldPhysical:Number(byId('customEnemyShieldPhysical')?.value || 0), shieldMagic:Number(byId('customEnemyShieldMagic')?.value || 0),
+        bookPhysical:Number(byId('customEnemyBookPhysical')?.value || 0), bookMagic:Number(byId('customEnemyBookMagic')?.value || 0),
+        burstPhysical:Number(byId('customEnemyBurstPhysical')?.value || 0), burstMagic:Number(byId('customEnemyBurstMagic')?.value || 0)
+      },
+      resistances:[byId('customEnemyResistPhysical')?.checked ? 'Physical' : '', byId('customEnemyResistMagic')?.checked ? 'Magic' : ''].filter(Boolean),
+      immunities:parseCustomImmunities(byId('customEnemyImmunities')?.value),
+      tags:['Custom']
+    };
+    const enemy = { id, defId:'custom', customDef, number:1, label:name, damage:0, effects:[], tokens:{}, defeated:false };
+    state.enemies.push(enemy);
+    if (byId('customEnemyInitiative')?.checked) ensureEnemyInitiativeForRow(enemy);
+    state.ui.targetId = `enemy:${enemy.id}`;
+    state.ui.targetScope = 'enemies';
+    saveState(); render();
+    addLog('Added custom enemy', `${name}: HP ${customDef.hp}, Defense ${customDef.defense}, Armor ${customDef.armor}.`);
   }
   function summonCommand(defId) {
     const def = DATA.commandDefinitions[defId];
@@ -1938,6 +2094,9 @@
       saveState(); render(); return;
     }
     if (a === 'log-current') { if(state.ui.actionId==='attack'){ const r=calculateAttackResult(); addLog(`${actorLabel()} attack`, r.ready ? `${r.hit?'Hit':'Miss'}; attack ${r.attackTotal} vs defense ${r.targetDefense}; final damage ${r.finalDamage} to ${targetLabel()}.` : 'Attack not ready.'); } else if(state.ui.actionId==='spell'){ const r=calculateSpellResult(); addLog(`${actorLabel()} spell`, r.ready ? `${r.failed?'Failed Conviction':'Passed Conviction'}; Force ${r.force} vs Conviction ${r.conviction}; final damage ${r.finalDamage} to ${targetLabel()}${r.effect && r.failed ? '; effect ' + r.effect : ''}.` : 'Spell not ready.'); } else if(state.ui.actionId==='enemyAttack'){ const r=calculateEnemyAttackResult(); addLog(`${actorLabel()} enemy attack`, r.ready ? `${r.hit?'Hit':'Miss'}; attack ${r.attackTotal} vs defense ${r.targetDefense}; final damage ${r.finalDamage} to ${targetLabel()}.` : 'Enemy attack not ready.'); } else if(state.ui.actionId==='enemySpell'){ const r=calculateEnemySpellResult(); addLog(`${actorLabel()} enemy spell`, r.ready ? `${r.failed?'Failed Conviction':'Passed Conviction'}; Force ${r.force} vs Conviction ${r.conviction}; final damage ${r.finalDamage} to ${targetLabel()}${r.effect && r.failed ? '; effect ' + r.effect : ''}.` : 'Enemy spell not ready.'); } else { addLog(`${actorLabel()} - ${actionLabel()}`, `Target: ${targetLabel()}.`); } return; }
+
+    if (a === 'add-custom-enemy') { addCustomEnemyFromForm(); return; }
+    if (a === 'enemy-ensure-initiative') { const e=state.enemies.find(x=>x.id===btn.dataset.id); if(e){ ensureEnemyInitiativeForRow(e); saveState(); render(); } return; }
     if (a === 'add-enemy-quick') { const defId = byId('quickEnemyDef')?.value || 'animate'; const count = Math.max(1, Number(byId('quickEnemyCount')?.value || 1)); state.settings.autoAddEnemyInitiative = !!byId('quickEnemyInitiative')?.checked; addEnemies(defId, count); return; }
     if (a === 'party-damage') { const st=state.party[btn.dataset.id]; st.damage=Math.max(0, st.damage + Number(btn.dataset.delta)); saveState(); render(); return; }
     if (a === 'party-sp') { const st=state.party[btn.dataset.id]; const def=DATA.party[btn.dataset.id]; st.sp=Math.max(0, Math.min(def.maxSp, st.sp + Number(btn.dataset.delta))); saveState(); render(); return; }
@@ -1947,9 +2106,9 @@
     if (a === 'party-remove-token') { const id=btn.dataset.id; removeTokenFromEntity({state:state.party[id]}, document.querySelector(`[data-select="party-token-${id}"]`)?.value); saveState(); render(); return; }
     if (a === 'prepare-party') { Object.keys(state.party).forEach(id => { const def=DATA.party[id], st=state.party[id]; const half=Math.floor(def.hp/2); if (st.damage > half) st.damage = half; st.sp = def.recovery; st.effects = []; }); saveState(); render(); addLog('Prepared party', 'Removed Effects and set SP to recovery. Ability tokens are handled physically in V3.'); return; }
     if (a === 'restore-party') { Object.keys(state.party).forEach(id => { const def=DATA.party[id], st=state.party[id]; st.damage=0; st.sp=def.recovery; st.effects=[]; st.tokens={}; }); state.command=[]; saveState(); render(); addLog('Restored party', 'Removed damage/effects and cleared Command Combatants. Ability tokens are handled physically in V3.'); return; }
-    if (a === 'enemy-damage') { const e=state.enemies.find(x=>x.id===btn.dataset.id); if(e){ const def=DATA.enemyDefinitions[e.defId]; e.damage=Math.max(0, Math.min(def.hp, e.damage + Number(btn.dataset.delta))); if(e.damage>=def.hp) e.defeated=true; saveState(); render(); } return; }
+    if (a === 'enemy-damage') { const e=state.enemies.find(x=>x.id===btn.dataset.id); if(e){ const def=enemyDefFromRow(e); e.damage=Math.max(0, Math.min(def.hp, e.damage + Number(btn.dataset.delta))); if(e.damage>=def.hp) e.defeated=true; saveState(); render(); } return; }
     if (a === 'toggle-enemy-defeated') { const e=state.enemies.find(x=>x.id===btn.dataset.id); if(e){ e.defeated=!e.defeated; saveState(); render(); } return; }
-    if (a === 'enemy-add-effect') { const e=state.enemies.find(x=>x.id===btn.dataset.id); if(e){ addEffectToEntity({type:'enemy', id:e.id, def:DATA.enemyDefinitions[e.defId], state:e}, document.querySelector(`[data-select="enemy-effect-${e.id}"]`)?.value); saveState(); render(); } return; }
+    if (a === 'enemy-add-effect') { const e=state.enemies.find(x=>x.id===btn.dataset.id); if(e){ addEffectToEntity({type:'enemy', id:e.id, def:enemyDefFromRow(e), state:e}, document.querySelector(`[data-select="enemy-effect-${e.id}"]`)?.value); saveState(); render(); } return; }
     if (a === 'enemy-remove-effect') { const e=state.enemies.find(x=>x.id===btn.dataset.id); if(e){ removeEffectFromEntity({state:e}, document.querySelector(`[data-select="enemy-effect-${e.id}"]`)?.value); saveState(); render(); } return; }
     if (a === 'clear-defeated-enemies') { state.enemies = state.enemies.filter(e => !e.defeated); cleanupEnemyInitiative(); if (state.ui.targetId && !getEntityByTarget(state.ui.targetId)?.state) state.ui.targetId = null; saveState(); render(); addLog('Cleared defeated enemies', 'Removed enemy initiative cards for groups with no active figures.'); return; }
     if (a === 'clear-enemies') { if(confirm('Clear all tracked enemies for this encounter?')) { state.enemies = []; state.ui.targetId = null; if (state.ui.actorId && state.ui.actorId.startsWith('enemy:')) state.ui.actorId = 'party:rook'; removeAllEnemyInitiative(); saveState(); render(); addLog('Cleared all enemies', 'Removed tracked enemies and enemy initiative cards.'); } return; }
@@ -1960,7 +2119,7 @@
     if (a === 'initiative-reset-party') { state.initiative.cards = Object.values(DATA.party).map(p=>({id:uid('init'), type:'party', ref:p.id, label:p.name})); state.initiative.currentIndex=0; syncActorFromInitiative(false); saveState(); render(); return; }
     if (a === 'initiative-set-current') { const idx=state.initiative.cards.findIndex(c=>c.id===btn.dataset.id); if(idx>=0){ state.initiative.currentIndex=idx; syncActorFromInitiative(false); saveState(); render(); } return; }
     if (a === 'initiative-remove') { const idx=state.initiative.cards.findIndex(c=>c.id===btn.dataset.id); if(idx>=0){ state.initiative.cards.splice(idx,1); state.initiative.currentIndex=Math.min(state.initiative.currentIndex, Math.max(0,state.initiative.cards.length-1)); syncActorFromInitiative(false); saveState(); render(); } return; }
-    if (a === 'initiative-add-card') { const val=byId('initiativeAddSelect')?.value || 'party:rook'; const [type,ref]=val.split(':'); const label = type==='party' ? DATA.party[ref].name : type==='enemy' ? DATA.enemyDefinitions[ref].name : DATA.commandDefinitions[ref].name; insertInitiativeCard({id:uid('init'), type, ref, label}); saveState(); render(); return; }
+    if (a === 'initiative-add-card') { const val=byId('initiativeAddSelect')?.value || 'party:rook'; const [type,ref]=val.split(':'); let label = ''; if (type==='party') label = DATA.party[ref].name; else if (type==='enemy') { const row = state.enemies.find(e=>e.id===ref); label = row ? row.label : (DATA.enemyDefinitions[ref]?.name || ref); } else label = DATA.commandDefinitions[ref].name; insertInitiativeCard({id:uid('init'), type, ref, label}); saveState(); render(); return; }
     if (a === 'summon-command') { summonCommand(btn.dataset.def); return; }
     if (a === 'load-command-actor') { state.ui.actorId = `command:${btn.dataset.id}`; state.ui.activeTab = 'play'; state.ui.actionId = null; saveState(); render(); return; }
     if (a === 'command-damage') { const c=state.command.find(x=>x.id===btn.dataset.id); if(c){ const def=DATA.commandDefinitions[c.defId]; c.damage=Math.max(0, Math.min(def.hp, c.damage+Number(btn.dataset.delta))); if(c.damage>=def.hp)c.defeated=true; saveState(); render(); } return; }
@@ -2021,7 +2180,11 @@
     }
     if (a === 'toggle-command-defeated') { const c=state.command.find(x=>x.id===btn.dataset.id); if(c){ c.defeated=!c.defeated; if(c.defeated) c.dismissed=false; saveState(); render(); } return; }
     if (a === 'remove-command') { const id=btn.dataset.id; const c=state.command.find(x=>x.id===id); if(c && confirm('Remove '+c.label+' from the Command tracker?')){ state.command = state.command.filter(x=>x.id!==id); state.initiative.cards = state.initiative.cards.filter(card => !(card.type==='command' && card.ref===c.defId)); if (state.ui.actorId === `command:${id}`) state.ui.actorId = 'party:nightingale'; if (state.ui.targetId === `command:${id}`) state.ui.targetId = null; saveState(); render(); } return; }
-    if (a === 'save-rewards') { state.rewards.gold=Number(byId('rewardGold')?.value||0); state.rewards.xp=Number(byId('rewardXp')?.value||0); state.rewards.notes=byId('rewardNotes')?.value||''; saveState(); render(); return; }
+    if (a === 'reward-gold-delta') { const d=Number(byId('rewardGoldDelta')?.value||0)*Number(btn.dataset.sign||1); state.rewards.gold=Number(state.rewards.gold||0)+d; saveState(); render(); return; }
+    if (a === 'reward-party-xp-delta') { const d=Number(byId('rewardXpDelta')?.value||0)*Number(btn.dataset.sign||1); state.rewards.partyXp=Number(state.rewards.partyXp||0)+d; saveState(); render(); return; }
+    if (a === 'reward-all-xp-delta') { const d=Number(byId('rewardXpDelta')?.value||0)*Number(btn.dataset.sign||1); Object.keys(DATA.party).forEach(id=>{ state.rewards.xp[id]=Number(state.rewards.xp?.[id]||0)+d; }); saveState(); render(); return; }
+    if (a === 'reward-individual-xp') { const id=btn.dataset.id; state.rewards.xp = Object.assign({rook:0, remi:0, nightingale:0, zeke:0}, state.rewards.xp||{}); state.rewards.xp[id]=Number(state.rewards.xp[id]||0)+Number(btn.dataset.delta||0); saveState(); render(); return; }
+    if (a === 'save-rewards') { state.rewards.gold=Number(byId('rewardGold')?.value||0); state.rewards.partyXp=Number(byId('rewardPartyXp')?.value||0); state.rewards.xp=Object.assign({rook:0, remi:0, nightingale:0, zeke:0}, state.rewards.xp||{}); Object.keys(DATA.party).forEach(id=>{ state.rewards.xp[id]=Number(byId('rewardXp_'+id)?.value||0); }); state.rewards.notes=byId('rewardNotes')?.value||''; saveState(); render(); return; }
     if (a === 'export-snapshot') { const box=byId('snapshotBox'); if(box) box.value=JSON.stringify(state,null,2); return; }
     if (a === 'copy-snapshot') { const text=byId('snapshotBox')?.value || JSON.stringify(state,null,2); navigator.clipboard?.writeText(text); return; }
     if (a === 'import-snapshot') { try { const imported=JSON.parse(byId('snapshotBox')?.value || '{}'); state=mergeState(imported); saveState(); render(); addLog('Imported V3 snapshot'); } catch(e) { alert('Import failed: '+e.message); } return; }
@@ -2088,7 +2251,7 @@
     if (ch === 'def-zeke-belts') { state.enemyAttack.zekeBelts = !!el.checked; state.ui.appliedResultKey = null; saveState(); render(); }
     if (ch === 'enemy-summon-reduction') { state.enemyAttack.summonReduction = !!el.checked; state.ui.appliedResultKey = null; saveState(); render(); }
 
-    if (ch === 'enemy-spell-profile') { const profile = DATA.enemySpellProfiles[el.value]; state.enemySpell.profileId = el.value; state.enemySpell.castingColor = profile?.defaultColor || profile?.castingColors?.[0] || 'Purple'; state.enemySpell.castingFace = 0; state.enemySpell.empower = !!profile?.defaultEmpower; state.enemySpell.empowerFace = 0; state.enemySpell.manualForceMod = 0; state.enemySpell.convictionColors = {}; state.enemySpell.convictionFaces = {}; state.enemySpell.forcePass = false; state.enemySpell.witchHat = false; state.enemySpell.magicResistance = false; state.enemySpell.manualEffect = ''; state.enemySpell.manualFlatMagic = 0; state.enemySpell.damageEqualsDifference = false; state.ui.appliedResultKey = null; saveState(); render(); }
+    if (ch === 'enemy-spell-profile') { const profile = getEnemySpellProfilesForActor().find(p=>p.id===el.value) || DATA.enemySpellProfiles[el.value]; state.enemySpell.profileId = el.value; state.enemySpell.castingColor = profile?.defaultColor || profile?.castingColors?.[0] || 'Purple'; state.enemySpell.castingFace = 0; state.enemySpell.empower = !!profile?.defaultEmpower; state.enemySpell.empowerFace = 0; state.enemySpell.manualForceMod = 0; state.enemySpell.convictionColors = {}; state.enemySpell.convictionFaces = {}; state.enemySpell.forcePass = false; state.enemySpell.witchHat = false; state.enemySpell.magicResistance = false; state.enemySpell.manualEffect = ''; state.enemySpell.manualFlatMagic = 0; state.enemySpell.damageEqualsDifference = false; state.ui.appliedResultKey = null; saveState(); render(); }
     if (ch === 'enemy-spell-casting-color') { state.enemySpell.castingColor = el.value; state.enemySpell.castingFace = 0; state.ui.appliedResultKey = null; saveState(); render(); }
     if (ch === 'enemy-spell-casting-face') { state.enemySpell.castingFace = Number(el.value); state.ui.appliedResultKey = null; saveState(); render(); }
     if (ch === 'enemy-spell-empower') { state.enemySpell.empower = !!el.checked; state.ui.appliedResultKey = null; saveState(); render(); }
@@ -2131,4 +2294,5 @@
   saveState();
   render();
 })();
+  
   

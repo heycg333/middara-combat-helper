@@ -1,4 +1,4 @@
-const CACHE_NAME = 'middara-helper-v3-0j-rook-support-force-fix';
+const CACHE_NAME = 'middara-helper-v3-0k-custom-enemy-rewards-lite';
 const APP_SHELL = [
   './',
   './index.html',

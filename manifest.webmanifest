@@ -1,7 +1,7 @@
 {
-  "name": "Middara Combat Helper V3.0J",
-  "short_name": "Middara V3.0J",
-  "description": "V3.0J clean tablet helper with Rook support/heal tools and fixed spell-like Force checks.",
+  "name": "Middara Combat Helper V3.0K",
+  "short_name": "Middara V3.0K",
+  "description": "V3.0K clean tablet helper with custom one-off enemies and lightweight gold / XP tracking.",
   "start_url": "./index.html",
   "scope": "./",
   "display": "standalone",
