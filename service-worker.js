@@ -1,4 +1,4 @@
-const CACHE_NAME = 'middara-helper-v3-0h-enemy-spell-conviction';
+const CACHE_NAME = 'middara-helper-v3-0i-remi-zeke-chain-helpers';
 const APP_SHELL = [
   './',
   './index.html',

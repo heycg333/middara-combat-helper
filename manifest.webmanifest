@@ -1,7 +1,7 @@
 {
   "name": "Middara Combat Helper",
   "short_name": "Middara",
-  "description": "V3.0H clean tablet helper with Enemy Spell / Party Conviction resolver.",
+  "description": "V3.0I clean tablet helper with Remi / Zeke chain helpers and enemy spell layout fix.",
   "start_url": "./index.html",
   "scope": "./",
   "display": "standalone",

@@ -1,6 +1,7 @@
+
 (function () {
   'use strict';
-  const VERSION = 'V3.0H';
+  const VERSION = 'V3.0I';
   const STORAGE_KEY = 'middara.combatHelper.v3.state';
 
   const DATA = {
@@ -47,6 +48,8 @@
     spellProfiles: {
       rook_courage_stifle: { id:'rook_courage_stifle', actor:'rook', label:'Rook - Courage Stifle', baseForce:6, castingColors:['Purple','Green','Grey'], defaultColor:'Green', sp:2, damageMode:'flat', flatMagic:10, notes:'Spell 6. Magic Damage = 2 x Rook total Armor. Current Armor 5 => 10 Magic Damage. Choose an eligible Shield/Blunt spellcasting upgrade die manually.' },
       rook_zealous_reprisal: { id:'rook_zealous_reprisal', actor:'rook', label:'Rook - Zealous Reprisal', baseForce:6, castingColors:['Purple','Green','Grey'], defaultColor:'Green', sp:3, damageMode:'zealous', damageDice:['Green','Blue'], notes:'Spell 6. Damage roll uses equipped combat dice, then damage and Push 3 are reduced by 1 for each space beyond adjacent. Use the discount checkbox if Rook damaged this target this turn.' },
+      remi_command2: { id:'remi_command2', actor:'remi', label:'Remi - Chain Pick Command 2 FU', baseForce:9, castingColors:['Purple'], defaultColor:'Purple', sp:0, damageMode:'effect', effect:'', notes:'Spell-like / Force check helper. Use after Chain Pick ranged FU. Manual Force modifier is prefilled with the previous attack difference hit, so Force = 9 + difference hit.' },
+      zeke_dweller_darkness: { id:'zeke_dweller_darkness', actor:'zeke', label:'Zeke - Dweller Darkness FU', baseForce:9, castingColors:['Purple'], defaultColor:'Purple', sp:0, damageMode:'effect', effect:'Darkness', notes:'Spell-like / Force check helper. Use after Dweller\'s Short Sword FU. Manual Force modifier is prefilled with the previous attack difference hit, so Force = 9 + difference hit.' },
       night_gore_shot: { id:'night_gore_shot', actor:'nightingale', label:'Nightingale - Gore Shot', baseForce:6, castingColors:['Purple','Red','Grey'], defaultColor:'Grey', sp:0, damageMode:'flat', flatMagic:2, optionalSelfDamage:2, optionalMagicBonus:8, defaultEmpower:true, notes:'Spell 6. Deal 2 Magic Damage. Optional: Nightingale takes 2 Irreducible Damage to add +8 Magic Damage with current highest Cruor level 4.' },
       night_corrosive_ideal: { id:'night_corrosive_ideal', actor:'nightingale', label:'Nightingale - Corrosive Ideal', baseForce:6, castingColors:['Purple','Red','Grey'], defaultColor:'Grey', sp:1, damageMode:'effect', effect:'Poison', defaultEmpower:true, notes:'Spell 6. If the target fails Conviction, inflict Poison. Effect immunity is respected by the tracker.' },
       night_life_grasp: { id:'night_life_grasp', actor:'nightingale', label:'Nightingale - Life Grasp (single target core)', baseForce:6, castingColors:['Purple','Red','Grey'], defaultColor:'Grey', sp:1, damageMode:'difference', optionalSelfDamage:6, optionalForceBonus:6, defaultEmpower:true, notes:'Core single-target implementation. Damage equals failed Conviction difference. Optional +6 Force costs 6 Irreducible Damage once per cast. Multi-target helper returns after generic spell core is stable.' },
@@ -103,6 +106,7 @@
       enemyAttack: { profileId:'animate_basic', faces:{}, empower:false, empowerFace:0, useDodge:false, dodgeFace:0, manualAttackMod:0, manualPhysical:0, manualMagic:0, manualArmorPiercing:0, targetDefenseMod:0, finalReduction:0, forceMiss:false, rookPlate:false, remiShearling:true, remiShearlingPE:false, remiMantleVow:false, nightMorbid:true, nightReinforced:false, nightFlanking:false, zekeBelts:false, summonReduction:false },
       enemySpell: { profileId:'animate_darkness', castingColor:'Red', castingFace:0, empower:false, empowerFace:0, manualForceMod:0, convictionColors:{c0:'',c1:''}, convictionFaces:{c0:0,c1:0}, manualConvictionMod:0, forcePass:false, witchHat:false, manualEffect:'', manualFlatMagic:0, damageEqualsDifference:false, magicResistance:false },
       nightingale: { previousDamage:0, trophyFace:'', trophyTargetId:'', lifeOpen:false, trophyOpen:false, life:{ castingColor:'Grey', castingFace:0, empower:true, empowerFace:0, manualForceMod:0, boost:false, targets:[{targetId:'', c0:0, c1:0},{targetId:'', c0:0, c1:0},{targetId:'', c0:0, c1:0}], appliedKey:null, selfAppliedKey:null } },
+      remiZeke: { remiProfile:'remi_chain_melee', whirlwindActive:false, whirlwindCount:0, onslaughtActive:false, onslaughtRemaining:0, lastMessage:'' },
       party: defaultParty(),
       enemies: [],
       command: [],
@@ -143,6 +147,7 @@
     next.nightingale.life = Object.assign(base.nightingale.life, raw?.nightingale?.life || {});
     next.nightingale.life.targets = Array.isArray(raw?.nightingale?.life?.targets) ? raw.nightingale.life.targets.slice(0,3).map((row,idx)=>Object.assign(base.nightingale.life.targets[idx] || {}, row || {})) : base.nightingale.life.targets;
     while (next.nightingale.life.targets.length < 3) next.nightingale.life.targets.push({targetId:'', c0:0, c1:0});
+    next.remiZeke = Object.assign(base.remiZeke, raw?.remiZeke || {});
     next.party = Object.assign(base.party, raw?.party || {});
     next.initiative = Object.assign(base.initiative, raw?.initiative || {});
     next.rewards = Object.assign(base.rewards, raw?.rewards || {});
@@ -371,8 +376,8 @@
 
   function renderPlayTab() {
     return `<section class="panel" id="playPanel">
-      <div class="live-title"><div><h2>V3.0H stable Play flow</h2><div class="note">Actor → Target → Action → Roll / Resolve → Apply. Attack, spell, enemy attack, and enemy spell math are rebuilt cleanly here; Party management stays on the Party tab.</div></div><span class="pill"><strong>Current</strong> ${escapeHtml(currentInitiativeCard()?.label || 'No initiative')}</span></div>
-      <div class="flow-grid ${(state.ui.actionId==='attack'||state.ui.actionId==='spell'||state.ui.actionId==='enemyAttack')?'attack-active':''}" style="margin-top:12px">
+      <div class="live-title"><div><h2>V3.0I stable Play flow</h2><div class="note">Actor → Target → Action → Roll / Resolve → Apply. Attack, spell, enemy attack, enemy spell, and core Remi/Zeke follow-up helpers are rebuilt cleanly here; Party management stays on the Party tab.</div></div><span class="pill"><strong>Current</strong> ${escapeHtml(currentInitiativeCard()?.label || 'No initiative')}</span></div>
+      <div class="flow-grid ${(['attack','spell','enemyAttack','enemySpell'].includes(state.ui.actionId))?'attack-active':''}" style="margin-top:12px">
         <div class="card"><h3>1. Actor</h3>${renderActorCard()}</div>
         <div class="card"><h3>2. Target drawer</h3>${renderTargetDrawer()}</div>
         <div class="card"><h3>3. Action</h3>${renderActionCard()}</div>
@@ -453,15 +458,54 @@
       buttons.push(['spell','Spell / Force','Resolve Force, Conviction, spell damage, and effects.']);
       buttons.push(['support','Support','Use Party/Command trackers for now.']);
       if (actor.id === 'nightingale') buttons.push(['summon','Summon Esper','Open the clean Loyal Esper controls.']);
-      if (actor.id === 'remi') buttons.push(['whirlwind','Whirlwind','Reminder only in V3 for now.']);
-      if (actor.id === 'zeke') buttons.push(['onslaught','Onslaught','Reminder only in V3 for now.']);
-      if (actor.id === 'zeke') buttons.push(['bladeWorks','Blade Works','Reminder only in V3 for now.']);
+      if (actor.id === 'remi') buttons.push(['whirlwind','Whirlwind','Start/continue guided Whirlwind attacks.']);
+      if (actor.id === 'zeke') buttons.push(['onslaught','Onslaught','Start/continue same-target follow-up attacks.']);
+      if (actor.id === 'zeke') buttons.push(['bladeWorks','Blade Works','Load Zeke dual-short-sword attack.']);
     } else if (actor.type === 'command') {
       buttons.push(['attack','Attack','Roll Esper attack dice and apply damage.']);
-      buttons.push(['spell','Spell / support','Use Esper spell profiles where available; support abilities stay table-guided for now.']);
+      buttons.push(['spell','Spell / support','Resolve Esper spell/support profile if available.']);
+    } else {
+      buttons.push(['wait','Choose actor','Select an actor first.']);
     }
-    return `<div class="grid two">${buttons.map(([id,label,note]) => `<button type="button" class="${state.ui.actionId===id?'active':''}" data-action="set-action" data-action-id="${id}"><strong>${label}</strong><br><span class="tiny">${note}</span></button>`).join('')}</div>`;
+    const base = `<div class="table-ish">${buttons.map(([id,label,desc])=>`<button type="button" class="${state.ui.actionId===id?'active':''}" data-action="set-action" data-action-id="${id}"><strong>${escapeHtml(label)}</strong><br><span class="tiny">${escapeHtml(desc)}</span></button>`).join('')}</div>`;
+    return base + renderRemiZekeChainTools(actor);
   }
+
+  function renderRemiZekeChainTools(actor) {
+    if (actor.type !== 'party' || !['remi','zeke'].includes(actor.id)) return '';
+    const currentAttack = calculateAttackResult();
+    const diff = currentAttack.ready ? currentAttack.diffHit : 0;
+    const target = targetLabel();
+    if (actor.id === 'remi') {
+      const active = state.remiZeke.whirlwindActive;
+      return `<div class="hr"></div><h3>Remi chain helpers</h3>
+        <div class="field-grid">
+          <div><label>Remi weapon / Whirlwind profile</label><select data-change="remi-chain-profile">
+            ${[['remi_chain_melee','Chain Pick melee / Gigas'],['remi_chain_ranged','Chain Pick ranged side'],['remi_scimitar','Scimitar Swallow']].map(([id,label])=>`<option value="${id}" ${state.remiZeke.remiProfile===id?'selected':''}>${label}</option>`).join('')}
+          </select></div>
+          <div class="chain-helper-status"><strong>${active ? 'Whirlwind active' : 'Whirlwind idle'}</strong><br><span class="tiny">${escapeHtml(state.remiZeke.lastMessage || 'Resolve each Whirlwind attack one target at a time; choose legal targets manually.')}</span></div>
+        </div>
+        <div class="chain-helper-grid">
+          <button type="button" data-action="remi-load-profile">Load selected Remi attack</button>
+          <button type="button" data-action="remi-chain-melee-fu">Chain Pick melee FU → ranged attack</button>
+          <button type="button" data-action="remi-chain-ranged-fu">Chain Pick ranged FU → Command 2<br><span class="tiny">Uses current difference hit: ${diff}</span></button>
+          <button type="button" data-action="remi-whirlwind-start">Start Whirlwind</button>
+          <button type="button" data-action="remi-whirlwind-next">Next Whirlwind target</button>
+          <button type="button" data-action="remi-whirlwind-clear">Clear Whirlwind</button>
+        </div>`;
+    }
+    const remaining = Number(state.remiZeke.onslaughtRemaining || 0);
+    return `<div class="hr"></div><h3>Zeke chain helpers</h3>
+      <div class="chain-helper-status"><strong>${state.remiZeke.onslaughtActive ? `Onslaught active - ${remaining} FU attack${remaining===1?'':'s'} remaining` : 'Onslaught idle'}</strong><br><span class="tiny">${escapeHtml(state.remiZeke.lastMessage || `Current target: ${target}. Onslaught follow-ups keep the same target; choose dice for each fresh attack.`)}</span></div>
+      <div class="chain-helper-grid">
+        <button type="button" data-action="zeke-onslaught-start">Start Onslaught</button>
+        <button type="button" data-action="zeke-onslaught-next" ${remaining<=0?'disabled':''}>Next Onslaught FU attack</button>
+        <button type="button" data-action="zeke-onslaught-clear">Clear Onslaught</button>
+        <button type="button" data-action="zeke-bladeworks">Blade Works attack</button>
+        <button type="button" data-action="zeke-darkness-fu">Dweller Darkness FU<br><span class="tiny">Uses current difference hit: ${diff}</span></button>
+      </div>`;
+  }
+
   function renderResolveCard() {
     if (state.ui.actionId === 'attack') return renderAttackResolver();
     if (state.ui.actionId === 'spell') return renderSpellResolver();
@@ -1572,6 +1616,47 @@
   function selectedTargetEffect() { return byId('targetEffectSelect')?.value || DATA.effects[0]; }
   function selectedTargetToken() { return byId('targetTokenSelect')?.value || DATA.tokens[0]; }
 
+
+  function resetAttackRollState() {
+    state.attack.faces = {};
+    state.attack.empower = false;
+    state.attack.empowerFace = 0;
+    state.attack.manualAttackMod = 0;
+    state.attack.manualPhysical = 0;
+    state.attack.manualMagic = 0;
+    state.attack.manualArmorPiercing = 0;
+    state.attack.targetDefenseMod = 0;
+    state.attack.useMasterWork = false;
+    state.attack.useCourage = true;
+    state.ui.appliedResultKey = null;
+  }
+  function loadAttackProfile(profileId) {
+    state.attack.profileId = profileId;
+    resetAttackRollState();
+    state.ui.actionId = 'attack';
+  }
+  function loadSpellProfile(profileId, forceMod=0) {
+    const profile = DATA.spellProfiles[profileId];
+    if (!profile) return;
+    state.spell.profileId = profileId;
+    state.spell.castingColor = profile.defaultColor || profile.castingColors?.[0] || 'Purple';
+    state.spell.castingFace = 0;
+    state.spell.empower = !!profile.defaultEmpower;
+    state.spell.empowerFace = 0;
+    state.spell.manualForceMod = Number(forceMod || 0);
+    state.spell.convictionFaces = {};
+    state.spell.zealousFaces = {};
+    state.spell.useOptionalBonus = false;
+    state.spell.previousDamage = 0;
+    state.spell.zealousDistance = 1;
+    state.spell.zealousDiscount = false;
+    state.ui.actionId = 'spell';
+    state.ui.appliedResultKey = null;
+  }
+  function currentAttackDifferenceHit() {
+    const r = calculateAttackResult();
+    return r.ready ? Number(r.diffHit || 0) : 0;
+  }
   document.addEventListener('click', function (ev) {
     const btn = ev.target.closest('[data-action]');
     if (!btn) return;
@@ -1681,11 +1766,93 @@
       addLog(`Counter loaded for ${actorLabel(defenderActor)}`, `${actorLabel(defenderActor)} is now attacking ${targetLabel(attackerTarget)}. Confirm SP/timing at the table.`);
       return;
     }
-    if (a === 'reset-attack-roll') { state.attack.faces = {}; state.attack.empower = false; state.attack.empowerFace = 0; state.attack.manualAttackMod = 0; state.attack.manualPhysical = 0; state.attack.manualMagic = 0; state.attack.manualArmorPiercing = 0; state.attack.targetDefenseMod = 0; state.attack.useMasterWork = false; state.attack.useCourage = true; state.ui.appliedResultKey = null; saveState(); render(); return; }
+    if (a === 'reset-attack-roll') { resetAttackRollState(); saveState(); render(); return; }
     if (a === 'reset-spell-roll') { state.spell.castingFace = 0; state.spell.empowerFace = 0; state.spell.manualForceMod = 0; state.spell.convictionFaces = {}; state.spell.useOptionalBonus = false; state.spell.previousDamage = 0; state.spell.zealousFaces = {}; state.spell.zealousDistance = 1; state.spell.zealousDiscount = false; state.ui.appliedResultKey = null; const profile = DATA.spellProfiles[state.spell.profileId]; state.spell.empower = !!profile?.defaultEmpower; saveState(); render(); return; }
+    if (a === 'remi-load-profile') {
+      state.ui.actorId = 'party:remi';
+      loadAttackProfile(state.remiZeke.remiProfile || 'remi_chain_melee');
+      state.remiZeke.lastMessage = 'Loaded selected Remi attack profile.';
+      saveState(); render(); return;
+    }
+    if (a === 'remi-chain-melee-fu') {
+      state.ui.actorId = 'party:remi';
+      state.remiZeke.remiProfile = 'remi_chain_ranged';
+      loadAttackProfile('remi_chain_ranged');
+      state.remiZeke.lastMessage = 'Chain Pick melee FU loaded the ranged side. Confirm Burst spend, movement, and flip on the physical card.';
+      saveState(); render(); addLog('Remi Chain Pick melee FU', 'Loaded Chain Pick ranged attack. Confirm Burst spend and movement at the table.'); return;
+    }
+    if (a === 'remi-chain-ranged-fu') {
+      const diff = currentAttackDifferenceHit();
+      state.ui.actorId = 'party:remi';
+      loadSpellProfile('remi_command2', diff);
+      state.remiZeke.lastMessage = `Chain Pick ranged FU loaded Command 2, Force ${9 + diff}.`;
+      saveState(); render(); addLog('Remi Chain Pick ranged FU', `Loaded Command 2 Force check with Force 9 + difference hit (${diff}).`); return;
+    }
+    if (a === 'remi-whirlwind-start') {
+      state.ui.actorId = 'party:remi';
+      state.remiZeke.whirlwindActive = true;
+      state.remiZeke.whirlwindCount = 1;
+      loadAttackProfile(state.remiZeke.remiProfile || 'remi_chain_melee');
+      state.remiZeke.lastMessage = 'Whirlwind started. Resolve one legal target at a time; board legality and target order stay manual.';
+      saveState(); render(); addLog('Remi Whirlwind started', 'Resolve each Whirlwind attack separately. Choose legal adjacent/Reach targets manually.'); return;
+    }
+    if (a === 'remi-whirlwind-next') {
+      state.ui.actorId = 'party:remi';
+      state.remiZeke.whirlwindActive = true;
+      state.remiZeke.whirlwindCount = Number(state.remiZeke.whirlwindCount || 0) + 1;
+      state.ui.targetScope = 'enemies';
+      state.ui.targetId = null;
+      loadAttackProfile(state.remiZeke.remiProfile || 'remi_chain_melee');
+      state.remiZeke.lastMessage = `Choose Whirlwind target ${state.remiZeke.whirlwindCount} from the Target drawer, then roll the separate attack.`;
+      saveState(); render(); return;
+    }
+    if (a === 'remi-whirlwind-clear') {
+      state.remiZeke.whirlwindActive = false;
+      state.remiZeke.whirlwindCount = 0;
+      state.remiZeke.lastMessage = 'Whirlwind helper cleared.';
+      saveState(); render(); return;
+    }
+    if (a === 'zeke-onslaught-start') {
+      state.ui.actorId = 'party:zeke';
+      state.remiZeke.onslaughtActive = true;
+      state.remiZeke.onslaughtRemaining = 2;
+      loadAttackProfile('zeke_default');
+      state.remiZeke.lastMessage = 'Onslaught started. Resolve the first attack; two same-target FU attacks remain.';
+      saveState(); render(); addLog('Zeke Onslaught started', 'Resolve first attack; two follow-up attacks remain if legal.'); return;
+    }
+    if (a === 'zeke-onslaught-next') {
+      state.ui.actorId = 'party:zeke';
+      state.remiZeke.onslaughtActive = true;
+      state.remiZeke.onslaughtRemaining = Math.max(0, Number(state.remiZeke.onslaughtRemaining || 0) - 1);
+      loadAttackProfile('zeke_default');
+      state.remiZeke.lastMessage = state.remiZeke.onslaughtRemaining > 0 ? `${state.remiZeke.onslaughtRemaining} Onslaught FU attack remains after this attack.` : 'Last Onslaught FU attack loaded.';
+      saveState(); render(); return;
+    }
+    if (a === 'zeke-onslaught-clear') {
+      state.remiZeke.onslaughtActive = false;
+      state.remiZeke.onslaughtRemaining = 0;
+      state.remiZeke.lastMessage = 'Onslaught helper cleared.';
+      saveState(); render(); return;
+    }
+    if (a === 'zeke-bladeworks') {
+      state.ui.actorId = 'party:zeke';
+      loadAttackProfile('zeke_default');
+      state.remiZeke.lastMessage = 'Blade Works attack loaded. Mark the physical Discipline card exhausted if used.';
+      saveState(); render(); addLog('Zeke Blade Works', 'Loaded Zeke attack. Mark Blade Works exhausted on the table if used.'); return;
+    }
+    if (a === 'zeke-darkness-fu') {
+      const diff = currentAttackDifferenceHit();
+      state.ui.actorId = 'party:zeke';
+      loadSpellProfile('zeke_dweller_darkness', diff);
+      state.remiZeke.lastMessage = `Dweller Darkness FU loaded, Force ${9 + diff}.`;
+      saveState(); render(); addLog('Zeke Dweller Darkness FU', `Loaded Darkness Force check with Force 9 + difference hit (${diff}).`); return;
+    }
     if (a === 'set-action') {
       state.ui.actionId = btn.dataset.actionId;
       state.ui.appliedResultKey = null;
+      if (state.ui.actionId === 'whirlwind') { state.ui.actorId = 'party:remi'; state.remiZeke.whirlwindActive = true; state.remiZeke.whirlwindCount = Math.max(1, Number(state.remiZeke.whirlwindCount || 0)); loadAttackProfile(state.remiZeke.remiProfile || 'remi_chain_melee'); state.remiZeke.lastMessage = 'Whirlwind loaded from Action. Choose a legal target and resolve one separate attack.'; }
+      if (state.ui.actionId === 'onslaught') { state.ui.actorId = 'party:zeke'; state.remiZeke.onslaughtActive = true; state.remiZeke.onslaughtRemaining = 2; loadAttackProfile('zeke_default'); state.remiZeke.lastMessage = 'Onslaught loaded from Action. Resolve first attack; two follow-up attacks remain.'; }
+      if (state.ui.actionId === 'bladeWorks') { state.ui.actorId = 'party:zeke'; loadAttackProfile('zeke_default'); state.remiZeke.lastMessage = 'Blade Works loaded from Action. Mark the physical Discipline card exhausted if used.'; }
       if (state.ui.actionId === 'attack') ensureAttackProfileValid(false);
       if (state.ui.actionId === 'spell') ensureSpellProfileValid(false);
       if (state.ui.actionId === 'enemyAttack') {
@@ -1803,6 +1970,7 @@
     const el = ev.target;
     const ch = el.dataset.change;
     if (ch === 'actor') { selectActor(el.value); }
+    if (ch === 'remi-chain-profile') { state.remiZeke.remiProfile = el.value; state.remiZeke.lastMessage = 'Selected Remi profile: ' + (DATA.attackProfiles[el.value]?.label || el.value) + '.'; saveState(); render(); return; }
     if (ch === 'attack-profile') { state.attack.profileId = el.value; state.attack.faces = {}; state.ui.appliedResultKey = null; saveState(); render(); }
     if (ch === 'attack-face') { state.attack.faces[el.dataset.dieKey] = Number(el.value); state.ui.appliedResultKey = null; saveState(); render(); }
     if (ch === 'attack-empower') { state.attack.empower = !!el.checked; state.ui.appliedResultKey = null; saveState(); render(); }
@@ -1893,3 +2061,4 @@
   saveState();
   render();
 })();
+  
