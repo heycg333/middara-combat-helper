@@ -1,7 +1,7 @@
 {
   "name": "Middara Combat Helper",
   "short_name": "Middara",
-  "description": "V3.0G clean tablet helper with Command / Loyal Esper core and no generic ability-token tracking.",
+  "description": "V3.0H clean tablet helper with Enemy Spell / Party Conviction resolver.",
   "start_url": "./index.html",
   "scope": "./",
   "display": "standalone",

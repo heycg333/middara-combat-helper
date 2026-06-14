@@ -1,9 +1,7 @@
-# Middara Combat Helper - V3.0G Command / Loyal Esper Core
+# Middara Combat Helper V3.0H - Enemy Spell / Conviction Core
 
-Upload the contents of this folder to the root of the GitHub Pages repository.
+Upload these extracted files to the root of the GitHub Pages repository. Do not upload the ZIP itself.
 
-Do not upload this ZIP as the app file. GitHub Pages should serve `index.html`.
+After GitHub Pages deploys, open the tablet app and use Data -> Update app cache, then reload/reopen the Home Screen app.
 
-After deployment, open the hosted app on the tablet and use Data -> Update app cache, then reload or reopen the Home Screen app.
-
-V3.0G continues the clean rebuild line and adds a simpler Command / Loyal Esper flow. Generic ability-token tracking is intentionally omitted; use physical tokens at the table and use the app for HP/SP/effects/math.
+V3.0H adds a clean Enemy Spell / Party Conviction resolver to the V3 Play flow while keeping the simplified V3 architecture.

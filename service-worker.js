@@ -1,4 +1,4 @@
-const CACHE_NAME = 'middara-helper-v3-0g-command-esper-core';
+const CACHE_NAME = 'middara-helper-v3-0h-enemy-spell-conviction';
 const APP_SHELL = [
   './',
   './index.html',

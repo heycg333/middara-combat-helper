@@ -9,7 +9,7 @@
   <link rel="manifest" href="manifest.webmanifest" />
   <link rel="apple-touch-icon" href="icons/apple-touch-icon.png" />
   <link rel="icon" href="icons/favicon.svg" type="image/svg+xml" />
-  <title>Middara Combat Helper - V3.0G Command / Loyal Esper Core</title>
+  <title>Middara Combat Helper - V3.0H Enemy Spell / Conviction Core</title>
   <style>
     :root {
       --bg: #0f172a;
@@ -147,22 +147,22 @@
 <body>
   <header>
     <h1>Middara Combat Helper</h1>
-    <div class="subtitle"><strong>V3.0G Command / Loyal Esper Core</strong> - clean Loyal Esper actor flow with no generic ability-token tracking.</div>
+    <div class="subtitle"><strong>V3.0H Enemy Spell / Conviction Core</strong> - clean enemy spell / party Conviction resolver added to the V3 core.</div>
   </header>
   <main id="appRoot"></main>
   <footer class="footer" id="stableFooter" aria-live="polite"></footer>
   <script>
 (function () {
   'use strict';
-  const VERSION = 'V3.0G';
+  const VERSION = 'V3.0H';
   const STORAGE_KEY = 'middara.combatHelper.v3.state';
 
   const DATA = {
     party: {
-      rook: { id:'rook', name:'Rook', hp:26, recovery:3, maxSp:5, defense:13, armor:5, movement:7, tags:['Adventurer'], note:'High armor front line; Rook defense will return in a later V3 module.' },
-      remi: { id:'remi', name:'Remi', hp:32, recovery:3, maxSp:5, defense:12, armor:1, movement:6, tags:['Adventurer'], note:'Chain Pick / Scimitar / Whirlwind helpers return after core attack is stable.' },
-      nightingale: { id:'nightingale', name:'Nightingale', hp:32, recovery:3, maxSp:5, defense:13, armor:1, movement:7, tags:['Adventurer'], note:'Life Grasp and Loyal Esper tools return as a clean V3 component.' },
-      zeke: { id:'zeke', name:'Zeke', hp:24, recovery:3, maxSp:5, defense:13, armor:1, movement:7, tags:['Adventurer'], note:'Onslaught / Blade Works helpers return after core attack is stable.' }
+      rook: { id:'rook', name:'Rook', hp:26, recovery:3, maxSp:5, defense:13, armor:5, movement:7, conviction:['Green','Red'], tags:['Adventurer'], note:'High armor front line; Rook defense and support are handled contextually.' },
+      remi: { id:'remi', name:'Remi', hp:32, recovery:3, maxSp:5, defense:12, armor:1, movement:6, conviction:['Teal','Teal'], tags:['Adventurer'], note:'Chain Pick / Scimitar / Whirlwind helpers return after core attack is stable.' },
+      nightingale: { id:'nightingale', name:'Nightingale', hp:32, recovery:3, maxSp:5, defense:13, armor:1, movement:7, conviction:['Grey','Purple'], tags:['Adventurer'], note:'Nightingale spell, familiar, and Loyal Esper tools are clean V3 components.' },
+      zeke: { id:'zeke', name:'Zeke', hp:24, recovery:3, maxSp:5, defense:13, armor:1, movement:7, conviction:['Blue','Purple'], immunities:['Darkness','Condemn'], tags:['Adventurer'], note:'Onslaught / Blade Works helpers return after core attack is stable.' }
     },
     enemyDefinitions: {
       animate: { id:'animate', name:'Animate', hp:30, defense:13, armor:3, movement:6, conviction:['Teal','Green'], tags:['Intelligent'] },
@@ -172,8 +172,8 @@
       earth_loa_itlum: { id:'earth_loa_itlum', name:'Earth Loa - Itlum Rich', hp:36, defense:12, armor:5, movement:4, conviction:['Teal','Teal'], tags:['Intelligent','Loa','Variation'], immunities:['Darkness','Sedate'] }
     },
     commandDefinitions: {
-      agares: { id:'agares', name:'Agares', hp:32, recovery:3, maxSp:5, defense:13, armor:4, movement:4, soi:4, tags:['Loyal Esper','Command','Squeeze'] },
-      eliphie: { id:'eliphie', name:'Eliphie', hp:32, recovery:3, maxSp:5, defense:13, armor:0, movement:6, soi:4, tags:['Loyal Esper','Command'] }
+      agares: { id:'agares', name:'Agares', hp:32, recovery:3, maxSp:5, defense:13, armor:4, movement:4, soi:4, conviction:['Grey','Purple'], tags:['Loyal Esper','Command','Squeeze'] },
+      eliphie: { id:'eliphie', name:'Eliphie', hp:32, recovery:3, maxSp:5, defense:13, armor:0, movement:6, soi:4, conviction:['Grey','Purple'], tags:['Loyal Esper','Command'] }
     },
     dice: {
       White:  [{value:2},{value:3},{value:4, shield:1},{value:5, book:1, shield:1},{value:6, book:1, shield:2},{value:7, book:1, shield:2, burst:1}],
@@ -217,6 +217,16 @@
       adlet_basic: { id:'adlet_basic', enemy:'adlet_drudge', label:'Adlet Drudge - melee attack', dice:['Green','Green'], range:'Melee', ap:0, abilities:[{name:'Shield', shield:1, physical:1}, {name:'Burst', burst:1, physical:2}], notes:'Set manual Armor Piercing equal to current Itlum Shards when relevant.' },
       earth_loa_basic: { id:'earth_loa_basic', enemy:'earth_loa_itlum', label:'Earth Loa - Itlum Rich attack', dice:['Green','Green'], range:'Melee / Reach 2', ap:0, abilities:[{name:'Shield', shield:1, physical:1}, {name:'Burst', burst:1, physical:2}], notes:'Push/Sedate/Paralyze follow-ups remain reminders for now.' }
     },
+    enemySpellProfiles: {
+      animate_darkness: { id:'animate_darkness', enemy:'animate', label:'Animate - Spell 6: Inflict Darkness', baseForce:6, castingColors:['Red','Green'], defaultColor:'Red', effect:'Darkness', damageMode:'effect', notes:'Enemy Spell core. If the target fails Conviction, inflict Darkness. Use color selector if your card/setup uses a different casting die.' },
+      merk_paralyze: { id:'merk_paralyze', enemy:'merk_hound', label:'Merk Hound FU - Inflict Paralyze Force 12', fixedForce:12, effect:'Paralyze', damageMode:'effect', notes:'Follow-up / Force check helper. Use after the appropriate Merk Hound Burst/FU timing.' },
+      fragor_disease: { id:'fragor_disease', enemy:'fragor', label:'Fragor FU - Inflict Disease Force 12', fixedForce:12, effect:'Disease', damageMode:'effect', notes:'Follow-up / Force check helper. Board and target legality stay manual.' },
+      adlet_darkness: { id:'adlet_darkness', enemy:'adlet_drudge', label:'Adlet Drudge FU - Inflict Darkness Force 11', fixedForce:11, effect:'Darkness', damageMode:'effect', notes:'Use when Adlet direct damage/Burst creates the Darkness Force check.' },
+      adlet_sedate: { id:'adlet_sedate', enemy:'adlet_drudge', label:'Adlet Drudge FU - Inflict Sedate Force 11', fixedForce:11, effect:'Sedate', damageMode:'effect', notes:'Use after Adlet melee attack follow-up timing.' },
+      earth_sedate: { id:'earth_sedate', enemy:'earth_loa_itlum', label:'Earth Loa - Inflict Sedate Force 13', fixedForce:13, effect:'Sedate', damageMode:'effect', notes:'Guided Force check for the Itlum Rich Sedate step. Resolve each affected target manually.' },
+      earth_paralyze: { id:'earth_paralyze', enemy:'earth_loa_itlum', label:'Earth Loa FU - Inflict Paralyze Force 13', fixedForce:13, effect:'Paralyze', damageMode:'effect', notes:'Guided Force check for the Itlum Rich Paralyze follow-up.' },
+      manual_enemy_spell: { id:'manual_enemy_spell', enemy:'any', label:'Manual enemy Spell / Force check', baseForce:6, castingColors:['Purple','Red','Green','Grey','Teal','Orange','Blue','White'], defaultColor:'Purple', effect:'', damageMode:'manual', flatMagic:0, notes:'Use for unencoded enemy spells. Set force modifiers, effect, and damage manually.' }
+    },
     effects: ['Darkness','Condemn','Disease','Paralyze','Poison','Wilt','Sedate','Barrier','Courage','Haste','Tether','Nemesis'],
     tokens: ['Dodge','Heal','Intervention','Vow','Summon','Energy']
   };
@@ -245,6 +255,7 @@
       attack: { profileId:'rook_default', faces:{}, empower:false, empowerFace:0, manualAttackMod:0, manualPhysical:0, manualMagic:0, manualArmorPiercing:0, targetDefenseMod:0, useMasterWork:false, useCourage: true },
       spell: { profileId:'rook_courage_stifle', castingColor:'Green', castingFace:0, empower:false, empowerFace:0, manualForceMod:0, convictionFaces:{c0:0,c1:0}, useOtherworldly:true, useOptionalBonus:false, previousDamage:0, zealousFaces:{}, zealousDistance:1, zealousDiscount:false },
       enemyAttack: { profileId:'animate_basic', faces:{}, empower:false, empowerFace:0, useDodge:false, dodgeFace:0, manualAttackMod:0, manualPhysical:0, manualMagic:0, manualArmorPiercing:0, targetDefenseMod:0, finalReduction:0, forceMiss:false, rookPlate:false, remiShearling:true, remiShearlingPE:false, remiMantleVow:false, nightMorbid:true, nightReinforced:false, nightFlanking:false, zekeBelts:false, summonReduction:false },
+      enemySpell: { profileId:'animate_darkness', castingColor:'Red', castingFace:0, empower:false, empowerFace:0, manualForceMod:0, convictionColors:{c0:'',c1:''}, convictionFaces:{c0:0,c1:0}, manualConvictionMod:0, forcePass:false, witchHat:false, manualEffect:'', manualFlatMagic:0, damageEqualsDifference:false, magicResistance:false },
       nightingale: { previousDamage:0, trophyFace:'', trophyTargetId:'', lifeOpen:false, trophyOpen:false, life:{ castingColor:'Grey', castingFace:0, empower:true, empowerFace:0, manualForceMod:0, boost:false, targets:[{targetId:'', c0:0, c1:0},{targetId:'', c0:0, c1:0},{targetId:'', c0:0, c1:0}], appliedKey:null, selfAppliedKey:null } },
       party: defaultParty(),
       enemies: [],
@@ -277,6 +288,9 @@
     next.spell.zealousFaces = Object.assign(base.spell.zealousFaces, raw?.spell?.zealousFaces || {});
     next.enemyAttack = Object.assign(base.enemyAttack, raw?.enemyAttack || {});
     next.enemyAttack.faces = Object.assign(base.enemyAttack.faces, raw?.enemyAttack?.faces || {});
+    next.enemySpell = Object.assign(base.enemySpell, raw?.enemySpell || {});
+    next.enemySpell.convictionColors = Object.assign(base.enemySpell.convictionColors, raw?.enemySpell?.convictionColors || {});
+    next.enemySpell.convictionFaces = Object.assign(base.enemySpell.convictionFaces, raw?.enemySpell?.convictionFaces || {});
     next.nightingale = Object.assign(base.nightingale, raw?.nightingale || {});
     next.nightingale.lifeOpen = raw?.nightingale?.lifeOpen ?? base.nightingale.lifeOpen;
     next.nightingale.trophyOpen = raw?.nightingale?.trophyOpen ?? base.nightingale.trophyOpen;
@@ -353,7 +367,7 @@
     return targetId;
   }
   function actionLabel(actionId = state.ui.actionId) {
-    const labels = { attack:'Attack', spell:'Spell / Force', enemyAttack:'Enemy Attack', support:'Support', summon:'Summon Esper', whirlwind:'Whirlwind', onslaught:'Onslaught', bladeWorks:'Blade Works', wait:'Manual / reminder' };
+    const labels = { attack:'Attack', spell:'Spell / Force', enemyAttack:'Enemy Attack', enemySpell:'Enemy Spell / Conviction', support:'Support', summon:'Summon Esper', whirlwind:'Whirlwind', onslaught:'Onslaught', bladeWorks:'Blade Works', wait:'Manual / reminder' };
     return labels[actionId] || 'Choose action';
   }
   function currentFooterText() {
@@ -380,6 +394,14 @@
       if (result.ready) {
         const applied = state.ui.appliedResultKey === result.key;
         return { title: applied ? 'Applied enemy attack' : `${result.hit ? 'Enemy hit' : 'Enemy miss'} - ${result.finalDamage} damage`, detail: `${actor} attacking ${target}. Attack ${result.attackTotal} vs Defense ${result.targetDefense}. ${applied ? 'This exact result has already been applied.' : 'Use Apply when ready.'}` };
+      }
+    }
+    if (state.ui.actionId === 'enemySpell') {
+      const result = calculateEnemySpellResult();
+      if (result.ready) {
+        const applied = state.ui.appliedResultKey === result.key;
+        const effectText = result.effect && result.failed ? `; ${result.effect}` : '';
+        return { title: applied ? 'Applied enemy spell' : `${result.failed ? 'Failed Conviction' : 'Passed Conviction'} - ${result.finalDamage} damage${effectText}`, detail: `${actor} forcing ${target}. Force ${result.force} vs Conviction ${result.conviction}. ${applied ? 'This exact result has already been applied.' : 'Use Apply when ready.'}` };
       }
     }
     return { title: `${actor} - ${action}`, detail: state.ui.targetId ? `Target: ${target}.` : 'Choose a target, then an action.' };
@@ -491,13 +513,19 @@
         const applied = state.ui.appliedResultKey === result.key;
         applyButton = `<button type="button" class="primary" data-action="apply-enemy-attack" ${applied ? 'disabled' : ''}>${applied ? 'Applied ✓' : `Apply enemy ${result.finalDamage} dmg`}</button>`;
       }
+    } else if (state.ui.actionId === 'enemySpell') {
+      const result = calculateEnemySpellResult();
+      if (result.ready) {
+        const applied = state.ui.appliedResultKey === result.key;
+        applyButton = `<button type="button" class="primary" data-action="apply-enemy-spell" ${applied ? 'disabled' : ''}>${applied ? 'Applied ✓' : 'Apply enemy spell'}</button>`;
+      }
     }
     byId('stableFooter').innerHTML = `<div><div class="footer-title">${escapeHtml(f.title)}</div><div class="footer-detail">${escapeHtml(f.detail)}</div></div><div class="footer-actions">${applyButton}<button type="button" data-action="log-current">Log</button><button type="button" data-action="tab" data-tab="play">Play</button><button type="button" class="ghost" data-action="sync-actor">Sync</button></div>`;
   }
 
   function renderPlayTab() {
     return `<section class="panel" id="playPanel">
-      <div class="live-title"><div><h2>V3.0G stable Play flow</h2><div class="note">Actor → Target → Action → Roll / Resolve → Apply. Attack and spell math are rebuilt cleanly here; Party management stays on the Party tab.</div></div><span class="pill"><strong>Current</strong> ${escapeHtml(currentInitiativeCard()?.label || 'No initiative')}</span></div>
+      <div class="live-title"><div><h2>V3.0H stable Play flow</h2><div class="note">Actor → Target → Action → Roll / Resolve → Apply. Attack, spell, enemy attack, and enemy spell math are rebuilt cleanly here; Party management stays on the Party tab.</div></div><span class="pill"><strong>Current</strong> ${escapeHtml(currentInitiativeCard()?.label || 'No initiative')}</span></div>
       <div class="flow-grid ${(state.ui.actionId==='attack'||state.ui.actionId==='spell'||state.ui.actionId==='enemyAttack')?'attack-active':''}" style="margin-top:12px">
         <div class="card"><h3>1. Actor</h3>${renderActorCard()}</div>
         <div class="card"><h3>2. Target drawer</h3>${renderTargetDrawer()}</div>
@@ -572,6 +600,7 @@
     const buttons = [];
     if (actor.type === 'enemy') {
       buttons.push(['enemyAttack','Enemy Attack','Resolve an enemy attack against party/Command.']);
+      buttons.push(['enemySpell','Enemy Spell / Conviction','Resolve Force checks, failed Conviction effects, and enemy spell damage.']);
       buttons.push(['wait','AI / reminder','Use the physical AI card; app AI is intentionally omitted in V3 shell.']);
     } else if (actor.type === 'party') {
       buttons.push(['attack','Attack','Roll combat dice, resolve symbols, and apply damage.']);
@@ -591,6 +620,7 @@
     if (state.ui.actionId === 'attack') return renderAttackResolver();
     if (state.ui.actionId === 'spell') return renderSpellResolver();
     if (state.ui.actionId === 'enemyAttack') return renderEnemyAttackResolver();
+    if (state.ui.actionId === 'enemySpell') return renderEnemySpellResolver();
     const actor = actorLabel(), target = targetLabel(), action = actionLabel();
     let special = '';
     if (state.ui.actionId === 'summon') special = renderSummonMini();
@@ -1212,6 +1242,172 @@
   }
 
 
+  function getEnemySpellProfilesForActor(actorId = state.ui.actorId) {
+    const actor = getActor(actorId);
+    if (actor.type !== 'enemy' || !actor.def) return [];
+    const exact = Object.values(DATA.enemySpellProfiles).filter(p => p.enemy === actor.def.id);
+    const manual = DATA.enemySpellProfiles.manual_enemy_spell ? [DATA.enemySpellProfiles.manual_enemy_spell] : [];
+    return exact.length ? exact.concat(manual) : manual;
+  }
+  function ensureEnemySpellProfileValid(doRender=true) {
+    const profiles = getEnemySpellProfilesForActor();
+    if (!profiles.length) return;
+    if (!profiles.some(p => p.id === state.enemySpell.profileId)) {
+      const p = profiles[0];
+      state.enemySpell.profileId = p.id;
+      state.enemySpell.castingColor = p.defaultColor || p.castingColors?.[0] || 'Purple';
+      state.enemySpell.castingFace = 0;
+      state.enemySpell.empower = !!p.defaultEmpower;
+      state.enemySpell.empowerFace = 0;
+      state.enemySpell.manualForceMod = 0;
+      state.enemySpell.convictionColors = {};
+      state.enemySpell.convictionFaces = {};
+      state.enemySpell.forcePass = false;
+      state.enemySpell.witchHat = false;
+      state.enemySpell.magicResistance = false;
+      state.enemySpell.manualEffect = '';
+      state.enemySpell.manualFlatMagic = 0;
+      state.enemySpell.damageEqualsDifference = false;
+      state.ui.appliedResultKey = null;
+      if (doRender) { saveState(); render(); }
+    }
+  }
+  function renderEnemySpellResolver() {
+    const actor = getActor();
+    const target = getEntityByTarget(state.ui.targetId);
+    const profiles = getEnemySpellProfilesForActor();
+    if (actor.type !== 'enemy') return `<div class="status-line"><div><strong>Select an enemy actor</strong><br><span class="tiny">Choose an enemy as actor, then use Enemy Spell / Conviction.</span></div></div>`;
+    if (!profiles.length) return `<div class="status-line"><div><strong>No enemy spell profile</strong><br><span class="tiny">This enemy has no encoded enemy spell or Force check. Use physical card reminders or add a manual profile later.</span></div></div>`;
+    ensureEnemySpellProfileValid(false);
+    const profile = DATA.enemySpellProfiles[state.enemySpell.profileId] || profiles[0];
+    const result = calculateEnemySpellResult();
+    const targetGood = target && (target.type === 'party' || target.type === 'command');
+    return `<div class="status-line"><div><strong>${escapeHtml(actorLabel())}</strong> forcing <strong>${escapeHtml(targetLabel())}</strong><br><span class="tiny">${targetGood ? 'Enter Force / Conviction values. Results auto-update; Apply writes damage/effects to Party or Command.' : 'Select a Party or Command target first.'}</span></div></div>
+      <div class="attack-layout">
+        <div class="card">
+          <h3>Enemy spell / Force check</h3>
+          <label>Enemy spell profile</label>
+          <select data-change="enemy-spell-profile">${profiles.map(p => `<option value="${p.id}" ${state.enemySpell.profileId===p.id?'selected':''}>${escapeHtml(p.label)}</option>`).join('')}</select>
+          <div class="tiny" style="margin-top:6px">${escapeHtml(profile.notes || '')}</div>
+          ${renderEnemySpellForceInputs(profile)}
+          ${renderEnemySpellTargetInputs(target, profile)}
+        </div>
+        <div class="card">
+          <h3>Result / apply</h3>
+          ${renderEnemySpellResult(result)}
+        </div>
+      </div>`;
+  }
+  function renderEnemySpellForceInputs(profile) {
+    const fixed = profile.fixedForce != null;
+    if (fixed) {
+      return `<div class="grid two" style="margin-top:10px">
+        <div class="card"><h3>Fixed Force</h3><div class="result-metric">${profile.fixedForce}</div><div class="tiny">Use manual modifier for encounter/card-specific bonuses or penalties.</div></div>
+        <div><label>Manual Force modifier</label><input type="number" data-change="enemy-spell-number" data-field="manualForceMod" value="${Number(state.enemySpell.manualForceMod||0)}" /></div>
+      </div>`;
+    }
+    const color = state.enemySpell.castingColor || profile.defaultColor || profile.castingColors?.[0] || 'Purple';
+    return `<div class="field-grid" style="margin-top:10px">
+      <div><label>Casting die color</label><select data-change="enemy-spell-casting-color">${(profile.castingColors||['Purple']).map(c=>`<option value="${c}" ${color===c?'selected':''}>${c}</option>`).join('')}</select></div>
+      <div><label>Casting die result</label><select data-change="enemy-spell-casting-face">${renderFaceOptions(color, state.enemySpell.castingFace || 0)}</select></div>
+      <label><input type="checkbox" data-change="enemy-spell-empower" ${state.enemySpell.empower?'checked':''}> <span>Enemy spell is Empowered: add black die Books to Force</span></label>
+      ${state.enemySpell.empower ? `<div><label>Black die result</label><select data-change="enemy-spell-empower-face">${renderFaceOptions('Black', state.enemySpell.empowerFace || 0)}</select></div>` : ''}
+      <div><label>Manual Force modifier</label><input type="number" data-change="enemy-spell-number" data-field="manualForceMod" value="${Number(state.enemySpell.manualForceMod||0)}" /></div>
+    </div>`;
+  }
+  function renderEnemySpellTargetInputs(target, profile) {
+    const defColors = target?.def?.conviction || ['Purple','Purple'];
+    const c0 = state.enemySpell.convictionColors?.c0 || defColors[0] || 'Purple';
+    const c1 = state.enemySpell.convictionColors?.c1 || defColors[1] || defColors[0] || 'Purple';
+    const manual = profile.id === 'manual_enemy_spell';
+    return `<details style="margin-top:10px" open><summary>Target Conviction and result options</summary>
+      <div class="field-grid" style="margin-top:10px">
+        <div><label>Conviction die 1 color</label><select data-change="enemy-spell-conv-color" data-die-key="c0">${Object.keys(DATA.dice).filter(c=>c!=='Black').map(c=>`<option value="${c}" ${c0===c?'selected':''}>${c}</option>`).join('')}</select></div>
+        <div><label>Conviction die 1 result</label><select data-change="enemy-spell-conv-face" data-die-key="c0">${renderFaceOptions(c0, state.enemySpell.convictionFaces?.c0 || 0)}</select></div>
+        <div><label>Conviction die 2 color</label><select data-change="enemy-spell-conv-color" data-die-key="c1">${Object.keys(DATA.dice).filter(c=>c!=='Black').map(c=>`<option value="${c}" ${c1===c?'selected':''}>${c}</option>`).join('')}</select></div>
+        <div><label>Conviction die 2 result</label><select data-change="enemy-spell-conv-face" data-die-key="c1">${renderFaceOptions(c1, state.enemySpell.convictionFaces?.c1 || 0)}</select></div>
+        <div><label>Manual Conviction modifier</label><input type="number" data-change="enemy-spell-number" data-field="manualConvictionMod" value="${Number(state.enemySpell.manualConvictionMod||0)}" /></div>
+        <label><input type="checkbox" data-change="enemy-spell-force-pass" ${state.enemySpell.forcePass?'checked':''}> <span>Force this Conviction check to pass</span></label>
+        <label><input type="checkbox" data-change="enemy-spell-witch-hat" ${state.enemySpell.witchHat?'checked':''}> <span>Zeke Witch's Hat / similar: +2 Conviction</span></label>
+        <label><input type="checkbox" data-change="enemy-spell-magic-resistance" ${state.enemySpell.magicResistance?'checked':''}> <span>Reminder: target has Magic resistance / reduction to apply manually</span></label>
+        ${manual ? `<div><label>Manual effect on failed check</label><select data-change="enemy-spell-manual-effect"><option value="">None</option>${DATA.effects.map(e=>`<option value="${e}" ${state.enemySpell.manualEffect===e?'selected':''}>${e}</option>`).join('')}</select></div>
+        <div><label>Flat Magic Damage on failed check</label><input type="number" min="0" data-change="enemy-spell-number" data-field="manualFlatMagic" value="${Number(state.enemySpell.manualFlatMagic||0)}" /></div>
+        <label><input type="checkbox" data-change="enemy-spell-diff-damage" ${state.enemySpell.damageEqualsDifference?'checked':''}> <span>Also deal Magic Damage equal to failed Conviction difference</span></label>` : ''}
+      </div>
+      <div class="tiny" style="margin-top:8px">Default Conviction colors are loaded from the target, but you can override them here for upgrades, rerolls, or special encounter rules.</div>
+    </details>`;
+  }
+  function calculateEnemySpellResult() {
+    const actor = getActor();
+    const target = getEntityByTarget(state.ui.targetId);
+    const profiles = getEnemySpellProfilesForActor();
+    const profile = DATA.enemySpellProfiles[state.enemySpell.profileId] || profiles[0];
+    if (actor.type !== 'enemy' || !actor.def || !profile || !target?.def || !target?.state || !['party','command'].includes(target.type)) return { ready:false, reason:'Choose an enemy actor and a Party or Command target.' };
+    let force = 0;
+    const forceRows = [];
+    let blackFace = null;
+    if (profile.fixedForce != null) {
+      force = Number(profile.fixedForce || 0) + Number(state.enemySpell.manualForceMod || 0);
+      forceRows.push({ source:'Fixed Force', value:Number(profile.fixedForce || 0), symbols:'Profile' });
+    } else {
+      const color = state.enemySpell.castingColor || profile.defaultColor || profile.castingColors?.[0] || 'Purple';
+      const castFace = DATA.dice[color]?.[Number(state.enemySpell.castingFace || 0)] || DATA.dice[color]?.[0] || {value:0};
+      force = (profile.baseForce || 6) + (castFace.value || 0) + Number(state.enemySpell.manualForceMod || 0);
+      forceRows.push({ source:`${color} casting`, value:castFace.value || 0, symbols:symbolText({book:castFace.book||0, shield:castFace.shield||0, burst:castFace.burst||0, skull:castFace.skull||0}) });
+      if (state.enemySpell.empower) {
+        blackFace = DATA.dice.Black?.[Number(state.enemySpell.empowerFace || 0)] || DATA.dice.Black[0];
+        const blackForce = blackFace.skull ? 0 : (blackFace.book || 0);
+        force += blackForce;
+        forceRows.push({ source:'Black Empower', value:blackForce, symbols:symbolText({book:blackFace.book||0, shield:blackFace.shield||0, burst:blackFace.burst||0, skull:blackFace.skull||0}) });
+      }
+    }
+    const c0Color = state.enemySpell.convictionColors?.c0 || target.def.conviction?.[0] || 'Purple';
+    const c1Color = state.enemySpell.convictionColors?.c1 || target.def.conviction?.[1] || c0Color;
+    const conv0 = DATA.dice[c0Color]?.[Number(state.enemySpell.convictionFaces?.c0 || 0)] || DATA.dice[c0Color]?.[0] || {value:0};
+    const conv1 = DATA.dice[c1Color]?.[Number(state.enemySpell.convictionFaces?.c1 || 0)] || DATA.dice[c1Color]?.[0] || {value:0};
+    let conviction = (conv0.value || 0) + (conv1.value || 0) + Number(state.enemySpell.manualConvictionMod || 0);
+    if (state.enemySpell.witchHat) conviction += 2;
+    let failed = force > conviction;
+    if (state.enemySpell.forcePass) failed = false;
+    const difference = Math.max(0, force - conviction);
+    const effect = profile.id === 'manual_enemy_spell' ? (state.enemySpell.manualEffect || '') : (profile.effect || '');
+    let magicDamage = 0;
+    const damageRows = [];
+    if (profile.damageMode === 'flat' && profile.flatMagic) { magicDamage += profile.flatMagic; damageRows.push({source:'Flat Magic Damage', value:profile.flatMagic}); }
+    if (profile.damageMode === 'difference' || profile.damageEqualsDifference || (profile.id === 'manual_enemy_spell' && state.enemySpell.damageEqualsDifference)) { magicDamage += difference; damageRows.push({source:'Failed Conviction difference', value:difference}); }
+    if (profile.id === 'manual_enemy_spell' && Number(state.enemySpell.manualFlatMagic||0) > 0) { magicDamage += Number(state.enemySpell.manualFlatMagic||0); damageRows.push({source:'Manual flat Magic Damage', value:Number(state.enemySpell.manualFlatMagic||0)}); }
+    if (!failed) magicDamage = 0;
+    const finalDamage = Math.max(0, magicDamage);
+    const hpAfter = Math.max(0, (target.def.hp || 0) - ((target.state.damage || 0) + finalDamage));
+    const immune = effect && (target.def.immunities || []).includes(effect);
+    const key = JSON.stringify({mode:'enemySpell', actor:state.ui.actorId, target:state.ui.targetId, profile:profile.id, force, conviction, effect, damage:finalDamage, cast:state.enemySpell.castingColor, face:state.enemySpell.castingFace, empower:state.enemySpell.empower, eFace:state.enemySpell.empowerFace, convC:state.enemySpell.convictionColors, convF:state.enemySpell.convictionFaces, opts:{pass:state.enemySpell.forcePass, wh:state.enemySpell.witchHat, mr:state.enemySpell.magicResistance, me:state.enemySpell.manualEffect, md:state.enemySpell.manualFlatMagic, dd:state.enemySpell.damageEqualsDifference}});
+    return { ready:true, actor, target, profile, force, conviction, failed, difference, finalDamage, hpAfter, effect, immune, key, forceRows, damageRows, convictionRows:[`${c0Color}: ${faceLabel(conv0,0)}`, `${c1Color}: ${faceLabel(conv1,1)}`], blackSkull: !!blackFace?.skull };
+  }
+  function renderEnemySpellResult(result) {
+    if (!result.ready) return `<div class="note">${escapeHtml(result.reason || 'Enemy spell is not ready.')}</div>`;
+    const applied = state.ui.appliedResultKey === result.key;
+    const effText = result.effect ? (result.immune ? `${result.effect} blocked by immunity` : `${result.effect}${result.failed ? '' : ' (not applied)'}`) : 'No effect';
+    return `<div class="grid two">
+      <div class="card ${result.failed ? 'danger' : 'ok'}"><h3>Conviction result</h3><div class="result-metric"><strong>${result.failed ? 'Failed' : 'Passed'}</strong></div><div class="note">Force ${result.force} vs Conviction ${result.conviction}. Difference ${result.difference}.</div></div>
+      <div class="card"><h3>Damage / effect</h3><div class="result-metric"><strong>${result.finalDamage}</strong> Magic Damage</div><div class="note">${escapeHtml(effText)}. Target HP after: ${result.hpAfter}. ${applied ? 'Applied ✓' : ''}</div></div>
+    </div>
+    <div class="compact-actions" style="margin-top:10px"><button type="button" class="primary" data-action="apply-enemy-spell" ${applied ? 'disabled' : ''}>${applied ? 'Applied ✓' : 'Apply enemy spell result'}</button><button type="button" data-action="reset-enemy-spell-roll">Reset enemy spell roll/options</button></div>
+    <details style="margin-top:10px" open><summary>Enemy spell breakdown</summary>${renderEnemySpellBreakdown(result)}</details>`;
+  }
+  function renderEnemySpellBreakdown(result) {
+    const forceRows = result.forceRows.map(r=>`<div class="breakdown-card"><div class="label">${escapeHtml(r.source)}</div><div class="value">${r.value >= 0 ? '+' : ''}${r.value}<br><span class="tiny">${escapeHtml(r.symbols || '')}</span></div></div>`).join('');
+    const damageRows = result.damageRows.length ? result.damageRows.map(r=>`<div class="breakdown-card"><div class="label">${escapeHtml(r.source)}</div><div class="value">${r.value >= 0 ? '+' : ''}${r.value}</div></div>`).join('') : '<div class="note">No Magic Damage components.</div>';
+    return `<div class="breakdown-grid" style="margin-top:10px">
+      ${forceRows}
+      <div class="breakdown-card"><div class="label">Manual Force modifier</div><div class="value">${Number(state.enemySpell.manualForceMod||0)}</div></div>
+      <div class="breakdown-card"><div class="label">Conviction dice</div><div class="value">${result.convictionRows.map(escapeHtml).join('<br>')}<br>Manual mod ${Number(state.enemySpell.manualConvictionMod||0)}${state.enemySpell.witchHat ? '<br>Witch Hat / similar +2' : ''}${state.enemySpell.forcePass ? '<br>Forced pass' : ''}</div></div>
+      <div class="breakdown-card"><div class="label">Damage components</div><div class="value">${damageRows}</div></div>
+      <div class="breakdown-card"><div class="label">Effect</div><div class="value">${escapeHtml(result.effect || 'None')}${result.immune ? '<br><span class="warn-text">Blocked by immunity.</span>' : ''}</div></div>
+      <div class="breakdown-card"><div class="label">Reminders</div><div class="value">${state.enemySpell.magicResistance ? 'Magic resistance/reduction selected. Apply any table-specific reduction manually if needed.' : 'Board legality, SOI, and target legality remain manual.'}</div></div>
+    </div>`;
+  }
+
+
   function activeEnemyTargetOptions(selectedId='') {
     const opts = ['<option value="">Choose tracked enemy</option>'];
     state.enemies.filter(e => !e.defeated).forEach(e => {
@@ -1563,6 +1759,39 @@
       addLog(`${actorLabel()} attacked ${targetLabel()}`, `${r.hit?'Hit':'Miss'}; attack ${r.attackTotal} vs defense ${r.targetDefense}; applied ${r.finalDamage} damage.`);
       return;
     }
+    if (a === 'apply-enemy-spell') {
+      const r = calculateEnemySpellResult();
+      if (!r.ready) return;
+      if (state.ui.appliedResultKey === r.key) return;
+      const ent = r.target;
+      if (r.finalDamage > 0) {
+        ent.state.damage = Math.max(0, Math.min(ent.def.hp || 999, (ent.state.damage || 0) + r.finalDamage));
+        if ((ent.type === 'party' || ent.type === 'command') && ent.state.damage >= ent.def.hp) ent.state.defeated = true;
+      }
+      if (r.failed && r.effect && !r.immune) addEffectToEntity(ent, r.effect);
+      state.ui.appliedResultKey = r.key;
+      saveState(); render();
+      addLog(`${actorLabel()} used ${r.profile.label}`, `${r.failed?'Target failed':'Target passed'}; Force ${r.force} vs Conviction ${r.conviction}; applied ${r.finalDamage} Magic Damage${r.effect && r.failed && !r.immune ? ' and ' + r.effect : ''}.`);
+      return;
+    }
+    if (a === 'reset-enemy-spell-roll') {
+      const profile = DATA.enemySpellProfiles[state.enemySpell.profileId];
+      state.enemySpell.castingFace = 0;
+      state.enemySpell.empower = !!profile?.defaultEmpower;
+      state.enemySpell.empowerFace = 0;
+      state.enemySpell.manualForceMod = 0;
+      state.enemySpell.convictionColors = {};
+      state.enemySpell.convictionFaces = {};
+      state.enemySpell.manualConvictionMod = 0;
+      state.enemySpell.forcePass = false;
+      state.enemySpell.witchHat = false;
+      state.enemySpell.magicResistance = false;
+      state.enemySpell.manualEffect = '';
+      state.enemySpell.manualFlatMagic = 0;
+      state.enemySpell.damageEqualsDifference = false;
+      state.ui.appliedResultKey = null;
+      saveState(); render(); return;
+    }
     if (a === 'reset-enemy-attack-roll') {
       state.enemyAttack.faces = {};
       state.enemyAttack.empower = false;
@@ -1618,9 +1847,14 @@
         const t = getEntityByTarget(state.ui.targetId);
         if (!t || (t.type !== 'party' && t.type !== 'command')) state.ui.targetScope = 'party';
       }
+      if (state.ui.actionId === 'enemySpell') {
+        ensureEnemySpellProfileValid(false);
+        const t = getEntityByTarget(state.ui.targetId);
+        if (!t || (t.type !== 'party' && t.type !== 'command')) state.ui.targetScope = 'party';
+      }
       saveState(); render(); return;
     }
-    if (a === 'log-current') { if(state.ui.actionId==='attack'){ const r=calculateAttackResult(); addLog(`${actorLabel()} attack`, r.ready ? `${r.hit?'Hit':'Miss'}; attack ${r.attackTotal} vs defense ${r.targetDefense}; final damage ${r.finalDamage} to ${targetLabel()}.` : 'Attack not ready.'); } else if(state.ui.actionId==='spell'){ const r=calculateSpellResult(); addLog(`${actorLabel()} spell`, r.ready ? `${r.failed?'Failed Conviction':'Passed Conviction'}; Force ${r.force} vs Conviction ${r.conviction}; final damage ${r.finalDamage} to ${targetLabel()}${r.effect && r.failed ? '; effect ' + r.effect : ''}.` : 'Spell not ready.'); } else if(state.ui.actionId==='enemyAttack'){ const r=calculateEnemyAttackResult(); addLog(`${actorLabel()} enemy attack`, r.ready ? `${r.hit?'Hit':'Miss'}; attack ${r.attackTotal} vs defense ${r.targetDefense}; final damage ${r.finalDamage} to ${targetLabel()}.` : 'Enemy attack not ready.'); } else { addLog(`${actorLabel()} - ${actionLabel()}`, `Target: ${targetLabel()}.`); } return; }
+    if (a === 'log-current') { if(state.ui.actionId==='attack'){ const r=calculateAttackResult(); addLog(`${actorLabel()} attack`, r.ready ? `${r.hit?'Hit':'Miss'}; attack ${r.attackTotal} vs defense ${r.targetDefense}; final damage ${r.finalDamage} to ${targetLabel()}.` : 'Attack not ready.'); } else if(state.ui.actionId==='spell'){ const r=calculateSpellResult(); addLog(`${actorLabel()} spell`, r.ready ? `${r.failed?'Failed Conviction':'Passed Conviction'}; Force ${r.force} vs Conviction ${r.conviction}; final damage ${r.finalDamage} to ${targetLabel()}${r.effect && r.failed ? '; effect ' + r.effect : ''}.` : 'Spell not ready.'); } else if(state.ui.actionId==='enemyAttack'){ const r=calculateEnemyAttackResult(); addLog(`${actorLabel()} enemy attack`, r.ready ? `${r.hit?'Hit':'Miss'}; attack ${r.attackTotal} vs defense ${r.targetDefense}; final damage ${r.finalDamage} to ${targetLabel()}.` : 'Enemy attack not ready.'); } else if(state.ui.actionId==='enemySpell'){ const r=calculateEnemySpellResult(); addLog(`${actorLabel()} enemy spell`, r.ready ? `${r.failed?'Failed Conviction':'Passed Conviction'}; Force ${r.force} vs Conviction ${r.conviction}; final damage ${r.finalDamage} to ${targetLabel()}${r.effect && r.failed ? '; effect ' + r.effect : ''}.` : 'Enemy spell not ready.'); } else { addLog(`${actorLabel()} - ${actionLabel()}`, `Target: ${targetLabel()}.`); } return; }
     if (a === 'add-enemy-quick') { const defId = byId('quickEnemyDef')?.value || 'animate'; const count = Math.max(1, Number(byId('quickEnemyCount')?.value || 1)); state.settings.autoAddEnemyInitiative = !!byId('quickEnemyInitiative')?.checked; addEnemies(defId, count); return; }
     if (a === 'party-damage') { const st=state.party[btn.dataset.id]; st.damage=Math.max(0, st.damage + Number(btn.dataset.delta)); saveState(); render(); return; }
     if (a === 'party-sp') { const st=state.party[btn.dataset.id]; const def=DATA.party[btn.dataset.id]; st.sp=Math.max(0, Math.min(def.maxSp, st.sp + Number(btn.dataset.delta))); saveState(); render(); return; }
@@ -1769,6 +2003,20 @@
     if (ch === 'def-night-flanking') { state.enemyAttack.nightFlanking = !!el.checked; state.ui.appliedResultKey = null; saveState(); render(); }
     if (ch === 'def-zeke-belts') { state.enemyAttack.zekeBelts = !!el.checked; state.ui.appliedResultKey = null; saveState(); render(); }
     if (ch === 'enemy-summon-reduction') { state.enemyAttack.summonReduction = !!el.checked; state.ui.appliedResultKey = null; saveState(); render(); }
+
+    if (ch === 'enemy-spell-profile') { const profile = DATA.enemySpellProfiles[el.value]; state.enemySpell.profileId = el.value; state.enemySpell.castingColor = profile?.defaultColor || profile?.castingColors?.[0] || 'Purple'; state.enemySpell.castingFace = 0; state.enemySpell.empower = !!profile?.defaultEmpower; state.enemySpell.empowerFace = 0; state.enemySpell.manualForceMod = 0; state.enemySpell.convictionColors = {}; state.enemySpell.convictionFaces = {}; state.enemySpell.forcePass = false; state.enemySpell.witchHat = false; state.enemySpell.magicResistance = false; state.enemySpell.manualEffect = ''; state.enemySpell.manualFlatMagic = 0; state.enemySpell.damageEqualsDifference = false; state.ui.appliedResultKey = null; saveState(); render(); }
+    if (ch === 'enemy-spell-casting-color') { state.enemySpell.castingColor = el.value; state.enemySpell.castingFace = 0; state.ui.appliedResultKey = null; saveState(); render(); }
+    if (ch === 'enemy-spell-casting-face') { state.enemySpell.castingFace = Number(el.value); state.ui.appliedResultKey = null; saveState(); render(); }
+    if (ch === 'enemy-spell-empower') { state.enemySpell.empower = !!el.checked; state.ui.appliedResultKey = null; saveState(); render(); }
+    if (ch === 'enemy-spell-empower-face') { state.enemySpell.empowerFace = Number(el.value); state.ui.appliedResultKey = null; saveState(); render(); }
+    if (ch === 'enemy-spell-number') { state.enemySpell[el.dataset.field] = Number(el.value || 0); state.ui.appliedResultKey = null; saveState(); render(); }
+    if (ch === 'enemy-spell-conv-color') { state.enemySpell.convictionColors[el.dataset.dieKey] = el.value; state.enemySpell.convictionFaces[el.dataset.dieKey] = 0; state.ui.appliedResultKey = null; saveState(); render(); }
+    if (ch === 'enemy-spell-conv-face') { state.enemySpell.convictionFaces[el.dataset.dieKey] = Number(el.value); state.ui.appliedResultKey = null; saveState(); render(); }
+    if (ch === 'enemy-spell-force-pass') { state.enemySpell.forcePass = !!el.checked; state.ui.appliedResultKey = null; saveState(); render(); }
+    if (ch === 'enemy-spell-witch-hat') { state.enemySpell.witchHat = !!el.checked; state.ui.appliedResultKey = null; saveState(); render(); }
+    if (ch === 'enemy-spell-magic-resistance') { state.enemySpell.magicResistance = !!el.checked; state.ui.appliedResultKey = null; saveState(); render(); }
+    if (ch === 'enemy-spell-manual-effect') { state.enemySpell.manualEffect = el.value; state.ui.appliedResultKey = null; saveState(); render(); }
+    if (ch === 'enemy-spell-diff-damage') { state.enemySpell.damageEqualsDifference = !!el.checked; state.ui.appliedResultKey = null; saveState(); render(); }
 
   });
 
