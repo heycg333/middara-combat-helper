@@ -1,3 +1,1 @@
-# Middara Combat Helper V3.0K - Custom Enemy / Rewards Lite
-
-Upload these files to the root of the GitHub Pages repository.
+Middara Combat Helper V3.0L GitHub Pages root. Upload these extracted files to the repo root.

@@ -1,4 +1,4 @@
-const CACHE_NAME = 'middara-helper-v3-0k-custom-enemy-rewards-lite';
+const CACHE_NAME = 'middara-helper-v3-0l-live-encounter-qa-polish';
 const APP_SHELL = [
   './',
   './index.html',
@@ -8,7 +8,8 @@ const APP_SHELL = [
   './icons/icon-192.png',
   './icons/icon-512.png',
   './icons/maskable-icon-192.png',
-  './icons/maskable-icon-512.png'
+  './icons/maskable-icon-512.png',
+  './app.js'
 ];
 self.addEventListener('install', event => {
   event.waitUntil(caches.open(CACHE_NAME).then(cache => cache.addAll(APP_SHELL)).then(() => self.skipWaiting()));

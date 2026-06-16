@@ -1,7 +1,7 @@
 {
-  "name": "Middara Combat Helper V3.0K",
-  "short_name": "Middara V3.0K",
-  "description": "V3.0K clean tablet helper with custom one-off enemies and lightweight gold / XP tracking.",
+  "name": "Middara Combat Helper V3.0L",
+  "short_name": "Middara V3.0L",
+  "description": "V3.0L clean tablet helper with live-encounter QA polish, Remi/Zeke/Nightingale fixes, initiative movement controls, and Rewards Lite.",
   "start_url": "./index.html",
   "scope": "./",
   "display": "standalone",
