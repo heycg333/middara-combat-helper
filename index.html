@@ -249,6 +249,18 @@
   function escapeHtml(value) {
     return String(value ?? '').replace(/[&<>"']/g, ch => ({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[ch]));
   }
+  function safeImportedId(prefix, value, seen) {
+    const raw = String(value || '').trim();
+    let id = /^[A-Za-z0-9_-]{1,80}$/.test(raw) ? raw : uid(prefix);
+    while (seen.has(id)) id = uid(prefix);
+    seen.add(id);
+    return id;
+  }
+  function safeNumber(value, fallback=0, min=0, max=999) {
+    const n = Number(value);
+    if (!Number.isFinite(n)) return fallback;
+    return Math.max(min, Math.min(max, n));
+  }
   function uid(prefix) { return `${prefix}_${Date.now().toString(36)}_${Math.random().toString(36).slice(2,7)}`; }
   function nowStamp() { return new Date().toLocaleString(); }
 
@@ -324,12 +336,80 @@
       next.rewards.partyXp = Number(raw?.rewards?.partyXp || 0);
     }
     next.settings = Object.assign(base.settings, raw?.settings || {});
-    next.enemies = Array.isArray(raw?.enemies) ? raw.enemies : [];
-    next.enemies.forEach(e => { if (e.customDef) normalizeCustomEnemyDefinition(e.customDef); });
-    next.command = Array.isArray(raw?.command) ? raw.command : [];
+    const enemyIdMap = new Map();
+    const commandIdMap = new Map();
+    const enemyIds = new Set();
+    const commandIds = new Set();
+    next.enemies = Array.isArray(raw?.enemies) ? raw.enemies.map(e => normalizeImportedEnemy(e, enemyIds, enemyIdMap)).filter(Boolean) : [];
+    next.command = Array.isArray(raw?.command) ? raw.command.map(c => normalizeImportedCommand(c, commandIds, commandIdMap)).filter(Boolean) : [];
+    next.initiative.cards = Array.isArray(next.initiative.cards) ? normalizeImportedInitiative(next.initiative.cards, enemyIdMap, next.enemies) : base.initiative.cards;
+    next.ui.actorId = remapEntityRef(next.ui.actorId, enemyIdMap, commandIdMap) || base.ui.actorId;
+    next.ui.targetId = remapEntityRef(next.ui.targetId, enemyIdMap, commandIdMap);
     next.log = Array.isArray(raw?.log) ? raw.log : [];
     next.version = VERSION;
     return next;
+  }
+  function normalizeImportedEnemy(enemy, seen, idMap) {
+    if (!enemy || typeof enemy !== 'object') return null;
+    const oldId = String(enemy.id || '');
+    const id = safeImportedId('enemy', oldId, seen);
+    if (oldId) idMap.set(oldId, id);
+    const customDef = enemy.customDef && typeof enemy.customDef === 'object' ? normalizeCustomEnemyDefinition(Object.assign({}, enemy.customDef)) : null;
+    const defId = customDef ? 'custom' : (DATA.enemyDefinitions[enemy.defId] ? enemy.defId : 'animate');
+    const def = customDef || DATA.enemyDefinitions[defId] || DATA.enemyDefinitions.animate;
+    return {
+      id,
+      defId,
+      customDef,
+      number: safeNumber(enemy.number, 1, 1, 99),
+      label: String(enemy.label || def.name || 'Enemy').slice(0, 80),
+      damage: safeNumber(enemy.damage, 0, 0, def.hp || 999),
+      effects: Array.isArray(enemy.effects) ? enemy.effects.map(String).filter(e => DATA.effects.includes(e)) : [],
+      tokens: enemy.tokens && typeof enemy.tokens === 'object' ? enemy.tokens : {},
+      defeated: !!enemy.defeated
+    };
+  }
+  function normalizeImportedCommand(command, seen, idMap) {
+    if (!command || typeof command !== 'object' || !DATA.commandDefinitions[command.defId]) return null;
+    const oldId = String(command.id || '');
+    const id = safeImportedId('cmd', oldId, seen);
+    if (oldId) idMap.set(oldId, id);
+    const def = DATA.commandDefinitions[command.defId];
+    return {
+      id,
+      defId: command.defId,
+      label: String(command.label || def.name).slice(0, 80),
+      damage: safeNumber(command.damage, 0, 0, def.hp || 999),
+      sp: safeNumber(command.sp, def.recovery || 0, 0, def.maxSp || 99),
+      effects: Array.isArray(command.effects) ? command.effects.map(String).filter(e => DATA.effects.includes(e)) : [],
+      tokens: command.tokens && typeof command.tokens === 'object' ? command.tokens : {},
+      defeated: !!command.defeated,
+      dismissed: !!command.dismissed
+    };
+  }
+  function normalizeImportedInitiative(cards, enemyIdMap, enemies) {
+    const seen = new Set();
+    return cards.map(card => {
+      if (!card || typeof card !== 'object') return null;
+      const type = ['party','enemy','command'].includes(card.type) ? card.type : '';
+      if (!type) return null;
+      let ref = String(card.ref || '');
+      if (type === 'party' && !DATA.party[ref]) return null;
+      if (type === 'enemy') {
+        ref = enemyIdMap.get(ref) || ref;
+        if (!DATA.enemyDefinitions[ref] && !enemies.some(e => e.id === ref)) return null;
+      }
+      if (type === 'command' && !DATA.commandDefinitions[ref]) return null;
+      return { id:safeImportedId('init', card.id, seen), type, ref, label:String(card.label || ref).slice(0, 80) };
+    }).filter(Boolean);
+  }
+  function remapEntityRef(value, enemyIdMap, commandIdMap) {
+    if (!value) return null;
+    const [type, id] = String(value).split(':');
+    if (type === 'party' && DATA.party[id]) return `party:${id}`;
+    if (type === 'enemy') return enemyIdMap.has(id) ? `enemy:${enemyIdMap.get(id)}` : null;
+    if (type === 'command') return commandIdMap.has(id) ? `command:${commandIdMap.get(id)}` : null;
+    return null;
   }
   function loadState() {
     try {
@@ -1797,7 +1877,7 @@
     return `<div class="card ok" style="margin-top:10px"><h3>Nightingale - Summon Esper</h3><div class="note">Placement/SOI stays manual. V3 adds the Esper as its own Command actor and can add its initiative card. Ability tokens are not tracked digitally; use the physical Summon token on the table.</div><div class="compact-actions"><button type="button" class="primary" data-action="summon-command" data-def="agares">Summon Agares</button><button type="button" class="primary" data-action="summon-command" data-def="eliphie">Summon Eliphie</button><button type="button" data-action="tab" data-tab="command">Open Command</button></div><div class="hr"></div><h3>Active Loyal Espers</h3><div class="grid">${cards}</div></div>`;
   }
   function renderQuickEnemyAdd() {
-    return `<div class="field-grid three"><div><label>Enemy type</label><select id="quickEnemyDef">${Object.values(DATA.enemyDefinitions).map(d => `<option value="${d.id}">${escapeHtml(d.name)}</option>`).join('')}</select></div><div><label>Count</label><input id="quickEnemyCount" type="number" min="1" step="1" value="1" /></div><div><label>&nbsp;</label><button type="button" class="primary" data-action="add-enemy-quick">Add enemy</button></div></div><label style="margin-top:8px"><input type="checkbox" id="quickEnemyInitiative" ${state.settings.autoAddEnemyInitiative?'checked':''} /> <span class="note">Also add/ensure initiative card after current turn</span></label>`;
+    return `<div data-quick-enemy-form><div class="field-grid three"><div><label>Enemy type</label><select data-field="quick-enemy-def">${Object.values(DATA.enemyDefinitions).map(d => `<option value="${d.id}">${escapeHtml(d.name)}</option>`).join('')}</select></div><div><label>Count</label><input data-field="quick-enemy-count" type="number" min="1" step="1" value="1" /></div><div><label>&nbsp;</label><button type="button" class="primary" data-action="add-enemy-quick">Add enemy</button></div></div><label style="margin-top:8px"><input type="checkbox" data-field="quick-enemy-initiative" ${state.settings.autoAddEnemyInitiative?'checked':''} /> <span class="note">Also add/ensure initiative card after current turn</span></label></div>`;
   }
 
   function renderPartyTab() {
@@ -2317,7 +2397,7 @@
 
     if (a === 'add-custom-enemy') { addCustomEnemyFromForm(); return; }
     if (a === 'enemy-ensure-initiative') { const e=state.enemies.find(x=>x.id===btn.dataset.id); if(e){ ensureEnemyInitiativeForRow(e); saveState(); render(); } return; }
-    if (a === 'add-enemy-quick') { const defId = byId('quickEnemyDef')?.value || 'animate'; const count = Math.max(1, Number(byId('quickEnemyCount')?.value || 1)); state.settings.autoAddEnemyInitiative = !!byId('quickEnemyInitiative')?.checked; addEnemies(defId, count); return; }
+    if (a === 'add-enemy-quick') { const form = btn.closest('[data-quick-enemy-form]'); const defId = form?.querySelector('[data-field="quick-enemy-def"]')?.value || 'animate'; const count = Math.max(1, Number(form?.querySelector('[data-field="quick-enemy-count"]')?.value || 1)); state.settings.autoAddEnemyInitiative = !!form?.querySelector('[data-field="quick-enemy-initiative"]')?.checked; addEnemies(defId, count); return; }
     if (a === 'party-damage') { const st=state.party[btn.dataset.id]; st.damage=Math.max(0, st.damage + Number(btn.dataset.delta)); saveState(); render(); return; }
     if (a === 'party-sp') { const st=state.party[btn.dataset.id]; const def=DATA.party[btn.dataset.id]; st.sp=Math.max(0, Math.min(def.maxSp, st.sp + Number(btn.dataset.delta))); saveState(); render(); return; }
     if (a === 'party-add-effect') { const id=btn.dataset.id; addEffectToEntity({type:'party', id, def:DATA.party[id], state:state.party[id]}, document.querySelector(`[data-select="party-effect-${id}"]`)?.value); saveState(); render(); return; }

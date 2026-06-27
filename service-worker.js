@@ -8,8 +8,7 @@ const APP_SHELL = [
   './icons/icon-192.png',
   './icons/icon-512.png',
   './icons/maskable-icon-192.png',
-  './icons/maskable-icon-512.png',
-  './app.js'
+  './icons/maskable-icon-512.png'
 ];
 self.addEventListener('install', event => {
   event.waitUntil(caches.open(CACHE_NAME).then(cache => cache.addAll(APP_SHELL)).then(() => self.skipWaiting()));
@@ -19,9 +18,17 @@ self.addEventListener('activate', event => {
 });
 self.addEventListener('fetch', event => {
   if (event.request.method !== 'GET') return;
+  const requestUrl = new URL(event.request.url);
+  const sameOrigin = requestUrl.origin === self.location.origin;
   event.respondWith(fetch(event.request).then(response => {
-    const copy = response.clone();
-    caches.open(CACHE_NAME).then(cache => cache.put(event.request, copy));
+    if (sameOrigin && response.ok) {
+      const copy = response.clone();
+      caches.open(CACHE_NAME).then(cache => cache.put(event.request, copy));
+    }
     return response;
-  }).catch(() => caches.match(event.request).then(cached => cached || caches.match('./index.html'))));
+  }).catch(() => caches.match(event.request).then(cached => {
+    if (cached) return cached;
+    if (event.request.mode === 'navigate') return caches.match('./index.html');
+    return Response.error();
+  })));
 });
