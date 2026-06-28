@@ -1,7 +1,10 @@
-const CACHE_NAME = 'middara-helper-v3-0l-live-encounter-qa-polish';
+const CACHE_NAME = 'middara-helper-v3-0l-live-encounter-qa-polish-tablet-support';
 const APP_SHELL = [
   './',
   './index.html',
+  './combat-core.js',
+  './tests/run-tests.html',
+  './tests/combat-core.test.js',
   './manifest.webmanifest',
   './icons/apple-touch-icon.png',
   './icons/favicon.svg',

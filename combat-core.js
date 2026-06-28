@@ -202,14 +202,14 @@
     const dodgeDefense = options.useDodge && !targetHasDarkness ? dodgeDefenseFromBlackFace(dodgeFace) : 0;
     const flankingDefense = options.flankingDefense ? 1 : 0;
     const attack = calculateAttack(Object.assign({}, input, {
-      actorState: input.actorState || {},
+      actorState: Object.assign({}, input.actorState || {}, { effects: [] }),
       targetDef: Object.assign({}, targetDef, { defense: number(targetDef.defense) + dodgeDefense + flankingDefense }),
       targetState,
       options: Object.assign({}, options, { targetDefenseMod: number(options.targetDefenseMod), useCourage: false, useMasterWork: false, useMasterOfVessel: false })
     }));
     const forcedMiss = !!options.forceMiss;
     const hit = !forcedMiss && attack.hit;
-    if (!hit) return Object.assign({}, attack, { hit: false, forcedMiss, finalDamage: 0, hpAfter: number(targetDef.hp) - number(targetState.damage), dodgeDefense, reductions: [] });
+    if (!hit) return Object.assign({}, attack, { hit: false, forcedMiss, finalDamage: 0, hpAfter: Math.max(0, number(targetDef.hp) - number(targetState.damage)), dodgeDefense, dodgeSkull: !!(dodgeFace && dodgeFace.skull), targetHasDarkness, reductions: [] });
 
     let rawPhysical = number(attack.spend.rawPhysical);
     const physicalBeforeDefense = rawPhysical;
@@ -219,7 +219,11 @@
     if (targetId === 'rook' && options.rookPlate) { rawPhysical -= 4; reductions.push('Rook Plate -4 Physical'); }
     if (targetId === 'remi') {
       if (options.remiShearling && melee) { rawPhysical -= 2; reductions.push('Reinforced Shearling -2 Physical'); }
-      if (options.remiShearlingPE) { rawPhysical -= number(targetState.damage); reductions.push('Shearling Per Encounter'); }
+      if (options.remiShearlingPE) {
+        const shearlingReduction = number(targetState.damage);
+        rawPhysical -= shearlingReduction;
+        reductions.push('Shearling Per Encounter -' + shearlingReduction + ' Physical');
+      }
     }
     if (targetId === 'nightingale') {
       if (options.nightMorbid && melee) { rawPhysical -= 2; reductions.push('Morbid Leather -2 Physical'); }
@@ -236,7 +240,7 @@
     let finalDamage = Math.max(0, physical + magic - number(options.finalReduction));
     if (options.summonReduction && finalDamage > 0) { finalDamage = Math.max(0, finalDamage - 2); reductions.push('Summon token -2 damage'); }
     const hpAfter = Math.max(0, number(targetDef.hp) - number(targetState.damage) - finalDamage);
-    return Object.assign({}, attack, { hit, forcedMiss, dodgeDefense, targetHasDarkness, physicalBeforeDefense, rawPhysical, effectiveArmor, physical, magic, finalDamage, hpAfter, reductions });
+    return Object.assign({}, attack, { hit, forcedMiss, dodgeDefense, dodgeSkull: !!(dodgeFace && dodgeFace.skull), targetHasDarkness, physicalBeforeDefense, rawPhysical, effectiveArmor, physical, magic, finalDamage, hpAfter, reductions });
   }
 
   function calculateForceCheck(input) {
@@ -278,6 +282,74 @@
     return { effect: effect || '', applied: !!effect && !immunities.includes(effect), immune: !!effect && immunities.includes(effect) };
   }
 
+  function calculateSpellOutcome(input) {
+    const diceData = input.diceData || {};
+    const profile = input.profile || {};
+    const targetDef = input.targetDef || {};
+    const targetState = input.targetState || {};
+    const options = input.options || {};
+    const forceCheck = calculateForceCheck(input);
+    const effect = options.effectOverride != null ? (options.effectOverride || '') : (profile.effect || '');
+    const effectResult = resolveEffect(effect, targetDef);
+    const damageRows = [];
+    let magicDamage = 0;
+    let push = null;
+
+    if (profile.damageMode === 'flat' && profile.flatMagic) {
+      magicDamage += number(profile.flatMagic);
+      damageRows.push({ source: options.flatDamageLabel || 'Flat spell damage', value: number(profile.flatMagic) });
+    }
+    if (profile.damageMode === 'difference' || profile.damageEqualsDifference || options.damageEqualsDifference) {
+      magicDamage += forceCheck.difference;
+      damageRows.push({ source: 'Failed Conviction difference', value: forceCheck.difference });
+    }
+    if (profile.damageMode === 'previous') {
+      const previousDamage = number(options.previousDamage);
+      magicDamage += previousDamage;
+      damageRows.push({ source: 'Previous damage value', value: previousDamage });
+    }
+    if (profile.damageMode === 'zealous') {
+      let damageRoll = 0;
+      (profile.damageDice || []).forEach((color, idx) => {
+        const faces = diceData[color] || [];
+        const face = faces[number(options.zealousFaces && options.zealousFaces['z' + idx])] || faces[0] || { value: 0 };
+        damageRoll += number(face.value);
+      });
+      const distanceReduction = Math.max(0, number(options.zealousDistance, 1) - 1);
+      magicDamage += Math.max(0, damageRoll - distanceReduction);
+      push = Math.max(0, 3 - distanceReduction);
+      damageRows.push({ source: 'Equipped combat dice damage roll', value: damageRoll });
+      damageRows.push({ source: 'Distance reduction', value: -distanceReduction });
+    }
+    if (options.useOptionalBonus && profile.optionalMagicBonus) {
+      magicDamage += number(profile.optionalMagicBonus);
+      damageRows.push({ source: 'Optional self-damage bonus', value: number(profile.optionalMagicBonus) });
+    }
+    if (number(options.manualFlatMagic) > 0) {
+      magicDamage += number(options.manualFlatMagic);
+      damageRows.push({ source: options.manualFlatDamageLabel || 'Manual flat Magic Damage', value: number(options.manualFlatMagic) });
+    }
+
+    const finalDamage = forceCheck.failed ? Math.max(0, magicDamage) : 0;
+    const hpAfter = Math.max(0, number(targetDef.hp) - number(targetState.damage) - finalDamage);
+    return Object.assign({}, forceCheck, {
+      effect,
+      immune: effectResult.immune,
+      effectApplied: forceCheck.failed && effectResult.applied,
+      damageRows,
+      magicDamage: forceCheck.failed ? Math.max(0, magicDamage) : 0,
+      finalDamage,
+      hpAfter,
+      push,
+      optionalSelfDamage: options.useOptionalBonus ? number(profile.optionalSelfDamage) : 0,
+      spCost: profile.damageMode === 'zealous' && options.zealousDiscount ? 1 : number(profile.sp)
+    });
+  }
+
+  function calculateEnemySpellOutcome(input) {
+    return calculateSpellOutcome(input);
+  }
+
   function applyDamageOnce(targetState, targetDef, result, appliedKey) {
     if (!result || !result.key || appliedKey === result.key) return { applied: false, appliedKey, damage: number(targetState && targetState.damage) };
     const nextDamage = Math.max(0, Math.min(number(targetDef && targetDef.hp, 999), number(targetState && targetState.damage) + number(result.finalDamage)));
@@ -292,6 +364,8 @@
     calculateAttack,
     calculateEnemyAttack,
     calculateForceCheck,
+    calculateSpellOutcome,
+    calculateEnemySpellOutcome,
     resolveEffect,
     applyDamageOnce,
     dodgeDefenseFromBlackFace

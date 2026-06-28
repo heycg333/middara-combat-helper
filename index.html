@@ -58,8 +58,8 @@
     .card.selected { border-color: rgba(56,189,248,.72); background: rgba(56,189,248,.10); }
     .card.danger { border-color: rgba(251,113,133,.55); background: rgba(251,113,133,.08); }
     .card.ok { border-color: rgba(52,211,153,.5); background: rgba(52,211,153,.08); }
-    .flow-grid { display: grid; grid-template-columns: minmax(0,1fr) minmax(0,1fr); gap: 12px; align-items: start; }
-    @media (max-width: 680px) { .flow-grid { grid-template-columns: 1fr; } }
+    .flow-grid { display: grid; grid-template-columns: minmax(260px,.86fr) minmax(0,1.14fr); gap: 12px; align-items: start; }
+    .flow-grid.resolver-active { grid-template-columns: minmax(260px,.72fr) minmax(0,1.28fr); }
     .field-grid { display: grid; grid-template-columns: repeat(2, minmax(0,1fr)); gap: 10px; }
     .field-grid.three { grid-template-columns: repeat(3, minmax(0,1fr)); }
     .grid { display: grid; gap: 12px; }
@@ -70,15 +70,16 @@
     input, select, textarea, button { width: 100%; border: 1px solid var(--line); border-radius: 12px; background: var(--input); color: var(--text); font: inherit; font-size: 16px; padding: 10px 11px; }
     textarea { min-height: 160px; font-family: ui-monospace, SFMono-Regular, Menlo, Consolas, monospace; font-size: .86rem; }
     button { cursor: pointer; font-weight: 800; background: #334155; }
-    button:hover { filter: brightness(1.08); }
-    button.primary { background: linear-gradient(180deg, #22c55e, #15803d); border-color: rgba(34,197,94,.52); }
-    button.accent { background: linear-gradient(180deg, #38bdf8, #0284c7); color: #06111f; border-color: rgba(56,189,248,.52); }
-    button.warn { background: linear-gradient(180deg, #fbbf24, #d97706); color: #111827; border-color: rgba(251,191,36,.52); }
-    button.danger { background: linear-gradient(180deg, #fb7185, #be123c); color: #fff; border-color: rgba(251,113,133,.55); }
-    button.ghost { background: rgba(15,23,42,.55); color: var(--muted); }
+    button:hover, .button-link:hover { filter: brightness(1.08); }
+    button.primary, .button-link.primary { background: linear-gradient(180deg, #22c55e, #15803d); border-color: rgba(34,197,94,.52); }
+    button.accent, .button-link.accent { background: linear-gradient(180deg, #38bdf8, #0284c7); color: #06111f; border-color: rgba(56,189,248,.52); }
+    button.warn, .button-link.warn { background: linear-gradient(180deg, #fbbf24, #d97706); color: #111827; border-color: rgba(251,191,36,.52); }
+    button.danger, .button-link.danger { background: linear-gradient(180deg, #fb7185, #be123c); color: #fff; border-color: rgba(251,113,133,.55); }
+    button.ghost, .button-link.ghost { background: rgba(15,23,42,.55); color: var(--muted); }
     button.active, .nav button.active { background: linear-gradient(180deg, #38bdf8, #0ea5e9); color: #05131f; border-color: rgba(56,189,248,.7); }
+    .button-link { display: inline-flex; align-items: center; justify-content: center; min-height: 44px; border: 1px solid var(--line); border-radius: 12px; background: #334155; color: var(--text); font: inherit; font-size: 16px; font-weight: 800; padding: 10px 11px; text-decoration: none; }
     .btn-row { display: flex; flex-wrap: wrap; gap: 8px; align-items: center; }
-    .btn-row button { width: auto; min-width: 112px; }
+    .btn-row button, .btn-row .button-link { width: auto; min-width: 112px; }
     .compact-actions { display: flex; flex-wrap: wrap; gap: 6px; margin-top: 8px; }
     .compact-actions button { width: auto; min-width: 0; padding: 7px 9px; font-size: .84rem; }
     .note { color: var(--muted); font-size: .9rem; }
@@ -97,13 +98,37 @@
     .effect { border: 1px solid rgba(163,230,53,.34); color: #d9f99d; background: rgba(163,230,53,.08); border-radius: 999px; padding: 3px 7px; font-size: .74rem; }
     .token { border-color: rgba(56,189,248,.35); color: #bae6fd; background: rgba(56,189,248,.08); }
     .live-title { display:flex; justify-content:space-between; gap:10px; align-items:start; flex-wrap:wrap; }
+    .play-flow-panel { padding: 12px; }
+    .play-card { min-width: 0; padding: 10px; }
+    .play-card h3 { display: flex; align-items: center; justify-content: space-between; gap: 8px; color: var(--accent2); font-size: .9rem; text-transform: uppercase; letter-spacing: .04em; }
+    .play-card .btn-row button { min-width: 96px; }
+    .battle-strip { display: grid; grid-template-columns: repeat(4, minmax(0,1fr)); gap: 8px; margin-top: 10px; }
+    .battle-stat { border: 1px solid rgba(56,189,248,.22); background: rgba(15,23,42,.44); border-radius: 12px; padding: 8px 9px; min-height: 58px; }
+    .battle-stat span { display: block; color: var(--dim); font-size: .72rem; font-weight: 900; text-transform: uppercase; letter-spacing: .06em; }
+    .battle-stat strong { display: block; margin-top: 2px; color: var(--text); overflow-wrap: anywhere; line-height: 1.22; }
+    .play-support-grid { display: grid; grid-template-columns: minmax(300px,.82fr) minmax(0,1.18fr); gap: 12px; align-items: start; }
+    .play-side-panel, .log-panel { padding: 12px; }
+    .panel-heading { display: flex; align-items: center; justify-content: space-between; gap: 8px; flex-wrap: wrap; margin-bottom: 10px; }
+    .panel-heading h2 { margin: 0; }
+    .quick-enemy-grid { align-items: end; }
+    .quick-status-row { display: flex; flex-wrap: wrap; gap: 6px; margin-top: 10px; }
+    .target-tools { display: grid; gap: 10px; }
+    .target-adjust-grid { display: grid; grid-template-columns: repeat(4, minmax(0,1fr)); gap: 6px; }
+    .target-adjust-grid button { min-width: 0; padding: 9px 8px; }
+    .target-effect-grid { display: grid; grid-template-columns: minmax(140px,.78fr) minmax(0,1.22fr); gap: 8px; align-items: end; }
+    .empty-state { border: 1px dashed rgba(148,163,184,.35); border-radius: 14px; padding: 12px; color: var(--muted); background: rgba(15,23,42,.32); }
+    .log-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(240px,1fr)); gap: 8px; max-height: 320px; overflow: auto; padding-right: 2px; }
+    .log-card { padding: 9px; }
+    .log-card .note { font-size: .84rem; }
     .status-line { min-height: 45px; display: flex; align-items: center; border: 1px solid rgba(56,189,248,.25); background: rgba(56,189,248,.07); border-radius: 14px; padding: 10px 12px; color: var(--muted); }
     .footer { position: fixed; left: max(10px, env(safe-area-inset-left)); right: max(10px, env(safe-area-inset-right)); bottom: max(10px, env(safe-area-inset-bottom)); z-index: 70; width: min(1210px, calc(100% - 20px)); margin: 0 auto; background: linear-gradient(180deg, rgba(30,41,59,.98), rgba(15,23,42,.98)); border: 1px solid rgba(56,189,248,.35); border-radius: 18px; padding: 10px; display: grid; grid-template-columns: minmax(0,1fr) auto; gap: 10px; align-items: center; box-shadow: 0 16px 42px rgba(0,0,0,.45); }
     .footer-title { font-weight: 900; }
     .footer-detail { color: var(--muted); font-size: .84rem; }
     .footer-actions { display:flex; gap:7px; flex-wrap:wrap; justify-content:flex-end; }
     .footer-actions button { width:auto; min-width:82px; padding: 8px 10px; font-size:.85rem; }
-    @media (max-width: 680px) { .footer { grid-template-columns: 1fr; } .footer-actions { justify-content:flex-start; } body { padding-bottom: 154px; } }
+    .footer-actions button.primary { min-width: 150px; }
+    .footer-actions .footer-secondary { min-width: 64px; }
+    @media (max-width: 760px) { .footer { grid-template-columns: 1fr; } .footer-actions { justify-content:flex-start; } .footer-actions button.primary { flex: 2 1 170px; } .footer-actions .footer-secondary { flex: 1 1 72px; } body { padding-bottom: 154px; } }
     .initiative-card { display:grid; grid-template-columns:auto minmax(0,1fr) auto; gap:10px; align-items:center; border:1px solid var(--line); border-radius:14px; background:var(--card); padding:10px; }
     .initiative-card.current { border-color: rgba(56,189,248,.75); background: rgba(56,189,248,.09); }
     .num { width:28px; height:28px; display:grid; place-items:center; border-radius:999px; background: rgba(255,255,255,.1); color:var(--muted); font-weight:900; }
@@ -119,11 +144,12 @@
     .mini-table tr:last-child th, .mini-table tr:last-child td { border-bottom: 0; }
     button:disabled { opacity: .56; cursor: not-allowed; filter: grayscale(.15); }
 
-    .flow-grid.attack-active .resolve-card { grid-column: 1 / -1; }
+    .flow-grid.resolver-active .actor-card,
+    .flow-grid.resolver-active .target-card,
     .flow-grid.resolver-active .action-card { grid-column: 1; }
-    .flow-grid.resolver-active .resolve-card { grid-column: 2; }
+    .flow-grid.resolver-active .resolve-card { grid-column: 2; grid-row: 1 / span 3; }
     .flow-grid.resolver-active .resolve-card .attack-layout { grid-template-columns: minmax(280px, .95fr) minmax(320px, 1.05fr); }
-    @media (max-width: 920px) { .flow-grid.resolver-active .action-card, .flow-grid.resolver-active .resolve-card { grid-column: auto; } }
+    @media (max-width: 900px) { .flow-grid, .flow-grid.resolver-active { grid-template-columns: 1fr; } .flow-grid.resolver-active .actor-card, .flow-grid.resolver-active .target-card, .flow-grid.resolver-active .action-card, .flow-grid.resolver-active .resolve-card { grid-column: auto; grid-row: auto; } }
     .formula-line { display:block; padding:4px 0; border-bottom:1px solid rgba(255,255,255,.08); }
     .formula-line:last-child { border-bottom:0; }
 
@@ -136,8 +162,10 @@
     @media (max-width: 700px) { .chain-helper-grid { grid-template-columns: 1fr; } }
     .chain-helper-status { border: 1px solid rgba(251,191,36,.35); background: rgba(251,191,36,.08); color: var(--muted); border-radius: 12px; padding: 9px; margin-top: 8px; }
     .spend-line { display: block; margin: 2px 0; }
+    @media (max-width: 860px) { .play-support-grid { grid-template-columns: 1fr; } }
     @media (max-width: 720px) {
-      .flow-grid.attack-active .resolve-card { grid-column: auto; }
+      .battle-strip, .target-adjust-grid { grid-template-columns: repeat(2, minmax(0,1fr)); }
+      .target-effect-grid { grid-template-columns: 1fr; }
       .attack-layout, .breakdown-grid { grid-template-columns: 1fr; }
     }
 
@@ -161,6 +189,7 @@
   </header>
   <main id="appRoot"></main>
   <footer class="footer" id="stableFooter" aria-live="polite"></footer>
+  <script src="combat-core.js"></script>
   <script>
 
 (function () {
@@ -727,22 +756,35 @@
         applyButton = `<button type="button" class="primary" data-action="apply-enemy-spell" ${applied ? 'disabled' : ''}>${applied ? 'Applied ✓' : 'Apply enemy spell'}</button>`;
       }
     }
-    byId('stableFooter').innerHTML = `<div><div class="footer-title">${escapeHtml(f.title)}</div><div class="footer-detail">${escapeHtml(f.detail)}</div></div><div class="footer-actions">${applyButton}<button type="button" data-action="log-current">Log</button><button type="button" data-action="tab" data-tab="play">Play</button><button type="button" class="ghost" data-action="sync-actor">Sync</button></div>`;
+    const playButton = state.ui.activeTab === 'play' ? '' : '<button type="button" class="ghost footer-secondary" data-action="tab" data-tab="play">Play</button>';
+    byId('stableFooter').innerHTML = `<div><div class="footer-title">${escapeHtml(f.title)}</div><div class="footer-detail">${escapeHtml(f.detail)}</div></div><div class="footer-actions">${applyButton}<button type="button" class="ghost footer-secondary" data-action="log-current">Log</button>${playButton}<button type="button" class="ghost footer-secondary" data-action="sync-actor">Sync</button></div>`;
+  }
+
+  function renderBattleStrip() {
+    const items = [
+      ['Actor', actorLabel()],
+      ['Target', targetLabel()],
+      ['Action', actionLabel()],
+      ['Initiative', currentInitiativeCard()?.label || 'No initiative']
+    ];
+    return `<div class="battle-strip">${items.map(([label,value]) => `<div class="battle-stat"><span>${escapeHtml(label)}</span><strong>${escapeHtml(value)}</strong></div>`).join('')}</div>`;
   }
 
   function renderPlayTab() {
-    return `<section class="panel" id="playPanel">
-      <div class="live-title"><div><h2>V3.0L stable Play flow</h2><div class="note">Actor → Target → Action → Roll / Resolve → Apply. Encounter-tested clean flow with focused character helpers and clearer damage breakdowns.</div></div><span class="pill"><strong>Current</strong> ${escapeHtml(currentInitiativeCard()?.label || 'No initiative')}</span></div>
-      <div class="flow-grid ${(['attack','spell','enemyAttack','enemySpell'].includes(state.ui.actionId))?'attack-active':''}" style="margin-top:12px">
-        <div class="card"><h3>1. Actor</h3>${renderActorCard()}</div>
-        <div class="card"><h3>2. Target drawer</h3>${renderTargetDrawer()}</div>
-        <div class="card action-card"><h3>3. Action</h3>${renderActionCard()}</div>
-        <div class="card resolve-card"><h3>4. Resolve / apply</h3>${renderResolveCard()}</div>
+    const resolverActive = ['attack','spell','enemyAttack','enemySpell'].includes(state.ui.actionId);
+    return `<section class="panel play-flow-panel" id="playPanel">
+      <div class="live-title"><div><h2>Play table</h2></div><span class="pill"><strong>Current</strong> ${escapeHtml(currentInitiativeCard()?.label || 'No initiative')}</span></div>
+      ${renderBattleStrip()}
+      <div class="flow-grid ${resolverActive ? 'resolver-active' : ''}" style="margin-top:12px">
+        <div class="card play-card actor-card"><h3>1. Actor</h3>${renderActorCard()}</div>
+        <div class="card play-card target-card"><h3>2. Target drawer</h3>${renderTargetDrawer()}</div>
+        <div class="card play-card action-card"><h3>3. Action</h3>${renderActionCard()}</div>
+        <div class="card play-card resolve-card"><h3>4. Resolve / apply</h3>${renderResolveCard()}</div>
       </div>
     </section>
-    <section class="grid two">
-      <div class="panel"><h2>Encounter quick setup</h2><div class="note">For full HP/effect editing, use Enemies or Party. This area is only for adding spawned enemies quickly.</div>${renderQuickEnemyAdd()}<div class="hr"></div><div class="pillbox"><span class="pill"><strong>Enemies</strong> ${state.enemies.filter(e=>!e.defeated).length} active / ${state.enemies.length} tracked</span><span class="pill"><strong>Command</strong> ${state.command.filter(c=>!c.defeated&&!c.dismissed).length} active</span></div></div>
-      <div class="panel"><h2>Selected target</h2>${renderSelectedTargetTools()}</div>
+    <section class="play-support-grid">
+      <div class="panel play-side-panel"><div class="panel-heading"><h2>Encounter setup</h2><span class="pill"><strong>Active</strong> ${state.enemies.filter(e=>!e.defeated).length} / ${state.enemies.length}</span></div>${renderQuickEnemyAdd()}<div class="quick-status-row"><span class="pill"><strong>Enemies</strong> ${state.enemies.filter(e=>!e.defeated).length} active / ${state.enemies.length} tracked</span><span class="pill"><strong>Command</strong> ${state.command.filter(c=>!c.defeated&&!c.dismissed).length} active</span><span class="pill"><strong>Auto initiative</strong> ${state.settings.autoAddEnemyInitiative ? 'On' : 'Off'}</span></div></div>
+      <div class="panel play-side-panel"><div class="panel-heading"><h2>Selected target</h2><span class="pill"><strong>Target</strong> ${escapeHtml(targetLabel())}</span></div>${renderSelectedTargetTools()}</div>
     </section>
     ${renderLogPanel()}`;
   }
@@ -786,19 +828,18 @@
   function renderSelectedTargetTools() {
     const ent = getEntityByTarget(state.ui.targetId);
     if (!ent || !ent.state || !ent.def) {
-      return `<div class="note">No target selected. Choose an enemy, party member, or Command Combatant from the Target drawer.</div>`;
+      return `<div class="empty-state">No target selected.</div>`;
     }
     const safeTargetId = escapeHtml(state.ui.targetId);
     const canSp = ent.type === 'party' || ent.type === 'command';
     const title = targetLabel(state.ui.targetId);
-    const spTools = canSp ? `<button data-action="target-sp" data-delta="1">+1 SP</button><button data-action="target-sp" data-delta="-1">-1 SP</button>` : '';
+    const spTools = canSp ? `<button type="button" data-action="target-sp" data-delta="1">+1 SP</button><button type="button" data-action="target-sp" data-delta="-1">-1 SP</button>` : '';
     return `<div class="card target-tools">
       <div class="entity-head"><strong>${escapeHtml(title)}</strong><span class="pill">${escapeHtml(ent.type)}</span></div>
       ${hpBar(ent.state.damage || 0, ent.def.hp || 0)}${entityStatPills(ent.def, ent.state)}${renderEffects(ent.state, ent.type, ent.id)}
-      <div class="compact-actions"><button data-action="target-damage" data-delta="1">+1 dmg</button><button data-action="target-damage" data-delta="-1">-1 dmg</button><button data-action="target-damage" data-delta="5">+5 dmg</button><button data-action="target-damage" data-delta="-5">-5 dmg</button>${spTools}</div>
-      <div class="field-grid" style="margin-top:8px"><div><label>Effect</label><select id="targetEffectSelect">${DATA.effects.map(e=>`<option>${escapeHtml(e)}</option>`).join('')}</select></div><div><label>&nbsp;</label><div class="compact-actions"><button data-action="target-add-effect">Add effect</button><button data-action="target-remove-effect">Remove effect</button></div></div></div>
-      <div class="tiny" style="margin-top:8px">Ability tokens are handled on the physical table in V3. Use this quick panel for HP, SP, and Effects only.</div>
-      <div class="compact-actions">${ent.type === 'enemy' ? `<button data-action="select-actor" data-actor="${safeTargetId}">Use as enemy actor</button>` : ent.type === 'party' ? `<button data-action="select-actor" data-actor="${safeTargetId}">Use as actor</button>` : `<button data-action="load-command-actor" data-id="${escapeHtml(ent.id)}">Load actor</button>`}</div>
+      <div class="target-adjust-grid"><button type="button" data-action="target-damage" data-delta="1">+1 dmg</button><button type="button" data-action="target-damage" data-delta="-1">-1 dmg</button><button type="button" data-action="target-damage" data-delta="5">+5 dmg</button><button type="button" data-action="target-damage" data-delta="-5">-5 dmg</button>${spTools}</div>
+      <div class="target-effect-grid"><div><label>Effect</label><select id="targetEffectSelect">${DATA.effects.map(e=>`<option>${escapeHtml(e)}</option>`).join('')}</select></div><div class="compact-actions"><button type="button" data-action="target-add-effect">Add effect</button><button type="button" data-action="target-remove-effect">Remove effect</button></div></div>
+      <div class="compact-actions">${ent.type === 'enemy' ? `<button type="button" data-action="select-actor" data-actor="${safeTargetId}">Use as enemy actor</button>` : ent.type === 'party' ? `<button type="button" data-action="select-actor" data-actor="${safeTargetId}">Use as actor</button>` : `<button type="button" data-action="load-command-actor" data-id="${escapeHtml(ent.id)}">Load actor</button>`}</div>
     </div>`;
   }
 
@@ -1091,42 +1132,37 @@
     const profiles = getAttackProfilesForActor();
     const profile = DATA.attackProfiles[state.attack.profileId] || profiles[0];
     if (!actor.def || !profile || !target?.def || !target?.state) return { ready:false, reason:'Choose an attack actor and target.' };
-    const dice = profile.dice || [];
-    let attackRoll = 0;
-    const pool = {book:0, shield:0, burst:0, skull:0};
-    const diceRows = [];
-    dice.forEach((color, idx) => {
-      const face = DATA.dice[color]?.[Number(state.attack.faces[`d${idx}`] || 0)] || DATA.dice[color]?.[0] || {value:0};
-      attackRoll += face.value || 0;
-      pool.book += face.book || 0; pool.shield += face.shield || 0; pool.burst += face.burst || 0; pool.skull += face.skull || 0;
-      diceRows.push({ color, label: faceLabel(face, idx), value: face.value || 0, symbols: {book:face.book||0, shield:face.shield||0, burst:face.burst||0, skull:face.skull||0} });
-    });
-    if (state.attack.empower && !dice.includes('Black')) {
-      const face = DATA.dice.Black?.[Number(state.attack.empowerFace || 0)] || DATA.dice.Black[0];
-      pool.book += face.book || 0; pool.shield += face.shield || 0; pool.burst += face.burst || 0; pool.skull += face.skull || 0;
-      diceRows.push({ color:'Black (Empower)', label: faceLabel(face, 0), value: 0, symbols:{book:face.book||0, shield:face.shield||0, burst:face.burst||0, skull:face.skull||0} });
-    }
-    if (actor.state?.effects?.includes('Courage') && state.attack.useCourage !== false) { pool.book += 1; pool.shield += 1; }
+    const core = window.MiddaraCombatCore;
+    if (!core?.calculateAttack) return { ready:false, reason:'Combat calculator did not load. Refresh the app cache from Data.' };
     const useMotV = actor.type === 'party' && actor.id === 'remi' && !!state.attack.useMasterOfVessel;
-    if (useMotV) pool.burst += 1;
-    const darknessPenalty = actor.state?.effects?.includes('Darkness') ? -1 : 0;
-    const masterWork = state.attack.useMasterWork ? 1 : 0;
     const manualAttack = Number(state.attack.manualAttackMod || 0);
-    const attackTotal = attackRoll + manualAttack + darknessPenalty + masterWork;
-    const targetDefense = (target.def.defense || 0) + Number(state.attack.targetDefenseMod || 0);
-    const hit = attackTotal >= targetDefense;
-    const diffHit = hit ? Math.max(0, attackTotal - targetDefense) : 0;
-    const armorPiercing = Math.max(0, (profile.ap || 0) + Number(state.attack.manualArmorPiercing || 0));
-    const barrierArmor = target.state?.effects?.includes('Barrier') ? 1 : 0;
-    const targetArmor = (target.def.armor || 0) + barrierArmor;
     const manualPhysical = Number(state.attack.manualPhysical || 0);
     const manualMagic = Number(state.attack.manualMagic || 0);
-    const optProfile = useMotV ? Object.assign({}, profile, { symbolDamageBonus: Number(profile.symbolDamageBonus||0) + 1 }) : profile;
-    const spend = hit ? optimizeSymbolSpend(optProfile, pool, diffHit, targetArmor, armorPiercing, manualPhysical, manualMagic) : {finalDamage:0, physical:0, magic:0, chosen:[], remaining:pool, physicalSymbols:0, magicSymbols:0, conditionalPhysical:0};
-    const finalDamage = hit ? spend.finalDamage : 0;
-    const hpAfter = Math.max(0, (target.def.hp || 0) - (target.state.damage || 0) - finalDamage);
+    const masterWork = state.attack.useMasterWork ? 1 : 0;
+    const result = core.calculateAttack({
+      diceData: DATA.dice,
+      profile,
+      actorState: actor.state || {},
+      targetDef: target.def,
+      targetState: target.state,
+      faces: state.attack.faces || {},
+      options: {
+        empower: state.attack.empower,
+        empowerFace: state.attack.empowerFace,
+        useCourage: state.attack.useCourage,
+        useMasterWork: state.attack.useMasterWork,
+        useMasterOfVessel: useMotV,
+        manualAttackMod: manualAttack,
+        manualPhysical,
+        manualMagic,
+        manualArmorPiercing: state.attack.manualArmorPiercing,
+        targetDefenseMod: state.attack.targetDefenseMod
+      }
+    });
+    const finalDamage = result.finalDamage || 0;
+    const barrierArmor = result.barrierArmor || 0;
     const key = JSON.stringify({a:state.ui.actorId,t:state.ui.targetId,p:profile.id,f:state.attack.faces,e:state.attack.empower,ef:state.attack.empowerFace,mA:manualAttack,mP:manualPhysical,mM:manualMagic,mAP:state.attack.manualArmorPiercing,tD:state.attack.targetDefenseMod,c:state.attack.useCourage,mw:state.attack.useMasterWork,motv:state.attack.useMasterOfVessel,barrier:barrierArmor,damage:finalDamage, zMorbid:state.enemyAttack.zekeMorbid, zFlank:state.enemyAttack.zekeFlanking, barrier:barrierArmor});
-    return { ready:true, actor, target, profile, diceRows, pool, attackRoll, attackTotal, targetDefense, hit, diffHit, armorPiercing, targetArmor, barrierArmor, manualPhysical, manualMagic, finalDamage, hpAfter, spend, key, darknessPenalty, masterWork, useMotV };
+    return Object.assign({ ready:true, actor, target, profile, manualPhysical, manualMagic, key, masterWork, useMotV }, result, { finalDamage, barrierArmor });
   }
   function renderBreakdownGrid(result) {
     const diceText = result.diceRows.map(r=>`${escapeHtml(r.color)}: ${escapeHtml(r.label)}`).join('<br>');
@@ -1278,29 +1314,61 @@
     const convColors = target.def.conviction || ['Purple','Purple'];
     const conv0 = DATA.dice[convColors[0]]?.[Number(state.spell.convictionFaces?.c0 || 0)] || DATA.dice[convColors[0]]?.[0] || {value:0};
     const conv1 = DATA.dice[convColors[1] || convColors[0]]?.[Number(state.spell.convictionFaces?.c1 || 0)] || DATA.dice[convColors[1] || convColors[0]]?.[0] || {value:0};
-    const conviction = (conv0.value || 0) + (conv1.value || 0);
-    const failed = force > conviction;
-    const difference = Math.max(0, force - conviction);
-    let magicDamage = 0;
-    let effect = profile.effect || '';
-    let push = null;
-    const damageRows = [];
-    if (profile.damageMode === 'flat') { magicDamage += profile.flatMagic || 0; if (profile.flatMagic) damageRows.push({source:'Flat spell damage', value:profile.flatMagic}); }
-    if (profile.damageMode === 'difference') { magicDamage += difference; damageRows.push({source:'Failed Conviction difference', value:difference}); }
-    if (profile.damageMode === 'previous') { magicDamage += Number(state.spell.previousDamage || 0); damageRows.push({source:'Previous damage value', value:Number(state.spell.previousDamage||0)}); }
-    if (profile.damageMode === 'zealous') {
-      let damageRoll = 0;
-      (profile.damageDice||[]).forEach((color, idx) => { const face = DATA.dice[color]?.[Number(state.spell.zealousFaces?.[`z${idx}`] || 0)] || DATA.dice[color]?.[0] || {value:0}; damageRoll += face.value || 0; });
-      const distanceReduction = Math.max(0, Number(state.spell.zealousDistance || 1) - 1);
-      magicDamage += Math.max(0, damageRoll - distanceReduction);
-      push = Math.max(0, 3 - distanceReduction);
-      damageRows.push({source:'Equipped combat dice damage roll', value:damageRoll});
-      damageRows.push({source:'Distance reduction', value:-distanceReduction});
+    let conviction = (conv0.value || 0) + (conv1.value || 0);
+    let failed = force > conviction;
+    let difference = Math.max(0, force - conviction);
+    const forceCheck = window.MiddaraCombatCore?.calculateForceCheck?.({
+      diceData: DATA.dice,
+      profile,
+      targetDef: target.def,
+      options: {
+        castingColor,
+        castingFace: state.spell.castingFace,
+        empower: state.spell.empower,
+        empowerFace: state.spell.empowerFace,
+        useOtherworldly: state.spell.useOtherworldly,
+        useOptionalBonus: state.spell.useOptionalBonus,
+        manualForceMod: state.spell.manualForceMod,
+        convictionFaces: state.spell.convictionFaces || {}
+      }
+    });
+    if (forceCheck) {
+      force = forceCheck.force;
+      conviction = forceCheck.conviction;
+      failed = forceCheck.failed;
+      difference = forceCheck.difference;
     }
-    if (state.spell.useOptionalBonus && profile.optionalMagicBonus) { magicDamage += profile.optionalMagicBonus; optionalSelfDamage = profile.optionalSelfDamage || 0; damageRows.push({source:'Optional self-damage bonus', value:profile.optionalMagicBonus}); }
-    if (!failed) magicDamage = 0;
-    const finalDamage = Math.max(0, magicDamage);
-    const hpAfter = Math.max(0, (target.def.hp || 0) - ((target.state.damage || 0) + finalDamage));
+    const spellOutcome = window.MiddaraCombatCore?.calculateSpellOutcome?.({
+      diceData: DATA.dice,
+      profile,
+      targetDef: target.def,
+      targetState: target.state,
+      options: {
+        castingColor,
+        castingFace: state.spell.castingFace,
+        empower: state.spell.empower,
+        empowerFace: state.spell.empowerFace,
+        useOtherworldly: state.spell.useOtherworldly,
+        useOptionalBonus: state.spell.useOptionalBonus,
+        manualForceMod: state.spell.manualForceMod,
+        convictionFaces: state.spell.convictionFaces || {},
+        previousDamage: state.spell.previousDamage,
+        zealousFaces: state.spell.zealousFaces || {},
+        zealousDistance: state.spell.zealousDistance,
+        zealousDiscount: state.spell.zealousDiscount
+      }
+    });
+    if (!spellOutcome) return { ready:false, reason:'Combat calculator did not load. Refresh the app cache from Data.' };
+    force = spellOutcome.force;
+    conviction = spellOutcome.conviction;
+    failed = spellOutcome.failed;
+    difference = spellOutcome.difference;
+    const effect = spellOutcome.effect;
+    const push = spellOutcome.push;
+    const damageRows = spellOutcome.damageRows;
+    optionalSelfDamage = spellOutcome.optionalSelfDamage || optionalSelfDamage;
+    const finalDamage = spellOutcome.finalDamage;
+    const hpAfter = spellOutcome.hpAfter;
     const key = JSON.stringify({mode:'spell', actor:state.ui.actorId, target:state.ui.targetId, profile:profile.id, cast:castingColor, face:state.spell.castingFace, empower:state.spell.empower, eFace:state.spell.empowerFace, force, conviction, damage:finalDamage, effect, opt:state.spell.useOptionalBonus, prev:state.spell.previousDamage, z:state.spell.zealousFaces, dist:state.spell.zealousDistance});
     return { ready:true, actor, target, profile, force, conviction, failed, difference, finalDamage, hpAfter, effect, push, key, forceRows, damageRows, optionalSelfDamage, convictionRows:[`${convColors[0]}: ${faceLabel(conv0,0)}`, `${convColors[1] || convColors[0]}: ${faceLabel(conv1,1)}`], blackSkull: !!blackFace?.skull, spCost: profile.damageMode==='zealous' && state.spell.zealousDiscount ? 1 : (profile.sp || 0) };
   }
@@ -1452,60 +1520,45 @@
     const profiles = getEnemyAttackProfilesForActor();
     const profile = DATA.enemyAttackProfiles[state.enemyAttack.profileId] || profiles[0];
     if (actor.type !== 'enemy' || !actor.def || !profile || !target?.def || !target?.state || !['party','command'].includes(target.type)) return { ready:false, reason:'Choose an enemy actor and a Party or Command target.' };
-    const pool = {book:0, shield:0, burst:0, skull:0};
-    let attackRoll = 0;
-    const diceRows = [];
-    (profile.dice||[]).forEach((color, idx) => {
-      const face = DATA.dice[color]?.[Number(state.enemyAttack.faces[`d${idx}`] || 0)] || DATA.dice[color]?.[0] || {value:0};
-      attackRoll += face.value || 0;
-      pool.book += face.book||0; pool.shield += face.shield||0; pool.burst += face.burst||0; pool.skull += face.skull||0;
-      diceRows.push({color, label:faceLabel(face, idx), value:face.value||0, symbols:{book:face.book||0, shield:face.shield||0, burst:face.burst||0, skull:face.skull||0}});
-    });
-    if (state.enemyAttack.empower && !(profile.dice||[]).includes('Black')) {
-      const face = DATA.dice.Black?.[Number(state.enemyAttack.empowerFace || 0)] || DATA.dice.Black[0];
-      pool.book += face.book||0; pool.shield += face.shield||0; pool.burst += face.burst||0; pool.skull += face.skull||0;
-      diceRows.push({color:'Black (Empower)', label:faceLabel(face,0), value:0, symbols:{book:face.book||0, shield:face.shield||0, burst:face.burst||0, skull:face.skull||0}});
-    }
-    const targetHasDarkness = target.state.effects?.includes('Darkness');
+    const core = window.MiddaraCombatCore;
+    if (!core?.calculateEnemyAttack) return { ready:false, reason:'Combat calculator did not load. Refresh the app cache from Data.' };
     const dodgeFace = state.enemyAttack.useDodge ? (DATA.dice.Black?.[Number(state.enemyAttack.dodgeFace || 0)] || DATA.dice.Black[0]) : null;
-    const dodgeDefense = (state.enemyAttack.useDodge && !targetHasDarkness) ? dodgeDefenseFromBlackFace(dodgeFace) : 0;
-    const flankingDefense = target.type==='party' && ((target.id==='nightingale' && state.enemyAttack.nightFlanking) || (target.id==='zeke' && state.enemyAttack.zekeFlanking)) ? 1 : 0;
-    const targetDefense = (target.def.defense || 0) + dodgeDefense + flankingDefense + Number(state.enemyAttack.targetDefenseMod || 0);
-    const attackTotal = attackRoll + Number(state.enemyAttack.manualAttackMod || 0);
-    const forcedMiss = !!state.enemyAttack.forceMiss;
-    const hit = !forcedMiss && attackTotal >= targetDefense;
-    const diffHit = hit ? Math.max(0, attackTotal - targetDefense) : 0;
-    const armorPiercing = Math.max(0, (profile.ap || 0) + Number(state.enemyAttack.manualArmorPiercing || 0));
-    const barrierArmor = target.state?.effects?.includes('Barrier') ? 1 : 0;
-    const targetArmor = (target.def.armor || 0) + barrierArmor;
-    const baseSpend = hit ? optimizeSymbolSpend(profile, pool, diffHit, targetArmor, armorPiercing, Number(state.enemyAttack.manualPhysical||0), Number(state.enemyAttack.manualMagic||0)) : {finalDamage:0, physical:0, magic:0, chosen:[], remaining:pool, physicalSymbols:0, magicSymbols:0, rawPhysical:0};
-    const physicalBeforeDefense = baseSpend.rawPhysical || 0;
-    let rawPhysical = physicalBeforeDefense;
-    const reductions = [];
-    const melee = /melee/i.test(profile.range || '') || !/range/i.test(profile.range || '');
-    if (target.type === 'party' && target.id === 'rook' && state.enemyAttack.rookPlate) { rawPhysical -= 4; reductions.push('Rook Plate -4 Physical'); }
-    if (target.type === 'party' && target.id === 'remi') {
-      if (state.enemyAttack.remiShearling && melee) { rawPhysical -= 2; reductions.push('Reinforced Shearling -2 Physical'); }
-      if (state.enemyAttack.remiShearlingPE) { rawPhysical -= (target.state.damage || 0); reductions.push(`Shearling Per Encounter -${target.state.damage||0} Physical`); }
-    }
-    if (target.type === 'party' && target.id === 'nightingale') {
-      if (state.enemyAttack.nightMorbid && melee) { rawPhysical -= 2; reductions.push('Morbid Leather -2 Physical'); }
-      if (state.enemyAttack.nightReinforced && melee) { rawPhysical -= 2; reductions.push('Reinforced Morbid Leather -2 Physical'); }
-    }
-    if (target.type === 'party' && target.id === 'zeke') {
-      if (state.enemyAttack.zekeMorbid && melee) { rawPhysical -= 2; reductions.push('Morbid Leather -2 Physical'); }
-      if (state.enemyAttack.zekeBelts && state.enemyAttack.useDodge) { rawPhysical -= 2; reductions.push('Too Many Belts -2 Physical'); }
-    }
-    rawPhysical = Math.max(0, rawPhysical);
-    const effectiveArmor = Math.max(0, targetArmor - armorPiercing);
-    let physical = Math.max(0, rawPhysical - effectiveArmor);
-    let magic = hit ? (baseSpend.magic || 0) : 0;
-    let finalDamage = hit ? Math.max(0, physical + magic - Number(state.enemyAttack.finalReduction || 0)) : 0;
-    if (target.type === 'command' && state.enemyAttack.summonReduction && finalDamage > 0) { finalDamage = Math.max(0, finalDamage - 2); reductions.push('Summon token -2 damage'); }
-    const hpAfter = Math.max(0, (target.def.hp || 0) - ((target.state.damage || 0) + finalDamage));
-    const canCounter = target.type === 'party';
+    const flankingDefense = target.type === 'party' && ((target.id === 'nightingale' && state.enemyAttack.nightFlanking) || (target.id === 'zeke' && state.enemyAttack.zekeFlanking));
+    const result = core.calculateEnemyAttack({
+      diceData: DATA.dice,
+      profile,
+      targetId: target.type === 'party' ? target.id : target.type,
+      actorState: { effects: [] },
+      targetDef: target.def,
+      targetState: target.state,
+      faces: state.enemyAttack.faces || {},
+      options: {
+        empower: state.enemyAttack.empower,
+        empowerFace: state.enemyAttack.empowerFace,
+        useDodge: state.enemyAttack.useDodge,
+        dodgeFace: state.enemyAttack.dodgeFace,
+        forceMiss: state.enemyAttack.forceMiss,
+        manualAttackMod: state.enemyAttack.manualAttackMod,
+        manualPhysical: state.enemyAttack.manualPhysical,
+        manualMagic: state.enemyAttack.manualMagic,
+        manualArmorPiercing: state.enemyAttack.manualArmorPiercing,
+        targetDefenseMod: state.enemyAttack.targetDefenseMod,
+        finalReduction: state.enemyAttack.finalReduction,
+        flankingDefense,
+        rookPlate: target.type === 'party' && target.id === 'rook' && state.enemyAttack.rookPlate,
+        remiShearling: target.type === 'party' && target.id === 'remi' && state.enemyAttack.remiShearling,
+        remiShearlingPE: target.type === 'party' && target.id === 'remi' && state.enemyAttack.remiShearlingPE,
+        nightMorbid: target.type === 'party' && target.id === 'nightingale' && state.enemyAttack.nightMorbid,
+        nightReinforced: target.type === 'party' && target.id === 'nightingale' && state.enemyAttack.nightReinforced,
+        zekeMorbid: target.type === 'party' && target.id === 'zeke' && state.enemyAttack.zekeMorbid,
+        zekeBelts: target.type === 'party' && target.id === 'zeke' && state.enemyAttack.zekeBelts,
+        summonReduction: target.type === 'command' && state.enemyAttack.summonReduction
+      }
+    });
+    const finalDamage = result.finalDamage || 0;
+    const barrierArmor = result.barrierArmor || 0;
     const key = JSON.stringify({mode:'enemyAttack', actor:state.ui.actorId, target:state.ui.targetId, profile:profile.id, faces:state.enemyAttack.faces, emp:state.enemyAttack.empower, ef:state.enemyAttack.empowerFace, dodge:state.enemyAttack.useDodge, df:state.enemyAttack.dodgeFace, mods:state.enemyAttack, damage:finalDamage, zMorbid:state.enemyAttack.zekeMorbid, zFlank:state.enemyAttack.zekeFlanking, barrier:barrierArmor});
-    return { ready:true, actor, target, profile, diceRows, pool, attackRoll, attackTotal, targetDefense, hit, forcedMiss, diffHit, dodgeDefense, dodgeSkull: !!dodgeFace?.skull, targetHasDarkness, armorPiercing, targetArmor, barrierArmor, effectiveArmor, physicalBeforeDefense, rawPhysical, physical, magic, finalDamage, hpAfter, spend:baseSpend, reductions, canCounter, key };
+    return Object.assign({ ready:true, actor, target, profile, canCounter: target.type === 'party', key, dodgeSkull: !!dodgeFace?.skull }, result, { finalDamage, barrierArmor });
   }
   function renderEnemyAttackResult(result) {
     if (!result.ready) return `<div class="note">${escapeHtml(result.reason || 'Enemy attack is not ready.')}</div>`;
@@ -1685,17 +1738,61 @@
     if (state.enemySpell.witchHat) conviction += 2;
     let failed = force > conviction;
     if (state.enemySpell.forcePass) failed = false;
-    const difference = Math.max(0, force - conviction);
-    const effect = profile.id === 'manual_enemy_spell' ? (state.enemySpell.manualEffect || '') : (profile.effect || '');
-    let magicDamage = 0;
-    const damageRows = [];
-    if (profile.damageMode === 'flat' && profile.flatMagic) { magicDamage += profile.flatMagic; damageRows.push({source:'Flat Magic Damage', value:profile.flatMagic}); }
-    if (profile.damageMode === 'difference' || profile.damageEqualsDifference || (profile.id === 'manual_enemy_spell' && state.enemySpell.damageEqualsDifference)) { magicDamage += difference; damageRows.push({source:'Failed Conviction difference', value:difference}); }
-    if (profile.id === 'manual_enemy_spell' && Number(state.enemySpell.manualFlatMagic||0) > 0) { magicDamage += Number(state.enemySpell.manualFlatMagic||0); damageRows.push({source:'Manual flat Magic Damage', value:Number(state.enemySpell.manualFlatMagic||0)}); }
-    if (!failed) magicDamage = 0;
-    const finalDamage = Math.max(0, magicDamage);
-    const hpAfter = Math.max(0, (target.def.hp || 0) - ((target.state.damage || 0) + finalDamage));
-    const immune = effect && (target.def.immunities || []).includes(effect);
+    let difference = Math.max(0, force - conviction);
+    const enemyForceProfile = profile.fixedForce != null ? Object.assign({}, profile, { noCasting: true, baseForce: profile.fixedForce }) : profile;
+    const enemyForceCheck = window.MiddaraCombatCore?.calculateForceCheck?.({
+      diceData: DATA.dice,
+      profile: enemyForceProfile,
+      targetDef: Object.assign({}, target.def, { conviction: [c0Color, c1Color] }),
+      options: {
+        castingColor: state.enemySpell.castingColor || profile.defaultColor || profile.castingColors?.[0] || 'Purple',
+        castingFace: state.enemySpell.castingFace,
+        empower: state.enemySpell.empower,
+        empowerFace: state.enemySpell.empowerFace,
+        manualForceMod: state.enemySpell.manualForceMod,
+        manualConvictionMod: Number(state.enemySpell.manualConvictionMod || 0) + (state.enemySpell.witchHat ? 2 : 0),
+        forcePass: state.enemySpell.forcePass,
+        convictionFaces: state.enemySpell.convictionFaces || {}
+      }
+    });
+    if (enemyForceCheck) {
+      force = enemyForceCheck.force;
+      conviction = enemyForceCheck.conviction;
+      failed = enemyForceCheck.failed;
+      difference = enemyForceCheck.difference;
+    }
+    const enemySpellProfile = profile.fixedForce != null ? Object.assign({}, profile, { noCasting: true, baseForce: profile.fixedForce }) : profile;
+    const enemySpellOutcome = window.MiddaraCombatCore?.calculateEnemySpellOutcome?.({
+      diceData: DATA.dice,
+      profile: enemySpellProfile,
+      targetDef: Object.assign({}, target.def, { conviction: [c0Color, c1Color] }),
+      targetState: target.state,
+      options: {
+        castingColor: state.enemySpell.castingColor || profile.defaultColor || profile.castingColors?.[0] || 'Purple',
+        castingFace: state.enemySpell.castingFace,
+        empower: state.enemySpell.empower,
+        empowerFace: state.enemySpell.empowerFace,
+        manualForceMod: state.enemySpell.manualForceMod,
+        manualConvictionMod: Number(state.enemySpell.manualConvictionMod || 0) + (state.enemySpell.witchHat ? 2 : 0),
+        forcePass: state.enemySpell.forcePass,
+        convictionFaces: state.enemySpell.convictionFaces || {},
+        effectOverride: profile.id === 'manual_enemy_spell' ? (state.enemySpell.manualEffect || '') : (profile.effect || ''),
+        manualFlatMagic: profile.id === 'manual_enemy_spell' ? state.enemySpell.manualFlatMagic : 0,
+        damageEqualsDifference: profile.damageEqualsDifference || (profile.id === 'manual_enemy_spell' && state.enemySpell.damageEqualsDifference),
+        flatDamageLabel: 'Flat Magic Damage',
+        manualFlatDamageLabel: 'Manual flat Magic Damage'
+      }
+    });
+    if (!enemySpellOutcome) return { ready:false, reason:'Combat calculator did not load. Refresh the app cache from Data.' };
+    force = enemySpellOutcome.force;
+    conviction = enemySpellOutcome.conviction;
+    failed = enemySpellOutcome.failed;
+    difference = enemySpellOutcome.difference;
+    const effect = enemySpellOutcome.effect;
+    const damageRows = enemySpellOutcome.damageRows;
+    const finalDamage = enemySpellOutcome.finalDamage;
+    const hpAfter = enemySpellOutcome.hpAfter;
+    const immune = enemySpellOutcome.immune;
     const key = JSON.stringify({mode:'enemySpell', actor:state.ui.actorId, target:state.ui.targetId, profile:profile.id, force, conviction, effect, damage:finalDamage, cast:state.enemySpell.castingColor, face:state.enemySpell.castingFace, empower:state.enemySpell.empower, eFace:state.enemySpell.empowerFace, convC:state.enemySpell.convictionColors, convF:state.enemySpell.convictionFaces, opts:{pass:state.enemySpell.forcePass, wh:state.enemySpell.witchHat, mr:state.enemySpell.magicResistance, me:state.enemySpell.manualEffect, md:state.enemySpell.manualFlatMagic, dd:state.enemySpell.damageEqualsDifference}});
     return { ready:true, actor, target, profile, force, conviction, failed, difference, finalDamage, hpAfter, effect, immune, key, forceRows, damageRows, convictionRows:[`${c0Color}: ${faceLabel(conv0,0)}`, `${c1Color}: ${faceLabel(conv1,1)}`], blackSkull: !!blackFace?.skull };
   }
@@ -1877,7 +1974,7 @@
     return `<div class="card ok" style="margin-top:10px"><h3>Nightingale - Summon Esper</h3><div class="note">Placement/SOI stays manual. V3 adds the Esper as its own Command actor and can add its initiative card. Ability tokens are not tracked digitally; use the physical Summon token on the table.</div><div class="compact-actions"><button type="button" class="primary" data-action="summon-command" data-def="agares">Summon Agares</button><button type="button" class="primary" data-action="summon-command" data-def="eliphie">Summon Eliphie</button><button type="button" data-action="tab" data-tab="command">Open Command</button></div><div class="hr"></div><h3>Active Loyal Espers</h3><div class="grid">${cards}</div></div>`;
   }
   function renderQuickEnemyAdd() {
-    return `<div data-quick-enemy-form><div class="field-grid three"><div><label>Enemy type</label><select data-field="quick-enemy-def">${Object.values(DATA.enemyDefinitions).map(d => `<option value="${d.id}">${escapeHtml(d.name)}</option>`).join('')}</select></div><div><label>Count</label><input data-field="quick-enemy-count" type="number" min="1" step="1" value="1" /></div><div><label>&nbsp;</label><button type="button" class="primary" data-action="add-enemy-quick">Add enemy</button></div></div><label style="margin-top:8px"><input type="checkbox" data-field="quick-enemy-initiative" ${state.settings.autoAddEnemyInitiative?'checked':''} /> <span class="note">Also add/ensure initiative card after current turn</span></label></div>`;
+    return `<div class="quick-enemy-form" data-quick-enemy-form><div class="field-grid three quick-enemy-grid"><div><label>Enemy type</label><select data-field="quick-enemy-def">${Object.values(DATA.enemyDefinitions).map(d => `<option value="${d.id}">${escapeHtml(d.name)}</option>`).join('')}</select></div><div><label>Count</label><input data-field="quick-enemy-count" type="number" min="1" step="1" value="1" /></div><div><button type="button" class="primary" data-action="add-enemy-quick">Add enemy</button></div></div><label style="margin-top:8px"><input type="checkbox" data-field="quick-enemy-initiative" ${state.settings.autoAddEnemyInitiative?'checked':''} /> <span class="note">Add initiative card after current turn</span></label></div>`;
   }
 
   function renderPartyTab() {
@@ -1947,11 +2044,11 @@
 
   function renderDataTab() {
     const exported = JSON.stringify(state, null, 2);
-    return `<section class="panel"><h2>Data / deployment</h2><div class="note">V3 uses a new snapshot schema. Old V2 snapshots are not automatically migrated yet; keep V2 snapshots separate until a migration tool exists.</div><div class="btn-row" style="margin-top:10px"><button class="primary" data-action="export-snapshot">Refresh export box</button><button class="accent" data-action="download-snapshot">Download JSON</button><button data-action="copy-snapshot">Copy JSON</button><button class="warn" data-action="import-snapshot">Import JSON from box</button><button class="danger" data-action="reset-app">Reset V3 local state</button></div><div class="tiny" style="margin-top:8px">On tablet, Download JSON is the easiest backup path. Safari usually saves it to Files → Downloads. Copy JSON is a fallback if downloads are blocked.</div><textarea id="snapshotBox" style="margin-top:10px">${escapeHtml(exported)}</textarea><div class="hr"></div><h3>PWA cache</h3><div class="note">Update cache checks for a newer GitHub Pages deployment. Clear app cache only removes cached app files, not localStorage state.</div><div class="btn-row" style="margin-top:10px"><button data-action="update-cache">Update app cache</button><button data-action="clear-cache">Clear app cache only</button></div><div id="dataStatus" class="note" style="margin-top:10px"></div></section>`;
+    return `<section class="panel"><h2>Data / deployment</h2><div class="note">V3 uses a new snapshot schema. Old V2 snapshots are not automatically migrated yet; keep V2 snapshots separate until a migration tool exists.</div><div class="btn-row" style="margin-top:10px"><button class="primary" data-action="export-snapshot">Refresh export box</button><button class="accent" data-action="download-snapshot">Download JSON</button><button data-action="copy-snapshot">Copy JSON</button><button class="warn" data-action="import-snapshot">Import JSON from box</button><button class="danger" data-action="reset-app">Reset V3 local state</button></div><div class="tiny" style="margin-top:8px">On tablet, Download JSON is the easiest backup path. Safari usually saves it to Files → Downloads. Copy JSON is a fallback if downloads are blocked.</div><textarea id="snapshotBox" style="margin-top:10px">${escapeHtml(exported)}</textarea><div class="hr"></div><h3>PWA cache</h3><div class="note">Update cache checks for a newer GitHub Pages deployment. Clear app cache only removes cached app files, not localStorage state.</div><div class="btn-row" style="margin-top:10px"><button data-action="update-cache">Update app cache</button><button data-action="clear-cache">Clear app cache only</button></div><div id="dataStatus" class="note" style="margin-top:10px"></div><div class="hr"></div><h3>Combat tests</h3><div class="note">Run the deployed combat math regression tests after GitHub Pages updates, especially before a game session.</div><div class="btn-row" style="margin-top:10px"><a class="button-link accent" href="tests/run-tests.html">Run combat tests</a></div></section>`;
   }
 
   function renderLogPanel() {
-    return `<section class="panel"><h2>Recent action log</h2>${state.log.length ? `<div class="grid">${state.log.slice(0,8).map(l => `<div class="card"><strong>${escapeHtml(l.title)}</strong><div class="tiny">${escapeHtml(l.time)}</div><div class="note">${escapeHtml(l.detail)}</div></div>`).join('')}</div>` : '<div class="note">No log entries yet.</div>'}</section>`;
+    return `<section class="panel log-panel"><div class="panel-heading"><h2>Recent action log</h2><span class="pill"><strong>Entries</strong> ${state.log.length}</span></div>${state.log.length ? `<div class="log-grid">${state.log.slice(0,12).map(l => `<div class="card log-card"><strong>${escapeHtml(l.title)}</strong><div class="tiny">${escapeHtml(l.time)}</div><div class="note">${escapeHtml(l.detail)}</div></div>`).join('')}</div>` : '<div class="empty-state">No log entries yet.</div>'}</section>`;
   }
 
   function getEntityByTarget(targetId) {
@@ -2097,6 +2194,23 @@
     if (ent.type === 'enemy' && ent.state.damage >= ent.def.hp) ent.state.defeated = true;
     if (ent.type === 'command' && ent.state.damage >= ent.def.hp) ent.state.defeated = true;
   }
+  function applyResultDamageOnce(result, defeatedTypes = ['enemy','command']) {
+    if (!result?.ready || !result.key || !result.target?.state || !result.target?.def) return false;
+    if (state.ui.appliedResultKey === result.key) return false;
+    const ent = result.target;
+    const coreApply = window.MiddaraCombatCore?.applyDamageOnce;
+    const applied = coreApply ? coreApply(ent.state, ent.def, result, state.ui.appliedResultKey) : {
+      applied: true,
+      appliedKey: result.key,
+      damage: Math.max(0, Math.min(ent.def.hp || 999, (ent.state.damage || 0) + Number(result.finalDamage || 0))),
+      defeated: ((ent.state.damage || 0) + Number(result.finalDamage || 0)) >= (ent.def.hp || 999)
+    };
+    if (!applied.applied) return false;
+    ent.state.damage = applied.damage;
+    if (applied.defeated && defeatedTypes.includes(ent.type)) ent.state.defeated = true;
+    state.ui.appliedResultKey = applied.appliedKey;
+    return true;
+  }
   function mutateTargetSp(delta) {
     const ent = getEntityByTarget(state.ui.targetId);
     if (!ent || !ent.state || !ent.def || ent.state.sp == null) return;
@@ -2164,35 +2278,42 @@
     if (a === 'target-remove-effect') { const ent=getEntityByTarget(state.ui.targetId); removeEffectFromEntity(ent, selectedTargetEffect()); saveState(); render(); return; }
     if (a === 'target-add-token') { const ent=getEntityByTarget(state.ui.targetId); addTokenToEntity(ent, selectedTargetToken()); saveState(); render(); return; }
     if (a === 'target-remove-token') { const ent=getEntityByTarget(state.ui.targetId); removeTokenFromEntity(ent, selectedTargetToken()); saveState(); render(); return; }
-    if (a === 'apply-attack') { const r=calculateAttackResult(); if(!r.ready) return; if(state.ui.appliedResultKey===r.key) return; const ent = r.target; ent.state.damage = Math.max(0, Math.min(ent.def.hp || 999, (ent.state.damage||0) + r.finalDamage)); if((ent.type==='enemy' || ent.type==='command') && ent.state.damage >= ent.def.hp) ent.state.defeated = true; state.ui.appliedResultKey = r.key; saveState(); render(); addLog(`${actorLabel()} attacked ${targetLabel()}`, `${r.hit?'Hit':'Miss'}; attack ${r.attackTotal} vs defense ${r.targetDefense}; applied ${r.finalDamage} damage.`); return; }
-    if (a === 'apply-spell') { const r=calculateSpellResult(); if(!r.ready) return; if(state.ui.appliedResultKey===r.key) return; const ent = r.target; if (r.finalDamage > 0) { ent.state.damage = Math.max(0, Math.min(ent.def.hp || 999, (ent.state.damage||0) + r.finalDamage)); if((ent.type==='enemy' || ent.type==='command') && ent.state.damage >= ent.def.hp) ent.state.defeated = true; } if (r.failed && r.effect) addEffectToEntity(ent, r.effect); if (r.optionalSelfDamage > 0) { const caster = r.actor; if (caster?.state && caster?.def) { caster.state.damage = Math.max(0, Math.min(caster.def.hp || 999, (caster.state.damage||0) + r.optionalSelfDamage)); } } state.ui.appliedResultKey = r.key; saveState(); render(); addLog(`${actorLabel()} cast ${r.profile.label}`, `${r.failed?'Target failed':'Target passed'}; Force ${r.force} vs Conviction ${r.conviction}; applied ${r.finalDamage} Magic Damage${r.effect && r.failed ? ' and ' + r.effect : ''}.`); return; }
+    if (a === 'apply-attack') {
+      const r = calculateAttackResult();
+      if (!applyResultDamageOnce(r, ['enemy','command'])) return;
+      saveState(); render();
+      addLog(actorLabel() + ' attacked ' + targetLabel(), (r.hit ? 'Hit' : 'Miss') + '; attack ' + r.attackTotal + ' vs defense ' + r.targetDefense + '; applied ' + r.finalDamage + ' damage.');
+      return;
+    }
+    if (a === 'apply-spell') {
+      const r = calculateSpellResult();
+      if (!r.ready || state.ui.appliedResultKey === r.key) return;
+      const ent = r.target;
+      applyResultDamageOnce(r, ['enemy','command']);
+      if (r.failed && r.effect) addEffectToEntity(ent, r.effect);
+      if (r.optionalSelfDamage > 0) {
+        const caster = r.actor;
+        if (caster?.state && caster?.def) caster.state.damage = Math.max(0, Math.min(caster.def.hp || 999, (caster.state.damage || 0) + r.optionalSelfDamage));
+      }
+      saveState(); render();
+      addLog(actorLabel() + ' cast ' + r.profile.label, (r.failed ? 'Target failed' : 'Target passed') + '; Force ' + r.force + ' vs Conviction ' + r.conviction + '; applied ' + r.finalDamage + ' Magic Damage' + (r.effect && r.failed ? ' and ' + r.effect : '') + '.');
+      return;
+    }
     if (a === 'apply-enemy-attack') {
       const r = calculateEnemyAttackResult();
-      if (!r.ready) return;
-      if (state.ui.appliedResultKey === r.key) return;
-      const ent = r.target;
-      if (r.finalDamage > 0) {
-        ent.state.damage = Math.max(0, Math.min(ent.def.hp || 999, (ent.state.damage || 0) + r.finalDamage));
-        if ((ent.type === 'party' || ent.type === 'command') && ent.state.damage >= ent.def.hp) ent.state.defeated = true;
-      }
-      state.ui.appliedResultKey = r.key;
+      if (!applyResultDamageOnce(r, ['party','command'])) return;
       saveState(); render();
-      addLog(`${actorLabel()} attacked ${targetLabel()}`, `${r.hit?'Hit':'Miss'}; attack ${r.attackTotal} vs defense ${r.targetDefense}; applied ${r.finalDamage} damage.`);
+      addLog(actorLabel() + ' attacked ' + targetLabel(), (r.hit ? 'Hit' : 'Miss') + '; attack ' + r.attackTotal + ' vs defense ' + r.targetDefense + '; applied ' + r.finalDamage + ' damage.');
       return;
     }
     if (a === 'apply-enemy-spell') {
       const r = calculateEnemySpellResult();
-      if (!r.ready) return;
-      if (state.ui.appliedResultKey === r.key) return;
+      if (!r.ready || state.ui.appliedResultKey === r.key) return;
       const ent = r.target;
-      if (r.finalDamage > 0) {
-        ent.state.damage = Math.max(0, Math.min(ent.def.hp || 999, (ent.state.damage || 0) + r.finalDamage));
-        if ((ent.type === 'party' || ent.type === 'command') && ent.state.damage >= ent.def.hp) ent.state.defeated = true;
-      }
+      applyResultDamageOnce(r, ['party','command']);
       if (r.failed && r.effect && !r.immune) addEffectToEntity(ent, r.effect);
-      state.ui.appliedResultKey = r.key;
       saveState(); render();
-      addLog(`${actorLabel()} used ${r.profile.label}`, `${r.failed?'Target failed':'Target passed'}; Force ${r.force} vs Conviction ${r.conviction}; applied ${r.finalDamage} Magic Damage${r.effect && r.failed && !r.immune ? ' and ' + r.effect : ''}.`);
+      addLog(actorLabel() + ' used ' + r.profile.label, (r.failed ? 'Target failed' : 'Target passed') + '; Force ' + r.force + ' vs Conviction ' + r.conviction + '; applied ' + r.finalDamage + ' Magic Damage' + (r.effect && r.failed && !r.immune ? ' and ' + r.effect : '') + '.');
       return;
     }
     if (a === 'reset-enemy-spell-roll') {
