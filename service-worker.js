@@ -1,4 +1,4 @@
-const CACHE_NAME = 'middara-helper-v3-0l-live-encounter-qa-polish-tablet-support';
+const CACHE_NAME = 'middara-helper-v3-0l-zanbato-shield';
 const APP_SHELL = [
   './',
   './index.html',

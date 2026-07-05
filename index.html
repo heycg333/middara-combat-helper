@@ -200,7 +200,7 @@
   const DATA = {
     party: {
       rook: { id:'rook', name:'Rook', hp:26, recovery:3, maxSp:5, defense:13, armor:5, movement:7, conviction:['Green','Red'], tags:['Adventurer'], note:'High armor front line; Rook defense and support are handled contextually.' },
-      remi: { id:'remi', name:'Remi', hp:32, recovery:3, maxSp:5, defense:12, armor:1, movement:6, conviction:['Teal','Teal'], tags:['Adventurer'], note:'Chain Pick / Scimitar / Whirlwind helpers return after core attack is stable.' },
+      remi: { id:'remi', name:'Remi', hp:30, recovery:3, maxSp:5, defense:13, armor:2, movement:6, conviction:['Green','Teal'], tags:['Adventurer'], note:'Zanbato / Chain Pick / Whirlwind helpers use the current table loadout.' },
       nightingale: { id:'nightingale', name:'Nightingale', hp:32, recovery:3, maxSp:5, defense:13, armor:1, movement:7, conviction:['Grey','Purple'], tags:['Adventurer'], note:'Nightingale spell, familiar, and Loyal Esper tools are clean V3 components.' },
       zeke: { id:'zeke', name:'Zeke', hp:24, recovery:3, maxSp:5, defense:13, armor:1, movement:7, conviction:['Blue','Purple'], immunities:['Darkness','Condemn'], tags:['Adventurer'], note:'Onslaught / Blade Works helpers return after core attack is stable.' }
     },
@@ -227,10 +227,10 @@
       Black:  [{value:0, book:2, shield:2, label:'2 Book + 2 Shield'}, {value:0, book:3, shield:1, label:'3 Book + 1 Shield'}, {value:0, book:1, shield:3, label:'1 Book + 3 Shield'}, {value:0, shield:4, label:'4 Shield'}, {value:0, book:4, label:'4 Book'}, {value:0, skull:1, label:'Skull'}]
     },
     attackProfiles: {
-      rook_default: { id:'rook_default', actor:'rook', label:'Rook - Loche Smasher + Svalinn', dice:['Green','Blue'], range:'Melee 1', ap:1, passivePhysical:0, otherworldlyAttack:true, abilities:[{name:'Loche Shield', shield:1, physical:1}, {name:'Loche Burst', burst:1, physical:3}], notes:'Default +1 Armor Piercing from Loche Smasher.' },
+      rook_default: { id:'rook_default', actor:'rook', label:'Rook - Loche Smasher + Svalinn', dice:['Green','Blue'], range:'Melee 1', ap:1, passivePhysical:0, otherworldlyAttack:true, abilities:[{name:'Loche Shield', shield:1, physical:1}, {name:'Loche Burst', burst:1, physical:3}], notes:'Default +1 Armor Piercing from Loche Smasher. Master Work can add +1 to attack roll.' },
       remi_chain_melee: { id:'remi_chain_melee', actor:'remi', label:'Remi - Chain Pick melee side', dice:['Green','Green','Black'], range:'Melee 1', ap:0, passivePhysical:1, otherworldlyAttack:true, abilities:[{name:'2 Shield', shield:2, physical:3}, {name:'Burst', burst:1, physical:3}], notes:'Hammer Helm passive adds +1 Physical Damage. Master Work can add +1 to attack roll.' },
       remi_chain_ranged: { id:'remi_chain_ranged', actor:'remi', label:'Remi - Chain Pick ranged side', dice:['Red','Green','Black'], range:'Range 4', ap:0, passivePhysical:1, otherworldlyAttack:true, abilities:[{name:'Shield', shield:1, physical:1}, {name:'Burst', burst:1, physical:3}], notes:'Hammer Helm passive adds +1 Physical Damage. Master Work can add +1 to attack roll.' },
-      remi_scimitar: { id:'remi_scimitar', actor:'remi', label:'Remi - Scimitar Swallow', dice:['Teal','Teal'], range:'Melee 1', ap:0, passivePhysical:1, otherworldlyAttack:true, abilities:[{name:'2 Shield', shield:2, physical:2}, {name:'Burst', burst:1, physical:2}], notes:'Hammer Helm passive adds +1 Physical Damage.' },
+      remi_zanbato: { id:'remi_zanbato', actor:'remi', label:'Remi - Zanbato of the Damned', dice:['Blue','Green','Black'], range:'Melee 1', ap:0, passivePhysical:1, otherworldlyAttack:true, abilities:[{name:'2 Shield', shield:2, physical:3}, {name:'Burst', burst:1, physical:4}], notes:'Hammer Helm passive adds +1 Physical Damage. Zanbato 2 Shield and Burst damage are automated; passive/exhaust/flip text is tracked manually for now.' },
       night_default: { id:'night_default', actor:'nightingale', label:'Nightingale - Wand + Trophy', dice:['Grey','Red','Black'], range:'Range 4', ap:0, passivePhysical:0, passiveMagic:0, conditionalPhysical:[{name:'Morbid Leather', minDifferenceExclusive:2, physical:2}], otherworldlyAttack:true, abilities:[{name:'Trophy Book', book:1, magic:1}, {name:'Wand 2 Book', book:2, magic:2}, {name:'Trophy Burst', burst:1, magic:4}, {name:'Wand Burst', burst:1, magic:3}], notes:'Nightstalker/Wand symbols deal Magic Damage. Morbid Leather +2 Physical on difference hit >2 is included. Trophy helpers remain guided in Nightingale tools.' },
       zeke_default: { id:'zeke_default', actor:'zeke', label:'Zeke - dual short swords', dice:['Green','Blue'], range:'Melee 1', ap:0, passivePhysical:0, conditionalPhysical:[{name:'Morbid Leather', minDifferenceExclusive:2, physical:2}], otherworldlyAttack:true, abilities:[{name:'Sword 2 Shield', shield:2, physical:3}, {name:'Dweller Shield', shield:1, physical:1}, {name:'Sword Burst', burst:1, physical:4}, {name:'Dweller Burst', burst:1, physical:3}], notes:'Adjacent targets may not Dodge from Sword of Sorrow; track board legality manually.' },
       agares_punch: { id:'agares_punch', actor:'agares', label:'Agares - Gigantic Punch', dice:['Grey','Red','Black'], range:'Melee 1', ap:0, passivePhysical:0, otherworldlyAttack:true, abilities:[{name:'Book', book:1, magic:1}, {name:'Wand 2 Book', book:2, magic:2}, {name:'Trophy Burst', burst:1, magic:4}, {name:'Wand Burst', burst:1, magic:3}], notes:'FU Push 3, Force 10 + difference hit is a reminder for now.' },
@@ -469,6 +469,8 @@
   function normalizeState() {
     if (!state.ui) state.ui = defaultState().ui;
     if (!DATA.party[state.ui.selectedParty]) state.ui.selectedParty = 'rook';
+    if (state.attack?.profileId === 'remi_scimitar') state.attack.profileId = 'remi_zanbato';
+    if (state.remiZeke?.remiProfile === 'remi_scimitar') state.remiZeke.remiProfile = 'remi_zanbato';
     if (!state.initiative.cards.length) state.initiative.currentIndex = 0;
     if (state.initiative.currentIndex >= state.initiative.cards.length) state.initiative.currentIndex = Math.max(0, state.initiative.cards.length - 1);
     if (!state.ui.actorId) syncActorFromInitiative(false);
@@ -876,7 +878,7 @@
       return `<div class="hr"></div><h3>Remi attack helpers</h3>
         <div class="field-grid">
           <div><label>Remi weapon side</label><select data-change="remi-chain-profile">
-            ${[['remi_chain_melee','Chain Pick melee / Gigas'],['remi_chain_ranged','Chain Pick ranged side'],['remi_scimitar','Scimitar Swallow']].map(([id,label])=>`<option value="${id}" ${state.remiZeke.remiProfile===id?'selected':''}>${label}</option>`).join('')}
+            ${[['remi_chain_melee','Chain Pick melee / Gigas'],['remi_chain_ranged','Chain Pick ranged side'],['remi_zanbato','Zanbato of the Damned']].map(([id,label])=>`<option value="${id}" ${state.remiZeke.remiProfile===id?'selected':''}>${label}</option>`).join('')}
           </select></div>
           <div class="chain-helper-status"><strong>Master of the Vessel</strong><br><span class="tiny">Use the checkbox in the Attack options. It adds 1 Burst and increases symbol-damage abilities by +1.</span></div>
         </div>
@@ -1004,7 +1006,7 @@
     const target = getEntityByTarget(state.ui.targetId);
     const hasCourage = actor.state?.effects?.includes('Courage');
     const hasDarkness = actor.state?.effects?.includes('Darkness');
-    const masterWorkAvailable = actor.type === 'party' && ((actor.id === 'remi' && profile.id.includes('chain')) || actor.id === 'zeke');
+    const masterWorkAvailable = actor.type === 'party' && ((actor.id === 'remi' && profile.id.includes('chain')) || actor.id === 'rook' || actor.id === 'zeke');
     const motvAvailable = actor.type === 'party' && actor.id === 'remi';
     return `<details style="margin-top:10px" open><summary>Attack options and manual modifiers</summary>
       <div class="field-grid" style="margin-top:10px">
