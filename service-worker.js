@@ -1,4 +1,4 @@
-const CACHE_NAME = 'middara-helper-v3-0l-zanbato-shield';
+const CACHE_NAME = 'middara-helper-v3-0l-rare-enemies';
 const APP_SHELL = [
   './',
   './index.html',

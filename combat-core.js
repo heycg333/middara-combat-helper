@@ -165,7 +165,7 @@
     if (options.useMasterOfVessel) pool.burst += 1;
 
     const darknessPenalty = (actorState.effects || []).includes('Darkness') ? -1 : 0;
-    const attackTotal = rolled.total + number(options.manualAttackMod) + darknessPenalty + (options.useMasterWork ? 1 : 0);
+    const attackTotal = rolled.total + number(profile.attackBonus) + number(options.manualAttackMod) + darknessPenalty + (options.useMasterWork ? 1 : 0);
     const targetDefense = number(targetDef.defense) + number(options.targetDefenseMod);
     const hit = attackTotal >= targetDefense;
     const diffHit = hit ? Math.max(0, attackTotal - targetDefense) : 0;

@@ -209,7 +209,10 @@
       merk_hound: { id:'merk_hound', name:'Merk Hound', hp:18, defense:14, armor:0, movement:6, conviction:['Teal','Green'], tags:['Intelligent','Aquatic'] },
       fragor: { id:'fragor', name:'Fragor', hp:16, defense:13, armor:0, movement:4, conviction:['Teal','Orange'], tags:['Intelligent','Insect','Swarm'] },
       adlet_drudge: { id:'adlet_drudge', name:'Adlet Drudge', hp:18, defense:12, armor:0, movement:8, conviction:['Teal','Red'], tags:['Intelligent','Adlet','Swarm'], immunities:['Darkness','Poison','Sedate'] },
-      earth_loa_itlum: { id:'earth_loa_itlum', name:'Earth Loa - Itlum Rich', hp:36, defense:12, armor:5, movement:4, conviction:['Teal','Teal'], tags:['Intelligent','Loa','Variation'], immunities:['Darkness','Sedate'] }
+      earth_loa_itlum: { id:'earth_loa_itlum', name:'Earth Loa - Itlum Rich', hp:36, defense:12, armor:5, movement:4, conviction:['Teal','Teal'], tags:['Intelligent','Loa','Variation'], immunities:['Darkness','Sedate'] },
+      gevaudan: { id:'gevaudan', name:'Gevaudan', hp:30, defense:16, armor:0, movement:6, soi:4, conviction:['Teal','Green'], tags:['Beast'], note:'Rare Beast. Agile: Provoke 2, +1 attack rolls, Dodge first time attacked each turn. Ferocious: gains Courage after successful Dodge. Adrenaline: first miss/no-damage attack each turn may trigger Counter Reach 2.' },
+      living_oblation: { id:'living_oblation', name:'Living Oblation', hp:40, defense:14, armor:0, movement:6, soi:6, conviction:['Green','Blue'], tags:['Summoner 13','Nimble'], note:'Rare Summoner. Nimble: first time attacked each turn, Dodge +1. AI spell damage is Books from 2 Purple, 2 Orange, and 2 Red dice.' },
+      corpse_collector: { id:'corpse_collector', name:'Corpse Collector', hp:100, defense:15, armor:3, movement:0, soi:4, conviction:['Green','Grey'], tags:['Flora','Gilded','Hulking'], note:'Rare Flora. Hulking. Partially Submerged: when targeted by ranged attack or spell, attack range or SOI is reduced by half.' }
     },
     commandDefinitions: {
       agares: { id:'agares', name:'Agares', hp:32, recovery:3, maxSp:5, defense:13, armor:4, movement:4, soi:4, conviction:['Grey','Purple'], tags:['Loyal Esper','Command','Squeeze'] },
@@ -257,7 +260,10 @@
       merk_range8: { id:'merk_range8', enemy:'merk_hound', label:'Merk Hound - Range 8 +4 AP', dice:['Green','Grey'], range:'Range 8', ap:4, abilities:[{name:'Shield', shield:1, physical:1}], notes:'Use for the AI ranged attack with +4 Armor Piercing.' },
       fragor_basic: { id:'fragor_basic', enemy:'fragor', label:'Fragor - basic attack', dice:['Green','Green'], range:'Melee / ranged AI', ap:0, abilities:[{name:'Shield', shield:1, physical:1}, {name:'Burst', burst:1, physical:1}], notes:'Disease FU and Bulb/pulse quirks are reminders for later modules.' },
       adlet_basic: { id:'adlet_basic', enemy:'adlet_drudge', label:'Adlet Drudge - melee attack', dice:['Green','Green'], range:'Melee', ap:0, abilities:[{name:'Shield', shield:1, physical:1}, {name:'Burst', burst:1, physical:2}], notes:'Set manual Armor Piercing equal to current Itlum Shards when relevant.' },
-      earth_loa_basic: { id:'earth_loa_basic', enemy:'earth_loa_itlum', label:'Earth Loa - Itlum Rich attack', dice:['Green','Green'], range:'Melee / Reach 2', ap:0, abilities:[{name:'Shield', shield:1, physical:1}, {name:'Burst', burst:1, physical:2}], notes:'Push/Sedate/Paralyze follow-ups remain reminders for now.' }
+      earth_loa_basic: { id:'earth_loa_basic', enemy:'earth_loa_itlum', label:'Earth Loa - Itlum Rich attack', dice:['Green','Green'], range:'Melee / Reach 2', ap:0, abilities:[{name:'Shield', shield:1, physical:1}, {name:'Burst', burst:1, physical:2}], notes:'Push/Sedate/Paralyze follow-ups remain reminders for now.' },
+      gevaudan_reach: { id:'gevaudan_reach', enemy:'gevaudan', label:'Gevaudan - Melee Reach 2', dice:['Blue','Grey'], range:'Reach 2', ap:0, attackBonus:1, abilities:[{name:'Shield', shield:1, physical:1}, {name:'Burst', burst:1, physical:2}], notes:'Agile +1 attack roll is included. Book symbols can add Armor Piercing; enter spent Books as Manual enemy Armor Piercing.' },
+      living_oblation_basic: { id:'living_oblation_basic', enemy:'living_oblation', label:'Living Oblation - break/summoner attack', dice:['Grey','Grey'], range:'Range 1 or summon-dependent', ap:0, abilities:[], notes:'Use for Break Attacks or summoner/summon-dependent attacks. Resolve summon-specific range and extra card text manually.' },
+      corpse_collector_reach: { id:'corpse_collector_reach', enemy:'corpse_collector', label:'Corpse Collector - Melee Reach 4', dice:['Blue','Blue'], range:'Reach 4', ap:0, abilities:[{name:'Shield', shield:1, physical:1}], notes:'Burst FU Pull 4 Force 12 is a separate enemy Force profile; use after confirming Burst/FU timing.' }
     },
     enemySpellProfiles: {
       animate_darkness: { id:'animate_darkness', enemy:'animate', label:'Animate - Spell 6: Inflict Darkness', baseForce:6, castingColors:['Red','Green'], defaultColor:'Red', effect:'Darkness', damageMode:'effect', notes:'Enemy Spell core. If the target fails Conviction, inflict Darkness. Use color selector if your card/setup uses a different casting die.' },
@@ -267,6 +273,9 @@
       adlet_sedate: { id:'adlet_sedate', enemy:'adlet_drudge', label:'Adlet Drudge FU - Inflict Sedate Force 11', fixedForce:11, effect:'Sedate', damageMode:'effect', notes:'Use after Adlet melee attack follow-up timing.' },
       earth_sedate: { id:'earth_sedate', enemy:'earth_loa_itlum', label:'Earth Loa - Inflict Sedate Force 13', fixedForce:13, effect:'Sedate', damageMode:'effect', notes:'Guided Force check for the Itlum Rich Sedate step. Resolve each affected target manually.' },
       earth_paralyze: { id:'earth_paralyze', enemy:'earth_loa_itlum', label:'Earth Loa FU - Inflict Paralyze Force 13', fixedForce:13, effect:'Paralyze', damageMode:'effect', notes:'Guided Force check for the Itlum Rich Paralyze follow-up.' },
+      living_oblation_spell: { id:'living_oblation_spell', enemy:'living_oblation', label:'Living Oblation - Spell 6 book damage', baseForce:6, castingColors:['Blue'], defaultColor:'Blue', damageMode:'bookDice', damageDiceBooks:['Purple','Purple','Orange','Orange','Red','Red'], notes:'If target fails Conviction, roll 2 Purple, 2 Orange, and 2 Red; deal 1 Magic Damage per Book rolled.' },
+      corpse_collector_spell: { id:'corpse_collector_spell', enemy:'corpse_collector', label:'Corpse Collector - Spell 6 adjacent enemy', baseForce:6, castingColors:['Grey'], defaultColor:'Grey', damageMode:'flat', flatMagic:8, notes:'Adjacent enemy spell. If target fails Conviction, deal 8 Magic Damage.' },
+      corpse_collector_pull: { id:'corpse_collector_pull', enemy:'corpse_collector', label:'Corpse Collector FU - Pull 4 Force 12', fixedForce:12, effect:'', damageMode:'effect', notes:'Use after the Burst FU. If target fails, Pull 4; apply board movement manually.' },
       manual_enemy_spell: { id:'manual_enemy_spell', enemy:'any', label:'Manual enemy Spell / Force check', baseForce:6, castingColors:['Purple','Red','Green','Grey','Teal','Orange','Blue','White'], defaultColor:'Purple', effect:'', damageMode:'manual', flatMagic:0, notes:'Use for unencoded enemy spells. Set force modifiers, effect, and damage manually.' }
     },
     effects: ['Darkness','Condemn','Disease','Paralyze','Poison','Wilt','Sedate','Barrier','Courage','Haste','Tether','Nemesis'],
@@ -309,7 +318,7 @@
       attack: { profileId:'rook_default', faces:{}, empower:false, empowerFace:0, manualAttackMod:0, manualPhysical:0, manualMagic:0, manualArmorPiercing:0, targetDefenseMod:0, useMasterWork:false, useMasterOfVessel:false, useCourage: true },
       spell: { profileId:'rook_courage_stifle', castingColor:'Green', castingFace:0, empower:false, empowerFace:0, manualForceMod:0, convictionFaces:{c0:0,c1:0}, useOtherworldly:true, useOptionalBonus:false, previousDamage:0, zealousFaces:{}, zealousDistance:1, zealousDiscount:false },
       enemyAttack: { profileId:'animate_basic', faces:{}, empower:false, empowerFace:0, useDodge:false, dodgeFace:0, manualAttackMod:0, manualPhysical:0, manualMagic:0, manualArmorPiercing:0, targetDefenseMod:0, finalReduction:0, forceMiss:false, rookPlate:false, remiShearling:true, remiShearlingPE:false, remiMantleVow:false, nightMorbid:true, nightReinforced:false, nightFlanking:false, zekeMorbid:true, zekeBelts:false, zekeFlanking:false, summonReduction:false },
-      enemySpell: { profileId:'animate_darkness', castingColor:'Red', castingFace:0, empower:false, empowerFace:0, manualForceMod:0, convictionColors:{c0:'',c1:''}, convictionFaces:{c0:0,c1:0}, manualConvictionMod:0, forcePass:false, witchHat:false, manualEffect:'', manualFlatMagic:0, damageEqualsDifference:false, magicResistance:false },
+      enemySpell: { profileId:'animate_darkness', castingColor:'Red', castingFace:0, empower:false, empowerFace:0, manualForceMod:0, convictionColors:{c0:'',c1:''}, convictionFaces:{c0:0,c1:0}, damageFaces:{}, manualConvictionMod:0, forcePass:false, witchHat:false, manualEffect:'', manualFlatMagic:0, damageEqualsDifference:false, magicResistance:false },
       nightingale: { previousDamage:0, trophyFace:'', trophyTargetId:'', lifeOpen:false, trophyOpen:false, life:{ castingColor:'Grey', castingFace:0, empower:true, empowerFace:0, manualForceMod:0, boost:false, targets:[{targetId:'', c0:0, c1:0},{targetId:'', c0:0, c1:0},{targetId:'', c0:0, c1:0}], appliedKey:null, selfAppliedKey:null } },
       remiZeke: { remiProfile:'remi_chain_melee', whirlwindActive:false, whirlwindCount:0, onslaughtActive:false, onslaughtRemaining:0, lastMessage:'' },
       party: defaultParty(),
@@ -346,6 +355,7 @@
     next.enemySpell = Object.assign(base.enemySpell, raw?.enemySpell || {});
     next.enemySpell.convictionColors = Object.assign(base.enemySpell.convictionColors, raw?.enemySpell?.convictionColors || {});
     next.enemySpell.convictionFaces = Object.assign(base.enemySpell.convictionFaces, raw?.enemySpell?.convictionFaces || {});
+    next.enemySpell.damageFaces = Object.assign(base.enemySpell.damageFaces, raw?.enemySpell?.damageFaces || {});
     next.nightingale = Object.assign(base.nightingale, raw?.nightingale || {});
     next.nightingale.lifeOpen = raw?.nightingale?.lifeOpen ?? base.nightingale.lifeOpen;
     next.nightingale.trophyOpen = raw?.nightingale?.trophyOpen ?? base.nightingale.trophyOpen;
@@ -1633,6 +1643,7 @@
       state.enemySpell.manualForceMod = 0;
       state.enemySpell.convictionColors = {};
       state.enemySpell.convictionFaces = {};
+      state.enemySpell.damageFaces = {};
       state.enemySpell.forcePass = false;
       state.enemySpell.witchHat = false;
       state.enemySpell.magicResistance = false;
@@ -1661,6 +1672,7 @@
           <select data-change="enemy-spell-profile">${profiles.map(p => `<option value="${p.id}" ${state.enemySpell.profileId===p.id?'selected':''}>${escapeHtml(p.label)}</option>`).join('')}</select>
           <div class="tiny" style="margin-top:6px">${escapeHtml(profile.notes || '')}</div>
           ${renderEnemySpellForceInputs(profile)}
+          ${renderEnemySpellDamageDiceInputs(profile)}
           ${renderEnemySpellTargetInputs(target, profile)}
         </div>
         <div class="card">
@@ -1686,6 +1698,16 @@
       <div><label>Manual Force modifier</label><input type="number" data-change="enemy-spell-number" data-field="manualForceMod" value="${Number(state.enemySpell.manualForceMod||0)}" /></div>
     </div>`;
   }
+  function renderEnemySpellDamageDiceInputs(profile) {
+    const dice = profile.damageDiceBooks || [];
+    if (!dice.length) return '';
+    const rows = dice.map((color, idx) => {
+      const key = `b${idx}`;
+      const selected = state.enemySpell.damageFaces?.[key] != null ? Number(state.enemySpell.damageFaces[key]) : 0;
+      return `<div><label>${escapeHtml(color)} damage die ${idx+1}</label><select data-change="enemy-spell-damage-face" data-die-key="${key}">${renderFaceOptions(color, selected)}</select></div>`;
+    }).join('');
+    return `<details style="margin-top:10px" open><summary>Enemy spell damage dice</summary><div class="field-grid" style="margin-top:10px">${rows}</div><div class="tiny" style="margin-top:8px">Each Book on these dice becomes 1 Magic Damage if the target fails Conviction.</div></details>`;
+  }
   function renderEnemySpellTargetInputs(target, profile) {
     const defColors = target?.def?.conviction || ['Purple','Purple'];
     const c0 = state.enemySpell.convictionColors?.c0 || defColors[0] || 'Purple';
@@ -1707,6 +1729,12 @@
       </div>
       <div class="tiny" style="margin-top:8px">Default Conviction colors are loaded from the target, but you can override them here for upgrades, rerolls, or special encounter rules.</div>
     </details>`;
+  }
+  function enemySpellBookDamage(profile) {
+    return (profile.damageDiceBooks || []).reduce((sum, color, idx) => {
+      const face = DATA.dice[color]?.[Number(state.enemySpell.damageFaces?.[`b${idx}`] || 0)] || DATA.dice[color]?.[0] || { book:0 };
+      return sum + Number(face.book || 0);
+    }, 0);
   }
   function calculateEnemySpellResult() {
     const actor = getActor();
@@ -1779,10 +1807,10 @@
         forcePass: state.enemySpell.forcePass,
         convictionFaces: state.enemySpell.convictionFaces || {},
         effectOverride: profile.id === 'manual_enemy_spell' ? (state.enemySpell.manualEffect || '') : (profile.effect || ''),
-        manualFlatMagic: profile.id === 'manual_enemy_spell' ? state.enemySpell.manualFlatMagic : 0,
+        manualFlatMagic: profile.id === 'manual_enemy_spell' ? state.enemySpell.manualFlatMagic : enemySpellBookDamage(profile),
         damageEqualsDifference: profile.damageEqualsDifference || (profile.id === 'manual_enemy_spell' && state.enemySpell.damageEqualsDifference),
         flatDamageLabel: 'Flat Magic Damage',
-        manualFlatDamageLabel: 'Manual flat Magic Damage'
+        manualFlatDamageLabel: profile.damageDiceBooks?.length ? 'Book damage dice' : 'Manual flat Magic Damage'
       }
     });
     if (!enemySpellOutcome) return { ready:false, reason:'Combat calculator did not load. Refresh the app cache from Data.' };
@@ -1795,7 +1823,7 @@
     const finalDamage = enemySpellOutcome.finalDamage;
     const hpAfter = enemySpellOutcome.hpAfter;
     const immune = enemySpellOutcome.immune;
-    const key = JSON.stringify({mode:'enemySpell', actor:state.ui.actorId, target:state.ui.targetId, profile:profile.id, force, conviction, effect, damage:finalDamage, cast:state.enemySpell.castingColor, face:state.enemySpell.castingFace, empower:state.enemySpell.empower, eFace:state.enemySpell.empowerFace, convC:state.enemySpell.convictionColors, convF:state.enemySpell.convictionFaces, opts:{pass:state.enemySpell.forcePass, wh:state.enemySpell.witchHat, mr:state.enemySpell.magicResistance, me:state.enemySpell.manualEffect, md:state.enemySpell.manualFlatMagic, dd:state.enemySpell.damageEqualsDifference}});
+    const key = JSON.stringify({mode:'enemySpell', actor:state.ui.actorId, target:state.ui.targetId, profile:profile.id, force, conviction, effect, damage:finalDamage, cast:state.enemySpell.castingColor, face:state.enemySpell.castingFace, empower:state.enemySpell.empower, eFace:state.enemySpell.empowerFace, convC:state.enemySpell.convictionColors, convF:state.enemySpell.convictionFaces, opts:{pass:state.enemySpell.forcePass, wh:state.enemySpell.witchHat, mr:state.enemySpell.magicResistance, me:state.enemySpell.manualEffect, md:state.enemySpell.manualFlatMagic, dd:state.enemySpell.damageEqualsDifference, df:state.enemySpell.damageFaces}});
     return { ready:true, actor, target, profile, force, conviction, failed, difference, finalDamage, hpAfter, effect, immune, key, forceRows, damageRows, convictionRows:[`${c0Color}: ${faceLabel(conv0,0)}`, `${c1Color}: ${faceLabel(conv1,1)}`], blackSkull: !!blackFace?.skull };
   }
   function renderEnemySpellResult(result) {
@@ -2695,7 +2723,7 @@
     if (ch === 'def-zeke-belts') { state.enemyAttack.zekeBelts = !!el.checked; state.ui.appliedResultKey = null; saveState(); render(); }
     if (ch === 'enemy-summon-reduction') { state.enemyAttack.summonReduction = !!el.checked; state.ui.appliedResultKey = null; saveState(); render(); }
 
-    if (ch === 'enemy-spell-profile') { const profile = getEnemySpellProfilesForActor().find(p=>p.id===el.value) || DATA.enemySpellProfiles[el.value]; state.enemySpell.profileId = el.value; state.enemySpell.castingColor = profile?.defaultColor || profile?.castingColors?.[0] || 'Purple'; state.enemySpell.castingFace = 0; state.enemySpell.empower = !!profile?.defaultEmpower; state.enemySpell.empowerFace = 0; state.enemySpell.manualForceMod = 0; state.enemySpell.convictionColors = {}; state.enemySpell.convictionFaces = {}; state.enemySpell.forcePass = false; state.enemySpell.witchHat = false; state.enemySpell.magicResistance = false; state.enemySpell.manualEffect = ''; state.enemySpell.manualFlatMagic = 0; state.enemySpell.damageEqualsDifference = false; state.ui.appliedResultKey = null; saveState(); render(); }
+    if (ch === 'enemy-spell-profile') { const profile = getEnemySpellProfilesForActor().find(p=>p.id===el.value) || DATA.enemySpellProfiles[el.value]; state.enemySpell.profileId = el.value; state.enemySpell.castingColor = profile?.defaultColor || profile?.castingColors?.[0] || 'Purple'; state.enemySpell.castingFace = 0; state.enemySpell.empower = !!profile?.defaultEmpower; state.enemySpell.empowerFace = 0; state.enemySpell.manualForceMod = 0; state.enemySpell.convictionColors = {}; state.enemySpell.convictionFaces = {}; state.enemySpell.damageFaces = {}; state.enemySpell.forcePass = false; state.enemySpell.witchHat = false; state.enemySpell.magicResistance = false; state.enemySpell.manualEffect = ''; state.enemySpell.manualFlatMagic = 0; state.enemySpell.damageEqualsDifference = false; state.ui.appliedResultKey = null; saveState(); render(); }
     if (ch === 'enemy-spell-casting-color') { state.enemySpell.castingColor = el.value; state.enemySpell.castingFace = 0; state.ui.appliedResultKey = null; saveState(); render(); }
     if (ch === 'enemy-spell-casting-face') { state.enemySpell.castingFace = Number(el.value); state.ui.appliedResultKey = null; saveState(); render(); }
     if (ch === 'enemy-spell-empower') { state.enemySpell.empower = !!el.checked; state.ui.appliedResultKey = null; saveState(); render(); }
@@ -2703,6 +2731,7 @@
     if (ch === 'enemy-spell-number') { state.enemySpell[el.dataset.field] = Number(el.value || 0); state.ui.appliedResultKey = null; saveState(); render(); }
     if (ch === 'enemy-spell-conv-color') { state.enemySpell.convictionColors[el.dataset.dieKey] = el.value; state.enemySpell.convictionFaces[el.dataset.dieKey] = 0; state.ui.appliedResultKey = null; saveState(); render(); }
     if (ch === 'enemy-spell-conv-face') { state.enemySpell.convictionFaces[el.dataset.dieKey] = Number(el.value); state.ui.appliedResultKey = null; saveState(); render(); }
+    if (ch === 'enemy-spell-damage-face') { state.enemySpell.damageFaces[el.dataset.dieKey] = Number(el.value); state.ui.appliedResultKey = null; saveState(); render(); }
     if (ch === 'enemy-spell-force-pass') { state.enemySpell.forcePass = !!el.checked; state.ui.appliedResultKey = null; saveState(); render(); }
     if (ch === 'enemy-spell-witch-hat') { state.enemySpell.witchHat = !!el.checked; state.ui.appliedResultKey = null; saveState(); render(); }
     if (ch === 'enemy-spell-magic-resistance') { state.enemySpell.magicResistance = !!el.checked; state.ui.appliedResultKey = null; saveState(); render(); }
