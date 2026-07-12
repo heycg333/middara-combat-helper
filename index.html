@@ -212,7 +212,15 @@
       earth_loa_itlum: { id:'earth_loa_itlum', name:'Earth Loa - Itlum Rich', hp:36, defense:12, armor:5, movement:4, conviction:['Teal','Teal'], tags:['Intelligent','Loa','Variation'], immunities:['Darkness','Sedate'] },
       gevaudan: { id:'gevaudan', name:'Gevaudan', hp:30, defense:16, armor:0, movement:6, soi:4, conviction:['Teal','Green'], tags:['Beast'], note:'Rare Beast. Agile: Provoke 2, +1 attack rolls, Dodge first time attacked each turn. Ferocious: gains Courage after successful Dodge. Adrenaline: first miss/no-damage attack each turn may trigger Counter Reach 2.' },
       living_oblation: { id:'living_oblation', name:'Living Oblation', hp:40, defense:14, armor:0, movement:6, soi:6, conviction:['Green','Blue'], tags:['Summoner 13','Nimble'], note:'Rare Summoner. Nimble: first time attacked each turn, Dodge +1. AI spell damage is Books from 2 Purple, 2 Orange, and 2 Red dice.' },
-      corpse_collector: { id:'corpse_collector', name:'Corpse Collector', hp:100, defense:15, armor:3, movement:0, soi:4, conviction:['Green','Grey'], tags:['Flora','Gilded','Hulking'], note:'Rare Flora. Hulking. Partially Submerged: when targeted by ranged attack or spell, attack range or SOI is reduced by half.' }
+      corpse_collector: { id:'corpse_collector', name:'Corpse Collector', hp:100, defense:15, armor:3, movement:0, soi:4, conviction:['Green','Grey'], tags:['Flora','Gilded','Hulking'], note:'Rare Flora. Hulking. Partially Submerged: when targeted by ranged attack or spell, attack range or SOI is reduced by half.' },
+      tortured_immortal: { id:'tortured_immortal', name:'Tortured Immortal', hp:45, defense:14, armor:3, movement:6, soi:4, conviction:['Teal','Green'], tags:['Provoke 2','Reach 2'], note:'Rare. Reach 2. A Lifetime in the Dark: when reduced to 0 HP, keep it in play and mark defeated at the end of its next turn manually.' },
+      blighted_guardian: { id:'blighted_guardian', name:'Blighted Guardian', hp:40, defense:14, armor:0, movement:4, soi:4, conviction:['Green','Green'], tags:['Blight'], note:'Rare Blight. Blighted Vapor: when targeted by a spell or attack that misses, end the current action/abilities and resolve Disease Force 13 against adjacent opponents.' },
+      soul_butcher: { id:'soul_butcher', name:'Soul Butcher', hp:80, defense:14, armor:4, movement:4, soi:4, conviction:['Green','Green'], tags:['Avarice 3','Relentless','Hulking'], note:'Rare. If it does not attack this turn, Heal 5. Putrid Presence: miss trigger may move/attack; adjacent opponents take 2 Magic Damage at end of their turn.' },
+      grotesque_effigy: { id:'grotesque_effigy', name:'Grotesque Effigy', hp:50, defense:13, armor:2, movement:1, soi:4, conviction:['Teal','Green'], tags:['Avarice 2','Crush','Unstoppable','Hulking','Colossal'], immunities:['Condemn'], resistances:['Physical','Magic'], note:'Uncommon. Regrowth gains Heal tokens when damaged. Axe attacks ignore its Physical and Magic resistance.' },
+      root: { id:'root', name:'Root', hp:6, defense:10, armor:6, movement:0, soi:4, conviction:['Teal','Green'], tags:['Root'], immunities:['Darkness','Condemn','Disease','Paralyze','Poison','Wilt','Sedate','Barrier','Courage','Haste','Tether','Nemesis'], resistances:['Physical','Magic'], note:'Uncommon. Immune to Spells and all Effects. Root aura deals a Green die of Physical Damage to adjacent opponents at the start of Grotesque Effigy turn and on Break Attacks.' },
+      enslaved_spirit: { id:'enslaved_spirit', name:'Enslaved Spirit', hp:12, defense:14, armor:0, movement:6, soi:4, conviction:['Teal','Red'], tags:['Trivial','Flight','Protection','Incorporeal'], note:'Rare. Incorporeal: when dealt Physical Damage, roll black; on 4 Shields or 4 Books, ignore Physical Damage manually.' },
+      gatekeeper: { id:'gatekeeper', name:'Gatekeeper', hp:40, defense:12, armor:2, movement:6, soi:4, conviction:['Green','Red'], tags:['Protection','Resistance: Ranged'], resistances:['Ranged attacks'], note:'Uncommon. Conviction also includes a Black die; add its table value manually. Keys on Keys: at 20+ damage, Armor becomes 5. Poppets move 2 spaces at start of turn.' },
+      cave_sickle: { id:'cave_sickle', name:'Cave Sickle', hp:16, defense:12, armor:0, movement:6, soi:4, conviction:['Teal','Orange'], tags:['Sickle','Swarm'], immunities:['Poison'], note:'Uncommon Swarm. Hive Mind controls attack dice and defense: use the matching attack profile; when attacking Cave Sickle, add +1 Defense at Hive Mind 3 or +2 at 4+ manually.' }
     },
     commandDefinitions: {
       agares: { id:'agares', name:'Agares', hp:32, recovery:3, maxSp:5, defense:13, armor:4, movement:4, soi:4, conviction:['Grey','Purple'], tags:['Loyal Esper','Command','Squeeze'] },
@@ -263,7 +271,23 @@
       earth_loa_basic: { id:'earth_loa_basic', enemy:'earth_loa_itlum', label:'Earth Loa - Itlum Rich attack', dice:['Green','Green'], range:'Melee / Reach 2', ap:0, abilities:[{name:'Shield', shield:1, physical:1}, {name:'Burst', burst:1, physical:2}], notes:'Push/Sedate/Paralyze follow-ups remain reminders for now.' },
       gevaudan_reach: { id:'gevaudan_reach', enemy:'gevaudan', label:'Gevaudan - Melee Reach 2', dice:['Blue','Grey'], range:'Reach 2', ap:0, attackBonus:1, abilities:[{name:'Shield', shield:1, physical:1}, {name:'Burst', burst:1, physical:2}], notes:'Agile +1 attack roll is included. Book symbols can add Armor Piercing; enter spent Books as Manual enemy Armor Piercing.' },
       living_oblation_basic: { id:'living_oblation_basic', enemy:'living_oblation', label:'Living Oblation - break/summoner attack', dice:['Grey','Grey'], range:'Range 1 or summon-dependent', ap:0, abilities:[], notes:'Use for Break Attacks or summoner/summon-dependent attacks. Resolve summon-specific range and extra card text manually.' },
-      corpse_collector_reach: { id:'corpse_collector_reach', enemy:'corpse_collector', label:'Corpse Collector - Melee Reach 4', dice:['Blue','Blue'], range:'Reach 4', ap:0, abilities:[{name:'Shield', shield:1, physical:1}], notes:'Burst FU Pull 4 Force 12 is a separate enemy Force profile; use after confirming Burst/FU timing.' }
+      corpse_collector_reach: { id:'corpse_collector_reach', enemy:'corpse_collector', label:'Corpse Collector - Melee Reach 4', dice:['Blue','Blue'], range:'Reach 4', ap:0, abilities:[{name:'Shield', shield:1, physical:1}], notes:'Burst FU Pull 4 Force 12 is a separate enemy Force profile; use after confirming Burst/FU timing.' },
+      tortured_immortal_reach: { id:'tortured_immortal_reach', enemy:'tortured_immortal', label:'Tortured Immortal - Melee Reach 2', dice:['Blue','Grey'], range:'Melee Reach 2', ap:0, abilities:[{name:'Shield', shield:1, physical:1}, {name:'Burst', burst:1, physical:2}], notes:'If the attack hits, resolve the Strength 12 Pull 8 helper. Counter Reach 2 first time each turn remains a table reminder.' },
+      blighted_guardian_melee: { id:'blighted_guardian_melee', enemy:'blighted_guardian', label:'Blighted Guardian - Melee', dice:['Blue','Grey'], range:'Melee 1', ap:0, abilities:[{name:'Book + Shield', book:1, shield:1, physical:2}], notes:'Melee attack has FU Poison Force 13. Burst FU Wilt Force 12 is a separate helper.' },
+      blighted_guardian_ranged: { id:'blighted_guardian_ranged', enemy:'blighted_guardian', label:'Blighted Guardian - Ranged 4', dice:['Blue','Grey'], range:'Range 4', ap:0, abilities:[{name:'Book + Shield', book:1, shield:1, physical:2}], notes:'Ranged attack has FU Pull 4 Force 12. Burst FU Wilt Force 12 is a separate helper.' },
+      soul_butcher_melee: { id:'soul_butcher_melee', enemy:'soul_butcher', label:'Soul Butcher - Melee adjacent', dice:['Blue','Grey','Black'], range:'Melee 1', ap:0, abilities:[{name:'Shield', shield:1, physical:2}], notes:'Add the extra Purple die as Manual enemy Physical Damage. 2 Books FU Heal 5 and Burst FU Paralyze Force 12 remain guided reminders/helpers.' },
+      soul_butcher_reach: { id:'soul_butcher_reach', enemy:'soul_butcher', label:'Soul Butcher - Melee Reach 2', dice:['Blue','Grey','Black'], range:'Reach 2', ap:0, abilities:[{name:'Shield', shield:1, physical:2}], notes:'2 Books FU Heal 5 and Burst FU Paralyze Force 12 remain guided reminders/helpers.' },
+      soul_butcher_ranged: { id:'soul_butcher_ranged', enemy:'soul_butcher', label:'Soul Butcher - Ranged 8', dice:['Blue','Grey','Black'], range:'Range 8', ap:0, abilities:[{name:'Shield', shield:1, physical:2}], notes:'FU Pull 8 Force 13. 2 Books FU Heal 5 and Burst FU Paralyze Force 12 remain guided reminders/helpers.' },
+      grotesque_effigy_reach: { id:'grotesque_effigy_reach', enemy:'grotesque_effigy', label:'Grotesque Effigy - Reach 2', dice:['Green','Green','Black'], range:'Reach 2', ap:0, abilities:[{name:'4 Shield', shield:4, physical:8}], notes:'Burst FU Pull 4 Force 12 is a separate helper. Regrowth/Heal tokens and resistance exceptions remain table reminders.' },
+      enslaved_spirit_melee: { id:'enslaved_spirit_melee', enemy:'enslaved_spirit', label:'Enslaved Spirit - Melee', dice:['Grey','Grey'], range:'Melee 1', ap:0, abilities:[{name:'Book', book:1, magic:1}, {name:'Burst', burst:1, magic:2}], notes:'When determining damage, roll the opponent casting die and enter that roll as Manual enemy Physical Damage.' },
+      cave_sickle_melee_hm0: { id:'cave_sickle_melee_hm0', enemy:'cave_sickle', label:'Cave Sickle - Melee Hive Mind 0', dice:['Red','Red'], range:'Melee 1', ap:0, abilities:[{name:'Shield', shield:1, physical:1}, {name:'Burst', burst:1, physical:2}], notes:'Use when no Cave Sickle allies are in SOI for Hive Mind Combat.' },
+      cave_sickle_melee_hm1: { id:'cave_sickle_melee_hm1', enemy:'cave_sickle', label:'Cave Sickle - Melee Hive Mind 1', dice:['Green','Red'], range:'Melee 1', ap:0, abilities:[{name:'Shield', shield:1, physical:1}, {name:'Burst', burst:1, physical:2}], notes:'Use when Hive Mind Combat count is 1.' },
+      cave_sickle_melee_hm2: { id:'cave_sickle_melee_hm2', enemy:'cave_sickle', label:'Cave Sickle - Melee Hive Mind 2-3', dice:['Green','Green'], range:'Melee 1', ap:0, abilities:[{name:'Shield', shield:1, physical:1}, {name:'Burst', burst:1, physical:2}], notes:'Use when Hive Mind Combat count is 2-3.' },
+      cave_sickle_melee_hm4: { id:'cave_sickle_melee_hm4', enemy:'cave_sickle', label:'Cave Sickle - Melee Hive Mind 4+', dice:['Green','Grey','Black'], range:'Melee 1', ap:0, abilities:[{name:'Shield', shield:1, physical:1}, {name:'Burst', burst:1, physical:2}], notes:'Use when Hive Mind Combat count is 4+.' },
+      cave_sickle_ranged_hm0: { id:'cave_sickle_ranged_hm0', enemy:'cave_sickle', label:'Cave Sickle - Ranged 4 Hive Mind 0', dice:['Red','Red'], range:'Range 4', ap:0, abilities:[{name:'Shield', shield:1, physical:1}, {name:'Burst', burst:1, physical:2}], notes:'Ranged attack can use Poison Force 11 FU helper.' },
+      cave_sickle_ranged_hm1: { id:'cave_sickle_ranged_hm1', enemy:'cave_sickle', label:'Cave Sickle - Ranged 4 Hive Mind 1', dice:['Green','Red'], range:'Range 4', ap:0, abilities:[{name:'Shield', shield:1, physical:1}, {name:'Burst', burst:1, physical:2}], notes:'Ranged attack can use Poison Force 11 FU helper.' },
+      cave_sickle_ranged_hm2: { id:'cave_sickle_ranged_hm2', enemy:'cave_sickle', label:'Cave Sickle - Ranged 4 Hive Mind 2-3', dice:['Green','Green'], range:'Range 4', ap:0, abilities:[{name:'Shield', shield:1, physical:1}, {name:'Burst', burst:1, physical:2}], notes:'Ranged attack can use Poison Force 11 FU helper.' },
+      cave_sickle_ranged_hm4: { id:'cave_sickle_ranged_hm4', enemy:'cave_sickle', label:'Cave Sickle - Ranged 4 Hive Mind 4+', dice:['Green','Grey','Black'], range:'Range 4', ap:0, abilities:[{name:'Shield', shield:1, physical:1}, {name:'Burst', burst:1, physical:2}], notes:'Ranged attack can use Poison Force 11 FU helper.' }
     },
     enemySpellProfiles: {
       animate_darkness: { id:'animate_darkness', enemy:'animate', label:'Animate - Spell 6: Inflict Darkness', baseForce:6, castingColors:['Red','Green'], defaultColor:'Red', effect:'Darkness', damageMode:'effect', notes:'Enemy Spell core. If the target fails Conviction, inflict Darkness. Use color selector if your card/setup uses a different casting die.' },
@@ -276,6 +300,24 @@
       living_oblation_spell: { id:'living_oblation_spell', enemy:'living_oblation', label:'Living Oblation - Spell 6 book damage', baseForce:6, castingColors:['Blue'], defaultColor:'Blue', damageMode:'bookDice', damageDiceBooks:['Purple','Purple','Orange','Orange','Red','Red'], notes:'If target fails Conviction, roll 2 Purple, 2 Orange, and 2 Red; deal 1 Magic Damage per Book rolled.' },
       corpse_collector_spell: { id:'corpse_collector_spell', enemy:'corpse_collector', label:'Corpse Collector - Spell 6 adjacent enemy', baseForce:6, castingColors:['Grey'], defaultColor:'Grey', damageMode:'flat', flatMagic:8, notes:'Adjacent enemy spell. If target fails Conviction, deal 8 Magic Damage.' },
       corpse_collector_pull: { id:'corpse_collector_pull', enemy:'corpse_collector', label:'Corpse Collector FU - Pull 4 Force 12', fixedForce:12, effect:'', damageMode:'effect', notes:'Use after the Burst FU. If target fails, Pull 4; apply board movement manually.' },
+      tortured_immortal_strength_pull: { id:'tortured_immortal_strength_pull', enemy:'tortured_immortal', label:'Tortured Immortal hit FU - Pull 8 Strength 12', fixedForce:12, effect:'', damageMode:'effect', notes:'Strength check helper. Use Conviction total fields as the target Strength check total; if failed, Pull 8 manually.' },
+      tortured_immortal_spell_pull: { id:'tortured_immortal_spell_pull', enemy:'tortured_immortal', label:'Tortured Immortal - Spell 6 Pull 6', baseForce:6, castingColors:['Grey'], defaultColor:'Grey', damageMode:'effect', notes:'If target fails Conviction, Pull 6 manually.' },
+      blighted_guardian_paralyze: { id:'blighted_guardian_paralyze', enemy:'blighted_guardian', label:'Blighted Guardian - Spell 6 Inflict Paralyze', baseForce:6, castingColors:['Grey'], defaultColor:'Grey', effect:'Paralyze', damageMode:'effect', notes:'If target is immune to Paralyze, use the 4 Magic Damage profile instead.' },
+      blighted_guardian_paralyze_immune_damage: { id:'blighted_guardian_paralyze_immune_damage', enemy:'blighted_guardian', label:'Blighted Guardian - Paralyze immune target: 4 Magic', baseForce:6, castingColors:['Grey'], defaultColor:'Grey', damageMode:'flat', flatMagic:4, notes:'Use only when the target is immune to Paralyze.' },
+      blighted_guardian_pull: { id:'blighted_guardian_pull', enemy:'blighted_guardian', label:'Blighted Guardian ranged FU - Pull 4 Force 12', fixedForce:12, effect:'', damageMode:'effect', notes:'Ranged attack FU. If target fails, Pull 4 manually.' },
+      blighted_guardian_poison: { id:'blighted_guardian_poison', enemy:'blighted_guardian', label:'Blighted Guardian melee FU - Poison Force 13', fixedForce:13, effect:'Poison', damageMode:'effect', notes:'Melee attack FU. Inflict Poison on failed Conviction unless immune.' },
+      blighted_guardian_wilt: { id:'blighted_guardian_wilt', enemy:'blighted_guardian', label:'Blighted Guardian Burst FU - Wilt Force 12', fixedForce:12, effect:'Wilt', damageMode:'effect', notes:'Burst FU. Inflict Wilt on failed Conviction unless immune.' },
+      blighted_guardian_vapor_disease: { id:'blighted_guardian_vapor_disease', enemy:'blighted_guardian', label:'Blighted Guardian Blighted Vapor - Disease Force 13', fixedForce:13, effect:'Disease', damageMode:'effect', notes:'Use when Blighted Vapor triggers after a miss; resolve each adjacent opponent manually.' },
+      soul_butcher_darkness: { id:'soul_butcher_darkness', enemy:'soul_butcher', label:'Soul Butcher - Spell 6 Darkness', baseForce:6, castingColors:['Grey'], defaultColor:'Grey', effect:'Darkness', damageMode:'effect', notes:'Cast on all opponents within SOI; resolve each target separately.' },
+      soul_butcher_paralyze: { id:'soul_butcher_paralyze', enemy:'soul_butcher', label:'Soul Butcher Burst FU - Paralyze Force 12', fixedForce:12, effect:'Paralyze', damageMode:'effect', notes:'Burst FU. Inflict Paralyze on failed Conviction unless immune.' },
+      soul_butcher_pull: { id:'soul_butcher_pull', enemy:'soul_butcher', label:'Soul Butcher ranged FU - Pull 8 Force 13', fixedForce:13, effect:'', damageMode:'effect', notes:'Ranged FU. If target fails, Pull 8 manually.' },
+      grotesque_effigy_pull: { id:'grotesque_effigy_pull', enemy:'grotesque_effigy', label:'Grotesque Effigy - Range 6 Pull Force 13', fixedForce:13, effect:'', damageMode:'effect', notes:'If target fails, pull a Blue die worth of spaces toward the Effigy or nearest Root; roll/move manually.' },
+      grotesque_effigy_burst_pull: { id:'grotesque_effigy_burst_pull', enemy:'grotesque_effigy', label:'Grotesque Effigy Burst FU - Pull 4 Force 12', fixedForce:12, effect:'', damageMode:'effect', notes:'Burst FU. If target fails, Pull 4 manually.' },
+      enslaved_spirit_wilt: { id:'enslaved_spirit_wilt', enemy:'enslaved_spirit', label:'Enslaved Spirit - Spell 6 Wilt +3 Magic', baseForce:6, castingColors:['Grey'], defaultColor:'Grey', effect:'Wilt', damageMode:'flat', flatMagic:3, notes:'If target already has Wilt, use the Condemn version instead.' },
+      enslaved_spirit_condemn: { id:'enslaved_spirit_condemn', enemy:'enslaved_spirit', label:'Enslaved Spirit - Spell 6 Condemn +3 Magic', baseForce:6, castingColors:['Grey'], defaultColor:'Grey', effect:'Condemn', damageMode:'flat', flatMagic:3, notes:'Use when the target already has Wilt.' },
+      gatekeeper_poppet: { id:'gatekeeper_poppet', enemy:'gatekeeper', label:'Gatekeeper - Spell 6 Poppet Green damage', baseForce:6, castingColors:['Green'], defaultColor:'Green', damageMode:'valueDice', damageDiceValues:['Green'], notes:'Use once per Poppet sharing the target space, or roll one Green and add extra Poppet damage manually.' },
+      gatekeeper_area: { id:'gatekeeper_area', enemy:'gatekeeper', label:'Gatekeeper - Spell 6 Grey area damage', baseForce:6, castingColors:['Grey'], defaultColor:'Grey', damageMode:'valueDice', damageDiceValues:['Grey'], notes:'Deal Grey die Magic Damage to target and each adjacent opponent; resolve each target separately.' },
+      cave_sickle_poison: { id:'cave_sickle_poison', enemy:'cave_sickle', label:'Cave Sickle ranged FU - Poison Force 11', fixedForce:11, effect:'Poison', damageMode:'effect', notes:'Ranged attack FU. Inflict Poison on failed Conviction unless immune.' },
       manual_enemy_spell: { id:'manual_enemy_spell', enemy:'any', label:'Manual enemy Spell / Force check', baseForce:6, castingColors:['Purple','Red','Green','Grey','Teal','Orange','Blue','White'], defaultColor:'Purple', effect:'', damageMode:'manual', flatMagic:0, notes:'Use for unencoded enemy spells. Set force modifiers, effect, and damage manually.' }
     },
     effects: ['Darkness','Condemn','Disease','Paralyze','Poison','Wilt','Sedate','Barrier','Courage','Haste','Tether','Nemesis'],
@@ -1699,14 +1741,16 @@
     </div>`;
   }
   function renderEnemySpellDamageDiceInputs(profile) {
-    const dice = profile.damageDiceBooks || [];
+    const bookDice = (profile.damageDiceBooks || []).map((color, idx) => ({ color, key:`b${idx}`, mode:'book', label:`${color} book damage die ${idx+1}` }));
+    const valueDice = (profile.damageDiceValues || []).map((color, idx) => ({ color, key:`v${idx}`, mode:'value', label:`${color} value damage die ${idx+1}` }));
+    const dice = bookDice.concat(valueDice);
     if (!dice.length) return '';
-    const rows = dice.map((color, idx) => {
-      const key = `b${idx}`;
-      const selected = state.enemySpell.damageFaces?.[key] != null ? Number(state.enemySpell.damageFaces[key]) : 0;
-      return `<div><label>${escapeHtml(color)} damage die ${idx+1}</label><select data-change="enemy-spell-damage-face" data-die-key="${key}">${renderFaceOptions(color, selected)}</select></div>`;
+    const rows = dice.map(row => {
+      const selected = state.enemySpell.damageFaces?.[row.key] != null ? Number(state.enemySpell.damageFaces[row.key]) : 0;
+      return `<div><label>${escapeHtml(row.label)}</label><select data-change="enemy-spell-damage-face" data-die-key="${row.key}">${renderFaceOptions(row.color, selected)}</select></div>`;
     }).join('');
-    return `<details style="margin-top:10px" open><summary>Enemy spell damage dice</summary><div class="field-grid" style="margin-top:10px">${rows}</div><div class="tiny" style="margin-top:8px">Each Book on these dice becomes 1 Magic Damage if the target fails Conviction.</div></details>`;
+    const note = valueDice.length && bookDice.length ? 'Book dice count Books as Magic Damage; value dice count their rolled values.' : valueDice.length ? 'Each selected die value becomes Magic Damage if the target fails Conviction.' : 'Each Book on these dice becomes 1 Magic Damage if the target fails Conviction.';
+    return `<details style="margin-top:10px" open><summary>Enemy spell damage dice</summary><div class="field-grid" style="margin-top:10px">${rows}</div><div class="tiny" style="margin-top:8px">${escapeHtml(note)}</div></details>`;
   }
   function renderEnemySpellTargetInputs(target, profile) {
     const defColors = target?.def?.conviction || ['Purple','Purple'];
@@ -1732,10 +1776,19 @@
   }
   function enemySpellBookDamage(profile) {
     return (profile.damageDiceBooks || []).reduce((sum, color, idx) => {
-      const face = DATA.dice[color]?.[Number(state.enemySpell.damageFaces?.[`b${idx}`] || 0)] || DATA.dice[color]?.[0] || { book:0 };
+      const key = `b${idx}`;
+      const face = DATA.dice[color]?.[Number(state.enemySpell.damageFaces?.[key] || 0)] || DATA.dice[color]?.[0] || { book:0 };
       return sum + Number(face.book || 0);
     }, 0);
   }
+  function enemySpellValueDamage(profile) {
+    return (profile.damageDiceValues || []).reduce((sum, color, idx) => {
+      const key = `v${idx}`;
+      const face = DATA.dice[color]?.[Number(state.enemySpell.damageFaces?.[key] || 0)] || DATA.dice[color]?.[0] || { value:0 };
+      return sum + Number(face.value || 0);
+    }, 0);
+  }
+  function enemySpellDiceDamage(profile) { return enemySpellBookDamage(profile) + enemySpellValueDamage(profile); }
   function calculateEnemySpellResult() {
     const actor = getActor();
     const target = getEntityByTarget(state.ui.targetId);
@@ -1807,10 +1860,10 @@
         forcePass: state.enemySpell.forcePass,
         convictionFaces: state.enemySpell.convictionFaces || {},
         effectOverride: profile.id === 'manual_enemy_spell' ? (state.enemySpell.manualEffect || '') : (profile.effect || ''),
-        manualFlatMagic: profile.id === 'manual_enemy_spell' ? state.enemySpell.manualFlatMagic : enemySpellBookDamage(profile),
+        manualFlatMagic: profile.id === 'manual_enemy_spell' ? state.enemySpell.manualFlatMagic : enemySpellDiceDamage(profile),
         damageEqualsDifference: profile.damageEqualsDifference || (profile.id === 'manual_enemy_spell' && state.enemySpell.damageEqualsDifference),
         flatDamageLabel: 'Flat Magic Damage',
-        manualFlatDamageLabel: profile.damageDiceBooks?.length ? 'Book damage dice' : 'Manual flat Magic Damage'
+        manualFlatDamageLabel: (profile.damageDiceBooks?.length || profile.damageDiceValues?.length) ? 'Damage dice' : 'Manual flat Magic Damage'
       }
     });
     if (!enemySpellOutcome) return { ready:false, reason:'Combat calculator did not load. Refresh the app cache from Data.' };

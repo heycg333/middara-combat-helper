@@ -1,4 +1,4 @@
-const CACHE_NAME = 'middara-helper-v3-0l-rare-enemies';
+const CACHE_NAME = 'middara-helper-v3-0l-expanded-enemies';
 const APP_SHELL = [
   './',
   './index.html',
