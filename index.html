@@ -9,7 +9,7 @@
   <link rel="manifest" href="manifest.webmanifest" />
   <link rel="apple-touch-icon" href="icons/apple-touch-icon.png" />
   <link rel="icon" href="icons/favicon.svg" type="image/svg+xml" />
-  <title>Middara Combat Helper - V3.0M Shayliss Update</title>
+  <title>Middara Combat Helper - V3.0N Shayliss Hotfix</title>
   <style>
     :root {
       --bg: #0f172a;
@@ -185,7 +185,7 @@
 <body>
   <header>
     <h1>Middara Combat Helper</h1>
-    <div class="subtitle"><strong>V3.0M Shayliss Update</strong> - adds Shayliss to party play, The Wretched attack profiles, and her key Dodge defense reminders.</div>
+    <div class="subtitle"><strong>V3.0N Shayliss Hotfix</strong> - adds Shayliss to party play, The Wretched attack profiles, and repairs older tablet saved states.</div>
   </header>
   <main id="appRoot"></main>
   <footer class="footer" id="stableFooter" aria-live="polite"></footer>
@@ -194,7 +194,7 @@
 
 (function () {
   'use strict';
-  const VERSION = 'V3.0M';
+  const VERSION = 'V3.0N';
   const STORAGE_KEY = 'middara.combatHelper.v3.state';
 
   const DATA = {
@@ -525,6 +525,16 @@
   }
   function normalizeState() {
     if (!state.ui) state.ui = defaultState().ui;
+    const baseParty = defaultParty();
+    state.party = state.party && typeof state.party === 'object' ? state.party : {};
+    Object.keys(DATA.party).forEach(id => {
+      state.party[id] = Object.assign({}, baseParty[id], state.party[id] || {});
+      state.party[id].id = id;
+      state.party[id].damage = safeNumber(state.party[id].damage, 0, 0, DATA.party[id].hp || 999);
+      state.party[id].sp = safeNumber(state.party[id].sp, DATA.party[id].recovery || 0, 0, DATA.party[id].maxSp || 99);
+      state.party[id].effects = Array.isArray(state.party[id].effects) ? state.party[id].effects.filter(e => DATA.effects.includes(e)) : [];
+      state.party[id].tokens = state.party[id].tokens && typeof state.party[id].tokens === 'object' ? state.party[id].tokens : {};
+    });
     if (!DATA.party[state.ui.selectedParty]) state.ui.selectedParty = 'rook';
     if (state.attack?.profileId === 'remi_scimitar') state.attack.profileId = 'remi_zanbato';
     if (state.remiZeke?.remiProfile === 'remi_scimitar') state.remiZeke.remiProfile = 'remi_zanbato';
@@ -871,7 +881,7 @@
   }
   function renderTargetPartyList() {
     return `<div class="table-ish">${Object.keys(DATA.party).map(id => {
-      const def = DATA.party[id], st = state.party[id], sel = state.ui.targetId === `party:${id}`;
+      const def = DATA.party[id], st = state.party[id] || defaultParty()[id], sel = state.ui.targetId === `party:${id}`;
       return `<div class="card ${sel?'selected':''}"><div class="entity-head"><strong>${def.name}</strong><span class="pill">HP ${Math.max(0,def.hp-st.damage)}/${def.hp}</span></div>${hpBar(st.damage, def.hp)}${entityStatPills(def, st)}${renderEffects(st,'party',id)}<div class="compact-actions"><button type="button" class="accent" data-action="select-target" data-target="party:${id}">Target / support target</button></div></div>`;
     }).join('')}</div>`;
   }
@@ -2084,7 +2094,7 @@
     return `<section class="panel"><h2>Party tracker</h2><div class="note">Track adventurer damage, SP, and Effects here. Ability tokens stay on the physical table in V3; use manual healing/damage buttons when a token or card resolves.</div><div class="btn-row" style="margin-top:10px"><button type="button" data-action="prepare-party">Prepare next encounter</button><button type="button" class="warn" data-action="restore-party">Full restore party</button></div><div class="hr"></div><div class="entity-grid">${Object.keys(DATA.party).map(renderPartyCard).join('')}</div></section>`;
   }
   function renderPartyCard(id) {
-    const def = DATA.party[id], st = state.party[id];
+    const def = DATA.party[id], st = state.party[id] || defaultParty()[id];
     return `<div class="card ${state.ui.actorId===`party:${id}`?'selected':''}"><div class="entity-head"><strong>${def.name}</strong><span class="pill">HP ${Math.max(0,def.hp-st.damage)}/${def.hp}</span></div>${hpBar(st.damage,def.hp)}${entityStatPills(def, st)}${renderEffects(st,'party',id)}
       <div class="compact-actions"><button data-action="party-damage" data-id="${id}" data-delta="1">+1 dmg</button><button data-action="party-damage" data-id="${id}" data-delta="-1">-1 dmg</button><button data-action="party-sp" data-id="${id}" data-delta="1">+1 SP</button><button data-action="party-sp" data-id="${id}" data-delta="-1">-1 SP</button><button data-action="select-actor" data-actor="party:${id}">Actor</button><button data-action="select-target" data-target="party:${id}">Target</button></div>
       <div class="field-grid" style="margin-top:8px"><div><label>Effect</label><select data-select="party-effect-${id}">${DATA.effects.map(x=>`<option>${escapeHtml(x)}</option>`).join('')}</select></div><div><label>&nbsp;</label><div class="compact-actions"><button data-action="party-add-effect" data-id="${id}">Add effect</button><button data-action="party-remove-effect" data-id="${id}">Remove effect</button></div></div></div>
