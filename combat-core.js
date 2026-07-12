@@ -199,7 +199,8 @@
     const profile = input.profile || {};
     const dodgeFace = options.useDodge ? (((input.diceData || {}).Black || [])[number(options.dodgeFace)] || ((input.diceData || {}).Black || [])[0]) : null;
     const targetHasDarkness = (targetState.effects || []).includes('Darkness');
-    const dodgeDefense = options.useDodge && !targetHasDarkness ? dodgeDefenseFromBlackFace(dodgeFace) : 0;
+    let dodgeDefense = options.useDodge && !targetHasDarkness ? dodgeDefenseFromBlackFace(dodgeFace) : 0;
+    if (options.useDodge && !targetHasDarkness && options.shaylissMarbas && dodgeFace && !dodgeFace.skull) dodgeDefense += 1;
     const flankingDefense = options.flankingDefense ? 1 : 0;
     const attack = calculateAttack(Object.assign({}, input, {
       actorState: Object.assign({}, input.actorState || {}, { effects: [] }),
@@ -232,6 +233,10 @@
     if (targetId === 'zeke') {
       if (options.zekeMorbid && melee) { rawPhysical -= 2; reductions.push('Morbid Leather -2 Physical'); }
       if (options.zekeBelts && options.useDodge) { rawPhysical -= 2; reductions.push('Too Many Belts -2 Physical'); }
+    }
+    if (targetId === 'shayliss') {
+      if (options.shaylissMarbas && options.useDodge && dodgeDefense > 0) reductions.push('Marbas Threads +1 Dodge shield');
+      if (options.shaylissBelts && options.useDodge) { rawPhysical -= 2; reductions.push('Too Many Belts -2 Physical'); }
     }
     rawPhysical = Math.max(0, rawPhysical);
     const effectiveArmor = Math.max(0, attack.targetArmor - attack.armorPiercing);

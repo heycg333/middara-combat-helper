@@ -9,7 +9,7 @@
   <link rel="manifest" href="manifest.webmanifest" />
   <link rel="apple-touch-icon" href="icons/apple-touch-icon.png" />
   <link rel="icon" href="icons/favicon.svg" type="image/svg+xml" />
-  <title>Middara Combat Helper - V3.0L Live Encounter QA Polish</title>
+  <title>Middara Combat Helper - V3.0M Shayliss Update</title>
   <style>
     :root {
       --bg: #0f172a;
@@ -185,7 +185,7 @@
 <body>
   <header>
     <h1>Middara Combat Helper</h1>
-    <div class="subtitle"><strong>V3.0L Live Encounter QA Polish</strong> - focused polish from encounter testing: cleaner attack/defense math, initiative controls, Remi/Zeke simplification, and stable V3 Play-first flow.</div>
+    <div class="subtitle"><strong>V3.0M Shayliss Update</strong> - adds Shayliss to party play, The Wretched attack profiles, and her key Dodge defense reminders.</div>
   </header>
   <main id="appRoot"></main>
   <footer class="footer" id="stableFooter" aria-live="polite"></footer>
@@ -194,7 +194,7 @@
 
 (function () {
   'use strict';
-  const VERSION = 'V3.0L';
+  const VERSION = 'V3.0M';
   const STORAGE_KEY = 'middara.combatHelper.v3.state';
 
   const DATA = {
@@ -202,7 +202,8 @@
       rook: { id:'rook', name:'Rook', hp:26, recovery:3, maxSp:5, defense:13, armor:5, movement:7, conviction:['Green','Red'], tags:['Adventurer'], note:'High armor front line; Rook defense and support are handled contextually.' },
       remi: { id:'remi', name:'Remi', hp:30, recovery:3, maxSp:5, defense:13, armor:2, movement:6, conviction:['Green','Teal'], tags:['Adventurer'], note:'Zanbato / Chain Pick / Whirlwind helpers use the current table loadout.' },
       nightingale: { id:'nightingale', name:'Nightingale', hp:32, recovery:3, maxSp:5, defense:13, armor:1, movement:7, conviction:['Grey','Purple'], tags:['Adventurer'], note:'Nightingale spell, familiar, and Loyal Esper tools are clean V3 components.' },
-      zeke: { id:'zeke', name:'Zeke', hp:24, recovery:3, maxSp:5, defense:13, armor:1, movement:7, conviction:['Blue','Purple'], immunities:['Darkness','Condemn'], tags:['Adventurer'], note:'Onslaught / Blade Works helpers return after core attack is stable.' }
+      zeke: { id:'zeke', name:'Zeke', hp:24, recovery:3, maxSp:5, defense:13, armor:1, movement:7, conviction:['Blue','Purple'], immunities:['Darkness','Condemn'], tags:['Adventurer'], note:'Onslaught / Blade Works helpers return after core attack is stable.' },
+      shayliss: { id:'shayliss', name:'Shayliss', hp:23, recovery:3, maxSp:5, defense:12, armor:0, movement:6, conviction:['Red','Purple'], tags:['Adventurer'], note:'The Wretched melee/ranged profiles are encoded. Energy, Blot Out The Sun splash, BFF, and Profound Intuition are table reminders/manual follow-ups for now.' }
     },
     enemyDefinitions: {
       animate: { id:'animate', name:'Animate', hp:30, defense:13, armor:3, movement:6, conviction:['Teal','Green'], tags:['Intelligent'] },
@@ -244,6 +245,8 @@
       remi_zanbato: { id:'remi_zanbato', actor:'remi', label:'Remi - Zanbato of the Damned', dice:['Blue','Green','Black'], range:'Melee 1', ap:0, passivePhysical:1, otherworldlyAttack:true, abilities:[{name:'2 Shield', shield:2, physical:3}, {name:'Burst', burst:1, physical:4}], notes:'Hammer Helm passive adds +1 Physical Damage. Zanbato 2 Shield and Burst damage are automated; passive/exhaust/flip text is tracked manually for now.' },
       night_default: { id:'night_default', actor:'nightingale', label:'Nightingale - Wand + Trophy', dice:['Grey','Red','Black'], range:'Range 4', ap:0, passivePhysical:0, passiveMagic:0, conditionalPhysical:[{name:'Morbid Leather', minDifferenceExclusive:2, physical:2}], otherworldlyAttack:true, abilities:[{name:'Trophy Book', book:1, magic:1}, {name:'Wand 2 Book', book:2, magic:2}, {name:'Trophy Burst', burst:1, magic:4}, {name:'Wand Burst', burst:1, magic:3}], notes:'Nightstalker/Wand symbols deal Magic Damage. Morbid Leather +2 Physical on difference hit >2 is included. Trophy helpers remain guided in Nightingale tools.' },
       zeke_default: { id:'zeke_default', actor:'zeke', label:'Zeke - dual short swords', dice:['Green','Blue'], range:'Melee 1', ap:0, passivePhysical:0, conditionalPhysical:[{name:'Morbid Leather', minDifferenceExclusive:2, physical:2}], otherworldlyAttack:true, abilities:[{name:'Sword 2 Shield', shield:2, physical:3}, {name:'Dweller Shield', shield:1, physical:1}, {name:'Sword Burst', burst:1, physical:4}, {name:'Dweller Burst', burst:1, physical:3}], notes:'Adjacent targets may not Dodge from Sword of Sorrow; track board legality manually.' },
+      shayliss_wretched_melee: { id:'shayliss_wretched_melee', actor:'shayliss', label:'Shayliss - The Wretched melee side', dice:['Blue','Blue','Black'], range:'Melee 1', ap:0, passivePhysical:0, abilities:[{name:'Shield', shield:1, physical:2}, {name:'Burst', burst:1, physical:4}], notes:'Master Work can add +1 to attack roll. Energy tokens may add +1 Physical Damage to melee attacks; enter spent Energy as Manual Physical Damage. While flanking, add +2 Physical Damage manually.' },
+      shayliss_wretched_ranged: { id:'shayliss_wretched_ranged', actor:'shayliss', label:'Shayliss - The Wretched ranged side', dice:['Blue','Grey','Black'], range:'Range 4', ap:0, passivePhysical:0, abilities:[{name:'2 Shield', shield:2, physical:3}, {name:'Burst', burst:1, physical:4}], notes:'Master Work can add +1 to attack roll. 2 Book FU places Dangerous Terrain manually. Burst FU Command 2 is available as a Spell / Force helper. Blot Out The Sun extra Blue-die splash is manual in this pass.' },
       agares_punch: { id:'agares_punch', actor:'agares', label:'Agares - Gigantic Punch', dice:['Grey','Red','Black'], range:'Melee 1', ap:0, passivePhysical:0, otherworldlyAttack:true, abilities:[{name:'Book', book:1, magic:1}, {name:'Wand 2 Book', book:2, magic:2}, {name:'Trophy Burst', burst:1, magic:4}, {name:'Wand Burst', burst:1, magic:3}], notes:'FU Push 3, Force 10 + difference hit is a reminder for now.' },
       agares_horn: { id:'agares_horn', actor:'agares', label:'Agares - Horn Energy Blast', dice:['Grey','Red','Black'], range:'Range 6', ap:0, passivePhysical:0, otherworldlyAttack:true, abilities:[{name:'Book', book:1, magic:1}, {name:'Wand 2 Book', book:2, magic:2}, {name:'Trophy Burst', burst:1, magic:4}, {name:'Wand Burst', burst:1, magic:3}], notes:'FU Pull 3, Force 10 + difference hit is a reminder for now.' },
       eliphie_scalpel: { id:'eliphie_scalpel', actor:'eliphie', label:'Eliphie - Scalpel', dice:['Grey','Red','Black'], range:'Melee 1', ap:0, passivePhysical:0, otherworldlyAttack:true, abilities:[{name:'Book', book:1, magic:1}, {name:'Burst', burst:1, magic:2}, {name:'Wand 2 Book', book:2, magic:2}, {name:'Trophy Burst', burst:1, magic:4}], notes:'Bag Full of Organs / support helpers return after core combat is stable.' }
@@ -253,6 +256,7 @@
       rook_courage_stifle: { id:'rook_courage_stifle', actor:'rook', label:'Rook - Courage Stifle', baseForce:6, castingColors:['Purple','Green','Grey'], defaultColor:'Green', sp:2, damageMode:'flat', flatMagic:10, notes:'Spell 6. Magic Damage = 2 x Rook total Armor. Current Armor 5 => 10 Magic Damage. Choose an eligible Shield/Blunt spellcasting upgrade die manually.' },
       rook_zealous_reprisal: { id:'rook_zealous_reprisal', actor:'rook', label:'Rook - Zealous Reprisal', baseForce:6, castingColors:['Purple','Green','Grey'], defaultColor:'Green', sp:3, damageMode:'zealous', damageDice:['Green','Blue'], notes:'Spell 6. Damage roll uses equipped combat dice, then damage and Push 3 are reduced by 1 for each space beyond adjacent. Use the discount checkbox if Rook damaged this target this turn.' },
       remi_command2: { id:'remi_command2', actor:'remi', label:'Remi - Chain Pick Command 2 FU', baseForce:9, noCasting:true, sp:0, damageMode:'effect', effect:'', notes:'Spell-like / Force check helper. Use after Chain Pick ranged FU. This does not use a casting die; manual Force modifier is prefilled with the previous attack difference hit, so Force = 9 + difference hit.' },
+      shayliss_command2: { id:'shayliss_command2', actor:'shayliss', label:'Shayliss - The Wretched Command 2 FU', baseForce:10, noCasting:true, sp:0, damageMode:'effect', effect:'', notes:'Spell-like / Force check helper. Use after The Wretched ranged Burst FU. This does not use a casting die; manual Force modifier should be the previous attack difference hit, so Force = 10 + difference hit.' },
       zeke_dweller_darkness: { id:'zeke_dweller_darkness', actor:'zeke', label:'Zeke - Dweller Darkness FU', baseForce:9, noCasting:true, sp:0, damageMode:'effect', effect:'Darkness', notes:'Spell-like / Force check helper. Use after Dweller\'s Short Sword FU. This does not use a casting die; manual Force modifier is prefilled with the previous attack difference hit, so Force = 9 + difference hit.' },
       night_gore_shot: { id:'night_gore_shot', actor:'nightingale', label:'Nightingale - Gore Shot', baseForce:6, castingColors:['Purple','Red','Grey'], defaultColor:'Grey', sp:0, damageMode:'flat', flatMagic:2, optionalSelfDamage:2, optionalMagicBonus:8, defaultEmpower:true, notes:'Spell 6. Deal 2 Magic Damage. Optional: Nightingale takes 2 Irreducible Damage to add +8 Magic Damage with current highest Cruor level 4.' },
       night_corrosive_ideal: { id:'night_corrosive_ideal', actor:'nightingale', label:'Nightingale - Corrosive Ideal', baseForce:6, castingColors:['Purple','Red','Grey'], defaultColor:'Grey', sp:1, damageMode:'effect', effect:'Poison', defaultEmpower:true, notes:'Spell 6. If the target fails Conviction, inflict Poison. Effect immunity is respected by the tracker.' },
@@ -359,7 +363,7 @@
       ui: { activeTab:'play', actorId:'party:rook', targetId:null, targetScope:'enemies', actionId:null, selectedParty:'rook', appliedResultKey:null },
       attack: { profileId:'rook_default', faces:{}, empower:false, empowerFace:0, manualAttackMod:0, manualPhysical:0, manualMagic:0, manualArmorPiercing:0, targetDefenseMod:0, useMasterWork:false, useMasterOfVessel:false, useCourage: true },
       spell: { profileId:'rook_courage_stifle', castingColor:'Green', castingFace:0, empower:false, empowerFace:0, manualForceMod:0, convictionFaces:{c0:0,c1:0}, useOtherworldly:true, useOptionalBonus:false, previousDamage:0, zealousFaces:{}, zealousDistance:1, zealousDiscount:false },
-      enemyAttack: { profileId:'animate_basic', faces:{}, empower:false, empowerFace:0, useDodge:false, dodgeFace:0, manualAttackMod:0, manualPhysical:0, manualMagic:0, manualArmorPiercing:0, targetDefenseMod:0, finalReduction:0, forceMiss:false, rookPlate:false, remiShearling:true, remiShearlingPE:false, remiMantleVow:false, nightMorbid:true, nightReinforced:false, nightFlanking:false, zekeMorbid:true, zekeBelts:false, zekeFlanking:false, summonReduction:false },
+      enemyAttack: { profileId:'animate_basic', faces:{}, empower:false, empowerFace:0, useDodge:false, dodgeFace:0, manualAttackMod:0, manualPhysical:0, manualMagic:0, manualArmorPiercing:0, targetDefenseMod:0, finalReduction:0, forceMiss:false, rookPlate:false, remiShearling:true, remiShearlingPE:false, remiMantleVow:false, nightMorbid:true, nightReinforced:false, nightFlanking:false, zekeMorbid:true, zekeBelts:false, zekeFlanking:false, shaylissMarbas:true, shaylissBelts:false, summonReduction:false },
       enemySpell: { profileId:'animate_darkness', castingColor:'Red', castingFace:0, empower:false, empowerFace:0, manualForceMod:0, convictionColors:{c0:'',c1:''}, convictionFaces:{c0:0,c1:0}, damageFaces:{}, manualConvictionMod:0, forcePass:false, witchHat:false, manualEffect:'', manualFlatMagic:0, damageEqualsDifference:false, magicResistance:false },
       nightingale: { previousDamage:0, trophyFace:'', trophyTargetId:'', lifeOpen:false, trophyOpen:false, life:{ castingColor:'Grey', castingFace:0, empower:true, empowerFace:0, manualForceMod:0, boost:false, targets:[{targetId:'', c0:0, c1:0},{targetId:'', c0:0, c1:0},{targetId:'', c0:0, c1:0}], appliedKey:null, selfAppliedKey:null } },
       remiZeke: { remiProfile:'remi_chain_melee', whirlwindActive:false, whirlwindCount:0, onslaughtActive:false, onslaughtRemaining:0, lastMessage:'' },
@@ -373,10 +377,11 @@
           { id: uid('init'), type:'party', ref:'rook', label:'Rook' },
           { id: uid('init'), type:'party', ref:'remi', label:'Remi' },
           { id: uid('init'), type:'party', ref:'nightingale', label:'Nightingale' },
-          { id: uid('init'), type:'party', ref:'zeke', label:'Zeke' }
+          { id: uid('init'), type:'party', ref:'zeke', label:'Zeke' },
+          { id: uid('init'), type:'party', ref:'shayliss', label:'Shayliss' }
         ]
       },
-      rewards: { gold:0, partyXp:0, xp:{rook:0, remi:0, nightingale:0, zeke:0}, notes:'' },
+      rewards: { gold:0, partyXp:0, xp:{rook:0, remi:0, nightingale:0, zeke:0, shayliss:0}, notes:'' },
       settings: { autoAddEnemyInitiative:true, autoAddCommandInitiative:true },
       log: []
     };
@@ -922,7 +927,7 @@
   }
 
   function renderRemiZekeChainTools(actor) {
-    if (actor.type !== 'party' || !['remi','zeke'].includes(actor.id)) return '';
+    if (actor.type !== 'party' || !['remi','zeke','shayliss'].includes(actor.id)) return '';
     const currentAttack = calculateAttackResult();
     const diff = currentAttack.ready ? currentAttack.diffHit : 0;
     const target = targetLabel();
@@ -938,6 +943,13 @@
           <button type="button" data-action="remi-load-profile">Load selected Remi attack</button>
           <button type="button" data-action="remi-chain-melee-fu">Chain Pick melee FU → ranged attack</button>
           <button type="button" data-action="remi-chain-ranged-fu">Chain Pick ranged FU → Command 2<br><span class="tiny">Uses current difference hit: ${diff}</span></button>
+        </div>`;
+    }
+    if (actor.id === 'shayliss') {
+      return `<div class="hr"></div><h3>Shayliss attack helpers</h3>
+        <div class="chain-helper-status"><strong>The Wretched</strong><br><span class="tiny">Use Manual Physical Damage for spent Energy tokens, flanking +2 Physical, or Blot Out The Sun extra Blue-die splash. BFF and Dangerous Terrain are table reminders.</span></div>
+        <div class="chain-helper-grid">
+          <button type="button" data-action="shayliss-command2-fu">The Wretched ranged FU -> Command 2<br><span class="tiny">Uses current difference hit: ${diff}</span></button>
         </div>`;
     }
     const remaining = Number(state.remiZeke.onslaughtRemaining || 0);
@@ -1476,6 +1488,8 @@
       state.enemyAttack.zekeMorbid = true;
       state.enemyAttack.zekeBelts = false;
       state.enemyAttack.zekeFlanking = false;
+      state.enemyAttack.shaylissMarbas = true;
+      state.enemyAttack.shaylissBelts = false;
       state.enemyAttack.summonReduction = false;
       state.ui.appliedResultKey = null;
       if (doRender) { saveState(); render(); }
@@ -1561,6 +1575,10 @@
       bits.push(`<div class="defense-option"><label><input type="checkbox" data-change="def-zeke-flanking" ${state.enemyAttack.zekeFlanking?'checked':''}> <span>Zeke is flanking attacker: +1 Defense from Morbid Leather</span></label></div>`);
       bits.push(`<div class="defense-option"><label><input type="checkbox" data-change="def-zeke-belts" ${state.enemyAttack.zekeBelts?'checked':''}> <span>Zeke - Too Many Belts: if he Dodged and still takes damage, reduce Physical Damage by 2</span></label></div>`);
       bits.push(`<div class="defense-option"><div class="note">Black Ticket / Too Many Belts Dodge: use the Dodge checkbox above, then track the physical Exhaust card manually.</div></div>`);
+    } else if (id === 'shayliss') {
+      bits.push(`<div class="defense-option"><label><input type="checkbox" data-change="def-shayliss-marbas" ${state.enemyAttack.shaylissMarbas?'checked':''}> <span>Shayliss - Marbas Threads: Dodge gains +1 shield if no Skull</span></label><div class="tiny">Requires the Dodge checkbox above; ignored on Skull.</div></div>`);
+      bits.push(`<div class="defense-option"><label><input type="checkbox" data-change="def-shayliss-belts" ${state.enemyAttack.shaylissBelts?'checked':''}> <span>Shayliss - Too Many Belts: if she Dodged and still takes damage, reduce Physical Damage by 2</span></label></div>`);
+      bits.push(`<div class="defense-option"><div class="note">Profound Intuition: after a successful Dodge, use the Counter shortcut or switch Shayliss to actor and resolve the move/attack manually.</div></div>`);
     }
     return bits.join('') || '<div class="note">No target-specific defensive tray yet.</div>';
   }
@@ -1606,6 +1624,8 @@
         nightReinforced: target.type === 'party' && target.id === 'nightingale' && state.enemyAttack.nightReinforced,
         zekeMorbid: target.type === 'party' && target.id === 'zeke' && state.enemyAttack.zekeMorbid,
         zekeBelts: target.type === 'party' && target.id === 'zeke' && state.enemyAttack.zekeBelts,
+        shaylissMarbas: target.type === 'party' && target.id === 'shayliss' && state.enemyAttack.shaylissMarbas,
+        shaylissBelts: target.type === 'party' && target.id === 'shayliss' && state.enemyAttack.shaylissBelts,
         summonReduction: target.type === 'command' && state.enemyAttack.summonReduction
       }
     });
@@ -2107,7 +2127,7 @@
   }
 
   function renderRewardsTab() {
-    const xp = Object.assign({rook:0, remi:0, nightingale:0, zeke:0}, state.rewards.xp || {});
+    const xp = Object.assign({rook:0, remi:0, nightingale:0, zeke:0, shayliss:0}, state.rewards.xp || {});
     const xpCards = Object.values(DATA.party).map(p => `<div class="card"><div class="entity-head"><strong>${p.name}</strong><span class="pill">XP ${Number(xp[p.id] || 0)}</span></div><div class="field-grid"><div><label>${p.name} XP</label><input id="rewardXp_${p.id}" type="number" step="1" value="${Number(xp[p.id] || 0)}" /></div><div><label>Adjust</label><div class="compact-actions"><button data-action="reward-individual-xp" data-id="${p.id}" data-delta="1">+1</button><button data-action="reward-individual-xp" data-id="${p.id}" data-delta="-1">-1</button><button data-action="reward-individual-xp" data-id="${p.id}" data-delta="5">+5</button></div></div></div></div>`).join('');
     return `<section class="panel"><h2>Rewards / campaign totals</h2><div class="note">Lite tracker only: tally loot cards physically, then update party gold and XP totals here when convenient.</div>
       <div class="field-grid" style="margin-top:10px">
@@ -2440,6 +2460,8 @@
       state.enemyAttack.zekeMorbid = true;
       state.enemyAttack.zekeBelts = false;
       state.enemyAttack.zekeFlanking = false;
+      state.enemyAttack.shaylissMarbas = true;
+      state.enemyAttack.shaylissBelts = false;
       state.enemyAttack.summonReduction = false;
       state.ui.appliedResultKey = null;
       saveState(); render(); return;
@@ -2577,6 +2599,13 @@
       state.remiZeke.lastMessage = `Dweller Darkness FU loaded, Force ${9 + diff}.`;
       saveState(); render(); addLog('Zeke Dweller Darkness FU', `Loaded Darkness Force check with Force 9 + difference hit (${diff}).`); return;
     }
+    if (a === 'shayliss-command2-fu') {
+      const diff = currentAttackDifferenceHit();
+      state.ui.actorId = 'party:shayliss';
+      loadSpellProfile('shayliss_command2', diff);
+      state.remiZeke.lastMessage = `Shayliss Command 2 FU loaded, Force ${10 + diff}.`;
+      saveState(); render(); addLog('Shayliss Command 2 FU', `Loaded Command 2 Force check with Force 10 + difference hit (${diff}).`); return;
+    }
     if (a === 'set-action') {
       state.ui.actionId = btn.dataset.actionId;
       state.ui.appliedResultKey = null;
@@ -2704,8 +2733,8 @@
     if (a === 'reward-gold-delta') { const d=Number(byId('rewardGoldDelta')?.value||0)*Number(btn.dataset.sign||1); state.rewards.gold=Number(state.rewards.gold||0)+d; saveState(); render(); return; }
     if (a === 'reward-party-xp-delta') { const d=Number(byId('rewardXpDelta')?.value||0)*Number(btn.dataset.sign||1); state.rewards.partyXp=Number(state.rewards.partyXp||0)+d; saveState(); render(); return; }
     if (a === 'reward-all-xp-delta') { const d=Number(byId('rewardXpDelta')?.value||0)*Number(btn.dataset.sign||1); Object.keys(DATA.party).forEach(id=>{ state.rewards.xp[id]=Number(state.rewards.xp?.[id]||0)+d; }); saveState(); render(); return; }
-    if (a === 'reward-individual-xp') { const id=btn.dataset.id; state.rewards.xp = Object.assign({rook:0, remi:0, nightingale:0, zeke:0}, state.rewards.xp||{}); state.rewards.xp[id]=Number(state.rewards.xp[id]||0)+Number(btn.dataset.delta||0); saveState(); render(); return; }
-    if (a === 'save-rewards') { state.rewards.gold=Number(byId('rewardGold')?.value||0); state.rewards.partyXp=Number(byId('rewardPartyXp')?.value||0); state.rewards.xp=Object.assign({rook:0, remi:0, nightingale:0, zeke:0}, state.rewards.xp||{}); Object.keys(DATA.party).forEach(id=>{ state.rewards.xp[id]=Number(byId('rewardXp_'+id)?.value||0); }); state.rewards.notes=byId('rewardNotes')?.value||''; saveState(); render(); return; }
+    if (a === 'reward-individual-xp') { const id=btn.dataset.id; state.rewards.xp = Object.assign({rook:0, remi:0, nightingale:0, zeke:0, shayliss:0}, state.rewards.xp||{}); state.rewards.xp[id]=Number(state.rewards.xp[id]||0)+Number(btn.dataset.delta||0); saveState(); render(); return; }
+    if (a === 'save-rewards') { state.rewards.gold=Number(byId('rewardGold')?.value||0); state.rewards.partyXp=Number(byId('rewardPartyXp')?.value||0); state.rewards.xp=Object.assign({rook:0, remi:0, nightingale:0, zeke:0, shayliss:0}, state.rewards.xp||{}); Object.keys(DATA.party).forEach(id=>{ state.rewards.xp[id]=Number(byId('rewardXp_'+id)?.value||0); }); state.rewards.notes=byId('rewardNotes')?.value||''; saveState(); render(); return; }
     if (a === 'export-snapshot') { const box=byId('snapshotBox'); if(box) box.value=JSON.stringify(state,null,2); return; }
     if (a === 'download-snapshot') { downloadSnapshotFile(); return; }
     if (a === 'copy-snapshot') { const box=byId('snapshotBox'); const text=box?.value || JSON.stringify(state,null,2); if (box) box.value=text; navigator.clipboard?.writeText(text); return; }
@@ -2774,6 +2803,8 @@
     if (ch === 'def-zeke-morbid') { state.enemyAttack.zekeMorbid = !!el.checked; state.ui.appliedResultKey = null; saveState(); render(); }
     if (ch === 'def-zeke-flanking') { state.enemyAttack.zekeFlanking = !!el.checked; state.ui.appliedResultKey = null; saveState(); render(); }
     if (ch === 'def-zeke-belts') { state.enemyAttack.zekeBelts = !!el.checked; state.ui.appliedResultKey = null; saveState(); render(); }
+    if (ch === 'def-shayliss-marbas') { state.enemyAttack.shaylissMarbas = !!el.checked; state.ui.appliedResultKey = null; saveState(); render(); }
+    if (ch === 'def-shayliss-belts') { state.enemyAttack.shaylissBelts = !!el.checked; state.ui.appliedResultKey = null; saveState(); render(); }
     if (ch === 'enemy-summon-reduction') { state.enemyAttack.summonReduction = !!el.checked; state.ui.appliedResultKey = null; saveState(); render(); }
 
     if (ch === 'enemy-spell-profile') { const profile = getEnemySpellProfilesForActor().find(p=>p.id===el.value) || DATA.enemySpellProfiles[el.value]; state.enemySpell.profileId = el.value; state.enemySpell.castingColor = profile?.defaultColor || profile?.castingColors?.[0] || 'Purple'; state.enemySpell.castingFace = 0; state.enemySpell.empower = !!profile?.defaultEmpower; state.enemySpell.empowerFace = 0; state.enemySpell.manualForceMod = 0; state.enemySpell.convictionColors = {}; state.enemySpell.convictionFaces = {}; state.enemySpell.damageFaces = {}; state.enemySpell.forcePass = false; state.enemySpell.witchHat = false; state.enemySpell.magicResistance = false; state.enemySpell.manualEffect = ''; state.enemySpell.manualFlatMagic = 0; state.enemySpell.damageEqualsDifference = false; state.ui.appliedResultKey = null; saveState(); render(); }
