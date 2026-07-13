@@ -9,7 +9,7 @@
   <link rel="manifest" href="manifest.webmanifest" />
   <link rel="apple-touch-icon" href="icons/apple-touch-icon.png" />
   <link rel="icon" href="icons/favicon.svg" type="image/svg+xml" />
-  <title>Middara Combat Helper - V3.0N Shayliss Hotfix</title>
+  <title>Middara Combat Helper - V3.0O State Health</title>
   <style>
     :root {
       --bg: #0f172a;
@@ -185,7 +185,7 @@
 <body>
   <header>
     <h1>Middara Combat Helper</h1>
-    <div class="subtitle"><strong>V3.0N Shayliss Hotfix</strong> - adds Shayliss to party play, The Wretched attack profiles, and repairs older tablet saved states.</div>
+    <div class="subtitle"><strong>V3.0O State Health</strong> - adds Shayliss to party play and gives the Data tab a saved-state repair check for tablets.</div>
   </header>
   <main id="appRoot"></main>
   <footer class="footer" id="stableFooter" aria-live="polite"></footer>
@@ -194,7 +194,7 @@
 
 (function () {
   'use strict';
-  const VERSION = 'V3.0N';
+  const VERSION = 'V3.0O';
   const STORAGE_KEY = 'middara.combatHelper.v3.state';
 
   const DATA = {
@@ -541,6 +541,54 @@
     if (!state.initiative.cards.length) state.initiative.currentIndex = 0;
     if (state.initiative.currentIndex >= state.initiative.cards.length) state.initiative.currentIndex = Math.max(0, state.initiative.cards.length - 1);
     if (!state.ui.actorId) syncActorFromInitiative(false);
+  }
+  function initiativeCardIsValid(card) {
+    if (!card || typeof card !== 'object') return false;
+    if (card.type === 'party') return !!DATA.party[card.ref];
+    if (card.type === 'enemy') return !!DATA.enemyDefinitions[card.ref] || state.enemies.some(e => e.id === card.ref);
+    if (card.type === 'command') return !!DATA.commandDefinitions[card.ref] || state.command.some(c => c.id === card.ref);
+    return false;
+  }
+  function targetRefIsValid(ref) {
+    if (!ref) return true;
+    const [type, id] = String(ref).split(':');
+    if (type === 'party') return !!DATA.party[id] && !!state.party[id];
+    if (type === 'enemy') return state.enemies.some(e => e.id === id);
+    if (type === 'command') return state.command.some(c => c.id === id);
+    return false;
+  }
+  function auditSavedState(repair=false) {
+    const messages = [];
+    if (!state || typeof state !== 'object') {
+      if (repair) state = defaultState();
+      return { ok:false, repaired:repair, messages:['Saved state was missing and was reset to defaults.'] };
+    }
+    const beforeParty = Object.keys(DATA.party).filter(id => !state.party || !state.party[id]);
+    beforeParty.forEach(id => messages.push(`Missing party row: ${DATA.party[id].name}`));
+    const invalidParty = Object.keys(state.party || {}).filter(id => !DATA.party[id]);
+    invalidParty.forEach(id => messages.push(`Old unknown party row: ${id}`));
+    if (!state.rewards?.xp || typeof state.rewards.xp !== 'object') messages.push('Rewards XP map missing.');
+    Object.keys(DATA.party).forEach(id => {
+      if (!state.rewards?.xp || state.rewards.xp[id] == null) messages.push(`Missing XP row: ${DATA.party[id].name}`);
+    });
+    const invalidCards = (state.initiative?.cards || []).filter(card => !initiativeCardIsValid(card));
+    invalidCards.forEach(card => messages.push(`Broken initiative card: ${card?.label || card?.ref || 'unknown'}`));
+    if (!targetRefIsValid(state.ui?.actorId)) messages.push(`Invalid actor reference: ${state.ui?.actorId || 'blank'}`);
+    if (!targetRefIsValid(state.ui?.targetId)) messages.push(`Invalid target reference: ${state.ui?.targetId || 'blank'}`);
+
+    if (repair) {
+      normalizeState();
+      state.rewards = Object.assign({ gold:0, partyXp:0, xp:{}, notes:'' }, state.rewards || {});
+      state.rewards.xp = Object.assign({}, ...Object.keys(DATA.party).map(id => ({ [id]:0 })), state.rewards.xp || {});
+      state.initiative.cards = Array.isArray(state.initiative.cards) ? state.initiative.cards.filter(initiativeCardIsValid) : [];
+      if (!state.initiative.cards.length) state.initiative.cards = Object.values(DATA.party).map(p => ({ id:uid('init'), type:'party', ref:p.id, label:p.name }));
+      if (!targetRefIsValid(state.ui.actorId)) state.ui.actorId = state.initiative.cards[0] ? `${state.initiative.cards[0].type}:${state.initiative.cards[0].ref}` : 'party:rook';
+      if (!targetRefIsValid(state.ui.targetId)) state.ui.targetId = null;
+      if (!['play','party','enemies','turn','command','rewards','data'].includes(state.ui.activeTab)) state.ui.activeTab = 'play';
+      if (!['enemies','party','command'].includes(state.ui.targetScope)) state.ui.targetScope = 'enemies';
+      normalizeState();
+    }
+    return { ok:messages.length === 0, repaired:repair && messages.length > 0, messages:messages.length ? messages : ['Saved state looks healthy.'] };
   }
 
   function currentInitiativeCard() { return state.initiative.cards[state.initiative.currentIndex] || null; }
@@ -2157,7 +2205,7 @@
 
   function renderDataTab() {
     const exported = JSON.stringify(state, null, 2);
-    return `<section class="panel"><h2>Data / deployment</h2><div class="note">V3 uses a new snapshot schema. Old V2 snapshots are not automatically migrated yet; keep V2 snapshots separate until a migration tool exists.</div><div class="btn-row" style="margin-top:10px"><button class="primary" data-action="export-snapshot">Refresh export box</button><button class="accent" data-action="download-snapshot">Download JSON</button><button data-action="copy-snapshot">Copy JSON</button><button class="warn" data-action="import-snapshot">Import JSON from box</button><button class="danger" data-action="reset-app">Reset V3 local state</button></div><div class="tiny" style="margin-top:8px">On tablet, Download JSON is the easiest backup path. Safari usually saves it to Files → Downloads. Copy JSON is a fallback if downloads are blocked.</div><textarea id="snapshotBox" style="margin-top:10px">${escapeHtml(exported)}</textarea><div class="hr"></div><h3>PWA cache</h3><div class="note">Update cache checks for a newer GitHub Pages deployment. Clear app cache only removes cached app files, not localStorage state.</div><div class="btn-row" style="margin-top:10px"><button data-action="update-cache">Update app cache</button><button data-action="clear-cache">Clear app cache only</button></div><div id="dataStatus" class="note" style="margin-top:10px"></div><div class="hr"></div><h3>Combat tests</h3><div class="note">Run the deployed combat math regression tests after GitHub Pages updates, especially before a game session.</div><div class="btn-row" style="margin-top:10px"><a class="button-link accent" href="tests/run-tests.html">Run combat tests</a></div></section>`;
+    return `<section class="panel"><h2>Data / deployment</h2><div class="note">V3 uses a new snapshot schema. Old V2 snapshots are not automatically migrated yet; keep V2 snapshots separate until a migration tool exists.</div><div class="btn-row" style="margin-top:10px"><button class="primary" data-action="export-snapshot">Refresh export box</button><button class="accent" data-action="download-snapshot">Download JSON</button><button data-action="copy-snapshot">Copy JSON</button><button class="warn" data-action="import-snapshot">Import JSON from box</button><button class="danger" data-action="reset-app">Reset V3 local state</button></div><div class="tiny" style="margin-top:8px">On tablet, Download JSON is the easiest backup path. Safari usually saves it to Files → Downloads. Copy JSON is a fallback if downloads are blocked.</div><textarea id="snapshotBox" style="margin-top:10px">${escapeHtml(exported)}</textarea><div class="hr"></div><h3>Saved state health</h3><div class="note">Check or repair this tablet's saved app state after data updates. Repair preserves damage, SP, enemies, rewards, and the action log.</div><div class="btn-row" style="margin-top:10px"><button data-action="check-state-health">Check saved state</button><button class="warn" data-action="repair-state-health">Repair saved state</button></div><div id="stateHealthStatus" class="note" style="margin-top:10px"></div><div class="hr"></div><h3>PWA cache</h3><div class="note">Update cache checks for a newer GitHub Pages deployment. Clear app cache only removes cached app files, not localStorage state.</div><div class="btn-row" style="margin-top:10px"><button data-action="update-cache">Update app cache</button><button data-action="clear-cache">Clear app cache only</button></div><div id="dataStatus" class="note" style="margin-top:10px"></div><div class="hr"></div><h3>Combat tests</h3><div class="note">Run the deployed combat math regression tests after GitHub Pages updates, especially before a game session.</div><div class="btn-row" style="margin-top:10px"><a class="button-link accent" href="tests/run-tests.html">Run combat tests</a></div></section>`;
   }
 
   function renderLogPanel() {
@@ -2749,6 +2797,20 @@
     if (a === 'download-snapshot') { downloadSnapshotFile(); return; }
     if (a === 'copy-snapshot') { const box=byId('snapshotBox'); const text=box?.value || JSON.stringify(state,null,2); if (box) box.value=text; navigator.clipboard?.writeText(text); return; }
     if (a === 'import-snapshot') { try { const imported=JSON.parse(byId('snapshotBox')?.value || '{}'); state=mergeState(imported); saveState(); render(); addLog('Imported V3 snapshot'); } catch(e) { alert('Import failed: '+e.message); } return; }
+    if (a === 'check-state-health') {
+      const report = auditSavedState(false);
+      const status = byId('stateHealthStatus');
+      if (status) status.textContent = report.messages.join(' | ');
+      return;
+    }
+    if (a === 'repair-state-health') {
+      const report = auditSavedState(true);
+      saveState();
+      render();
+      const status = byId('stateHealthStatus');
+      if (status) status.textContent = report.repaired ? `Repaired: ${report.messages.join(' | ')}` : report.messages.join(' | ');
+      return;
+    }
     if (a === 'reset-app') { if(confirm('Reset V3 local state on this device?')) { state=defaultState(); saveState(); render(); } return; }
     if (a === 'update-cache') { updateCache(); return; }
     if (a === 'clear-cache') { clearCache(); return; }

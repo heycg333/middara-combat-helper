@@ -1,4 +1,4 @@
-const CACHE_NAME = 'middara-helper-v3-0n-shayliss-hotfix';
+const CACHE_NAME = 'middara-helper-v3-0o-state-health';
 const APP_SHELL = [
   './',
   './index.html',
