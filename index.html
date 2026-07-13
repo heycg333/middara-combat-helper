@@ -9,7 +9,7 @@
   <link rel="manifest" href="manifest.webmanifest" />
   <link rel="apple-touch-icon" href="icons/apple-touch-icon.png" />
   <link rel="icon" href="icons/favicon.svg" type="image/svg+xml" />
-  <title>Middara Combat Helper - V3.0O State Health</title>
+  <title>Middara Combat Helper - V3.0P Shayliss Blot</title>
   <style>
     :root {
       --bg: #0f172a;
@@ -185,7 +185,7 @@
 <body>
   <header>
     <h1>Middara Combat Helper</h1>
-    <div class="subtitle"><strong>V3.0O State Health</strong> - adds Shayliss to party play and gives the Data tab a saved-state repair check for tablets.</div>
+    <div class="subtitle"><strong>V3.0P Shayliss Blot</strong> - adds Shayliss Blot Out The Sun splash handling and saved-state repair tools for tablets.</div>
   </header>
   <main id="appRoot"></main>
   <footer class="footer" id="stableFooter" aria-live="polite"></footer>
@@ -194,7 +194,7 @@
 
 (function () {
   'use strict';
-  const VERSION = 'V3.0O';
+  const VERSION = 'V3.0P';
   const STORAGE_KEY = 'middara.combatHelper.v3.state';
 
   const DATA = {
@@ -367,6 +367,7 @@
       enemySpell: { profileId:'animate_darkness', castingColor:'Red', castingFace:0, empower:false, empowerFace:0, manualForceMod:0, convictionColors:{c0:'',c1:''}, convictionFaces:{c0:0,c1:0}, damageFaces:{}, manualConvictionMod:0, forcePass:false, witchHat:false, manualEffect:'', manualFlatMagic:0, damageEqualsDifference:false, magicResistance:false },
       nightingale: { previousDamage:0, trophyFace:'', trophyTargetId:'', lifeOpen:false, trophyOpen:false, life:{ castingColor:'Grey', castingFace:0, empower:true, empowerFace:0, manualForceMod:0, boost:false, targets:[{targetId:'', c0:0, c1:0},{targetId:'', c0:0, c1:0},{targetId:'', c0:0, c1:0}], appliedKey:null, selfAppliedKey:null } },
       remiZeke: { remiProfile:'remi_chain_melee', whirlwindActive:false, whirlwindCount:0, onslaughtActive:false, onslaughtRemaining:0, lastMessage:'' },
+      shayliss: { blotFace:0, blotApplied:{}, lastMessage:'' },
       party: defaultParty(),
       enemies: [],
       command: [],
@@ -410,6 +411,8 @@
     next.nightingale.life.targets = Array.isArray(raw?.nightingale?.life?.targets) ? raw.nightingale.life.targets.slice(0,3).map((row,idx)=>Object.assign(base.nightingale.life.targets[idx] || {}, row || {})) : base.nightingale.life.targets;
     while (next.nightingale.life.targets.length < 3) next.nightingale.life.targets.push({targetId:'', c0:0, c1:0});
     next.remiZeke = Object.assign(base.remiZeke, raw?.remiZeke || {});
+    next.shayliss = Object.assign(base.shayliss, raw?.shayliss || {});
+    next.shayliss.blotApplied = Object.assign(base.shayliss.blotApplied, raw?.shayliss?.blotApplied || {});
     next.party = Object.assign(base.party, raw?.party || {});
     next.initiative = Object.assign(base.initiative, raw?.initiative || {});
     next.rewards = Object.assign(base.rewards, raw?.rewards || {});
@@ -525,6 +528,9 @@
   }
   function normalizeState() {
     if (!state.ui) state.ui = defaultState().ui;
+    if (!state.shayliss || typeof state.shayliss !== 'object') state.shayliss = { blotFace:0, blotApplied:{}, lastMessage:'' };
+    state.shayliss.blotFace = safeNumber(state.shayliss.blotFace, 0, 0, (DATA.dice.Blue?.length || 1) - 1);
+    state.shayliss.blotApplied = state.shayliss.blotApplied && typeof state.shayliss.blotApplied === 'object' ? state.shayliss.blotApplied : {};
     const baseParty = defaultParty();
     state.party = state.party && typeof state.party === 'object' ? state.party : {};
     Object.keys(DATA.party).forEach(id => {
@@ -567,6 +573,7 @@
     beforeParty.forEach(id => messages.push(`Missing party row: ${DATA.party[id].name}`));
     const invalidParty = Object.keys(state.party || {}).filter(id => !DATA.party[id]);
     invalidParty.forEach(id => messages.push(`Old unknown party row: ${id}`));
+    if (!state.shayliss || typeof state.shayliss !== 'object') messages.push('Missing Shayliss helper state.');
     if (!state.rewards?.xp || typeof state.rewards.xp !== 'object') messages.push('Rewards XP map missing.');
     Object.keys(DATA.party).forEach(id => {
       if (!state.rewards?.xp || state.rewards.xp[id] == null) messages.push(`Missing XP row: ${DATA.party[id].name}`);
@@ -1008,7 +1015,7 @@
         <div class="chain-helper-status"><strong>The Wretched</strong><br><span class="tiny">Use Manual Physical Damage for spent Energy tokens, flanking +2 Physical, or Blot Out The Sun extra Blue-die splash. BFF and Dangerous Terrain are table reminders.</span></div>
         <div class="chain-helper-grid">
           <button type="button" data-action="shayliss-command2-fu">The Wretched ranged FU -> Command 2<br><span class="tiny">Uses current difference hit: ${diff}</span></button>
-        </div>`;
+        </div>${renderShaylissBlotTool()}`;
     }
     const remaining = Number(state.remiZeke.onslaughtRemaining || 0);
     return `<div class="hr"></div><h3>Zeke chain helpers</h3>
@@ -2422,6 +2429,30 @@
     const r = calculateAttackResult();
     return r.ready ? Number(r.diffHit || 0) : 0;
   }
+  function shaylissBlotDamage() {
+    const face = DATA.dice.Blue?.[Number(state.shayliss?.blotFace || 0)] || DATA.dice.Blue?.[0] || { value:0 };
+    return Number(face.value || 0);
+  }
+  function shaylissBlotApplyKey(targetId = state.ui.targetId) {
+    return `${targetId || 'none'}|${Number(state.shayliss?.blotFace || 0)}`;
+  }
+  function renderShaylissBlotTool() {
+    const target = getEntityByTarget(state.ui.targetId);
+    const targetOk = target && target.state && target.def;
+    const key = shaylissBlotApplyKey();
+    const applied = !!state.shayliss?.blotApplied?.[key];
+    const damage = shaylissBlotDamage();
+    return `<div class="chain-helper-status"><strong>Blot Out The Sun</strong><br><span class="tiny">After the ranged attack resolves, choose the Blue die result and apply that Physical Damage to the attack target. Then select each adjacent figure and apply the same result once.</span></div>
+      <div class="field-grid" style="margin-top:8px">
+        <div><label>Blue splash damage die</label><select data-change="shayliss-blot-face">${renderFaceOptions('Blue', Number(state.shayliss?.blotFace || 0))}</select></div>
+        <div class="card"><strong>${damage}</strong><div class="tiny">Physical Damage to apply to selected target: ${escapeHtml(targetLabel())}</div></div>
+      </div>
+      <div class="chain-helper-grid">
+        <button type="button" class="primary" data-action="shayliss-blot-apply-target" ${!targetOk || applied ? 'disabled' : ''}>${applied ? 'Blot damage applied' : `Apply ${damage} Blot damage`}</button>
+        <button type="button" data-action="shayliss-blot-clear">Clear Blot applied markers</button>
+      </div>
+      <div class="tiny" style="margin-top:6px">${escapeHtml(state.shayliss?.lastMessage || 'Use the target drawer to move between the main target and adjacent figures.')}</div>`;
+  }
   document.addEventListener('click', function (ev) {
     const btn = ev.target.closest('[data-action]');
     if (!btn) return;
@@ -2664,6 +2695,24 @@
       state.remiZeke.lastMessage = `Shayliss Command 2 FU loaded, Force ${10 + diff}.`;
       saveState(); render(); addLog('Shayliss Command 2 FU', `Loaded Command 2 Force check with Force 10 + difference hit (${diff}).`); return;
     }
+    if (a === 'shayliss-blot-apply-target') {
+      const target = getEntityByTarget(state.ui.targetId);
+      if (!target || !target.state || !target.def) return;
+      const damage = shaylissBlotDamage();
+      const key = shaylissBlotApplyKey();
+      state.shayliss.blotApplied = state.shayliss.blotApplied || {};
+      if (state.shayliss.blotApplied[key]) return;
+      target.state.damage = Math.max(0, Math.min(target.def.hp || 999, Number(target.state.damage || 0) + damage));
+      if ((target.type === 'enemy' || target.type === 'command') && target.state.damage >= (target.def.hp || 999)) target.state.defeated = true;
+      state.shayliss.blotApplied[key] = true;
+      state.shayliss.lastMessage = `Applied ${damage} Blot damage to ${targetLabel()}. Select another adjacent figure to apply the same result.`;
+      saveState(); render(); addLog('Shayliss Blot Out The Sun', `Applied ${damage} Physical Damage to ${targetLabel()}.`); return;
+    }
+    if (a === 'shayliss-blot-clear') {
+      state.shayliss.blotApplied = {};
+      state.shayliss.lastMessage = 'Blot applied markers cleared.';
+      saveState(); render(); return;
+    }
     if (a === 'set-action') {
       state.ui.actionId = btn.dataset.actionId;
       state.ui.appliedResultKey = null;
@@ -2835,6 +2884,7 @@
     if (ch === 'attack-courage') { state.attack.useCourage = !!el.checked; state.ui.appliedResultKey = null; saveState(); render(); }
     if (ch === 'attack-masterwork') { state.attack.useMasterWork = !!el.checked; state.ui.appliedResultKey = null; saveState(); render(); }
     if (ch === 'attack-motv') { state.attack.useMasterOfVessel = !!el.checked; state.ui.appliedResultKey = null; saveState(); render(); }
+    if (ch === 'shayliss-blot-face') { state.shayliss.blotFace = Number(el.value || 0); state.shayliss.blotApplied = {}; state.shayliss.lastMessage = 'Blot die changed; applied markers cleared.'; saveState(); render(); }
     if (ch === 'spell-profile') { state.spell.profileId = el.value; const profile = DATA.spellProfiles[el.value]; state.spell.castingColor = profile?.noCasting ? '' : (profile?.defaultColor || profile?.castingColors?.[0] || 'Purple'); state.spell.castingFace = 0; state.spell.empower = profile?.noCasting ? false : !!profile?.defaultEmpower; state.spell.empowerFace = 0; state.spell.convictionFaces = {}; state.spell.zealousFaces = {}; state.spell.useOptionalBonus = false; state.spell.previousDamage = 0; state.ui.appliedResultKey = null; saveState(); render(); }
     if (ch === 'spell-casting-color') { state.spell.castingColor = el.value; state.spell.castingFace = 0; state.ui.appliedResultKey = null; saveState(); render(); }
     if (ch === 'spell-casting-face') { state.spell.castingFace = Number(el.value); state.ui.appliedResultKey = null; saveState(); render(); }
