@@ -9,7 +9,7 @@
   <link rel="manifest" href="manifest.webmanifest" />
   <link rel="apple-touch-icon" href="icons/apple-touch-icon.png" />
   <link rel="icon" href="icons/favicon.svg" type="image/svg+xml" />
-  <title>Middara Combat Helper - V3.0P Shayliss Blot</title>
+  <title>Middara Combat Helper - V3.0R Shayliss BFF</title>
   <style>
     :root {
       --bg: #0f172a;
@@ -185,7 +185,7 @@
 <body>
   <header>
     <h1>Middara Combat Helper</h1>
-    <div class="subtitle"><strong>V3.0P Shayliss Blot</strong> - adds Shayliss Blot Out The Sun splash handling and saved-state repair tools for tablets.</div>
+    <div class="subtitle"><strong>V3.0R Shayliss BFF</strong> - lets Shayliss reserve Burst for BFF before attack symbol damage is calculated.</div>
   </header>
   <main id="appRoot"></main>
   <footer class="footer" id="stableFooter" aria-live="polite"></footer>
@@ -194,7 +194,7 @@
 
 (function () {
   'use strict';
-  const VERSION = 'V3.0P';
+  const VERSION = 'V3.0R';
   const STORAGE_KEY = 'middara.combatHelper.v3.state';
 
   const DATA = {
@@ -361,7 +361,7 @@
       version: VERSION,
       createdAt: new Date().toISOString(),
       ui: { activeTab:'play', actorId:'party:rook', targetId:null, targetScope:'enemies', actionId:null, selectedParty:'rook', appliedResultKey:null },
-      attack: { profileId:'rook_default', faces:{}, empower:false, empowerFace:0, manualAttackMod:0, manualPhysical:0, manualMagic:0, manualArmorPiercing:0, targetDefenseMod:0, useMasterWork:false, useMasterOfVessel:false, useCourage: true },
+      attack: { profileId:'rook_default', faces:{}, empower:false, empowerFace:0, manualAttackMod:0, manualPhysical:0, manualMagic:0, manualArmorPiercing:0, targetDefenseMod:0, useMasterWork:false, useMasterOfVessel:false, useCourage: true, useBff:false },
       spell: { profileId:'rook_courage_stifle', castingColor:'Green', castingFace:0, empower:false, empowerFace:0, manualForceMod:0, convictionFaces:{c0:0,c1:0}, useOtherworldly:true, useOptionalBonus:false, previousDamage:0, zealousFaces:{}, zealousDistance:1, zealousDiscount:false },
       enemyAttack: { profileId:'animate_basic', faces:{}, empower:false, empowerFace:0, useDodge:false, dodgeFace:0, manualAttackMod:0, manualPhysical:0, manualMagic:0, manualArmorPiercing:0, targetDefenseMod:0, finalReduction:0, forceMiss:false, rookPlate:false, remiShearling:true, remiShearlingPE:false, remiMantleVow:false, nightMorbid:true, nightReinforced:false, nightFlanking:false, zekeMorbid:true, zekeBelts:false, zekeFlanking:false, shaylissMarbas:true, shaylissBelts:false, summonReduction:false },
       enemySpell: { profileId:'animate_darkness', castingColor:'Red', castingFace:0, empower:false, empowerFace:0, manualForceMod:0, convictionColors:{c0:'',c1:''}, convictionFaces:{c0:0,c1:0}, damageFaces:{}, manualConvictionMod:0, forcePass:false, witchHat:false, manualEffect:'', manualFlatMagic:0, damageEqualsDifference:false, magicResistance:false },
@@ -1135,14 +1135,16 @@
     const target = getEntityByTarget(state.ui.targetId);
     const hasCourage = actor.state?.effects?.includes('Courage');
     const hasDarkness = actor.state?.effects?.includes('Darkness');
-    const masterWorkAvailable = actor.type === 'party' && ((actor.id === 'remi' && profile.id.includes('chain')) || actor.id === 'rook' || actor.id === 'zeke');
+    const masterWorkAvailable = actor.type === 'party' && ((actor.id === 'remi' && profile.id.includes('chain')) || actor.id === 'rook' || actor.id === 'zeke' || actor.id === 'shayliss');
     const motvAvailable = actor.type === 'party' && actor.id === 'remi';
+    const bffAvailable = actor.type === 'party' && actor.id === 'shayliss';
     return `<details style="margin-top:10px" open><summary>Attack options and manual modifiers</summary>
       <div class="field-grid" style="margin-top:10px">
         ${hasCourage ? `<label><input type="checkbox" data-change="attack-courage" ${state.attack.useCourage!==false?'checked':''}> <span>Courage: +1 Book and +1 Shield</span></label>` : `<div class="note">No Courage effect on actor.</div>`}
         ${hasDarkness ? `<div class="note warn-text">Darkness: -1 to attack roll is applied.</div>` : `<div class="note">No Darkness attack penalty.</div>`}
         ${masterWorkAvailable ? `<label><input type="checkbox" data-change="attack-masterwork" ${state.attack.useMasterWork?'checked':''}> <span>Use Master Work: +1 attack roll</span></label>` : `<div class="note">No Master Work option for this profile.</div>`}
         ${motvAvailable ? `<label><input type="checkbox" data-change="attack-motv" ${state.attack.useMasterOfVessel?'checked':''}> <span>Use Master of the Vessel: +1 Burst and +1 damage to symbol abilities</span></label>` : `<div class="note">No Master of the Vessel option.</div>`}
+        ${bffAvailable ? `<label><input type="checkbox" data-change="attack-bff" ${state.attack.useBff?'checked':''}> <span>Spend 1 Burst on BFF: reserve it from damage symbols</span></label>` : `<div class="note">No BFF reserve option.</div>`}
         <div><label>Target Defense modifier</label><input type="number" data-change="attack-number" data-field="targetDefenseMod" value="${Number(state.attack.targetDefenseMod||0)}" /></div>
         <div><label>Manual attack roll modifier</label><input type="number" data-change="attack-number" data-field="manualAttackMod" value="${Number(state.attack.manualAttackMod||0)}" /></div>
         <div><label>Manual Armor Piercing</label><input type="number" data-change="attack-number" data-field="manualArmorPiercing" min="0" value="${Number(state.attack.manualArmorPiercing||0)}" /></div>
@@ -1287,17 +1289,18 @@
         manualPhysical,
         manualMagic,
         manualArmorPiercing: state.attack.manualArmorPiercing,
-        targetDefenseMod: state.attack.targetDefenseMod
+        targetDefenseMod: state.attack.targetDefenseMod,
+        reserveBurst: actor.type === 'party' && actor.id === 'shayliss' && state.attack.useBff ? 1 : 0
       }
     });
     const finalDamage = result.finalDamage || 0;
     const barrierArmor = result.barrierArmor || 0;
-    const key = JSON.stringify({a:state.ui.actorId,t:state.ui.targetId,p:profile.id,f:state.attack.faces,e:state.attack.empower,ef:state.attack.empowerFace,mA:manualAttack,mP:manualPhysical,mM:manualMagic,mAP:state.attack.manualArmorPiercing,tD:state.attack.targetDefenseMod,c:state.attack.useCourage,mw:state.attack.useMasterWork,motv:state.attack.useMasterOfVessel,barrier:barrierArmor,damage:finalDamage, zMorbid:state.enemyAttack.zekeMorbid, zFlank:state.enemyAttack.zekeFlanking, barrier:barrierArmor});
+    const key = JSON.stringify({a:state.ui.actorId,t:state.ui.targetId,p:profile.id,f:state.attack.faces,e:state.attack.empower,ef:state.attack.empowerFace,mA:manualAttack,mP:manualPhysical,mM:manualMagic,mAP:state.attack.manualArmorPiercing,tD:state.attack.targetDefenseMod,c:state.attack.useCourage,mw:state.attack.useMasterWork,motv:state.attack.useMasterOfVessel,bff:state.attack.useBff,barrier:barrierArmor,damage:finalDamage, zMorbid:state.enemyAttack.zekeMorbid, zFlank:state.enemyAttack.zekeFlanking, barrier:barrierArmor});
     return Object.assign({ ready:true, actor, target, profile, manualPhysical, manualMagic, key, masterWork, useMotV }, result, { finalDamage, barrierArmor });
   }
   function renderBreakdownGrid(result) {
     const diceText = result.diceRows.map(r=>`${escapeHtml(r.color)}: ${escapeHtml(r.label)}`).join('<br>');
-    const modsText = `Manual ${Number(state.attack.manualAttackMod||0)}, Darkness ${result.darknessPenalty}, Master Work ${result.masterWork}${result.useMotV ? ', Master of the Vessel active' : ''}`;
+    const modsText = `Manual ${Number(state.attack.manualAttackMod||0)}, Darkness ${result.darknessPenalty}, Master Work ${result.masterWork}${result.useMotV ? ', Master of the Vessel active' : ''}${result.reservedBurst ? ', BFF reserved ' + result.reservedBurst + ' Burst' : ''}`;
     const armorText = `Base Armor ${(result.target.def.armor||0)}${result.barrierArmor ? ' + Barrier 1' : ''} = ${result.targetArmor}; AP ${result.armorPiercing}; effective ${Math.max(0,result.targetArmor-result.armorPiercing)}`;
     const rawText = `Difference ${result.diffHit} + passive ${result.profile.passivePhysical||0} + conditional ${result.spend.conditionalPhysical||0} + symbol Physical ${result.spend.physicalSymbols||0} + manual ${result.manualPhysical} = ${result.spend.rawPhysical||0} before armor`;
     return `<div class="breakdown-grid">
@@ -2400,6 +2403,7 @@
     state.attack.useMasterWork = false;
     state.attack.useMasterOfVessel = false;
     state.attack.useCourage = true;
+    state.attack.useBff = false;
     state.ui.appliedResultKey = null;
   }
   function loadAttackProfile(profileId) {
@@ -2433,6 +2437,14 @@
     const face = DATA.dice.Blue?.[Number(state.shayliss?.blotFace || 0)] || DATA.dice.Blue?.[0] || { value:0 };
     return Number(face.value || 0);
   }
+  function calculateShaylissBlotTarget(target = getEntityByTarget(state.ui.targetId)) {
+    const raw = shaylissBlotDamage();
+    if (!target?.def || !target?.state) return { ready:false, raw, armor:0, finalDamage:0, target };
+    const barrierArmor = (target.state.effects || []).includes('Barrier') ? 1 : 0;
+    const armor = Math.max(0, Number(target.def.armor || 0) + barrierArmor);
+    const finalDamage = Math.max(0, raw - armor);
+    return { ready:true, raw, armor, barrierArmor, finalDamage, target };
+  }
   function shaylissBlotApplyKey(targetId = state.ui.targetId) {
     return `${targetId || 'none'}|${Number(state.shayliss?.blotFace || 0)}`;
   }
@@ -2441,14 +2453,14 @@
     const targetOk = target && target.state && target.def;
     const key = shaylissBlotApplyKey();
     const applied = !!state.shayliss?.blotApplied?.[key];
-    const damage = shaylissBlotDamage();
+    const calc = calculateShaylissBlotTarget(target);
     return `<div class="chain-helper-status"><strong>Blot Out The Sun</strong><br><span class="tiny">After the ranged attack resolves, choose the Blue die result and apply that Physical Damage to the attack target. Then select each adjacent figure and apply the same result once.</span></div>
       <div class="field-grid" style="margin-top:8px">
         <div><label>Blue splash damage die</label><select data-change="shayliss-blot-face">${renderFaceOptions('Blue', Number(state.shayliss?.blotFace || 0))}</select></div>
-        <div class="card"><strong>${damage}</strong><div class="tiny">Physical Damage to apply to selected target: ${escapeHtml(targetLabel())}</div></div>
+        <div class="card"><strong>${calc.finalDamage}</strong><div class="tiny">Physical Damage to ${escapeHtml(targetLabel())}. Roll ${calc.raw} - Armor ${calc.armor}${calc.barrierArmor ? ' (includes Barrier)' : ''}.</div></div>
       </div>
       <div class="chain-helper-grid">
-        <button type="button" class="primary" data-action="shayliss-blot-apply-target" ${!targetOk || applied ? 'disabled' : ''}>${applied ? 'Blot damage applied' : `Apply ${damage} Blot damage`}</button>
+        <button type="button" class="primary" data-action="shayliss-blot-apply-target" ${!targetOk || applied ? 'disabled' : ''}>${applied ? 'Blot damage applied' : `Apply ${calc.finalDamage} Blot damage`}</button>
         <button type="button" data-action="shayliss-blot-clear">Clear Blot applied markers</button>
       </div>
       <div class="tiny" style="margin-top:6px">${escapeHtml(state.shayliss?.lastMessage || 'Use the target drawer to move between the main target and adjacent figures.')}</div>`;
@@ -2698,15 +2710,16 @@
     if (a === 'shayliss-blot-apply-target') {
       const target = getEntityByTarget(state.ui.targetId);
       if (!target || !target.state || !target.def) return;
-      const damage = shaylissBlotDamage();
+      const calc = calculateShaylissBlotTarget(target);
+      const damage = calc.finalDamage;
       const key = shaylissBlotApplyKey();
       state.shayliss.blotApplied = state.shayliss.blotApplied || {};
       if (state.shayliss.blotApplied[key]) return;
       target.state.damage = Math.max(0, Math.min(target.def.hp || 999, Number(target.state.damage || 0) + damage));
       if ((target.type === 'enemy' || target.type === 'command') && target.state.damage >= (target.def.hp || 999)) target.state.defeated = true;
       state.shayliss.blotApplied[key] = true;
-      state.shayliss.lastMessage = `Applied ${damage} Blot damage to ${targetLabel()}. Select another adjacent figure to apply the same result.`;
-      saveState(); render(); addLog('Shayliss Blot Out The Sun', `Applied ${damage} Physical Damage to ${targetLabel()}.`); return;
+      state.shayliss.lastMessage = `Applied ${damage} Blot damage to ${targetLabel()} after Armor ${calc.armor}. Select another adjacent figure to apply the same result.`;
+      saveState(); render(); addLog('Shayliss Blot Out The Sun', `Applied ${damage} Physical Damage to ${targetLabel()} after Armor ${calc.armor}.`); return;
     }
     if (a === 'shayliss-blot-clear') {
       state.shayliss.blotApplied = {};
@@ -2884,6 +2897,7 @@
     if (ch === 'attack-courage') { state.attack.useCourage = !!el.checked; state.ui.appliedResultKey = null; saveState(); render(); }
     if (ch === 'attack-masterwork') { state.attack.useMasterWork = !!el.checked; state.ui.appliedResultKey = null; saveState(); render(); }
     if (ch === 'attack-motv') { state.attack.useMasterOfVessel = !!el.checked; state.ui.appliedResultKey = null; saveState(); render(); }
+    if (ch === 'attack-bff') { state.attack.useBff = !!el.checked; state.ui.appliedResultKey = null; saveState(); render(); }
     if (ch === 'shayliss-blot-face') { state.shayliss.blotFace = Number(el.value || 0); state.shayliss.blotApplied = {}; state.shayliss.lastMessage = 'Blot die changed; applied markers cleared.'; saveState(); render(); }
     if (ch === 'spell-profile') { state.spell.profileId = el.value; const profile = DATA.spellProfiles[el.value]; state.spell.castingColor = profile?.noCasting ? '' : (profile?.defaultColor || profile?.castingColors?.[0] || 'Purple'); state.spell.castingFace = 0; state.spell.empower = profile?.noCasting ? false : !!profile?.defaultEmpower; state.spell.empowerFace = 0; state.spell.convictionFaces = {}; state.spell.zealousFaces = {}; state.spell.useOptionalBonus = false; state.spell.previousDamage = 0; state.ui.appliedResultKey = null; saveState(); render(); }
     if (ch === 'spell-casting-color') { state.spell.castingColor = el.value; state.spell.castingFace = 0; state.ui.appliedResultKey = null; saveState(); render(); }

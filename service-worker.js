@@ -1,4 +1,4 @@
-const CACHE_NAME = 'middara-helper-v3-0p-shayliss-blot';
+const CACHE_NAME = 'middara-helper-v3-0r-shayliss-bff';
 const APP_SHELL = [
   './',
   './index.html',

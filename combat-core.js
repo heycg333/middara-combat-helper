@@ -163,6 +163,8 @@
       pool.shield += 1;
     }
     if (options.useMasterOfVessel) pool.burst += 1;
+    const reservedBurst = Math.min(pool.burst, Math.max(0, number(options.reserveBurst)));
+    if (reservedBurst > 0) pool.burst -= reservedBurst;
 
     const darknessPenalty = (actorState.effects || []).includes('Darkness') ? -1 : 0;
     const attackTotal = rolled.total + number(profile.attackBonus) + number(options.manualAttackMod) + darknessPenalty + (options.useMasterWork ? 1 : 0);
@@ -184,7 +186,7 @@
     }) : { finalDamage: 0, physical: 0, magic: 0, chosen: [], remaining: pool };
     const finalDamage = hit ? spend.finalDamage : 0;
     const hpAfter = Math.max(0, number(targetDef.hp) - number(targetState.damage) - finalDamage);
-    return { hit, attackRoll: rolled.total, attackTotal, targetDefense, diffHit, pool, diceRows, armorPiercing, targetArmor, barrierArmor, spend, finalDamage, hpAfter, darknessPenalty };
+    return { hit, attackRoll: rolled.total, attackTotal, targetDefense, diffHit, pool, diceRows, armorPiercing, targetArmor, barrierArmor, spend, finalDamage, hpAfter, darknessPenalty, reservedBurst };
   }
 
   function dodgeDefenseFromBlackFace(face) {
