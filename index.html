@@ -9,7 +9,7 @@
   <link rel="manifest" href="manifest.webmanifest" />
   <link rel="apple-touch-icon" href="icons/apple-touch-icon.png" />
   <link rel="icon" href="icons/favicon.svg" type="image/svg+xml" />
-  <title>Middara Combat Helper - V3.0S Shayliss Energy</title>
+  <title>Middara Combat Helper - V3.0T Shayliss Polish</title>
   <style>
     :root {
       --bg: #0f172a;
@@ -185,7 +185,7 @@
 <body>
   <header>
     <h1>Middara Combat Helper</h1>
-    <div class="subtitle"><strong>V3.0S Shayliss Energy</strong> - adds The Wretched Energy spending and a BFF follow-up shortcut for Shayliss.</div>
+    <div class="subtitle"><strong>V3.0T Shayliss Polish</strong> - tightens Shayliss helpers and adds regression coverage for Energy and Blot.</div>
   </header>
   <main id="appRoot"></main>
   <footer class="footer" id="stableFooter" aria-live="polite"></footer>
@@ -194,7 +194,7 @@
 
 (function () {
   'use strict';
-  const VERSION = 'V3.0S';
+  const VERSION = 'V3.0T';
   const STORAGE_KEY = 'middara.combatHelper.v3.state';
 
   const DATA = {
@@ -991,10 +991,10 @@
       buttons.push(['wait','Choose actor','Select an actor first.']);
     }
     const base = `<div class="table-ish">${buttons.map(([id,label,desc])=>`<button type="button" class="${state.ui.actionId===id?'active':''}" data-action="set-action" data-action-id="${id}"><strong>${escapeHtml(label)}</strong><br><span class="tiny">${escapeHtml(desc)}</span></button>`).join('')}</div>`;
-    return base + renderRemiZekeChainTools(actor);
+    return base + renderPartyHelperTools(actor);
   }
 
-  function renderRemiZekeChainTools(actor) {
+  function renderPartyHelperTools(actor) {
     if (actor.type !== 'party' || !['remi','zeke','shayliss'].includes(actor.id)) return '';
     const currentAttack = calculateAttackResult();
     const diff = currentAttack.ready ? currentAttack.diffHit : 0;
@@ -1015,14 +1015,16 @@
     }
     if (actor.id === 'shayliss') {
       return `<div class="hr"></div><h3>Shayliss attack helpers</h3>
-        <div class="chain-helper-status"><strong>The Wretched</strong><br><span class="tiny">Track Energy here. Flanking +2 Physical and Dangerous Terrain placement remain table/manual reminders.</span></div>
+        <div class="chain-helper-status"><strong>Energy</strong><br><span class="tiny">Track The Wretched Energy here. Gaining Energy when an opponent is defeated within SOI stays a table-confirmed +1.</span></div>
         <div class="field-grid" style="margin-top:8px">
           <div class="card"><strong>${Number(state.shayliss.energy || 0)} / 3</strong><div class="tiny">Energy tokens on The Wretched</div></div>
           <div class="compact-actions"><button type="button" data-action="shayliss-energy" data-delta="1">+1 Energy</button><button type="button" data-action="shayliss-energy" data-delta="-1">-1 Energy</button></div>
         </div>
+        <div class="chain-helper-status"><strong>Follow-ups</strong><br><span class="tiny">Use these after confirming the physical card timing. Flanking +2 Physical and Dangerous Terrain placement remain manual reminders.</span></div>
         <div class="chain-helper-grid">
           <button type="button" data-action="shayliss-command2-fu">The Wretched ranged FU -> Command 2<br><span class="tiny">Uses current difference hit: ${diff}</span></button>
           <button type="button" data-action="shayliss-bff-next">Load next BFF attack<br><span class="tiny">Choose a different target; BFF reserve clears.</span></button>
+          <button type="button" data-action="shayliss-clear-helpers">Clear Shayliss attack helpers<br><span class="tiny">Keeps tracked Energy.</span></button>
         </div>${renderShaylissBlotTool()}`;
     }
     const remaining = Number(state.remiZeke.onslaughtRemaining || 0);
@@ -2452,11 +2454,16 @@
   }
   function calculateShaylissBlotTarget(target = getEntityByTarget(state.ui.targetId)) {
     const raw = shaylissBlotDamage();
-    if (!target?.def || !target?.state) return { ready:false, raw, armor:0, finalDamage:0, target };
-    const barrierArmor = (target.state.effects || []).includes('Barrier') ? 1 : 0;
-    const armor = Math.max(0, Number(target.def.armor || 0) + barrierArmor);
-    const finalDamage = Math.max(0, raw - armor);
-    return { ready:true, raw, armor, barrierArmor, finalDamage, target };
+    if (!target?.def || !target?.state) return { ready:false, raw, armor:0, barrierArmor:0, finalDamage:0, target };
+    const core = window.MiddaraCombatCore;
+    const result = core?.calculateFlatPhysicalDamage
+      ? core.calculateFlatPhysicalDamage({ rawPhysical: raw, targetDef: target.def, targetState: target.state })
+      : {
+          armor: Math.max(0, Number(target.def.armor || 0) + ((target.state.effects || []).includes('Barrier') ? 1 : 0)),
+          barrierArmor: (target.state.effects || []).includes('Barrier') ? 1 : 0,
+          finalDamage: Math.max(0, raw - Math.max(0, Number(target.def.armor || 0) + ((target.state.effects || []).includes('Barrier') ? 1 : 0)))
+        };
+    return { ready:true, raw, armor:result.armor, barrierArmor:result.barrierArmor, finalDamage:result.finalDamage, target };
   }
   function shaylissBlotApplyKey(targetId = state.ui.targetId) {
     return `${targetId || 'none'}|${Number(state.shayliss?.blotFace || 0)}`;
@@ -2742,6 +2749,14 @@
       state.ui.actionId = 'attack';
       state.shayliss.lastMessage = 'BFF follow-up loaded. Choose a different target; BFF reserve is cleared for the new attack.';
       saveState(); render(); addLog('Shayliss BFF follow-up', 'Loaded the next Shayliss attack. Choose a different target and roll normally.'); return;
+    }
+    if (a === 'shayliss-clear-helpers') {
+      state.attack.useBff = false;
+      state.attack.shaylissEnergySpend = 0;
+      state.shayliss.blotApplied = {};
+      state.shayliss.lastMessage = 'Shayliss attack helper selections cleared. Tracked Energy was kept.';
+      state.ui.appliedResultKey = null;
+      saveState(); render(); return;
     }
     if (a === 'shayliss-blot-apply-target') {
       const target = getEntityByTarget(state.ui.targetId);

@@ -189,6 +189,18 @@
     return { hit, attackRoll: rolled.total, attackTotal, targetDefense, diffHit, pool, diceRows, armorPiercing, targetArmor, barrierArmor, spend, finalDamage, hpAfter, darknessPenalty, reservedBurst };
   }
 
+  function calculateFlatPhysicalDamage(input) {
+    const rawPhysical = Math.max(0, number(input && input.rawPhysical));
+    const targetDef = (input && input.targetDef) || {};
+    const targetState = (input && input.targetState) || {};
+    const armorPiercing = Math.max(0, number(input && input.armorPiercing));
+    const barrierArmor = (targetState.effects || []).includes('Barrier') ? 1 : 0;
+    const armor = Math.max(0, number(targetDef.armor) + barrierArmor - armorPiercing);
+    const finalDamage = Math.max(0, rawPhysical - armor);
+    const hpAfter = Math.max(0, number(targetDef.hp) - number(targetState.damage) - finalDamage);
+    return { rawPhysical, armor, barrierArmor, finalDamage, hpAfter };
+  }
+
   function dodgeDefenseFromBlackFace(face) {
     if (!face || face.skull) return 0;
     return number(face.shield);
@@ -369,6 +381,7 @@
     rollDice,
     optimizeSymbolSpend,
     calculateAttack,
+    calculateFlatPhysicalDamage,
     calculateEnemyAttack,
     calculateForceCheck,
     calculateSpellOutcome,
