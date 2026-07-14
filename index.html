@@ -9,7 +9,7 @@
   <link rel="manifest" href="manifest.webmanifest" />
   <link rel="apple-touch-icon" href="icons/apple-touch-icon.png" />
   <link rel="icon" href="icons/favicon.svg" type="image/svg+xml" />
-  <title>Middara Combat Helper - V3.0R Shayliss BFF</title>
+  <title>Middara Combat Helper - V3.0S Shayliss Energy</title>
   <style>
     :root {
       --bg: #0f172a;
@@ -185,7 +185,7 @@
 <body>
   <header>
     <h1>Middara Combat Helper</h1>
-    <div class="subtitle"><strong>V3.0R Shayliss BFF</strong> - lets Shayliss reserve Burst for BFF before attack symbol damage is calculated.</div>
+    <div class="subtitle"><strong>V3.0S Shayliss Energy</strong> - adds The Wretched Energy spending and a BFF follow-up shortcut for Shayliss.</div>
   </header>
   <main id="appRoot"></main>
   <footer class="footer" id="stableFooter" aria-live="polite"></footer>
@@ -194,7 +194,7 @@
 
 (function () {
   'use strict';
-  const VERSION = 'V3.0R';
+  const VERSION = 'V3.0S';
   const STORAGE_KEY = 'middara.combatHelper.v3.state';
 
   const DATA = {
@@ -361,13 +361,13 @@
       version: VERSION,
       createdAt: new Date().toISOString(),
       ui: { activeTab:'play', actorId:'party:rook', targetId:null, targetScope:'enemies', actionId:null, selectedParty:'rook', appliedResultKey:null },
-      attack: { profileId:'rook_default', faces:{}, empower:false, empowerFace:0, manualAttackMod:0, manualPhysical:0, manualMagic:0, manualArmorPiercing:0, targetDefenseMod:0, useMasterWork:false, useMasterOfVessel:false, useCourage: true, useBff:false },
+      attack: { profileId:'rook_default', faces:{}, empower:false, empowerFace:0, manualAttackMod:0, manualPhysical:0, manualMagic:0, manualArmorPiercing:0, targetDefenseMod:0, useMasterWork:false, useMasterOfVessel:false, useCourage: true, useBff:false, shaylissEnergySpend:0 },
       spell: { profileId:'rook_courage_stifle', castingColor:'Green', castingFace:0, empower:false, empowerFace:0, manualForceMod:0, convictionFaces:{c0:0,c1:0}, useOtherworldly:true, useOptionalBonus:false, previousDamage:0, zealousFaces:{}, zealousDistance:1, zealousDiscount:false },
       enemyAttack: { profileId:'animate_basic', faces:{}, empower:false, empowerFace:0, useDodge:false, dodgeFace:0, manualAttackMod:0, manualPhysical:0, manualMagic:0, manualArmorPiercing:0, targetDefenseMod:0, finalReduction:0, forceMiss:false, rookPlate:false, remiShearling:true, remiShearlingPE:false, remiMantleVow:false, nightMorbid:true, nightReinforced:false, nightFlanking:false, zekeMorbid:true, zekeBelts:false, zekeFlanking:false, shaylissMarbas:true, shaylissBelts:false, summonReduction:false },
       enemySpell: { profileId:'animate_darkness', castingColor:'Red', castingFace:0, empower:false, empowerFace:0, manualForceMod:0, convictionColors:{c0:'',c1:''}, convictionFaces:{c0:0,c1:0}, damageFaces:{}, manualConvictionMod:0, forcePass:false, witchHat:false, manualEffect:'', manualFlatMagic:0, damageEqualsDifference:false, magicResistance:false },
       nightingale: { previousDamage:0, trophyFace:'', trophyTargetId:'', lifeOpen:false, trophyOpen:false, life:{ castingColor:'Grey', castingFace:0, empower:true, empowerFace:0, manualForceMod:0, boost:false, targets:[{targetId:'', c0:0, c1:0},{targetId:'', c0:0, c1:0},{targetId:'', c0:0, c1:0}], appliedKey:null, selfAppliedKey:null } },
       remiZeke: { remiProfile:'remi_chain_melee', whirlwindActive:false, whirlwindCount:0, onslaughtActive:false, onslaughtRemaining:0, lastMessage:'' },
-      shayliss: { blotFace:0, blotApplied:{}, lastMessage:'' },
+      shayliss: { blotFace:0, blotApplied:{}, energy:0, lastMessage:'' },
       party: defaultParty(),
       enemies: [],
       command: [],
@@ -531,6 +531,9 @@
     if (!state.shayliss || typeof state.shayliss !== 'object') state.shayliss = { blotFace:0, blotApplied:{}, lastMessage:'' };
     state.shayliss.blotFace = safeNumber(state.shayliss.blotFace, 0, 0, (DATA.dice.Blue?.length || 1) - 1);
     state.shayliss.blotApplied = state.shayliss.blotApplied && typeof state.shayliss.blotApplied === 'object' ? state.shayliss.blotApplied : {};
+    state.shayliss.energy = safeNumber(state.shayliss.energy, 0, 0, 3);
+    if (!state.attack || typeof state.attack !== 'object') state.attack = defaultState().attack;
+    state.attack.shaylissEnergySpend = safeNumber(state.attack.shaylissEnergySpend, 0, 0, state.shayliss.energy);
     const baseParty = defaultParty();
     state.party = state.party && typeof state.party === 'object' ? state.party : {};
     Object.keys(DATA.party).forEach(id => {
@@ -1012,9 +1015,14 @@
     }
     if (actor.id === 'shayliss') {
       return `<div class="hr"></div><h3>Shayliss attack helpers</h3>
-        <div class="chain-helper-status"><strong>The Wretched</strong><br><span class="tiny">Use Manual Physical Damage for spent Energy tokens, flanking +2 Physical, or Blot Out The Sun extra Blue-die splash. BFF and Dangerous Terrain are table reminders.</span></div>
+        <div class="chain-helper-status"><strong>The Wretched</strong><br><span class="tiny">Track Energy here. Flanking +2 Physical and Dangerous Terrain placement remain table/manual reminders.</span></div>
+        <div class="field-grid" style="margin-top:8px">
+          <div class="card"><strong>${Number(state.shayliss.energy || 0)} / 3</strong><div class="tiny">Energy tokens on The Wretched</div></div>
+          <div class="compact-actions"><button type="button" data-action="shayliss-energy" data-delta="1">+1 Energy</button><button type="button" data-action="shayliss-energy" data-delta="-1">-1 Energy</button></div>
+        </div>
         <div class="chain-helper-grid">
           <button type="button" data-action="shayliss-command2-fu">The Wretched ranged FU -> Command 2<br><span class="tiny">Uses current difference hit: ${diff}</span></button>
+          <button type="button" data-action="shayliss-bff-next">Load next BFF attack<br><span class="tiny">Choose a different target; BFF reserve clears.</span></button>
         </div>${renderShaylissBlotTool()}`;
     }
     const remaining = Number(state.remiZeke.onslaughtRemaining || 0);
@@ -1138,6 +1146,8 @@
     const masterWorkAvailable = actor.type === 'party' && ((actor.id === 'remi' && profile.id.includes('chain')) || actor.id === 'rook' || actor.id === 'zeke' || actor.id === 'shayliss');
     const motvAvailable = actor.type === 'party' && actor.id === 'remi';
     const bffAvailable = actor.type === 'party' && actor.id === 'shayliss';
+    const shaylissEnergyAvailable = actor.type === 'party' && actor.id === 'shayliss' && /melee/i.test(profile.range || '');
+    const energyMax = Math.max(0, Math.min(3, Number(state.shayliss?.energy || 0)));
     return `<details style="margin-top:10px" open><summary>Attack options and manual modifiers</summary>
       <div class="field-grid" style="margin-top:10px">
         ${hasCourage ? `<label><input type="checkbox" data-change="attack-courage" ${state.attack.useCourage!==false?'checked':''}> <span>Courage: +1 Book and +1 Shield</span></label>` : `<div class="note">No Courage effect on actor.</div>`}
@@ -1145,6 +1155,7 @@
         ${masterWorkAvailable ? `<label><input type="checkbox" data-change="attack-masterwork" ${state.attack.useMasterWork?'checked':''}> <span>Use Master Work: +1 attack roll</span></label>` : `<div class="note">No Master Work option for this profile.</div>`}
         ${motvAvailable ? `<label><input type="checkbox" data-change="attack-motv" ${state.attack.useMasterOfVessel?'checked':''}> <span>Use Master of the Vessel: +1 Burst and +1 damage to symbol abilities</span></label>` : `<div class="note">No Master of the Vessel option.</div>`}
         ${bffAvailable ? `<label><input type="checkbox" data-change="attack-bff" ${state.attack.useBff?'checked':''}> <span>Spend 1 Burst on BFF: reserve it from damage symbols</span></label>` : `<div class="note">No BFF reserve option.</div>`}
+        ${shaylissEnergyAvailable ? `<div><label>Spend The Wretched Energy</label><select data-change="attack-shayliss-energy">${Array.from({length:energyMax+1}, (_,i)=>`<option value="${i}" ${Number(state.attack.shaylissEnergySpend||0)===i?'selected':''}>${i} Energy (+${i} Physical)</option>`).join('')}</select></div>` : `<div class="note">Energy spend is melee only.</div>`}
         <div><label>Target Defense modifier</label><input type="number" data-change="attack-number" data-field="targetDefenseMod" value="${Number(state.attack.targetDefenseMod||0)}" /></div>
         <div><label>Manual attack roll modifier</label><input type="number" data-change="attack-number" data-field="manualAttackMod" value="${Number(state.attack.manualAttackMod||0)}" /></div>
         <div><label>Manual Armor Piercing</label><input type="number" data-change="attack-number" data-field="manualArmorPiercing" min="0" value="${Number(state.attack.manualArmorPiercing||0)}" /></div>
@@ -1271,6 +1282,7 @@
     const manualAttack = Number(state.attack.manualAttackMod || 0);
     const manualPhysical = Number(state.attack.manualPhysical || 0);
     const manualMagic = Number(state.attack.manualMagic || 0);
+    const energySpend = actor.type === 'party' && actor.id === 'shayliss' && /melee/i.test(profile.range || '') ? Math.max(0, Math.min(Number(state.shayliss?.energy || 0), Number(state.attack.shaylissEnergySpend || 0))) : 0;
     const masterWork = state.attack.useMasterWork ? 1 : 0;
     const result = core.calculateAttack({
       diceData: DATA.dice,
@@ -1286,7 +1298,7 @@
         useMasterWork: state.attack.useMasterWork,
         useMasterOfVessel: useMotV,
         manualAttackMod: manualAttack,
-        manualPhysical,
+        manualPhysical: manualPhysical + energySpend,
         manualMagic,
         manualArmorPiercing: state.attack.manualArmorPiercing,
         targetDefenseMod: state.attack.targetDefenseMod,
@@ -1295,14 +1307,14 @@
     });
     const finalDamage = result.finalDamage || 0;
     const barrierArmor = result.barrierArmor || 0;
-    const key = JSON.stringify({a:state.ui.actorId,t:state.ui.targetId,p:profile.id,f:state.attack.faces,e:state.attack.empower,ef:state.attack.empowerFace,mA:manualAttack,mP:manualPhysical,mM:manualMagic,mAP:state.attack.manualArmorPiercing,tD:state.attack.targetDefenseMod,c:state.attack.useCourage,mw:state.attack.useMasterWork,motv:state.attack.useMasterOfVessel,bff:state.attack.useBff,barrier:barrierArmor,damage:finalDamage, zMorbid:state.enemyAttack.zekeMorbid, zFlank:state.enemyAttack.zekeFlanking, barrier:barrierArmor});
-    return Object.assign({ ready:true, actor, target, profile, manualPhysical, manualMagic, key, masterWork, useMotV }, result, { finalDamage, barrierArmor });
+    const key = JSON.stringify({a:state.ui.actorId,t:state.ui.targetId,p:profile.id,f:state.attack.faces,e:state.attack.empower,ef:state.attack.empowerFace,mA:manualAttack,mP:manualPhysical,mM:manualMagic,mAP:state.attack.manualArmorPiercing,tD:state.attack.targetDefenseMod,c:state.attack.useCourage,mw:state.attack.useMasterWork,motv:state.attack.useMasterOfVessel,bff:state.attack.useBff,energy:energySpend,barrier:barrierArmor,damage:finalDamage, zMorbid:state.enemyAttack.zekeMorbid, zFlank:state.enemyAttack.zekeFlanking, barrier:barrierArmor});
+    return Object.assign({ ready:true, actor, target, profile, manualPhysical: manualPhysical + energySpend, manualBasePhysical: manualPhysical, energySpend, manualMagic, key, masterWork, useMotV }, result, { finalDamage, barrierArmor });
   }
   function renderBreakdownGrid(result) {
     const diceText = result.diceRows.map(r=>`${escapeHtml(r.color)}: ${escapeHtml(r.label)}`).join('<br>');
-    const modsText = `Manual ${Number(state.attack.manualAttackMod||0)}, Darkness ${result.darknessPenalty}, Master Work ${result.masterWork}${result.useMotV ? ', Master of the Vessel active' : ''}${result.reservedBurst ? ', BFF reserved ' + result.reservedBurst + ' Burst' : ''}`;
+    const modsText = `Manual ${Number(state.attack.manualAttackMod||0)}, Darkness ${result.darknessPenalty}, Master Work ${result.masterWork}${result.useMotV ? ', Master of the Vessel active' : ''}${result.reservedBurst ? ', BFF reserved ' + result.reservedBurst + ' Burst' : ''}${result.energySpend ? ', Energy spent +' + result.energySpend + ' Physical' : ''}`;
     const armorText = `Base Armor ${(result.target.def.armor||0)}${result.barrierArmor ? ' + Barrier 1' : ''} = ${result.targetArmor}; AP ${result.armorPiercing}; effective ${Math.max(0,result.targetArmor-result.armorPiercing)}`;
-    const rawText = `Difference ${result.diffHit} + passive ${result.profile.passivePhysical||0} + conditional ${result.spend.conditionalPhysical||0} + symbol Physical ${result.spend.physicalSymbols||0} + manual ${result.manualPhysical} = ${result.spend.rawPhysical||0} before armor`;
+    const rawText = `Difference ${result.diffHit} + passive ${result.profile.passivePhysical||0} + conditional ${result.spend.conditionalPhysical||0} + symbol Physical ${result.spend.physicalSymbols||0} + manual ${result.manualBasePhysical||0} + Energy ${result.energySpend||0} = ${result.spend.rawPhysical||0} before armor`;
     return `<div class="breakdown-grid">
       <div class="breakdown-card"><div class="label">Dice</div><div class="value">${diceText}</div></div>
       <div class="breakdown-card"><div class="label">Symbols available</div><div class="value">${escapeHtml(symbolText(result.pool))}</div></div>
@@ -2404,6 +2416,7 @@
     state.attack.useMasterOfVessel = false;
     state.attack.useCourage = true;
     state.attack.useBff = false;
+    state.attack.shaylissEnergySpend = 0;
     state.ui.appliedResultKey = null;
   }
   function loadAttackProfile(profileId) {
@@ -2485,6 +2498,11 @@
     if (a === 'apply-attack') {
       const r = calculateAttackResult();
       if (!applyResultDamageOnce(r, ['enemy','command'])) return;
+      if (r.actor?.type === 'party' && r.actor.id === 'shayliss' && r.energySpend > 0) {
+        state.shayliss.energy = Math.max(0, Number(state.shayliss.energy || 0) - Number(r.energySpend || 0));
+        state.attack.shaylissEnergySpend = 0;
+        state.shayliss.lastMessage = `Spent ${r.energySpend} Energy on the attack.`;
+      }
       saveState(); render();
       addLog(actorLabel() + ' attacked ' + targetLabel(), (r.hit ? 'Hit' : 'Miss') + '; attack ' + r.attackTotal + ' vs defense ' + r.targetDefense + '; applied ' + r.finalDamage + ' damage.');
       return;
@@ -2707,6 +2725,24 @@
       state.remiZeke.lastMessage = `Shayliss Command 2 FU loaded, Force ${10 + diff}.`;
       saveState(); render(); addLog('Shayliss Command 2 FU', `Loaded Command 2 Force check with Force 10 + difference hit (${diff}).`); return;
     }
+    if (a === 'shayliss-energy') {
+      const delta = Number(btn.dataset.delta || 0);
+      state.shayliss.energy = Math.max(0, Math.min(3, Number(state.shayliss.energy || 0) + delta));
+      state.attack.shaylissEnergySpend = Math.min(Number(state.attack.shaylissEnergySpend || 0), state.shayliss.energy);
+      state.shayliss.lastMessage = `The Wretched Energy is now ${state.shayliss.energy}/3.`;
+      saveState(); render(); return;
+    }
+    if (a === 'shayliss-bff-next') {
+      const profileId = DATA.attackProfiles[state.attack.profileId]?.actor === 'shayliss' ? state.attack.profileId : 'shayliss_wretched_ranged';
+      state.ui.actorId = 'party:shayliss';
+      state.ui.targetId = null;
+      state.ui.targetScope = 'enemies';
+      state.attack.profileId = profileId;
+      resetAttackRollState();
+      state.ui.actionId = 'attack';
+      state.shayliss.lastMessage = 'BFF follow-up loaded. Choose a different target; BFF reserve is cleared for the new attack.';
+      saveState(); render(); addLog('Shayliss BFF follow-up', 'Loaded the next Shayliss attack. Choose a different target and roll normally.'); return;
+    }
     if (a === 'shayliss-blot-apply-target') {
       const target = getEntityByTarget(state.ui.targetId);
       if (!target || !target.state || !target.def) return;
@@ -2898,6 +2934,7 @@
     if (ch === 'attack-masterwork') { state.attack.useMasterWork = !!el.checked; state.ui.appliedResultKey = null; saveState(); render(); }
     if (ch === 'attack-motv') { state.attack.useMasterOfVessel = !!el.checked; state.ui.appliedResultKey = null; saveState(); render(); }
     if (ch === 'attack-bff') { state.attack.useBff = !!el.checked; state.ui.appliedResultKey = null; saveState(); render(); }
+    if (ch === 'attack-shayliss-energy') { state.attack.shaylissEnergySpend = Math.max(0, Math.min(Number(state.shayliss.energy || 0), Number(el.value || 0))); state.ui.appliedResultKey = null; saveState(); render(); }
     if (ch === 'shayliss-blot-face') { state.shayliss.blotFace = Number(el.value || 0); state.shayliss.blotApplied = {}; state.shayliss.lastMessage = 'Blot die changed; applied markers cleared.'; saveState(); render(); }
     if (ch === 'spell-profile') { state.spell.profileId = el.value; const profile = DATA.spellProfiles[el.value]; state.spell.castingColor = profile?.noCasting ? '' : (profile?.defaultColor || profile?.castingColors?.[0] || 'Purple'); state.spell.castingFace = 0; state.spell.empower = profile?.noCasting ? false : !!profile?.defaultEmpower; state.spell.empowerFace = 0; state.spell.convictionFaces = {}; state.spell.zealousFaces = {}; state.spell.useOptionalBonus = false; state.spell.previousDamage = 0; state.ui.appliedResultKey = null; saveState(); render(); }
     if (ch === 'spell-casting-color') { state.spell.castingColor = el.value; state.spell.castingFace = 0; state.ui.appliedResultKey = null; saveState(); render(); }
